@@ -56,23 +56,29 @@ Commands: `/vedic-core`, `/vedic-career`, `/vedic-love`
 
 ---
 
-## Usage | 使用
+## ⚡ How to Use | 使用指南
 
-### Recommended Flow (Deep Mode)
+### 🟢 推荐流程 (Recommended): 先Core再专项
+
+> **Step 1** → 发送星盘PDF，说 **"帮我做完整星盘审计"**
+> 
+> AI 自动运行 `vedic-core`：提取数据 → 验前事校验 → P1-P13行星审计 → D9校准
+>
+> **Step 2** → 审计完成后，说 **"分析事业方向"** 或 **"分析恋爱运势"**
+>
+> AI 自动调用 `vedic-career` 或 `vedic-love`，继承Step 1的审计数据
 
 ```
-1. Provide birth chart PDF
-2. Run vedic-core → get P1-P13 audit + 验前事 validation
-3. Run vedic-career or vedic-love → inherits core data automatically
+星盘PDF → vedic-core(验前事 + P1-P13) → vedic-career 或 vedic-love
 ```
 
-### Quick Mode
+### 🟡 快速模式 (Quick): 直接分析
 
-Run career or love directly — they work standalone with simplified analysis.
+不想跑Core？也可以直接说 **"分析事业方向"** 或 **"分析恋爱运势"**，career/love会独立运行简化分析。但精度不如先跑Core。
 
-### Input
+### 输入要求 | Input
 
-- Jagannatha Hora exported PDF
+- Jagannatha Hora exported PDF (至少前2页)
 - Or birth chart screenshots
 - Python + PyMuPDF (`pip install pymupdf`) for PDF extraction
 
