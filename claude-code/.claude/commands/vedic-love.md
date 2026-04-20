@@ -111,6 +111,20 @@ Split into 2 parts:
 ## 4. Key Data Reference Table
 ```
 
+## File Saving Rules
+
+Save analysis as MD files to user's working directory:
+```
+working_dir/parts/
+  love_part1.md   ← Part 1: Profile + Timeline
+  love_part2.md   ← Part 2: Advice + Risks
+```
+After saving, remind user to run `report_builder.py` (in repo `scripts/` folder) to generate HTML.
+
+## Q&A Mode
+
+If conversation already contains a complete love report, enter Q&A mode instead of re-running. Answer based on existing data. Mark supplementary analysis as "based on supplementary derivation, not fully audited".
+
 ## Key Principles
 1. **No hallucination:** all conclusions based on extracted data only
 2. **Strictly separate three layers:** crush ≠ passion ≠ deep relationship
@@ -118,3 +132,5 @@ Split into 2 parts:
 4. **Gender matters:** female = Venus+Jupiter, male = Venus only
 5. **Modern lens:** consider online dating, social media, long-distance (Rahu/3rd/11th house)
 6. **Language-adaptive:** Output in the same language the user uses
+7. **Save files:** each part must save as MD file
+

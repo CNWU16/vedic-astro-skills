@@ -105,10 +105,27 @@ Split into 3 sections to avoid timeout:
 **Part 2:** Strategy (strength comparison, D9 check, Dasha timeline, recommendations, monetization logic)
 **Part 3:** Risk assessment + Closing Mantra + Data reference table
 
+## File Saving Rules
+
+Save analysis as MD files to user's working directory:
+```
+working_dir/parts/
+  career_part1.md   ← Part 1: Portrait & Narrative
+  career_part2.md   ← Part 2: Strategy
+  career_part3.md   ← Part 3: Risk & Advice
+```
+After saving, remind user to run `report_builder.py` (in repo `scripts/` folder) to generate HTML.
+
+## Q&A Mode
+
+If conversation already contains a complete career report (Phase 1-4), enter Q&A mode instead of re-running. Answer based on existing data. Mark supplementary analysis as "based on supplementary derivation, not fully audited".
+
 ## Key Principles
 1. **No hallucination:** all conclusions must be based on extracted data
 2. **Qualitative > Quantitative:** planetary dignity > SAV scores
 3. **Yoga priority:** if Phase 2 yogas are strong, career advice follows yogas; L10 house is just the scene
 4. **Every yoga must have a "Phase 4 mandatory strategy directive"**
 5. **D9 validation required:** all Phase 1/2 conclusions must pass D9 stress test
-6. **Language-adaptive:** Output in the same language the user uses. Chinese input → Chinese output. English input → English output.
+6. **Language-adaptive:** Output in the same language the user uses
+7. **Save files:** each part must save as MD file
+
