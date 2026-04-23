@@ -155,7 +155,13 @@ hr { border:none; border-top:1px solid var(--border); margin:20px 0; }
 # Each entry: (priority, canonical_key, en_title, cn_title, filename_patterns)
 SECTION_REGISTRY = [
     (10, "core",      "Part I: Core Audit",                    "第一部分：核心审计",
-     ["01_core.md", "p1_basics.md", "core.md"]),
+     ["01_core.md", "p1_data.md", "p1_basics.md", "core.md"]),
+    (15, "planets_a", "Part II-A: Planets (Sun/Moon/Mars)",    "第二部分A：行星审计 (日/月/火)",
+     ["p2a_planets.md"]),
+    (17, "planets_b", "Part II-B: Planets (Me/Ju/Ve)",         "第二部分B：行星审计 (水/木/金)",
+     ["p2b_planets.md"]),
+    (19, "planets_c", "Part II-C: Planets (Sa/Ra/Ke)",         "第二部分C：行星审计 (土/罗/计)",
+     ["p2c_planets.md"]),
     (20, "planets",   "Part II: Planetary Audit (P1-P12)",     "第二部分：行星审计 (P1-P12)",
      ["02_planets.md", "p2_planets.md", "planets.md"]),
     (30, "d9",        "Part III: D9 Navamsha Calibration",     "第三部分：D9品质校准",
