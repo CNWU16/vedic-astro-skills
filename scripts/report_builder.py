@@ -36,170 +36,189 @@ except ImportError:
 
 # ── CSS ──
 CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
-  --parchment: #f7f2e8; --parchment-deep: #efe8d8;
-  --brown: #4a3728; --brown-light: #6b5344; --brown-muted: #8c7a6b;
-  --gold: #b8942e; --gold-soft: #d4bf7a; --gold-line: #c9a94e;
-  --text: #3d3028; --text-muted: #7a6b5e;
-  --border: #d9cdb8; --accent-bg: #f0e9db;
-  --table-head: #5c4633; --table-head-text: #f5efe5;
-  --tag-bg: #e8dcc8; --tag-text: #5c4633;
+  --parchment: #f8f4ec; --parchment-deep: #f0ead8;
+  --brown: #5a4636; --brown-light: #7a6652; --brown-muted: #9c8b7a;
+  --gold: #b59540; --gold-soft: #d4c07a; --gold-line: #c9a94e;
+  --text: #3d352c; --text-light: #5a4e42; --text-muted: #8a7d70;
+  --border: #ddd3c2; --border-light: #e8dfd0;
+  --table-head-bg: #ede6d8; --table-stripe: #f4efe5;
 }
-@page { size: A4; margin: 20mm 18mm 22mm 18mm; }
+@page { size: A4; margin: 22mm 20mm 24mm 20mm; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: 'Crimson Pro', 'Georgia', serif;
-  font-size: 11pt; line-height: 1.8; color: var(--text);
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+  font-size: 14px; line-height: 1.9; color: var(--text);
   background: #e8e0d0;
-  max-width: 820px; margin: 0 auto; padding: 44px 54px;
+  max-width: 800px; margin: 0 auto; padding: 48px 56px;
   background: var(--parchment);
-  box-shadow: 0 2px 40px rgba(74,55,40,0.12), 0 0 0 1px rgba(74,55,40,0.06);
+  box-shadow: 0 1px 30px rgba(74,55,40,0.1);
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
 @media print {
-  body { background: var(--parchment); box-shadow: none; padding: 0; max-width: none; }
+  body { background: var(--parchment); box-shadow: none; padding: 0; max-width: none; font-size: 10pt; }
   .no-print { display: none; }
   .section-header, thead th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  table { font-size: 7.5pt !important; }
 }
 
 /* ── Cover ── */
 .cover {
   page-break-after: always; min-height: 100vh;
   display: flex; flex-direction: column; justify-content: center;
-  position: relative; padding: 60px 40px;
+  position: relative; padding: 60px 20px;
 }
 .cover::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-soft), var(--gold));
-}
-.cover::after {
-  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-  height: 1px; background: var(--border);
+  height: 3px; background: linear-gradient(90deg, transparent 5%, var(--gold-line) 30%, var(--gold-soft) 50%, var(--gold-line) 70%, transparent 95%);
 }
 .cover-badge {
-  display: inline-block; padding: 5px 14px; background: var(--brown);
-  color: var(--gold-soft); font-family: 'Inter', sans-serif;
-  font-size: 8pt; font-weight: 600;
-  letter-spacing: 2.5px; text-transform: uppercase; border-radius: 2px; margin-bottom: 30px;
+  display: inline-block; padding: 4px 14px;
+  background: transparent; border: 1.5px solid var(--gold-line);
+  color: var(--brown); font-family: 'Inter', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 2.5px; text-transform: uppercase; border-radius: 2px; margin-bottom: 28px;
 }
 .cover h1 {
-  font-family: 'Crimson Pro', serif; font-size: 38pt; font-weight: 700;
-  color: var(--brown); line-height: 1.15; margin-bottom: 10px;
+  font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  font-size: 34px; font-weight: 700;
+  color: var(--brown); line-height: 1.3; margin-bottom: 8px;
 }
 .cover h1 span { color: var(--gold); }
 .cover .subtitle {
-  font-size: 13pt; color: var(--text-muted); font-weight: 300;
-  margin-bottom: 40px; font-style: italic;
+  font-size: 15px; color: var(--text-muted); font-weight: 400;
+  margin-bottom: 40px; letter-spacing: 1px;
 }
-.cover-meta { margin-top: 40px; padding-top: 28px; border-top: 1.5px solid var(--border); }
+.cover-meta { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--border); }
 .cover-meta-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-  font-size: 9pt; color: var(--text-muted); font-family: 'Inter', sans-serif;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  font-size: 12px; color: var(--text-muted);
 }
-.cover-meta-grid dt { font-weight: 600; color: var(--brown); }
+.cover-meta-grid dt { font-weight: 600; color: var(--brown); font-size: 11px; letter-spacing: 0.5px; }
 .cover-meta-grid dd { margin: 0 0 10px; }
 
 /* ── TOC ── */
 .toc { page-break-after: always; padding: 40px 0; }
 .toc h2 {
-  font-family: 'Crimson Pro', serif; font-size: 22pt; color: var(--brown);
-  margin-bottom: 28px; padding-bottom: 10px; border-bottom: 2px solid var(--gold-line);
+  font-family: "Noto Serif SC", serif; font-size: 22px; color: var(--brown);
+  margin-bottom: 24px; padding-bottom: 10px; border-bottom: 1.5px solid var(--gold-line);
+  font-weight: 600;
 }
 .toc-list { list-style: none; }
 .toc-list li {
-  padding: 9px 0; border-bottom: 1px solid var(--border);
+  padding: 8px 0; border-bottom: 1px dashed var(--border-light);
   display: flex; justify-content: space-between; align-items: center;
+  font-size: 14px;
 }
-.toc-section { font-weight: 600; color: var(--brown); font-size: 11pt; }
+.toc-section { font-weight: 500; color: var(--brown); }
 .toc-list li.toc-part {
-  background: var(--brown); color: var(--parchment); padding: 10px 16px;
-  margin: 6px -16px; border-radius: 3px; border: none; font-weight: 700; font-size: 10.5pt;
+  background: var(--parchment-deep); color: var(--brown); padding: 10px 16px;
+  margin: 6px -16px; border-radius: 3px; border: 1px solid var(--border);
+  font-weight: 700; font-size: 14px;
 }
 
 /* ── Sections ── */
 .section { page-break-before: always; }
 .section:first-of-type { page-break-before: auto; }
 .section-header {
-  background: linear-gradient(135deg, var(--brown), var(--brown-light));
-  color: var(--parchment); padding: 22px 28px; margin: 0 0 26px; border-radius: 6px;
-  border: 1px solid rgba(74,55,40,0.15);
+  background: var(--parchment-deep);
+  border-left: 4px solid var(--gold-line);
+  border-bottom: 1px solid var(--border);
+  color: var(--brown); padding: 18px 24px; margin: 0 0 28px; border-radius: 0 4px 4px 0;
 }
 .section-header .section-number {
-  color: var(--gold-soft); font-family: 'Inter', sans-serif;
-  font-size: 9pt; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); font-family: 'Inter', sans-serif;
+  font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
 }
 .section-header h2 {
-  font-family: 'Crimson Pro', serif; font-size: 22pt; font-weight: 700;
-  margin-top: 4px; border: none; color: var(--parchment) !important; padding-bottom: 0;
+  font-family: "Noto Serif SC", serif; font-size: 20px; font-weight: 700;
+  margin-top: 4px; border: none; color: var(--brown) !important; padding-bottom: 0;
 }
 
 /* ── Typography ── */
 h1 {
-  font-family: 'Crimson Pro', serif; font-size: 22pt; color: var(--brown);
-  margin: 30px 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--gold-line);
+  font-family: "Noto Serif SC", serif; font-size: 22px; color: var(--brown);
+  margin: 32px 0 14px; padding-bottom: 8px; border-bottom: 1.5px solid var(--gold-line);
+  font-weight: 600;
 }
 h2 {
-  font-family: 'Crimson Pro', serif; font-size: 17pt; color: var(--brown);
-  margin: 28px 0 12px; padding-bottom: 7px; border-bottom: 1.5px solid var(--gold-line);
+  font-family: "Noto Serif SC", serif; font-size: 18px; color: var(--brown);
+  margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  font-weight: 600;
 }
-h3 { font-size: 12.5pt; font-weight: 600; color: var(--brown); margin: 20px 0 8px; }
-h4 { font-size: 10.5pt; font-weight: 600; color: var(--brown-light); margin: 14px 0 6px; }
-p { margin: 0 0 11px; text-align: justify; }
+h3 {
+  font-size: 15px; font-weight: 600; color: var(--brown);
+  margin: 22px 0 8px; padding-left: 10px;
+  border-left: 3px solid var(--gold-line);
+}
+h4 { font-size: 14px; font-weight: 600; color: var(--brown-light); margin: 16px 0 6px; }
+p { margin: 0 0 12px; text-align: justify; }
 
 /* ── Tables ── */
 table {
-  width: 100%; border-collapse: collapse; margin: 14px 0 24px;
-  font-size: 9pt; line-height: 1.6; font-family: 'Inter', sans-serif;
-  border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+  width: 100%; border-collapse: collapse; margin: 12px 0 22px;
+  font-size: 12px; line-height: 1.5;
+  border: 1px solid var(--border);
 }
 thead th {
-  background: var(--table-head); color: var(--table-head-text);
-  padding: 9px 12px; text-align: left;
-  font-weight: 600; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.5px;
-  white-space: nowrap; border-bottom: 2px solid var(--gold-line);
+  background: var(--table-head-bg); color: var(--brown);
+  padding: 8px 10px; text-align: left;
+  font-weight: 600; font-size: 11px;
+  border-bottom: 2px solid var(--gold-line);
+  white-space: nowrap;
 }
 tbody td {
-  padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top;
+  padding: 7px 10px; border-bottom: 1px solid var(--border-light); vertical-align: top;
 }
-tbody tr:nth-child(even) { background: var(--accent-bg); }
-tbody tr:hover { background: var(--parchment-deep); }
+tbody tr:nth-child(even) { background: var(--table-stripe); }
+
+/* Wide tables (13+ columns like BAV) */
+table:has(th:nth-child(10)) {
+  font-size: 10px;
+}
+table:has(th:nth-child(10)) th,
+table:has(th:nth-child(10)) td {
+  padding: 5px 4px; text-align: center; white-space: nowrap;
+}
+table:has(th:nth-child(10)) th:first-child,
+table:has(th:nth-child(10)) td:first-child {
+  text-align: left; font-weight: 600;
+}
 
 /* ── Blockquotes ── */
 blockquote {
   border-left: 3px solid var(--gold-line);
-  background: linear-gradient(135deg, #f5efe5, #f0e9db);
-  padding: 13px 18px; margin: 16px 0; border-radius: 0 5px 5px 0;
-  font-style: italic; color: var(--brown-light); font-size: 9.5pt;
+  background: var(--parchment-deep);
+  padding: 12px 18px; margin: 14px 0; border-radius: 0 4px 4px 0;
+  color: var(--text-light); font-size: 13px;
 }
-blockquote strong { color: var(--brown); }
-blockquote code { background: rgba(255,255,255,0.5); color: var(--brown); }
+blockquote strong { color: var(--brown); font-style: normal; }
 
 /* ── Lists ── */
-ul, ol { margin: 8px 0 14px 20px; }
-li { margin-bottom: 5px; }
+ul, ol { margin: 8px 0 14px 22px; }
+li { margin-bottom: 4px; }
 
 /* ── Inline ── */
 strong { color: var(--brown); }
 code {
-  background: var(--tag-bg); padding: 2px 5px; border-radius: 3px;
-  font-size: 8.5pt; border: 1px solid var(--border); color: var(--tag-text);
-  font-family: 'Inter', sans-serif;
+  background: var(--parchment-deep); padding: 1px 5px; border-radius: 3px;
+  font-size: 12px; border: 1px solid var(--border-light); color: var(--brown-light);
+  font-family: 'Inter', monospace;
 }
 pre {
-  background: var(--brown); color: var(--parchment); padding: 16px 20px; border-radius: 5px;
-  margin: 14px 0; font-size: 8.5pt; line-height: 1.6; overflow-x: auto; white-space: pre-wrap;
+  background: #3d352c; color: #ede6d8; padding: 14px 18px; border-radius: 4px;
+  margin: 14px 0; font-size: 11px; line-height: 1.6; overflow-x: auto; white-space: pre-wrap;
 }
 pre code { background: transparent; border: none; color: inherit; padding: 0; }
-hr { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
 
 /* ── Utilities ── */
 .page-break { page-break-before: always; }
 .footer-note {
-  margin-top: 30px; padding-top: 14px; border-top: 1.5px solid var(--border);
-  font-size: 7.5pt; color: var(--text-muted); text-align: center;
-  font-family: 'Inter', sans-serif;
+  margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--border);
+  font-size: 10px; color: var(--text-muted); text-align: center;
 }
 """
 
