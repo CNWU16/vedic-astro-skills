@@ -1,4 +1,4 @@
-"""
+﻿"""
 Vedic Report Builder — Universal MD → HTML Pipeline
 =====================================================
 Supports ALL Vedic skill outputs: Core, Career, Love, Q&A
@@ -39,71 +39,67 @@ CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
-  --parchment: #f8f4ec; --parchment-deep: #f0ead8;
+  --parchment: #f8f4ec; --parchment-deep: #f0eadb;
   --brown: #5a4636; --brown-light: #7a6652; --brown-muted: #9c8b7a;
   --gold: #b59540; --gold-soft: #d4c07a; --gold-line: #c9a94e;
   --text: #3d352c; --text-light: #5a4e42; --text-muted: #8a7d70;
-  --border: #ddd3c2; --border-light: #e8dfd0;
+  --border: #ddd3c2; --border-light: #e8e0d2;
   --table-head-bg: #ede6d8; --table-stripe: #f4efe5;
 }
 @page { size: A4; margin: 22mm 20mm 24mm 20mm; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
-  font-size: 14px; line-height: 1.9; color: var(--text);
+  font-size: 14px; line-height: 1.85; color: var(--text);
   background: #e8e0d0;
-  max-width: 800px; margin: 0 auto; padding: 48px 56px;
+  max-width: 780px; margin: 0 auto; padding: 48px 56px;
   background: var(--parchment);
   box-shadow: 0 1px 30px rgba(74,55,40,0.1);
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
 @media print {
-  body { background: var(--parchment); box-shadow: none; padding: 0; max-width: none; font-size: 10pt; }
+  body { background: var(--parchment); box-shadow: none; padding: 0; max-width: none; font-size: 10.5pt; }
   .no-print { display: none; }
   .section-header, thead th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  table { font-size: 7.5pt !important; }
+  table { font-size: 8pt !important; }
 }
 
-/* ── Cover ── */
 .cover {
   page-break-after: always; min-height: 100vh;
   display: flex; flex-direction: column; justify-content: center;
-  position: relative; padding: 60px 20px;
+  position: relative; padding: 60px 10px;
 }
 .cover::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 3px; background: linear-gradient(90deg, transparent 5%, var(--gold-line) 30%, var(--gold-soft) 50%, var(--gold-line) 70%, transparent 95%);
+  height: 2px; background: linear-gradient(90deg, transparent 5%, var(--gold-line) 30%, var(--gold-soft) 50%, var(--gold-line) 70%, transparent 95%);
 }
 .cover-badge {
-  display: inline-block; padding: 4px 14px;
-  background: transparent; border: 1.5px solid var(--gold-line);
-  color: var(--brown); font-family: 'Inter', sans-serif;
-  font-size: 10px; font-weight: 600;
-  letter-spacing: 2.5px; text-transform: uppercase; border-radius: 2px; margin-bottom: 28px;
+  color: var(--gold); font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px;
 }
 .cover h1 {
   font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
-  font-size: 34px; font-weight: 700;
-  color: var(--brown); line-height: 1.3; margin-bottom: 8px;
+  font-size: 46px; font-weight: 700;
+  color: var(--brown); line-height: 1.35; margin-bottom: 16px;
 }
 .cover h1 span { color: var(--gold); }
 .cover .subtitle {
   font-size: 15px; color: var(--text-muted); font-weight: 400;
-  margin-bottom: 40px; letter-spacing: 1px;
+  margin-bottom: 50px; letter-spacing: 0.5px;
 }
-.cover-meta { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--border); }
+.cover-meta { margin-top: 50px; padding-top: 28px; border-top: 1px solid var(--border-light); }
 .cover-meta-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-  font-size: 12px; color: var(--text-muted);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px 40px;
+  font-size: 13px; color: var(--text-muted);
 }
-.cover-meta-grid dt { font-weight: 600; color: var(--brown); font-size: 11px; letter-spacing: 0.5px; }
-.cover-meta-grid dd { margin: 0 0 10px; }
+.cover-meta-grid dt { font-weight: 600; color: var(--brown); font-size: 11px; letter-spacing: 0.5px; margin-top: 12px; }
+.cover-meta-grid dd { margin: 2px 0 0; }
 
-/* ── TOC ── */
 .toc { page-break-after: always; padding: 40px 0; }
 .toc h2 {
   font-family: "Noto Serif SC", serif; font-size: 22px; color: var(--brown);
-  margin-bottom: 24px; padding-bottom: 10px; border-bottom: 1.5px solid var(--gold-line);
+  margin-bottom: 24px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
   font-weight: 600;
 }
 .toc-list { list-style: none; }
@@ -115,96 +111,76 @@ body {
 .toc-section { font-weight: 500; color: var(--brown); }
 .toc-list li.toc-part {
   background: var(--parchment-deep); color: var(--brown); padding: 10px 16px;
-  margin: 6px -16px; border-radius: 3px; border: 1px solid var(--border);
-  font-weight: 700; font-size: 14px;
+  margin: 4px -16px; border-radius: 3px; border: none; border-bottom: none;
+  font-weight: 600; font-size: 14px;
 }
 
-/* ── Sections ── */
 .section { page-break-before: always; }
 .section:first-of-type { page-break-before: auto; }
 .section-header {
-  background: var(--parchment-deep);
-  border-left: 4px solid var(--gold-line);
-  border-bottom: 1px solid var(--border);
-  color: var(--brown); padding: 18px 24px; margin: 0 0 28px; border-radius: 0 4px 4px 0;
+  border-left: 3px solid var(--gold-line);
+  color: var(--brown); padding: 12px 22px; margin: 0 0 28px;
 }
 .section-header .section-number {
   color: var(--gold); font-family: 'Inter', sans-serif;
   font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
 }
 .section-header h2 {
-  font-family: "Noto Serif SC", serif; font-size: 20px; font-weight: 700;
-  margin-top: 4px; border: none; color: var(--brown) !important; padding-bottom: 0;
+  font-family: "Noto Serif SC", serif; font-size: 21px; font-weight: 700;
+  margin-top: 2px; border: none; color: var(--brown) !important; padding-bottom: 0;
 }
 
-/* ── Typography ── */
 h1 {
   font-family: "Noto Serif SC", serif; font-size: 22px; color: var(--brown);
-  margin: 32px 0 14px; padding-bottom: 8px; border-bottom: 1.5px solid var(--gold-line);
+  margin: 32px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border-light);
   font-weight: 600;
 }
 h2 {
   font-family: "Noto Serif SC", serif; font-size: 18px; color: var(--brown);
-  margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
-  font-weight: 600;
+  margin: 28px 0 12px; font-weight: 600; padding-bottom: 0; border-bottom: none;
 }
 h3 {
   font-size: 15px; font-weight: 600; color: var(--brown);
   margin: 22px 0 8px; padding-left: 10px;
-  border-left: 3px solid var(--gold-line);
+  border-left: 2px solid var(--gold-line);
 }
 h4 { font-size: 14px; font-weight: 600; color: var(--brown-light); margin: 16px 0 6px; }
 p { margin: 0 0 12px; text-align: justify; }
 
-/* ── Tables ── */
 table {
-  width: 100%; border-collapse: collapse; margin: 12px 0 22px;
+  width: 100%; border-collapse: collapse; margin: 10px 0 20px;
   font-size: 12px; line-height: 1.5;
-  border: 1px solid var(--border);
 }
 thead th {
   background: var(--table-head-bg); color: var(--brown);
-  padding: 8px 10px; text-align: left;
+  padding: 7px 10px; text-align: left;
   font-weight: 600; font-size: 11px;
-  border-bottom: 2px solid var(--gold-line);
-  white-space: nowrap;
+  border-bottom: 1.5px solid var(--gold-line);
 }
-tbody td {
-  padding: 7px 10px; border-bottom: 1px solid var(--border-light); vertical-align: top;
-}
+tbody td { padding: 6px 10px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
 tbody tr:nth-child(even) { background: var(--table-stripe); }
 
-/* Wide tables (13+ columns like BAV) */
-table:has(th:nth-child(10)) {
-  font-size: 10px;
-}
+table:has(th:nth-child(10)) { font-size: 10px; }
 table:has(th:nth-child(10)) th,
-table:has(th:nth-child(10)) td {
-  padding: 5px 4px; text-align: center; white-space: nowrap;
-}
+table:has(th:nth-child(10)) td { padding: 4px 3px; text-align: center; white-space: nowrap; }
 table:has(th:nth-child(10)) th:first-child,
-table:has(th:nth-child(10)) td:first-child {
-  text-align: left; font-weight: 600;
-}
+table:has(th:nth-child(10)) td:first-child { text-align: left; font-weight: 600; }
 
-/* ── Blockquotes ── */
 blockquote {
-  border-left: 3px solid var(--gold-line);
+  border-left: 2px solid var(--gold-line);
   background: var(--parchment-deep);
-  padding: 12px 18px; margin: 14px 0; border-radius: 0 4px 4px 0;
+  padding: 10px 16px; margin: 14px 0; border-radius: 0 3px 3px 0;
   color: var(--text-light); font-size: 13px;
 }
 blockquote strong { color: var(--brown); font-style: normal; }
 
-/* ── Lists ── */
-ul, ol { margin: 8px 0 14px 22px; }
-li { margin-bottom: 4px; }
+ul, ol { margin: 6px 0 14px 22px; }
+li { margin-bottom: 3px; }
 
-/* ── Inline ── */
 strong { color: var(--brown); }
 code {
-  background: var(--parchment-deep); padding: 1px 5px; border-radius: 3px;
-  font-size: 12px; border: 1px solid var(--border-light); color: var(--brown-light);
+  background: var(--parchment-deep); padding: 1px 4px; border-radius: 2px;
+  font-size: 12px; color: var(--brown-light);
   font-family: 'Inter', monospace;
 }
 pre {
@@ -212,12 +188,11 @@ pre {
   margin: 14px 0; font-size: 11px; line-height: 1.6; overflow-x: auto; white-space: pre-wrap;
 }
 pre code { background: transparent; border: none; color: inherit; padding: 0; }
-hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+hr { border: none; border-top: 1px dashed var(--border-light); margin: 24px 0; }
 
-/* ── Utilities ── */
 .page-break { page-break-before: always; }
 .footer-note {
-  margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--border);
+  margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--border-light);
   font-size: 10px; color: var(--text-muted); text-align: center;
 }
 """
