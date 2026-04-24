@@ -1,4 +1,4 @@
-﻿"""
+"""
 Vedic Report Builder — Universal MD → HTML Pipeline
 =====================================================
 Supports ALL Vedic skill outputs: Core, Career, Love, Q&A
@@ -36,7 +36,7 @@ except ImportError:
 
 # ── CSS ──
 CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
   --parchment: #f8f4ec; --parchment-deep: #f0eadb;
@@ -66,35 +66,43 @@ body {
 
 .cover {
   page-break-after: always; min-height: 100vh;
-  display: flex; flex-direction: column; justify-content: center;
-  position: relative; padding: 60px 10px;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  position: relative; padding: 80px 20px 60px; text-align: center;
 }
-.cover::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 2px; background: linear-gradient(90deg, transparent 5%, var(--gold-line) 30%, var(--gold-soft) 50%, var(--gold-line) 70%, transparent 95%);
-}
-.cover-badge {
+.cover-top {
   color: var(--gold); font-family: 'Inter', sans-serif;
-  font-size: 11px; font-weight: 600;
-  letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px;
 }
 .cover h1 {
-  font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
-  font-size: 46px; font-weight: 700;
-  color: var(--brown); line-height: 1.35; margin-bottom: 16px;
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  font-size: 52px; font-weight: 700;
+  color: var(--brown); line-height: 1.3; margin-bottom: 6px;
+  border-bottom: none; padding-bottom: 0;
 }
-.cover h1 span { color: var(--gold); }
+.cover .cover-accent {
+  font-family: "Noto Serif SC", serif;
+  font-size: 28px; font-weight: 400; color: var(--gold);
+  letter-spacing: 6px; margin-bottom: 12px;
+}
+.cover .cover-ornament {
+  width: 60px; height: 1px; background: var(--gold-line); margin: 28px auto;
+}
 .cover .subtitle {
-  font-size: 15px; color: var(--text-muted); font-weight: 400;
-  margin-bottom: 50px; letter-spacing: 0.5px;
+  font-size: 14px; color: var(--text-muted); font-weight: 400;
+  letter-spacing: 1px; margin-bottom: 0;
 }
-.cover-meta { margin-top: 50px; padding-top: 28px; border-top: 1px solid var(--border-light); }
+.cover-meta {
+  margin-top: auto; padding-top: 0; width: 100%; text-align: left;
+  border-top: 1px solid var(--border-light); padding-top: 24px;
+}
 .cover-meta-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px 40px;
-  font-size: 13px; color: var(--text-muted);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px 40px;
+  font-size: 12px; color: var(--text-muted);
 }
-.cover-meta-grid dt { font-weight: 600; color: var(--brown); font-size: 11px; letter-spacing: 0.5px; margin-top: 12px; }
-.cover-meta-grid dd { margin: 2px 0 0; }
+.cover-meta-grid div { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; }
+.cover-meta-grid dt { font-weight: 500; color: var(--brown-muted); font-size: 11px; min-width: 55px; flex-shrink: 0; }
+.cover-meta-grid dd { margin: 0; color: var(--text-light); }
 
 .toc { page-break-after: always; padding: 40px 0; }
 .toc h2 {
@@ -131,13 +139,12 @@ body {
 }
 
 h1 {
-  font-family: "Noto Serif SC", serif; font-size: 22px; color: var(--brown);
-  margin: 32px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border-light);
-  font-weight: 600;
+  font-family: "Noto Serif SC", "Crimson Pro", serif; font-size: 22px; color: var(--brown);
+  margin: 32px 0 14px; font-weight: 600;
 }
 h2 {
-  font-family: "Noto Serif SC", serif; font-size: 18px; color: var(--brown);
-  margin: 28px 0 12px; font-weight: 600; padding-bottom: 0; border-bottom: none;
+  font-family: "Noto Serif SC", "Crimson Pro", serif; font-size: 18px; color: var(--brown);
+  margin: 28px 0 12px; font-weight: 600;
 }
 h3 {
   font-size: 15px; font-weight: 600; color: var(--brown);
@@ -286,16 +293,19 @@ def detect_package(found, lang="cn"):
 
 
 def build_cover(name, lagna, gender, status, pkg, desc, lang="cn"):
-    badge = "数据驱动吠陀占星" if lang == "cn" else "Data-Driven Vedic Astrology"
-    h1 = "吠陀占星<br><span>完整解读</span>" if lang == "cn" else "Vedic Astrology<br><span>Complete Reading</span>"
+    top = "DATA-DRIVEN VEDIC ASTROLOGY" if lang == "en" else "数据驱动吠陀占星"
+    title = "吠陀占星" if lang == "cn" else "Vedic Astrology"
+    accent = "完 整 解 读" if lang == "cn" else "Complete Reading"
     L = {
-        "cn": ["客户", "上升星座", "基本信息", "套餐", "体系", "软件", "大运", "量化指标"],
-        "en": ["Client", "Ascendant", "Profile", "Package", "Methodology", "Software", "Dasha", "Metrics"],
+        "cn": ["客户", "上升", "信息", "套餐", "体系", "软件", "大运", "量化"],
+        "en": ["Client", "Lagna", "Profile", "Package", "System", "Software", "Dasha", "Metrics"],
     }[lang]
     return f"""
 <div class="cover">
-  <div class="cover-badge">{badge}</div>
-  <h1>{h1}</h1>
+  <div class="cover-top">{top}</div>
+  <h1>{title}</h1>
+  <div class="cover-accent">{accent}</div>
+  <div class="cover-ornament"></div>
   <div class="subtitle">{desc}</div>
   <div class="cover-meta"><div class="cover-meta-grid">
     <div><dt>{L[0]}</dt><dd>{name}</dd></div>
