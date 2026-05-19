@@ -231,18 +231,28 @@ with open('extracted_text.txt', 'w', encoding='utf-8') as f:
       → 仍需跑校验12(Ra-Ke)确认
 
     路径B - 其他所有情况（包括PDF用户）：
-      无条件请求用户截屏，不尝试自己从PDF读取：
-      "D1基础数据已提取完成。分盘数据需要您帮忙截屏确认——
-       AI直接从PDF读取小盘图的准确率不够高。
-       请从JHora中截屏以下3张分盘图发来：
-       ① D10 (Dasamsha) 盘
-       ② D4 (Chaturthamsha) 盘
-       ③ D5 (Panchamsha) 盘
-       每张截清楚行星缩写和As标记就行，手机拍屏幕也可以。"
+      ⚠️⚠️⚠️ 硬性门控：必须在写入structured_data.md之前请求截图！
+      不要先写structured_data再问截图，必须先问截图再一起写入。
 
-      → 等用户发来截屏后再提取
-      → 用户说"不方便" → 标注"D10/D4/D5=未提取，分析将仅基于D1+D9"
+      D1/D9提取完成后立即暂停，输出以下消息：
+
+      "✅ D1基础数据和D9已提取并校验完毕。
+
+       ⚠️ D10/D4/D5分盘需要您提供截图——AI直接从PDF读小盘图准确率不够。
+       请从JHora中截屏以下3张分盘图发来：
+         ① D10 (Dasamsha) 盘
+         ② D4 (Chaturthamsha) 盘
+         ③ D5 (Panchamsha) 盘
+       每张截清楚行星缩写和As标记就行，手机拍屏幕也可以。
+
+       → 发送截图后我会一起写入完整的structured_data.md
+       → 如果暂时没有截图，说'跳过'，对应分盘将标记为未验证"
+
+      → 等用户回复后再继续！
+      → 收到截图 → 从截图提取D10/D4/D5 → 连同D1/D9一起写入structured_data
+      → 用户说"跳过" → 标注"D10/D4/D5=未提取" → 写入structured_data（不含小分盘）
       → 绝不自行从PDF渲染提取然后假装数据正确
+      → 绝不先写structured_data再问截图
 
     → 每个分盘提取10行（Lagna + 9颗行星的星座和宫位）
 
