@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [v5.0.1] - 2026-05-24
+
+> **社区反馈修复** — BOM修复 + Nakshatra校验 + Ayanamsa检测
+
+### 🔧 Reader (vedic-reader)
+
+#### Fixed
+- **UTF-8 BOM移除**：SKILL.md开头的BOM导致Claude Code frontmatter解析失败（skill描述显示为`---`）
+
+#### Added
+- **Ayanamsa被动提醒**：Step 0数据需求清单中明确标注"本系统基于Lahiri设计"，警告非Lahiri岁差的影响
+- **Ayanamsa主动检测**：校验7增强为主动检测——在PDF/文本数据源中搜索Ayanamsa关键词（Lahiri/KP/Raman/Pushya），检测到非Lahiri时标注风险并提醒用户，不强制阻塞
+
+### 🔧 Rectifier (vedic-rectifier)
+
+#### Added
+- **Step 3d Nakshatra边界校验**：D9精调后检查Lagna是否在Nakshatra边界±2°内，如果命中则展示两个候选Nakshatra的核心特质供用户确认，辅助验证时间偏向
+
+---
+
 ## [v5.0] - 2026-05-22
 
 > **开源最终版** — 执行阶段化重构 + 性能优化 + 报告系统升级
