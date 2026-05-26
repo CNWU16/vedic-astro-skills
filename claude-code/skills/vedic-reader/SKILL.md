@@ -358,97 +358,8 @@ D9计算公式：
 
 **视觉识别可信度: 中低 -> 必须用户确认**
 
-##### 南印度盘(South Indian Chart)读取规则
-
-**核心特征**：南印盘是**星座固定、宫位移动**。12个格子的星座位置永远不变。
-
-```
-南印度盘固定星座位置（永远不变）：
-+------+------+------+------+
-|  Pi  |  Ar  |  Ta  |  Ge  |
-| 双鱼 | 白羊 | 金牛 | 双子 |
-+------+------+------+------+
-|  Aq  |             |  Cn  |
-| 水瓶 |             | 巨蟹 |
-+------+             +------+
-|  Cp  |             |  Le  |
-| 摩羯 |             | 狮子 |
-+------+------+------+------+
-|  Sg  |  Sc  |  Li  |  Vi  |
-| 射手 | 天蝎 | 天秤 | 处女 |
-+------+------+------+------+
-```
-
-**关键**：找到 **As** 或 **Asc** 标记 -> 那个格子的固定星座就是上升星座(Lagna)
-**计数方向**：从Lagna所在格子开始，**顺时针**数 = 1宫->2宫->3宫...->12宫
-
-```
-示例：如果Lagna在Cancer(右边第2格):
-1宫=Cn -> 2宫=Le -> 3宫=Vi -> 4宫=Li
--> 5宫=Sc -> 6宫=Sg -> 7宫=Cp -> 8宫=Aq
--> 9宫=Pi -> 10宫=Ar -> 11宫=Ta -> 12宫=Ge
-```
-
-##### 北印度盘(North Indian Chart)读取规则
-
-**核心区别**：北印盘是**宫位固定、星座移动**（和南印盘正好相反）。
-
-```
-钻石形布局（宫位固定位置）：
-
-       12  |  2
-    11     | 1   | 3
-           |ASC  |
-    10     |     | 4
-        9  | 7   | 5
-        8  |  6
-
-1宫 = 上方中间（Ascendant，固定位置）
-格子里的数字 = 星座编号（1=Aries, 2=Taurus ... 12=Pisces）
-```
-
-**计数方向：逆时针！**（和南印盘的顺时针相反）
-
-**读取步骤**：
-1. 看1宫格子里的星座数字/缩写 -> 这就是上升星座
-2. 按宫位编号(1->12)，**逆时针方向**逐格读取行星
-3. 每个格子里的数字代表星座（不是宫位）
-4. 输出结果表，等待用户确认
-
-##### 行星缩写对照表
-
-| 行星 | 常见缩写 | 印地语别名 |
-|------|---------|----------|
-| Sun 太阳 | Su, Sy | Surya |
-| Moon 月亮 | Mo, Ch | Chandra |
-| Mars 火星 | Ma, Ku | Kuja, Mangal |
-| Mercury 水星 | Me, Bu | Budha |
-| Jupiter 木星 | Ju, Gu | Guru |
-| Venus 金星 | Ve, Sk | Shukra |
-| Saturn 土星 | Sa, Sh | Shani |
-| Rahu 罗睺 | Ra | - |
-| Ketu 计都 | Ke | - |
-| Lagna 上升点 | As, Asc, Lg | - |
-
-**逆行标记（极重要，不可遗漏！）**：
-- 行星旁标有 **(R)** 或 **Rx** 表示逆行
-- 逆行会根本性改变行星的表现方式
-- AI最容易在此处遗漏，必须特别注意小括号或上标
-- 在structured_data.md中必须标注每颗行星是否逆行
-
-##### 特殊标记（记录，部分会在分析中使用）
-
-| 缩写 | 含义 | 分析中是否使用 |
-|------|------|-------------|
-| AL | Arudha Lagna 象微宫 | 是（外界形象） |
-| UL | Upapada Lagna 后世宫 | 是（婚姻/配偶） |
-| GL | Ghatika Lagna | 是（权力/地位） |
-| HL | Hora Lagna | 是（财务） |
-| SL | Sree Lagna 吉祥点 | 是（财富） |
-| PP | Pranapada | 记录备用 |
-| BB | Bhrigu Bindu | 记录备用 |
-| Md/Gk | Mandi/Gulika | 是（业力障碍） |
-| A2-A12 | 各宫Arudha Padas | 记录备用 |
+⚠️ **南印/北印盘读取规则 → 必须 view_file 读取 `resources/chart_reading_rules.md`**
+   包含：南印度盘固定星座布局、北印度盘钻石布局、行星缩写对照表、逆行标记规则、特殊标记表(AL/UL/GL等)
 
 ---
 
@@ -602,9 +513,41 @@ time_risk=LOW：有效精度<=±5分钟，或±15分钟+Lagna安全
    -> 取决于Lagna，一旦确定就固定
    -> 例：Cancer Lagna -> L1=Moon, L2=Sun, L3=Mercury...
 
-2. 行星尊贵度（Dignity）
-   -> 每颗行星相对于所在星座的状态
-   -> 入庙(Own) / 旺(Exalted) / 陷(Debilitated) / 友(Friend) / 敌(Enemy) / 中性(Neutral)
+2. 行星尊贵度（Compound Dignity / Panchadha Maitri 五重关系）
+   -> 每颗行星相对于所在星座守护星的**复合关系**
+   -> 先判主要状态：入庙(Own) / 旺(Exalted) / 陷(Debilitated) → 这三种直接确定，不需要算compound
+   -> 其余情况（非Own/Exalted/Debilitated）→ 必须算Compound：
+   
+   Compound计算方法：
+   a) 自然关系(Natural/Naisargika)：查固定表
+      | 行星 | 友(Mitra) | 敌(Shatru) | 中性(Sama) |
+      |------|-----------|-----------|-----------|
+      | Sun | Moon,Mars,Ju | Venus,Saturn | Mercury |
+      | Moon | Sun,Mercury | — | Mars,Ju,Ve,Sa |
+      | Mars | Sun,Moon,Ju | Mercury | Venus,Saturn |
+      | Mercury | Sun,Venus | Moon | Mars,Ju,Sa |
+      | Jupiter | Sun,Moon,Mars | Mercury,Venus | Saturn |
+      | Venus | Mercury,Saturn | Sun,Moon | Mars,Jupiter |
+      | Saturn | Mercury,Venus | Sun,Moon,Mars | Jupiter |
+   
+   b) 临时关系(Temporary/Tatkalika)：从该行星所在宫位数起
+      → 2/3/4/10/11/12宫有行星 = 该行星的临时友(Tatkalika Mitra)
+      → 1/5/6/7/8/9宫有行星 = 该行星的临时敌(Tatkalika Shatru)
+      → 只算Sun~Saturn七颗星，Rahu/Ketu不参与临时关系
+   
+   c) 复合(Compound/Panchadha)：Natural + Temporary 合成
+      | 自然关系 | 临时关系 | → 复合尊贵度 |
+      |---------|---------|------------|
+      | 友(Friend) | 临时友 | **至友(Adhi Mitra)** |
+      | 友(Friend) | 临时敌 | 中性(Neutral) |
+      | 中性(Neutral) | 临时友 | 友方(Friend) |
+      | 中性(Neutral) | 临时敌 | **敌方(Enemy)** |
+      | 敌(Enemy) | 临时友 | 中性(Neutral) |
+      | 敌(Enemy) | 临时敌 | **死敌(Adhi Shatru)** |
+   
+   d) Rahu/Ketu：不参与临时关系计算，直接用先天状态（Rahu旺在Ta，Ketu旺在Sc等）
+   
+   -> 最终尊贵度7级：旺 / 入庙 / 至友 / 友方 / 中性 / 敌方 / 死敌 / 陷
 
 3. 主要相位关系（Aspects）
    -> Jyotish相位规则（非西占）:
