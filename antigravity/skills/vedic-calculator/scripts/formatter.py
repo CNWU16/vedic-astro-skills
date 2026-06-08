@@ -105,8 +105,8 @@ def format_structured_data(chart, transit_data, meta, user_info):
     
     # Shadbala
     lines.append("### Shadbala")
-    lines.append("| 行星 | Rupas | 百分比 | 排名 | 强弱 |")
-    lines.append("|------|-------|--------|------|------|")
+    lines.append("| 行星 | Rupas | 百分比 | 排名 | 强弱 | IshtaPhala | KashtaPhala |")
+    lines.append("|------|-------|--------|------|------|-----------|-------------|")
     sb = chart['shadbala']
     if 'error' not in sb:
         # Extract rupas for sorting
@@ -117,11 +117,13 @@ def format_structured_data(chart, transit_data, meta, user_info):
         sb_items.sort(key=lambda x: x[1]['total_rupas'], reverse=True)
         for rank, (name, val) in enumerate(sb_items, 1):
             rupas = round(val['total_rupas'], 2)
-            required = val.get('required_rupas', 6.0)
-            pct = round(val.get('strength_ratio', rupas/required) * 100, 1)
+            pct = round(val.get('strength_pct', 0), 2)
             strength = '强' if pct >= 150 else ('中' if pct >= 100 else '弱')
-            lines.append(f"| {name} | {rupas} | {pct}% | {rank} | {strength} |")
+            ishta = round(val.get('ishta_phala', 0), 2)
+            kashta = round(val.get('kashta_phala', 0), 2)
+            lines.append(f"| {name} | {rupas} | {pct}% | {rank} | {strength} | {ishta} | {kashta} |")
     lines.append("")
+    lines.append("> 来源: vedic-calculator引擎 (PyJHora + 9项修正)")
     lines.append("> 强: ≥150% | 中: 100-149% | 弱: <100%\n")
     
     # SAV

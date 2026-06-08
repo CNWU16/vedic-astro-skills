@@ -129,6 +129,12 @@ user_info = {
 md = format_structured_data(chart, transit, meta, user_info)
 with open(r"WORKDIR\structured_data.md", 'w', encoding='utf-8') as f:
     f.write(md)
+
+# ⚠️ 正确的 SAV 验证方式（不要自己猜 key！）
+SIGNS = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces']
+sav_total = sum(chart['sav'].get(s, 0) for s in SIGNS)
+print(f"✅ SAV total: {sav_total}")
+assert sav_total == 337, f"SAV FAILED: {sav_total} != 337"
 ```
 
 执行命令（AI 根据环境自动选择 Python）：
@@ -138,6 +144,9 @@ with open(r"WORKDIR\structured_data.md", 'w', encoding='utf-8') as f:
 # Linux/Mac: <skill目录>/venv/bin/python SCRIPT_PATH
 # 都没有venv: python SCRIPT_PATH（需已全局安装依赖）
 ```
+
+> ⚠️ **禁止自己手写 print 来读取 chart 数据！** 必须用 `formatter.py` 输出 structured_data.md。
+> chart 的数据结构见下方「engine 返回数据结构」。
 
 ### Step 4: 校验输出
 
@@ -167,6 +176,98 @@ structured_data.md 生成后，向用户输出：
 - 用户发送 PDF → 从 PDF 文本层提取 Shadbala → 替换 calc 值 → 再触发 reader 验前事
 
 
+## engine 返回数据结构
+
+> ⚠️ **必读！** 不要猜 key 名。以下是 `calculate_full_chart()` 返回的 dict 结构。
+
+```python
+chart = {
+    # 基础天文
+    'ayanamsa': 23.8982,           # float, Lahiri ayanamsa 度数
+    'lagna': {
+        'sign': 'Cancer',          # str, 英文星座名
+        'sign_idx': 3,             # int, 0-indexed (Aries=0)
+        'degree': 13.61,           # float, 绝对度数 (星座内)
+        'deg_str': "13°36'",       # str, 格式化度分
+        'longitude': 103.61,       # float, 黄道经度
+        'nakshatra': {'name': 'Pushya', 'pada': 4, 'lord': 'Saturn'}
+    },
+    'planets': {
+        'Sun': {
+            'sign': 'Scorpio', 'sign_idx': 7,
+            'degree': 25.41, 'deg_str': "25°24'",
+            'longitude': 235.41,
+            'house': 5,            # int, 1-indexed 从 Lagna 数
+            'retrograde': False,
+            'nakshatra': {'name': 'Jyeshtha', 'pada': 3, 'lord': 'Mercury'}
+        },
+        # ... Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, Ketu 同结构
+    },
+
+    # SAV — ⚠️ key 是英文星座名，不是 'by_sign'!
+    'sav': {
+        'Aries': 36, 'Taurus': 34, 'Gemini': 22, 'Cancer': 28,
+        'Leo': 34, 'Virgo': 29, 'Libra': 29, 'Scorpio': 25,
+        'Sagittarius': 32, 'Capricorn': 20, 'Aquarius': 26, 'Pisces': 22
+    },
+    'sav_by_house': {
+        1: {'sign': 'Cancer', 'value': 28},  # 按宫位编号
+        # ... 2-12 同结构
+    },
+
+    # BAV
+    'bav': {
+        'Sun': {'Aries': 6, 'Taurus': 5, ...},  # 12星座
+        # ... Moon, Mars, Mercury, Jupiter, Venus, Saturn
+    },
+
+    # Shadbala — ⚠️ 用 strength_pct (不是 strength_ratio)!
+    'shadbala': {
+        'Sun': {
+            'total_60ths': 288.6,  'total_rupas': 4.81,
+            'sthana': 82.0, 'kaala': 55.0, 'dig': 6.7,
+            'cheshta': 44.9, 'naisargika': 60.0, 'drik': 40.0,
+            'strength_pct': 96.2,  # ⚠️ 百分比，直接用！
+            'classification': '弱',
+            'ishta_phala': 7.64,   # Ishta Phala
+            'kashta_phala': 50.18  # Kashta Phala
+        },
+        # ... Moon, Mars, Mercury, Jupiter, Venus, Saturn 同结构
+    },
+
+    # Dasha
+    'dashas': [
+        {
+            'planet': 'Jupiter', 'start': '1998-02', 'end': '2014-02',
+            'years': 16, 'is_current': False,
+            'antardashas': [
+                {'planet': 'Jupiter', 'start': '1998-02-11', 'end': '2000-04-01', 'is_current': False},
+                # ... 9个小运
+            ]
+        },
+        # ... 共9段大运
+    ],
+
+    # 分盘 — (sign_name, sign_idx) tuple
+    'd9':  {'Lagna': ('Scorpio', 7), 'Sun': ('Aquarius', 10), ...},
+    'd10': {'Lagna': ('Cancer', 3),  'Sun': ('Pisces', 11), ...},
+    'd4':  {'Lagna': ('Libra', 6),   'Sun': ('Leo', 4), ...},
+    'd5':  {'Lagna': ('Pisces', 11), 'Sun': ('Scorpio', 7), ...},
+    'vargottama': {'Sun': False, 'Moon': False, 'Rahu': True, ...},
+    'divisional_charts': {'D2': ..., 'D3': ..., ...},  # 额外分盘
+
+    # 预分析
+    'karakas': {'8k': [...], 'dk_7k': 'Saturn', 'dk_8k': 'Mercury', 'dk_consistent': False},
+    'dignity': {'Sun': {'compound': 'great_friend', ...}, ...},
+    'aspects': [{'p1':'Rahu','p2':'Ketu','type':'对冲(180°)','degree_diff':'180.0'}, ...],
+    'house_lords': {1: {'lord':'Moon','domain':'自我','lord_house':8}, ...},
+    'special_points': {'AL': {'sign':'Virgo','house':3}, 'UL': {'sign':'Pisces','house':9}},
+    'combustion': {},
+    'moon_phase': {'waxing': True, 'sun_moon_diff': 88.6},
+}
+```
+
+
 ## 输出规格
 
 输出的structured_data.md包含以下数据板块（完全匹配data_contract.md）：
@@ -177,7 +278,7 @@ structured_data.md 生成后，向用户输出：
 | 行星位置 | 10颗行星+Lagna，星座/宫位/度数/逆行 |
 | Nakshatra | 全部行星的Nakshatra+Pada |
 | Chara Karakas | 8K主表（含Rahu和PiK）+ DK争议 |
-| Shadbala | 7颗行星的Rupas/百分比/排名/强弱 |
+| Shadbala | 7颗行星的Rupas/百分比/排名/强弱/Ishta/Kashta |
 | SAV | 原始值(按星座) + 宫位映射(按宫位) |
 | BAV | 7颗行星×12星座矩阵 |
 | Vimsottari Dasha | 9段大运 + 当前/下一大运Antardasha |
@@ -191,13 +292,16 @@ structured_data.md 生成后，向用户输出：
 
 ## 技术规格
 
-- Ayanamsa: **Lahiri**（固定，不可更改）
+- Ayanamsa: **TRUE_CITRA / Lahiri**（固定，不可更改）
 - Node模式: **Mean Node**
-- 天文引擎: pysweph (Swiss Ephemeris Python binding)
-- SAV/BAV: dashaflow.ashtakavarga
-- Shadbala: dashaflow.shadbala  
-- Dignity: dashaflow.dignity + 旺/入庙/陷前置判断
+- 天文核心: pysweph (Swiss Ephemeris C binding)
+- SAV/BAV: **PyJHora 原生** (ashtakavarga_pyjhora.py)
+- Dasha: **PyJHora 原生** (dasha_pyjhora.py)
+- Shadbala: **PyJHora + 9项修正** (shadbala_pyjhora.py)
+- 分盘: **PyJHora 原生** (divisional_pyjhora.py) — 15张 D1~D60
+- Dignity: dashaflow + 旺/入庙/陷前置判断
 - Chara Karakas: 8K（含Rahu和PiK）+ DK争议
+- 容错策略: **fail-fast**（缺依赖直接报错，不给错误结果）
 
 ## 与其他skill的关系
 
@@ -213,3 +317,4 @@ structured_data.md 生成后，向用户输出：
 ```
 
 所有路径输出的 structured_data.md 格式完全一致，core 无需区分数据来源。
+
