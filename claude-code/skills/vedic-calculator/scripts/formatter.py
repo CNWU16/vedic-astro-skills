@@ -172,18 +172,17 @@ def format_structured_data(chart, transit_data, meta, user_info):
             next_dasha = d
     lines.append("")
     
-    # Antardasha — 输出当前大运和下一大运的完整小运表
-    for dasha_obj, label in [(current_dasha, '当前'), (next_dasha, '下一')]:
-        if dasha_obj and 'antardashas' in dasha_obj:
-            lines.append(f"### {dasha_obj['planet']}大运 Antardasha（{label}）")
+    # Antardasha — 输出全部大运的小运表（验前事需要扫描过去的时间窗口）
+    for d in chart['dashas']:
+        if 'antardashas' in d:
+            label = '当前' if d['is_current'] else ('下一' if d == next_dasha else '')
+            label_str = f"（{label}）" if label else ""
+            lines.append(f"### {d['planet']}大运 Antardasha{label_str}")
             lines.append("| 小运 | 起始 | 结束 |")
             lines.append("|------|------|------|")
-            current_ad = None
-            for ad in dasha_obj['antardashas']:
+            for ad in d['antardashas']:
                 marker = ' ← 当前' if ad.get('is_current') else ''
-                lines.append(f"| {dasha_obj['planet']}-{ad['planet']} | {ad['start']} | {ad['end']} |{marker}")
-                if ad.get('is_current'):
-                    current_ad = ad
+                lines.append(f"| {d['planet']}-{ad['planet']} | {ad['start']} | {ad['end']} |{marker}")
             lines.append("")
     
     # 当前状态汇总
