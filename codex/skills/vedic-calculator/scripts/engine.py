@@ -63,11 +63,13 @@ try:
         calculate_bhava_bala as _bhava_bala_pyjhora,
         calculate_special_lagnas as _special_lagnas_pyjhora,
         calculate_vargeeya_bala as _vargeeya_bala_pyjhora,
+        calculate_pushkara as _pushkara_pyjhora,
     )
 except ImportError as e:
     _bhava_bala_pyjhora = None
     _special_lagnas_pyjhora = None
     _vargeeya_bala_pyjhora = None
+    _pushkara_pyjhora = None
     _load_errors.append(f'extras_pyjhora: {e}')
 
 # Fail-fast: 核心模块必须全部加载
@@ -673,6 +675,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
     bhava_bala = None
     special_lagnas = None
     vargeeya_bala = None
+    pushkara = None
     if any([_bhava_bala_pyjhora, _special_lagnas_pyjhora, _vargeeya_bala_pyjhora]):
         try:
             tz = pytz.timezone(tz_str)
@@ -684,6 +687,8 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
                 special_lagnas = _special_lagnas_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset)
             if _vargeeya_bala_pyjhora:
                 vargeeya_bala = _vargeeya_bala_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset)
+            if _pushkara_pyjhora:
+                pushkara = _pushkara_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset)
         except Exception:
             pass
     
@@ -711,6 +716,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
         'bhava_bala': bhava_bala,
         'special_lagnas': special_lagnas,
         'vargeeya_bala': vargeeya_bala,
+        'pushkara': pushkara,
     }
 
 

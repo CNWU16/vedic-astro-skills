@@ -206,6 +206,10 @@ D5  [✅/⚠️] [说明]
 | Lagna | [sign] | 1 | — |
 | [planet] | [sign] | [house] | [是/否] |
 
+Pushkara Navamsa（滋养保护区）: [星名列表 / 无]
+Pushkara Bhaga（精确滋养度）: [星名列表 / 无]
+（calc 计算输出；D9 审计"落陷检查Pushkara补丁"直接读此两行，定义见 p1_p12 P7）
+
 ### D10 Dasamsha
 | 行星 | D10星座 | D10宫位 |
 |------|---------|---------|

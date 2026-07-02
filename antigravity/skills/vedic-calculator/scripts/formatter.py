@@ -264,6 +264,15 @@ def format_structured_data(chart, transit_data, meta, user_info):
         varg = '是' if chart['vargottama'].get(name, False) else '否'
         lines.append(f"| {name} | {sign} | {d9_house} | {varg} |")
     lines.append("")
+
+    # Pushkara（落陷补丁维度：落入者受滋养保护，受损行星有恢复缓冲）
+    pk = chart.get('pushkara')
+    if pk and 'error' not in pk:
+        nav = '、'.join(pk.get('pushkara_navamsa', [])) or '无'
+        bhaga = '、'.join(pk.get('pushkara_bhaga', [])) or '无'
+        lines.append(f"Pushkara Navamsa（滋养保护区）: {nav}")
+        lines.append(f"Pushkara Bhaga（精确滋养度）: {bhaga}")
+        lines.append("")
     
     # D10
     lines.append("### D10 Dasamsha")

@@ -96,6 +96,35 @@ def calculate_bhava_bala(year, month, day, hour, minute, lat, lon, tz_offset):
         return {'error': str(e)}
 
 
+def calculate_pushkara(year, month, day, hour, minute, lat, lon, tz_offset):
+    """
+    计算 Pushkara Navamsa / Pushkara Bhaga（落陷补丁维度，S3-07）。
+    行星落在 Pushkara Navamsa 区段 = 受滋养保护，受损行星有恢复力缓冲。
+
+    Returns:
+        dict: {'pushkara_navamsa': ['Mars', ...], 'pushkara_bhaga': ['Venus', ...]}
+        失败时 {'error': str}
+    """
+    swe, const, drik = _setup()
+    from jhora.panchanga.drik import Place, Date
+    from jhora.horoscope.chart import charts
+    from jhora import utils
+
+    _PLANETS = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter',
+                'Venus', 'Saturn', 'Rahu', 'Ketu']
+    try:
+        jd = utils.julian_day_number(Date(year, month, day), (hour, minute, 0))
+        place = Place('birth_place', lat, lon, tz_offset)
+        pp = charts.rasi_chart(jd, place)
+        nav_idx, bhaga_idx = charts.planets_in_pushkara_navamsa_bhaga(pp)
+        to_names = lambda idxs: [_PLANETS[i] for i in idxs
+                                 if isinstance(i, int) and 0 <= i < len(_PLANETS)]
+        return {'pushkara_navamsa': to_names(nav_idx),
+                'pushkara_bhaga': to_names(bhaga_idx)}
+    except Exception as e:
+        return {'error': str(e)}
+
+
 def calculate_special_lagnas(year, month, day, hour, minute, lat, lon, tz_offset):
     """
     计算特殊 Lagna: Hora Lagna, Ghati Lagna, Sree Lagna, Indu Lagna, 
