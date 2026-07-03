@@ -697,6 +697,14 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
         except Exception:
             pass
     
+    # DST 透明标注：出生时刻是否处于当地夏令时（pytz 默认把报时当墙上钟时间处理）
+    try:
+        _tzd = pytz.timezone(tz_str)
+        _dtd = _localize_strict(_tzd, datetime(year, month, day, hour, minute))
+        dst_info = {'is_dst': bool(_dtd.dst()), 'utc_offset': str(_dtd.utcoffset())}
+    except Exception:
+        dst_info = None
+
     # Chara Dasha (K.N. Rao) — engine 真值输入（JHora 双盘金标准 24/24 验证）
     chara_dasha = None
     if _chara_dasha:
@@ -733,6 +741,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
         'vargeeya_bala': vargeeya_bala,
         'pushkara': pushkara,
         'chara_dasha': chara_dasha,
+        'dst_info': dst_info,
     }
 
 

@@ -32,6 +32,12 @@ def format_structured_data(chart, transit_data, meta, user_info):
     lines.append(f"验证轨道: 轨道1-标准")
     lines.append(f"读盘方式: vedic-calculator直接计算")
     lines.append(f"Ayanamsa: True Chitrapaksha（Lahiri系,差<1′） ({chart['ayanamsa']:.4f}°)")
+    if chart.get('dst_info'):
+        di = chart['dst_info']
+        if di['is_dst']:
+            lines.append(f"夏令时: ⚠️ 出生时刻处于当地夏令时期间，报时已按\"墙上钟时间\"处理（实际UTC偏移 {di['utc_offset']}）。若出生记录为标准时（未拨快的时间），需声明后按标准时重排。")
+        else:
+            lines.append(f"夏令时: 否（UTC偏移 {di['utc_offset']}）")
     lines.append(f"Node模式: Mean Node")
     lines.append("```\n")
     
