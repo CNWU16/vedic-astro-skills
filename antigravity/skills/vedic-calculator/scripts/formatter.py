@@ -280,15 +280,22 @@ def format_structured_data(chart, transit_data, meta, user_info):
     
     # D9
     lines.append("### D9 Navamsha")
-    lines.append("| 行星 | D9星座 | D9宫位 | Vargottama |")
-    lines.append("|------|--------|--------|-----------|")
+    lines.append("| 行星 | D9星座 | D9宫位 | Vargottama | D9尊贵 | D9房东 |")
+    lines.append("|------|--------|--------|-----------|--------|--------|")
     d9l = chart['d9']['Lagna']
-    lines.append(f"| Lagna | {d9l[0]} | 1 | — |")
+    lines.append(f"| Lagna | {d9l[0]} | 1 | — | — | — |")
+    D9_DIG_LABEL = {'exalted':'旺','own':'自庙','debilitated':'陷',
+                    'friend':'友','enemy':'敌','neutral':'中性'}
+    d9dig = chart.get('d9_dignity', {})
     for name in ['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn','Rahu','Ketu']:
         sign, sidx = chart['d9'][name]
         d9_house = ((sidx - chart['d9']['Lagna'][1]) % 12) + 1
         varg = '是' if chart['vargottama'].get(name, False) else '否'
-        lines.append(f"| {name} | {sign} | {d9_house} | {varg} |")
+        dd = d9dig.get(name, {})
+        dlab = D9_DIG_LABEL.get(dd.get('dignity'), '—')
+        disp = dd.get('dispositor', '—')
+        lines.append(f"| {name} | {sign} | {d9_house} | {varg} | {dlab} | {disp} |")
+    lines.append("> D9尊贵/房东为 calculator 查表确定值，读盘直接引用，禁止自行判读入旺/落陷。")
     lines.append("")
 
     # Pushkara（落陷补丁维度：落入者受滋养保护，受损行星有恢复缓冲）

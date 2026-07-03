@@ -626,7 +626,27 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
                 compound = COMPOUND_TABLE.get((natural, temporal), 'neutral')
         
         dignity_data[name] = {'basic': compound, 'compound': compound}
-    
+
+    # 6b. D9 自然尊贵度 (PQ-01: 纯查表补算，禁模型通识判读 D9 入旺/落陷/座主链)
+    #     只用自然尊贵 (旺exalted/庙own/陷debilitated/友friend/敌enemy/中性neutral)
+    #     不含临时/合成关系——D9 尊贵直接查表，答案确定。
+    d9_dignity = {}
+    for name in ['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn']:
+        d9_entry = d9.get(name)
+        if not d9_entry:
+            continue
+        d9_sign, d9_sign_idx = d9_entry[0], d9_entry[1]
+        dispositor = SIGN_LORDS[d9_sign_idx]  # D9 房东星
+        if EXALTATION.get(name) == d9_sign:
+            d9_dig = 'exalted'
+        elif DEBILITATION.get(name) == d9_sign:
+            d9_dig = 'debilitated'
+        elif d9_sign in OWN_SIGNS.get(name, []):
+            d9_dig = 'own'
+        else:
+            d9_dig = get_natural_rel(name, dispositor)  # friend/enemy/neutral
+        d9_dignity[name] = {'sign': d9_sign, 'dignity': d9_dig, 'dispositor': dispositor}
+
     # 7. Combustion check
     sun_lon = planets['Sun']['longitude']
     combustion = {}
@@ -726,6 +746,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
         'divisional_charts': divisional_charts,
         'vargottama': vargottama,
         'dignity': dignity_data,
+        'd9_dignity': d9_dignity,
         'combustion': combustion,
         'karakas': karakas,
         'aspects': aspects,
