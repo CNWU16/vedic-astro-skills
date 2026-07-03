@@ -175,6 +175,26 @@ def format_structured_data(chart, transit_data, meta, user_info):
             next_dasha = d
     lines.append("")
     
+    # Chara Dasha (K.N. Rao) — 第二时间系统（双系统交叉验证用）
+    if chart.get('chara_dasha'):
+        import swisseph as _swe
+        cd = chart['chara_dasha']
+        lines.append(f"### Chara Dasha 时间线（K.N. Rao，{'顺行' if cd['direction']=='forward' else '逆行'}）")
+        lines.append("> 与 Vimsottari 完全独立的第二时间系统（Jaimini 星座大运，KN Rao 变体，")
+        lines.append("> 已用 JHora 双盘金标准 24/24 对照验证）。用途：时间窗口的双系统交叉验证——")
+        lines.append("> 两系统同指一个主题时段 = 信号硬度升级；仅单系统 = 措辞降一档。")
+        lines.append("")
+        lines.append("| 大运座 | 起始 | 结束 | 年数 |")
+        lines.append("|--------|------|------|------|")
+        import datetime as _dt
+        _today_jd = _swe.julday(_dt.date.today().year, _dt.date.today().month, _dt.date.today().day, 12.0)
+        for md in cd['mahadashas']:
+            y1, m1, d1, _ = _swe.revjul(md['start_jd'])
+            y2, m2, d2, _ = _swe.revjul(md['end_jd'])
+            marker = ' ← 当前' if md['start_jd'] <= _today_jd < md['end_jd'] else ''
+            lines.append(f"| {md['sign']} | {y1:04d}-{m1:02d}-{d1:02d} | {y2:04d}-{m2:02d}-{d2:02d} | {md['years']} |{marker}")
+        lines.append("")
+
     # Antardasha — 输出全部大运的小运表（验前事需要扫描过去的时间窗口）
     for d in chart['dashas']:
         if 'antardashas' in d:

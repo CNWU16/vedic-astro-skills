@@ -71,6 +71,11 @@ except ImportError as e:
     _vargeeya_bala_pyjhora = None
     _pushkara_pyjhora = None
     _load_errors.append(f'extras_pyjhora: {e}')
+try:
+    from chara_dasha import calc_chara_dasha as _chara_dasha
+except ImportError as e:
+    _chara_dasha = None
+    _load_errors.append(f'chara_dasha: {e}')
 
 # Fail-fast: 核心模块必须全部加载
 _REQUIRED = {'SAV': _av_pyjhora, 'Shadbala': _shadbala_pyjhora, 'Dasha': _dasha_pyjhora}
@@ -692,6 +697,16 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
         except Exception:
             pass
     
+    # Chara Dasha (K.N. Rao) — engine 真值输入（JHora 双盘金标准 24/24 验证）
+    chara_dasha = None
+    if _chara_dasha:
+        try:
+            _sign_idx = {s: i for i, s in enumerate(SIGNS)}
+            _psigns = {p: _sign_idx[planets[p]['sign']] for p in planets}
+            chara_dasha = _chara_dasha(_sign_idx[lagna['sign']], _psigns, jd)
+        except Exception:
+            pass
+
     return {
         'ayanamsa': ayanamsa,
         'lagna': lagna,
@@ -717,6 +732,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
         'special_lagnas': special_lagnas,
         'vargeeya_bala': vargeeya_bala,
         'pushkara': pushkara,
+        'chara_dasha': chara_dasha,
     }
 
 

@@ -178,6 +178,19 @@ Mahadasha: [planet] (YYYY-MM ~ YYYY-MM)
 Antardasha: [planet] (YYYY-MM ~ YYYY-MM)
 ```
 
+### Chara Dasha 时间线（K.N. Rao，calc路径必须）
+> 第二时间系统（Jaimini 星座大运，KN Rao 变体），由 calc chara_dasha.py 生成
+> （实现经 JHora 双盘金标准 24/24 对照验证）。用途：时间窗口的双系统交叉验证。
+
+```
+### Chara Dasha 时间线（K.N. Rao，[顺行/逆行]）
+| 大运座 | 起始 | 结束 | 年数 |
+| [sign] | YYYY-MM-DD | YYYY-MM-DD | [N] |  [← 当前标记]
+```
+
+> 降级规则：非 calc 路径无此表时，下游禁止做"双系统确认"表述（只按单系统 Vimsottari 出，
+> 措辞维持单系统档）；禁止凭通识心算 Chara Dasha。
+
 ## 预分析（calculator计算，core直接引用）
 
 ### 行星尊贵度（Compound Dignity / Panchadha Maitri）
