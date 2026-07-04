@@ -342,7 +342,26 @@ def format_structured_data(chart, transit_data, meta, user_info):
         d5_house = ((sidx - chart['d5']['Lagna'][1]) % 12) + 1
         lines.append(f"| {name} | {sign} | {d5_house} |")
     lines.append("")
-    
+
+    # 分盘内部宫主表 + 尊贵度（线A 数据：分盘自身 Lagna 起宫的宫主 + 各星分盘尊贵，禁 AI 自推）
+    vi = chart.get('varga_internal', {})
+    if vi:
+        lines.append("### 分盘内部宫主表 + 尊贵度（线A · calc 查表，禁自推）")
+        lines.append("> 线A=用分盘自身 Lagna 推出的分盘宫主(D*-L*)，读此段；线B=本命宫主职落分盘(见上各分盘落宫表)。两线禁混用，断语须标是哪个盘。")
+        DIG = {'exalted':'旺','own':'自庙','debilitated':'陷','friend':'友','enemy':'敌','neutral':'中'}
+        GRAHA = ['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn']
+        for dv in ['D9','D10','D4','D5']:
+            v = vi.get(dv)
+            if not v:
+                continue
+            hl = v['house_lords']; dg = v['dignity']
+            lords_str = " ".join(f"{dv}-L{h}={hl[h]['lord']}@H{hl[h]['lord_house']}" for h in range(1, 13))
+            dig_str = " ".join(f"{n}={DIG.get(dg[n]['dignity'],'?')}/座主{dg[n]['dispositor']}" for n in GRAHA if n in dg)
+            lines.append(f"**{dv}** Lagna={v['lagna_sign']}（{dv}-Lagna主={v['lagna_lord']}）")
+            lines.append(f"  宫主(线A): {lords_str}")
+            lines.append(f"  分盘尊贵: {dig_str}")
+        lines.append("")
+
     # === 校验 ===
     lines.append("## 校验结果\n")
     sav_total = sum(chart['sav'].get(s,0) for s in SIGNS)

@@ -1,8 +1,8 @@
 {
- "source_commit": "53cfc446e66a",
- "generated_at": "2026-07-04T04:18:03Z",
+ "source_commit": "58df03ae3768",
+ "generated_at": "2026-07-04T19:41:20Z",
  "repo": "vedic-astrology-skills",
- "anchor_count": 256,
+ "anchor_count": 258,
  "anchors": [
   {
    "id": "A-SK-c3f104d1",
@@ -401,7 +401,7 @@
    "file": "SKILL.md",
    "level": "L2",
    "title": "从structured_data读取D10数据：",
-   "text": "```\n从structured_data读取D10数据：\n  D10 Lagna → 事业基调\n  D10中强势行星 → 事业方向线索\n  D10 10宫主位置 → 成就领域\n  \n  输出1-2段概述（详细分析留给vedic-career）\n  标注可信度：[从structured_data读取]\n```"
+   "text": "```\n从structured_data读取D10数据：\n  D10 Lagna → 事业基调\n  D10中强势行星 → 事业方向线索\n  线A(分盘内部)：D10-L10（由 D10 Lagna 定，读分盘内部宫主表，❌非本命L10）落 D10-H* → 成就领域\n  线B(跨盘参照)：本命 L10 主（D1视角）落 D10 哪宫 → D1事业承诺在分盘的兑现方向\n  （概述颗粒度粗，两线各一句即可，标清视角，禁只写\"D10中10宫主\"这类不标盘的混视角句）\n  \n  输出1-2段概述（详细分析留给vedic-career）\n  标注可信度：[从structured_data读取]\n```"
   },
   {
    "id": "A-SK-2a701c1b",
@@ -415,7 +415,7 @@
    "file": "SKILL.md",
    "level": "L2",
    "title": "从structured_data读取D4数据：",
-   "text": "```\n从structured_data读取D4数据：\n  D4 Lagna → 物质舒适度基调\n  D4中4宫主/Venus位置 → 财产潜力\n  D1 4宫 vs D4交叉 → 不动产/车辆运势\n  \n  输出1-2段概述\n```"
+   "text": "```\n从structured_data读取D4数据：\n  D4 Lagna → 物质舒适度基调\n  线A(分盘内部)：D4-L4（由 D4 Lagna 定，读分盘内部宫主表，❌非本命L4）/D4内 Venus 位置 → 财产潜力\n  线B(跨盘参照)：本命 L4 主（D1视角）落 D4 哪宫 → D1不动产承诺在分盘的兑现方向\n  D1 4宫 vs D4交叉 → 不动产/车辆运势\n  （概述颗粒度粗，两线各一句即可，标清视角，禁只写\"D4中4宫主\"这类不标盘的混视角句）\n  \n  输出1-2段概述\n```"
   },
   {
    "id": "A-SK-80da0392",
@@ -1375,6 +1375,20 @@
    "level": "L2",
    "title": "基于Step 1-3的结果，按四维框架输出：",
    "text": "```\n基于Step 1-3的结果，按四维框架输出：\n\na) 加持赛道 — 格局命中的领域\n   多个Raja Yoga → 管理/权力赛道有先天加持\n   Dhana Yoga强 → 财富积累赛道有加持\n   AK/AmK力量强 → 事业/灵魂使命赛道有加持\n   Gajakesari → 教育/学术赛道有加持\n\nb) 经营赛道 — 格局缺失但可后天发展的领域\n   无正式格局但功能性等价物存在（如10宫主强+SAV>32）\n   → 说\"需要后天经营，关键在[具体宫位/行星]\"\n\nc) 财富路径 — 钱从哪条路来\n   2宫SAV高 + Dhana Yoga → 工资/产品型收入\n   11宫SAV高 + 11宫主强 → 人脉/流量型收入\n   8宫强 + VRY → 他人资源/投资/佣金型\n   D4交叉 → 不动产/实物资产潜力\n\nd) 兑现窗口 — 格局在哪个大运激活\n   参与星的Dasha时期 = 格局兑现窗口\n   → \"你的[格局名]在[行星]大运（[年份]-[年份]）最可能兑现\"\n\n禁止表达：\n  ❌ \"你的层次是高/中/低\"\n  ❌ \"你命中注定会...\"\n  ❌ \"你的命很差/很好\"\n\n正确表达：\n  ✅ \"你在[领域]赛道有[格局名]加持，\n     在[Dasha]时期最可能兑现\"\n  ✅ \"财富主要通过[路径]积累，\n     [时期]是关键积累期\"\n  ✅ \"[领域]没有格局加持，\n     但[宫位/行星]状况不错，后天经营有空间\"\n```"
+  },
+  {
+   "id": "A-HF-08da9b7f",
+   "file": "resources/house_framework.md",
+   "level": "L1",
+   "title": "分盘视角分离铁律（所有 varga：D9/D10/D4/D5/D7/D12… 通用；引用任何分盘前必读）",
+   "text": "## 分盘视角分离铁律（所有 varga：D9/D10/D4/D5/D7/D12… 通用；引用任何分盘前必读）"
+  },
+  {
+   "id": "A-HF-eaf9facc",
+   "file": "resources/house_framework.md",
+   "level": "L2",
+   "title": "⚠️ D9 章节（core Step 2.1）的\"D1身份带入D9=线B、D9是质量调整非属性翻转、D9弱不能美化\"",
+   "text": "⚠️ D9 章节（core Step 2.1）的\"D1身份带入D9=线B、D9是质量调整非属性翻转、D9弱不能美化\"\n   是本铁律在 D9 上的一个**实例**；此纪律同等推广到 D10/D4/D5/D7/D12 等**所有更小分盘**。"
   },
   {
    "id": "A-HF-2e4cc480",

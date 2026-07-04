@@ -647,6 +647,42 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
             d9_dig = get_natural_rel(name, dispositor)  # friend/enemy/neutral
         d9_dignity[name] = {'sign': d9_sign, 'dignity': d9_dig, 'dispositor': dispositor}
 
+    # 6c. 分盘内部宫主表 + 分盘尊贵度（D9/D10/D4/D5——线A"分盘内部宫主"数据化，禁 AI 自推）
+    #     house_lords：以【分盘自身 Lagna】起宫，H1~H12 各座主 + 该座主在本分盘落宫。
+    #     dignity：每星在本分盘座的自然尊贵（同 D9 查表）。消灭"D10-L10 是谁"自推出错的土壤。
+    varga_internal = {}
+    for dv in ['D9', 'D10', 'D4', 'D5']:
+        ch = divisional_charts.get(dv) if divisional_charts else None
+        if not ch or 'error' in ch or 'Lagna' not in ch:
+            continue
+        v_lag = ch['Lagna']['sign_idx']
+        v_lords = {}
+        for house in range(1, 13):
+            s_idx = (v_lag + house - 1) % 12
+            lord = SIGN_LORDS[s_idx]
+            le = ch.get(lord)
+            lord_house = ((le['sign_idx'] - v_lag) % 12) + 1 if le else None
+            v_lords[house] = {'sign': SIGNS[s_idx], 'lord': lord, 'lord_house': lord_house}
+        v_dig = {}
+        for name in ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn']:
+            e = ch.get(name)
+            if not e:
+                continue
+            s, sidx = e['sign'], e['sign_idx']
+            disp = SIGN_LORDS[sidx]
+            if EXALTATION.get(name) == s:
+                dg = 'exalted'
+            elif DEBILITATION.get(name) == s:
+                dg = 'debilitated'
+            elif s in OWN_SIGNS.get(name, []):
+                dg = 'own'
+            else:
+                dg = get_natural_rel(name, disp)
+            v_dig[name] = {'sign': s, 'house': ((sidx - v_lag) % 12) + 1,
+                           'dignity': dg, 'dispositor': disp}
+        varga_internal[dv] = {'lagna_sign': SIGNS[v_lag], 'lagna_lord': SIGN_LORDS[v_lag],
+                              'house_lords': v_lords, 'dignity': v_dig}
+
     # 7. Combustion check
     sun_lon = planets['Sun']['longitude']
     combustion = {}
@@ -747,6 +783,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
         'vargottama': vargottama,
         'dignity': dignity_data,
         'd9_dignity': d9_dignity,
+        'varga_internal': varga_internal,
         'combustion': combustion,
         'karakas': karakas,
         'aspects': aspects,
