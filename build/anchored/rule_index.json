@@ -1,15 +1,15 @@
 {
- "source_commit": "215d0dba4a1d",
- "generated_at": "2026-07-05T04:49:18Z",
+ "source_commit": "a56d6ab2d6d0",
+ "generated_at": "2026-07-05T17:23:03Z",
  "repo": "vedic-astrology-skills",
- "anchor_count": 270,
- "section_count": 111,
+ "anchor_count": 279,
+ "section_count": 113,
  "file_hashes": {
-  "SKILL.md": "bdca597d994b",
-  "resources/p1_p12.md": "2b57bb3407b5",
+  "SKILL.md": "e8f7bd3f4437",
+  "resources/p1_p12.md": "54381e36d769",
   "resources/yogas.md": "ddba85ac3968",
-  "resources/house_framework.md": "50633c7e8fc6",
-  "resources/qa_rules.md": "ec4897abf09e"
+  "resources/house_framework.md": "a5a266b125fa",
+  "resources/qa_rules.md": "66569feda6e9"
  },
  "anchors": [
   {
@@ -272,11 +272,11 @@
    "text": "### 数据来源"
   },
   {
-   "id": "A-SK-020e23ac",
+   "id": "A-SK-cc7bfb08",
    "file": "SKILL.md",
    "level": "L2",
-   "title": "⚠️ SAV读取铁规：",
-   "text": "⚠️ SAV读取铁规：\n  引用任何宫位的SAV值时，必须从structured_data的\"宫位映射\"表读取。\n  禁止从\"原始值（按星座）\"表读取或自行计算sign→house映射。\n  输出时必须标注对应星座，格式：N宫(Sign)SAV=X\n  例：\"1宫(Sc)SAV=33\" \"7宫(Ta)SAV=28\"\n  → 用户可拿星座缩写去原始表交叉验证数值是否正确。"
+   "title": "⚠️ SAV读取铁规（唯一定义见 house_framework §4，本句为逐字受控副本）：引用任何宫位SAV值，必须从structured_data「宫位映",
+   "text": "⚠️ SAV读取铁规（唯一定义见 house_framework §4，本句为逐字受控副本）：引用任何宫位SAV值，必须从structured_data「宫位映射」表读取；禁止读「原始值（按星座）」表或自行计算sign→house映射；输出标注格式 N宫(Sign)SAV=X。\n  例：\"1宫(Sc)SAV=33\" \"7宫(Ta)SAV=28\"\n  → 用户可拿星座缩写去原始表交叉验证数值是否正确。"
   },
   {
    "id": "A-SK-60de3e8c",
@@ -304,7 +304,7 @@
    "file": "SKILL.md",
    "level": "L2",
    "title": "⚠️ 必须在行星逐星审计之前完成！",
-   "text": "```\n⚠️ 必须在行星逐星审计之前完成！\n\n1. 读取 resources/yogas.md 中的所有格局条件\n2. 逐条检查当前盘是否满足：\n   - Dharma-Karma Yoga（9宫主+10宫主互动）\n   - Dhana Yoga（2宫主×11宫主互动，或 2/11宫主×1/5/9宫主互动；完整定义见yogas.md）\n   - Raja Yoga（三角宫主+角宫主合相/互视/互溶）\n   - VRY（6/8/12宫主落入其他凶宫；判定见p1_p12.md P5唯一定义）\n   - Gajakesari（Jupiter+Moon互为角宫）\n   - Chandra-Mangala（Moon+Mars合相/互视）\n   - Kemadruma（Moon前后无星）→ 检查解除条件\n   - Pancha Mahapurusha（5星在角宫+入旺/入庙）\n   - Guru Chandala（Jupiter+Rahu合相）\n   - Shakata（Jupiter和Moon互为6/8宫关系）\n   - NBRY（落陷星是否有补救）→ 逐条检查6条规则（规则在 resources/p1_p12.md P7，不在 yogas.md）\n\n3. 输出格局预扫描结果（嵌入p2a_planets.md开头）：\n   已确认格局：[列表]\n   待验证格局：[列表]（参与星状态待审计后确认）\n   落陷星NBRY状态：[列表]\n\n4. 后续行星审计中，遇到参与格局的行星时，\n   在【美贴标注】中标注其参与的格局\n```"
+   "text": "```\n⚠️ 必须在行星逐星审计之前完成！\n\n1. 读取 resources/yogas.md 中的所有格局条件\n2. 逐条检查当前盘是否满足：\n   - Dharma-Karma Yoga（9宫主+10宫主互动）\n   - Dhana Yoga（2宫主×11宫主互动，或 2/11宫主×1/5/9宫主互动；完整定义见yogas.md）\n   - Raja Yoga（三角宫主+角宫主合相/互视/互溶）\n   - VRY（6/8/12宫主落入其他凶宫；判定见p1_p12.md P5唯一定义）\n   - Gajakesari（Jupiter+Moon互为角宫）\n   - Chandra-Mangala（Moon+Mars合相/互视）\n   - Kemadruma（Moon前后无星）→ 检查解除条件\n   - Pancha Mahapurusha（5星在角宫+入旺/入庙）\n   - Guru Chandala（Jupiter+Rahu合相）\n   - Shakata（Jupiter和Moon互为6/8宫关系）\n   - NBRY（落陷星是否有补救）→ 逐条检查6条规则（规则在 resources/p1_p12.md P7，不在 yogas.md）\n   - （以上为重点提示，非封闭集：完整格局集以 yogas.md「主要格局扫描清单」为准，\n     含 Adhi Yoga——判据勿与 Gajakesari 混同——等未列项，一并扫描）\n\n3. 输出格局预扫描结果（嵌入p2a_planets.md开头）：\n   已确认格局：[列表]\n   待验证格局：[列表]（参与星状态待审计后确认）\n   落陷星NBRY状态：[列表]\n\n4. 后续行星审计中，遇到参与格局的行星时，\n   在【美贴标注】中标注其参与的格局\n```"
   },
   {
    "id": "A-SK-d61a57c2",
@@ -409,7 +409,7 @@
    "file": "SKILL.md",
    "level": "L2",
    "title": "D9逐星审计框架：",
-   "text": "```\nD9逐星审计框架：\n\n⚠️ D9 尊贵度与房东 = calc 查表值：直接读 structured_data「D9 Navamsha」表的\n   「D9尊贵」(旺/自庙/陷/友/敌/中性) 与「D9房东」(座主) 两列。\n   ❌ 禁止自行判读 D9 入旺/落陷/座主链——下面 STEP 用到的 D9 强弱、房东状态一律以此两列为准。\n\nSTEP 0: 身份继承矩阵（D1的P1身份 × D9强弱）\n  D1忠诚者 + D9强(入旺/入庙/Vargottama) = 保护力升级，承诺稳固\n  D1忠诚者 + D9弱(落陷/敌座) = 保护力失效，表面风光根基不稳\n  D1清理者 + D9强 = 破坏力增强，该领域危害加深\n  D1清理者 + D9弱 = 破坏力被自然削弱（反而是好事）\n  D1交易者 + D9强 = 执行力升级，稳定可靠\n  D1交易者 + D9弱 = 执行力不足，关键时刻掉链子\n  D1竞争者 + D9强 = 竞争优势扩大，但副作用也放大\n  D1竞争者 + D9弱 = 竞争力不足，高压领域难以胜出\n  D1 CEO(Yogakaraka) + D9强 = 最高价值资产根基稳固，福报全额兑现\n  D1 CEO(Yogakaraka) + D9弱 = 顶配头衔根基不稳，福报打折\n  D1 命主星(Core-Driver)/盟友(Faithful) 等其余身份 + D9强/弱 = 按忠诚者线判定（保护/承诺升级或失效）\n  → 每颗星必须标注属于哪个象限\n\nSTEP 1: 内核品质\n  Vargottama三分类：\n    吉星Vargottama = 最高稳态，0损耗兑现\n    凶星Vargottama = \"硬化结石\"，破坏性基因根深蒂固（警告）\n    落陷Vargottama = \"结构性违约\"，全线崩溃（严重警告）\n  入旺/入庙 = 100%兑现\n  落陷(非Vargottama) = 违约，检查Pushkara补丁\n    （Pushkara定义见p1_p12.md P7；数据直接读structured_data的\n     \"Pushkara Navamsa/Bhaga\"行——calc已算好，❌禁止自行按度数推断）\n\nSTEP 2: 安全性检查\n  金库区(1/2/4/5/7/9/10/11) = 合规资产\n  摩擦区(3/6) = 争议资产，需要额外努力\n  有毒区(8/12) = \"得而复失\"或\"因财招祸\"\n  严重度排序：D9落8宫 > D9落12宫 > D9落陷 > D9落6宫\n\nSTEP 3: 环境兼容性\n  a) 房东审计（Dispositor Logic）：\n     D9落宫的支配星（Dispositor）在D9中的状态\n     → 房东强(入旺/入庙) = 支票有保障，兑现可靠\n     → 房东弱(落陷/敌座) = \"金库被盗/支票无法兑现\"\n     → 房东燃烧/逆行 = 兑现延迟或打折\n     人话：\"帮你保管资产的房东靠不靠谱\"\n\n  b) 变现阻力（Bhav-Suchekam位移距离）：\n     计算：从D1星座到D9星座，顺时针数几步（D1算第1步）\n     位移 = 6/8/12 → 标注[变现过敏]\n     含义：\"这颗星的承诺从想法到现实有剧烈内耗\"\n     位移 = 1/5/9 → 标注[变现顺畅]\n\n  c) 果实投射（Rashi Tulya Navamsha）：\n     D9星座 → 对应回D1的哪个宫位（从Lagna数）\n     → 该宫位 = D9承诺的\"果实\"最终掉落的领域\n     → 例：Mars D9落Taurus，Lagna=Cancer\n           Taurus从Cancer数=11宫 → Mars的深层承诺在11宫(收入/社交)兑现\n\nSTEP 4: 结算标签\n  资产类型（从以下选一个）：\n    增值原始股 / 稳健国债 / 高利印钞机 / 带毒诱饵 / 废铁违约\n  兑现率：100% / 80% / 50% / 30% / 违约\n\n输出深度：\n  A级信号星 → STEP 0-4全做，3-4段人话解读\n  B级信号星 → STEP 0-2 + 结算标签，2段解读\n  C级信号星 → STEP 0 + 结算标签，1段解读\n  ⚠️ 深度分级只限\"散文解读\"部分；下方7维表格对所有星全填\n    （各维是速查值，成本极低，全填保证数据完整），散文深度按级别走。\n```"
+   "text": "```\nD9逐星审计框架：\n\n⚠️ D9 尊贵度与房东 = calc 查表值：直接读 structured_data「D9 Navamsha」表的\n   「D9尊贵」(旺/自庙/陷/友/敌/中性) 与「D9房东」(座主) 两列。\n   ❌ 禁止自行判读 D9 入旺/落陷/座主链——下面 STEP 用到的 D9 强弱、房东状态一律以此两列为准。\n\nSTEP 0: 身份继承矩阵（D1的P1身份 × D9强弱）\n  D1忠诚者 + D9强(入旺/入庙/Vargottama) = 保护力升级，承诺稳固\n  D1忠诚者 + D9弱(落陷/敌座) = 保护力失效，表面风光根基不稳\n  D1清理者 + D9强 = 破坏力增强，该领域危害加深\n  D1清理者 + D9弱 = 破坏力被自然削弱（反而是好事）\n  D1交易者 + D9强 = 执行力升级，稳定可靠\n  D1交易者 + D9弱 = 执行力不足，关键时刻掉链子\n  D1竞争者 + D9强 = 竞争优势扩大，但副作用也放大\n  D1竞争者 + D9弱 = 竞争力不足，高压领域难以胜出\n  D1 CEO(Yogakaraka) + D9强 = 最高价值资产根基稳固，福报全额兑现\n  D1 CEO(Yogakaraka) + D9弱 = 顶配头衔根基不稳，福报打折\n  D1 命主星(Core-Driver)/盟友(Faithful) 等其余身份 + D9强/弱 = 按忠诚者线判定（保护/承诺升级或失效）\n  D9中(友方/中性) = 第三档：维持D1判定，不升不降；本档与\"D1弱+D9强\"唯一裁决\n    见 p1_p12「身份继承矩阵补充档」，❌禁止硬塞进强/弱二分\n  → 每颗星必须标注属于哪个象限（含第三档\"D9中\"）\n\nSTEP 1: 内核品质\n  Vargottama三分类：\n    吉星Vargottama = 最高稳态，0损耗兑现\n    凶星Vargottama = \"硬化结石\"，破坏性基因根深蒂固（警告）\n    落陷Vargottama = \"结构性违约\"，全线崩溃（严重警告）\n  入旺/入庙 = 100%兑现\n  落陷(非Vargottama) = 违约，检查Pushkara补丁\n    （Pushkara定义见p1_p12.md P7；数据直接读structured_data的\n     \"Pushkara Navamsa/Bhaga\"行——calc已算好，❌禁止自行按度数推断）\n\nSTEP 2: 安全性检查\n  金库区(1/2/4/5/7/9/10/11) = 合规资产\n  摩擦区(3/6) = 争议资产，需要额外努力\n  有毒区(8/12) = \"得而复失\"或\"因财招祸\"\n  严重度排序：D9落8宫 > D9落12宫 > D9落陷 > D9落6宫\n\nSTEP 3: 环境兼容性\n  a) 房东审计（Dispositor Logic）：\n     D9落宫的支配星（Dispositor）在D9中的状态\n     → 房东强(入旺/入庙) = 支票有保障，兑现可靠\n     → 房东弱(落陷/敌座) = \"金库被盗/支票无法兑现\"\n     → 房东燃烧/逆行 = 兑现延迟或打折\n     人话：\"帮你保管资产的房东靠不靠谱\"\n\n  b) 变现阻力（Bhav-Suchekam位移距离）：\n     计算：从D1星座到D9星座，顺时针数几步（D1算第1步）\n     位移 = 6/8/12 → 标注[变现过敏]\n     含义：\"这颗星的承诺从想法到现实有剧烈内耗\"\n     位移 = 1/5/9 → 标注[变现顺畅]\n\n  c) 果实投射（Rashi Tulya Navamsha）：\n     D9星座 → 对应回D1的哪个宫位（从Lagna数）\n     → 该宫位 = D9承诺的\"果实\"最终掉落的领域\n     → 例：Mars D9落Taurus，Lagna=Cancer\n           Taurus从Cancer数=11宫 → Mars的深层承诺在11宫(收入/社交)兑现\n\nSTEP 4: 结算标签\n  资产类型（从以下选一个）：\n    增值原始股 / 稳健国债 / 高利印钞机 / 带毒诱饵 / 废铁违约\n  兑现率：100% / 80% / 50% / 30% / 违约\n\n输出深度：\n  A级信号星 → STEP 0-4全做，3-4段人话解读\n  B级信号星 → STEP 0-2 + 结算标签，2段解读\n  C级信号星 → STEP 0 + 结算标签，1段解读\n  ⚠️ 深度分级只限\"散文解读\"部分；下方7维表格对所有星全填\n    （各维是速查值，成本极低，全填保证数据完整），散文深度按级别走。\n```"
   },
   {
    "id": "A-SK-069ca7b6",
@@ -587,6 +587,13 @@
    "text": "```\n扫描方法：\n  逐对检查所有宫主：如果A星管X宫落在Y宫，B星管Y宫落在X宫\n  → A和B形成Parivartana（互溶），X宫和Y宫形成双向通道\n\n对每对互溶：\n  1. 标注互溶类型：\n     - 吉吉互溶（两个吉宫主交换）→ 双赢合作\n     - 吉凶互溶（吉宫主和凶宫主交换）→ 捆绑，福祸相依\n     - 凶凶互溶（两个凶宫主交换）→ 需要看具体宫位\n\n  2. 分析捆绑效应：\n     → 两个宫位的事务被强制捆绑\n     → 例：1-2宫互溶 = 自我认同和财富紧密关联\n     → 人话翻译嵌入对应宫位的诊断中\n\n  3. 输出（追加到p4b_houses.md末尾）：\n     ## 宫位联动：互溶关系\n     [X]宫 ↔ [Y]宫 互溶（[A星] ↔ [B星]）\n     → [效应分析，用人话]\n\n如果全盘无互溶 → 标注\"本盘无Parivartana互溶\"即可\n```"
   },
   {
+   "id": "A-SK-8fd404b4",
+   "file": "SKILL.md",
+   "level": "L1",
+   "title": "Step 3后置：Badhaka（障碍星）审计",
+   "text": "### Step 3后置：Badhaka（障碍星）审计"
+  },
+  {
    "id": "A-SK-b0154099",
    "file": "SKILL.md",
    "level": "L1",
@@ -627,6 +634,13 @@
    "level": "L2",
    "title": "Dasha回顾速查表",
    "text": "```markdown\n## Dasha回顾速查表\n\n| 大运 | 时段 | 大运星P1 | 尊贵度 | 落宫 | 管宫 | 正面条件 | 负面条件 | 判定 |\n|------|------|---------|--------|------|------|---------|---------|------|\n| Mars | YYYY-YYYY | [P1] | [状态] | [X宫] | L3+L8 | X条 | X条 | [危/困/混/正/平] |\n| Rahu | YYYY-YYYY | ... | ... | ... | ... | ... | ... | ... |\n| Jupiter | YYYY-YYYY | ... | ... | ... | ... | ... | ... | ... |\n| Saturn | YYYY-YYYY | ... | ... | ... | ... | ... | ... | ... |\n\n子运重点（当前大运；凡未来大运被点名为黄金期/窗口期/格局激活期，必须补该大运的9段AD分行）：\n| 小运 | 时段 | 小运星P1 | 落宫 | 管宫 | 大+小运叠加 | 判定 |\n|------|------|---------|------|------|-----------|------|\n```"
+  },
+  {
+   "id": "A-SK-4edcd592",
+   "file": "SKILL.md",
+   "level": "L2",
+   "title": "⚠️ 大运/小运星为 Rahu/Ketu 时：正面/负面/判定列改用 p1_p12「Dasha速查表节点专用正负面条件子表」（house_framework 六",
+   "text": "**⚠️ 大运/小运星为 Rahu/Ketu 时：正面/负面/判定列改用 p1_p12「Dasha速查表节点专用正负面条件子表」（house_framework 六条对节点不可计算）；\"大运星P1\"列填\"—\"、\"尊贵度\"列填定位星状态。**\n**这个速查表是后续所有时间节点引用的\"对照卡\"。写板块时引用Dasha必须与速查表一致，不能临时改判定。**\n**行数要求：大运表≥5行（覆盖出生至今的全部大运 + 当前之后的一个大运 + 未来所有涉及格局参与星激活的大运；此类大运各补其9段AD分行），上方4行仅为格式示例。**"
   },
   {
    "id": "A-SK-2e586969",
@@ -1116,7 +1130,7 @@
    "file": "resources/p1_p12.md",
    "level": "L2",
    "title": "正面条件（满足≥2条 → 正面倾向）：",
-   "text": "```\n正面条件（满足≥2条 → 正面倾向）：\n  1. 定位星强（入旺/入庙/友方 且 Shadbala≥100%）\n  2. 落吉路(1/4/5/7/9/10) 或 Rahu落3/11\n  3. 与自然吉星紧密合相（<5°）\n\n负面条件（满足任一即标注风险）：\n  1. 定位星受损（落陷/燃烧/战争败北/Shadbala<100%）\n  2. 落凶路(6/8/12)\n  3. 与自然凶星紧密合相（<5°）\n\n判定档位沿用house_framework五档顺序判定逻辑（危机→困难→混合→正面→平淡）。\n速查表填法：节点行\"P1身份\"列填\"—（节点不掌宫）\"，\"尊贵度\"列填定位星状态\n（如\"定位星Venus入庙\"）。\n```"
+   "text": "```\n正面条件（满足≥2条 → 正面倾向）：\n  1. 定位星强（入旺/入庙/友方 且 Shadbala≥100%）\n  2. 落吉路(1/4/5/7/9/10) 或 Rahu落3/11\n  3. 与自然吉星紧密合相（<5°）\n\n负面条件（满足任一即标注风险）：\n  1. 定位星受损（落陷/燃烧/战争败北/Shadbala<100%）\n  2. 落凶路(6/8/12)\n  3. 与自然凶星紧密合相（<5°）\n\n判定档位沿用house_framework五档顺序判定逻辑（危机→困难→混合→正面→平淡）。\n速查表填法：节点行\"大运星P1\"列（即P1身份列）填\"—（节点不掌宫）\"，\"尊贵度\"列填定位星状态\n（如\"定位星Venus入庙\"）。\n```"
   },
   {
    "id": "A-P12-ec83241c",
@@ -1518,6 +1532,13 @@
    "text": "### 4. 硬件带宽（SAV）— 辅助维度"
   },
   {
+   "id": "A-HF-b320f0dc",
+   "file": "resources/house_framework.md",
+   "level": "L2",
+   "title": "⚠️ SAV读取铁规（唯一定义，各 skill 引用处逐字同句）：引用任何宫位SAV值，必须从structured_data「宫位映射」表读取；禁止读「原始值（",
+   "text": "⚠️ SAV读取铁规（唯一定义，各 skill 引用处逐字同句）：引用任何宫位SAV值，必须从structured_data「宫位映射」表读取；禁止读「原始值（按星座）」表或自行计算sign→house映射；输出标注格式 N宫(Sign)SAV=X。"
+  },
+  {
    "id": "A-HF-133cdd0a",
    "file": "resources/house_framework.md",
    "level": "L2",
@@ -1602,6 +1623,13 @@
    "text": "### 大运正负面判断规则"
   },
   {
+   "id": "A-HF-84f39d28",
+   "file": "resources/house_framework.md",
+   "level": "L2",
+   "title": "⚠️ 节点例外：大运/小运星为 Rahu/Ketu 时，本节六条正负面条件不可计算（节点无掌宫身份/自身尊贵度）——改用 p1_p12「Dasha速查表节点专用",
+   "text": "⚠️ 节点例外：大运/小运星为 Rahu/Ketu 时，本节六条正负面条件不可计算（节点无掌宫身份/自身尊贵度）——改用 p1_p12「Dasha速查表节点专用正负面条件子表」（P7.4）；速查表节点行\"P1身份\"列填\"—\"、\"尊贵度\"列填定位星状态。"
+  },
+  {
    "id": "A-HF-9d8e6e64",
    "file": "resources/house_framework.md",
    "level": "L2",
@@ -1635,6 +1663,41 @@
    "level": "L2",
    "title": "大运定基调，小运定具体事件。",
    "text": "```\n大运定基调，小运定具体事件。\n小运星管哪个宫→那个领域在该时段被具体激活。\n\n大运正 + 小运正 = 该领域顺利\n大运正 + 小运负 = 好事多磨\n大运负 + 小运正 = 困境中有转机\n大运负 + 小运负 = 该领域面临危机（必须明确警示）\n```"
+  },
+  {
+   "id": "A-HF-0fcbe6df",
+   "file": "resources/house_framework.md",
+   "level": "L1",
+   "title": "时间窗纪律（输出任何时间窗/时机结论时必守；core/Pro/career/love/synastry 通用）",
+   "text": "### 时间窗纪律（输出任何时间窗/时机结论时必守；core/Pro/career/love/synastry 通用）"
+  },
+  {
+   "id": "A-HF-d6b6976d",
+   "file": "resources/house_framework.md",
+   "level": "L3",
+   "title": "1. **窗口分辨率**：凡用\"黄金期/窗口期/时机/将发生\"等事件性措辞，必须落到大运×小运（MD×AD）叠加窗口（引用Dasha速查表AD行，宽度≤3年）；",
+   "text": "1. **窗口分辨率**：凡用\"黄金期/窗口期/时机/将发生\"等事件性措辞，必须落到大运×小运（MD×AD）叠加窗口（引用Dasha速查表AD行，宽度≤3年）；大运级/Sade Sati级信号只允许写成\"背景趋势期\"，并明示\"这不是事件窗口\"。"
+  },
+  {
+   "id": "A-HF-bc2fe131",
+   "file": "resources/house_framework.md",
+   "level": "L3",
+   "title": "2. **Chara双系统交叉验证**：给出的每个事件窗口，对照该时段 Chara Dasha 大运座的落宫主题——主题相关→可写\"双系统确认，信号硬\"；无关→",
+   "text": "2. **Chara双系统交叉验证**：给出的每个事件窗口，对照该时段 Chara Dasha 大运座的落宫主题——主题相关→可写\"双系统确认，信号硬\"；无关→措辞降一档为\"单系统信号\"。structured_data 无「Chara Dasha 时间线」节时：❌禁止凭通识心算 Chara Dasha、❌禁止做\"双系统确认/共振\"表述。"
+  },
+  {
+   "id": "A-HF-48a1f19d",
+   "file": "resources/house_framework.md",
+   "level": "L3",
+   "title": "3. **Dasha回顾必须双向**：回顾过去的 Dasha 时，同一 Dasha 必须同时列出可能的正面和负面表现；禁止因已知用户那段过得苦（或顺）就只写单面",
+   "text": "3. **Dasha回顾必须双向**：回顾过去的 Dasha 时，同一 Dasha 必须同时列出可能的正面和负面表现；禁止因已知用户那段过得苦（或顺）就只写单面。"
+  },
+  {
+   "id": "A-HF-36b32a30",
+   "file": "resources/house_framework.md",
+   "level": "L2",
+   "title": "消费点：core/Pro 板块语言风格（内嵌全文=受控副本）、prediction_rules 关键时间节点、career 时间锁、love 时机锁定、syna",
+   "text": "> 消费点：core/Pro 板块语言风格（内嵌全文=受控副本）、prediction_rules 关键时间节点、career 时间锁、love 时机锁定、synastry Layer 3——均以本节为唯一定义。"
   },
   {
    "id": "A-HF-85499231",
@@ -1683,7 +1746,7 @@
    "file": "resources/house_framework.md",
    "level": "L2",
    "title": "Lagna类型 → Badhaka宫：",
-   "text": "```\nLagna类型 → Badhaka宫：\n  活动星座(Aries/Cancer/Libra/Capricorn) → 11宫\n  固定星座(Taurus/Leo/Scorpio/Aquarius) → 9宫\n  变动星座(Gemini/Virgo/Sagittarius/Pisces) → 7宫\n\nBadhakesh = Badhaka宫的宫主\n  → Badhakesh落入的宫位 = 容易遭遇\"莫名障碍\"的领域\n  → Badhakesh与特定宫位形成关联(合相/相位) → \"好事多磨\"\n\n在宫位诊断报告中，标注Badhakesh影响的宫位事务。\n不过度渲染，仅作为\"阻力来源标记\"使用。\n```"
+   "text": "```\nLagna类型 → Badhaka宫：\n  活动星座(Aries/Cancer/Libra/Capricorn) → 11宫\n  固定星座(Taurus/Leo/Scorpio/Aquarius) → 9宫\n  变动星座(Gemini/Virgo/Sagittarius/Pisces) → 7宫\n\nBadhakesh = Badhaka宫的宫主\n  → Badhakesh落入的宫位 = 容易遭遇\"莫名障碍\"的领域（障碍来源方向）\n  → Badhakesh与特定宫位形成关联(合相/相位) → \"好事多磨\"\n  → Badhakesh 的 Dasha 期间 = 可能遇到结构性障碍的时段（时机维度）\n\n在宫位诊断报告中，标注Badhakesh影响的宫位事务。\n不过度渲染，仅作为\"阻力来源标记\"使用。\n```"
   },
   {
    "id": "A-HF-4dbbeeda",
@@ -1999,8 +2062,8 @@
    "anchor": "A-SK-1f6f90f1",
    "file": "SKILL.md",
    "title": "数据来源",
-   "section_hash": "0205b9e1fe52",
-   "n_lines": 17
+   "section_hash": "4632e63e639a",
+   "n_lines": 14
   },
   {
    "anchor": "A-SK-60de3e8c",
@@ -2013,8 +2076,8 @@
    "anchor": "A-SK-8b26d551",
    "file": "SKILL.md",
    "title": "Step 1前置：格局预扫描（必须先做）",
-   "section_hash": "1f4813ad1208",
-   "n_lines": 31
+   "section_hash": "1fe90a5e74f4",
+   "n_lines": 33
   },
   {
    "anchor": "A-SK-d61a57c2",
@@ -2062,8 +2125,8 @@
    "anchor": "A-SK-4ff343c3",
    "file": "SKILL.md",
    "title": "2.1 D9逐星深度审计",
-   "section_hash": "f683ca038bc2",
-   "n_lines": 123
+   "section_hash": "374a9056a6be",
+   "n_lines": 125
   },
   {
    "anchor": "A-SK-bdc8d90a",
@@ -2143,6 +2206,13 @@
    "n_lines": 28
   },
   {
+   "anchor": "A-SK-8fd404b4",
+   "file": "SKILL.md",
+   "title": "Step 3后置：Badhaka（障碍星）审计",
+   "section_hash": "2d4103ad87e0",
+   "n_lines": 4
+  },
+  {
    "anchor": "A-SK-b0154099",
    "file": "SKILL.md",
    "title": "输出格式",
@@ -2160,8 +2230,8 @@
    "anchor": "A-SK-beb50ae8",
    "file": "SKILL.md",
    "title": "Step 4前置：Dasha回顾速查表（必须先生成）",
-   "section_hash": "122875838f25",
-   "n_lines": 22
+   "section_hash": "e3732a6b7040",
+   "n_lines": 23
   },
   {
    "anchor": "A-SK-2e586969",
@@ -2174,15 +2244,15 @@
    "anchor": "A-SK-00d89f24",
    "file": "SKILL.md",
    "title": "⚠️ 语言风格（此步骤最重要的规则）",
-   "section_hash": "1d7a69779967",
-   "n_lines": 65
+   "section_hash": "15b4025126a7",
+   "n_lines": 69
   },
   {
    "anchor": "A-SK-42de71ff",
    "file": "SKILL.md",
    "title": "各板块内容指引",
-   "section_hash": "4ee0ff7710dd",
-   "n_lines": 84
+   "section_hash": "5d08e5255057",
+   "n_lines": 89
   },
   {
    "anchor": "A-SK-9d1a2ffe",
@@ -2328,7 +2398,7 @@
    "anchor": "A-P12-57a4f0e4",
    "file": "resources/p1_p12.md",
    "title": "P7.4 节点(Rahu/Ketu)强弱判定唯一口径",
-   "section_hash": "f7c43760f1ce",
+   "section_hash": "e1053236e76d",
    "n_lines": 41
   },
   {
@@ -2531,8 +2601,8 @@
    "anchor": "A-HF-623312fe",
    "file": "resources/house_framework.md",
    "title": "4. 硬件带宽（SAV）— 辅助维度",
-   "section_hash": "18489ec29218",
-   "n_lines": 18
+   "section_hash": "3494a87c7159",
+   "n_lines": 21
   },
   {
    "anchor": "A-HF-e7c456ac",
@@ -2580,8 +2650,8 @@
    "anchor": "A-HF-a83b8c47",
    "file": "resources/house_framework.md",
    "title": "大运正负面判断规则",
-   "section_hash": "1f2407787b96",
-   "n_lines": 36
+   "section_hash": "f1c0b06e899e",
+   "n_lines": 38
   },
   {
    "anchor": "A-HF-089b31b6",
@@ -2589,6 +2659,13 @@
    "title": "小运叠加规则",
    "section_hash": "34a2c12f61ab",
    "n_lines": 11
+  },
+  {
+   "anchor": "A-HF-0fcbe6df",
+   "file": "resources/house_framework.md",
+   "title": "时间窗纪律（输出任何时间窗/时机结论时必守；core/Pro/career/love/synastry 通用）",
+   "section_hash": "b02ba59a2556",
+   "n_lines": 8
   },
   {
    "anchor": "A-HF-85499231",
@@ -2608,8 +2685,8 @@
    "anchor": "A-HF-3b1d7994",
    "file": "resources/house_framework.md",
    "title": "Badhaka（障碍星）审计",
-   "section_hash": "71c1b5efbc83",
-   "n_lines": 20
+   "section_hash": "be7010e6c100",
+   "n_lines": 21
   },
   {
    "anchor": "A-HF-4dbbeeda",
@@ -2664,8 +2741,8 @@
    "anchor": "A-QA-b458c9fe",
    "file": "resources/qa_rules.md",
    "title": "Q&A约束",
-   "section_hash": "436686eb9d63",
-   "n_lines": 39
+   "section_hash": "c7cedc828a58",
+   "n_lines": 40
   },
   {
    "anchor": "A-QA-a2f5e2b1",
