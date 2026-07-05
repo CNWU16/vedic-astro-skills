@@ -1,8 +1,16 @@
 {
- "source_commit": "1e47943b90af",
- "generated_at": "2026-07-04T20:34:59Z",
+ "source_commit": "215d0dba4a1d",
+ "generated_at": "2026-07-05T04:49:18Z",
  "repo": "vedic-astrology-skills",
- "anchor_count": 269,
+ "anchor_count": 270,
+ "section_count": 111,
+ "file_hashes": {
+  "SKILL.md": "bdca597d994b",
+  "resources/p1_p12.md": "2b57bb3407b5",
+  "resources/yogas.md": "ddba85ac3968",
+  "resources/house_framework.md": "50633c7e8fc6",
+  "resources/qa_rules.md": "ec4897abf09e"
+ },
  "anchors": [
   {
    "id": "A-SK-c3f104d1",
@@ -450,7 +458,7 @@
    "file": "SKILL.md",
    "level": "L2",
    "title": "从structured_data读取D5数据：",
-   "text": "```\n从structured_data读取D5数据：\n  D5中Sun/Jupiter位置 → 权威/影响力\n  创造力潜质评估\n  \n  输出1-2段概述\n```"
+   "text": "```\n从structured_data读取D5数据：\n  线A(分盘内部)：D5 分盘内部宫主/尊贵状态（由 D5 Lagna 定，读分盘内部宫主表，❌禁自推）、D5内 Sun·Jupiter 位置 → 权威/影响力潜质\n  线B(跨盘参照)：本命 Sun/Jupiter（保留D1职身份）落 D5 哪宫 → D1权威职能在权力盘的兑现\n  （概述颗粒度粗，两线各一句即可，标清视角）\n  创造力潜质评估\n  \n  输出1-2段概述\n```"
   },
   {
    "id": "A-SK-4ef21d02",
@@ -530,6 +538,13 @@
    "text": "### 分盘交叉"
   },
   {
+   "id": "A-SK-0101e161",
+   "file": "SKILL.md",
+   "level": "L2",
+   "title": "⚠️ 分盘引用（下游消费）：引用 D4/D5/D9/D10 写宫位正文/\"分盘\"表格行时，沿用 p3b 的线A/线B标注，禁压平成 D1 宫主职、禁\"X是H\\*",
+   "text": "**⚠️ 分盘引用（下游消费）：引用 D4/D5/D9/D10 写宫位正文/\"分盘\"表格行时，沿用 p3b 的线A/线B标注，禁压平成 D1 宫主职、禁\"X是H\\*主\"不标盘（见 house_framework 铁律·下游消费）。**"
+  },
+  {
    "id": "A-SK-6515cdaa",
    "file": "SKILL.md",
    "level": "L1",
@@ -583,7 +598,7 @@
    "file": "SKILL.md",
    "level": "L2",
    "title": "——— [X]宫（[领域名]）[星座] ———",
-   "text": "```\n——— [X]宫（[领域名]）[星座] ———\n\n【状况概述】\n⚠️ 至少写2-3段，像在跟用户解释他家的某个\"房间\"：\n  第1段：这个宫位管你人生的什么事？管家（宫主）去哪了？状态好不好？\n  第2段：实际影响是什么？从数据推导出影响\n  第3段（重点宫位）：Dasha事件关联，用具体年份\n\n| 维度 | 结果 |\n|------|------|\n| 管家 | [星]([管什么事])→去了[X]宫([什么环境]) |\n| 住客 | [星]带来[什么影响] |\n| 相位 | [哪些星在看这个宫位] |\n| 硬件 | SAV [N宫(Sign)]=[值] |  ← 仅SAV>32或<20时列出\n| 分盘 | D[X]中[关键发现] |\n\n【事件关联】\n\"[大运]期间，这个领域...\"\n（推导依据：[大运星]=[P1身份], [P7尊贵度], 落[宫], 正面X条/负面Y条→[判定]）\n```"
+   "text": "```\n——— [X]宫（[领域名]）[星座] ———\n\n【状况概述】\n⚠️ 至少写2-3段，像在跟用户解释他家的某个\"房间\"：\n  第1段：这个宫位管你人生的什么事？管家（宫主）去哪了？状态好不好？\n  第2段：实际影响是什么？从数据推导出影响\n  第3段（重点宫位）：Dasha事件关联，用具体年份\n\n| 维度 | 结果 |\n|------|------|\n| 管家 | [星]([管什么事])→去了[X]宫([什么环境]) |\n| 住客 | [星]带来[什么影响] |\n| 相位 | [哪些星在看这个宫位] |\n| 硬件 | SAV [N宫(Sign)]=[值] |  ← 仅SAV>32或<20时列出\n| 分盘 | D[X]中[发现]（标线A/线B视角，见\"分盘交叉\"下游消费） |\n\n【事件关联】\n\"[大运]期间，这个领域...\"\n（推导依据：[大运星]=[P1身份], [P7尊贵度], 落[宫], 正面X条/负面Y条→[判定]）\n```"
   },
   {
    "id": "A-SK-74744359",
@@ -1886,6 +1901,785 @@
    "level": "L2",
    "title": "⚠️ **最重要**：不能只用D1回答问题就收工。如果问题涉及4/5/7/10宫且对应分盘已启用，必须交叉检查。D1只是表面层，分盘提供灵魂层(D9)和物质层(",
    "text": "⚠️ **最重要**：不能只用D1回答问题就收工。如果问题涉及4/5/7/10宫且对应分盘已启用，必须交叉检查。D1只是表面层，分盘提供灵魂层(D9)和物质层(D4)的修正。"
+  }
+ ],
+ "sections": [
+  {
+   "anchor": "A-SK-c3f104d1",
+   "file": "SKILL.md",
+   "title": "Role",
+   "section_hash": "372a1bff5deb",
+   "n_lines": 5
+  },
+  {
+   "anchor": "A-SK-8cb9bfbd",
+   "file": "SKILL.md",
+   "title": "核心态度",
+   "section_hash": "e92c27f76ea2",
+   "n_lines": 5
+  },
+  {
+   "anchor": "A-SK-018e50a5",
+   "file": "SKILL.md",
+   "title": "⚠️ 盲审原则（Step 1-3 适用，优先级最高）",
+   "section_hash": "adfe96d6a08e",
+   "n_lines": 50
+  },
+  {
+   "anchor": "A-SK-833d2d1b",
+   "file": "SKILL.md",
+   "title": "语言风格",
+   "section_hash": "d3b81a1b543a",
+   "n_lines": 5
+  },
+  {
+   "anchor": "A-SK-73c5d97f",
+   "file": "SKILL.md",
+   "title": "基本规则",
+   "section_hash": "35cbc2792e41",
+   "n_lines": 8
+  },
+  {
+   "anchor": "A-SK-f5e01b1c",
+   "file": "SKILL.md",
+   "title": "占星师怎么说话（示例）",
+   "section_hash": "88e89dd2effe",
+   "n_lines": 26
+  },
+  {
+   "anchor": "A-SK-9eb6ca3f",
+   "file": "SKILL.md",
+   "title": "术语使用规则",
+   "section_hash": "3c8ac186f711",
+   "n_lines": 9
+  },
+  {
+   "anchor": "A-SK-30599a28",
+   "file": "SKILL.md",
+   "title": "年龄与年份表述规范",
+   "section_hash": "328f71181954",
+   "n_lines": 9
+  },
+  {
+   "anchor": "A-SK-e38c062f",
+   "file": "SKILL.md",
+   "title": "输出规则",
+   "section_hash": "d48c2d06bc31",
+   "n_lines": 18
+  },
+  {
+   "anchor": "A-SK-cf1747c9",
+   "file": "SKILL.md",
+   "title": "前置条件",
+   "section_hash": "05187682daa2",
+   "n_lines": 16
+  },
+  {
+   "anchor": "A-SK-6c144ca7",
+   "file": "SKILL.md",
+   "title": "报告导读（Step 5完成后）",
+   "section_hash": "490d406d954d",
+   "n_lines": 15
+  },
+  {
+   "anchor": "A-SK-ae09e9d8",
+   "file": "SKILL.md",
+   "title": "Step 0: 身份概览",
+   "section_hash": "f2047c5b2528",
+   "n_lines": 35
+  },
+  {
+   "anchor": "A-SK-3dafb31a",
+   "file": "SKILL.md",
+   "title": "Step 1: P1-P12行星审计",
+   "section_hash": "a9e3d68474f3",
+   "n_lines": 4
+  },
+  {
+   "anchor": "A-SK-1f6f90f1",
+   "file": "SKILL.md",
+   "title": "数据来源",
+   "section_hash": "0205b9e1fe52",
+   "n_lines": 17
+  },
+  {
+   "anchor": "A-SK-60de3e8c",
+   "file": "SKILL.md",
+   "title": "Step 1前置：信号分诊（必须先做）",
+   "section_hash": "ce69f768496c",
+   "n_lines": 30
+  },
+  {
+   "anchor": "A-SK-8b26d551",
+   "file": "SKILL.md",
+   "title": "Step 1前置：格局预扫描（必须先做）",
+   "section_hash": "1f4813ad1208",
+   "n_lines": 31
+  },
+  {
+   "anchor": "A-SK-d61a57c2",
+   "file": "SKILL.md",
+   "title": "PAC联合判定（最重要的精准度规则）",
+   "section_hash": "1c0c39a5e83b",
+   "n_lines": 23
+  },
+  {
+   "anchor": "A-SK-f3f7f71f",
+   "file": "SKILL.md",
+   "title": "审计流程",
+   "section_hash": "4229632159c7",
+   "n_lines": 8
+  },
+  {
+   "anchor": "A-SK-3ddfd8f3",
+   "file": "SKILL.md",
+   "title": "每颗星输出格式",
+   "section_hash": "56ff4b71a9da",
+   "n_lines": 61
+  },
+  {
+   "anchor": "A-SK-719a4eed",
+   "file": "SKILL.md",
+   "title": "分组暂停",
+   "section_hash": "b251218b1279",
+   "n_lines": 12
+  },
+  {
+   "anchor": "A-SK-c26b0e5e",
+   "file": "SKILL.md",
+   "title": "Step 1收尾：格局终判表（必须做）",
+   "section_hash": "1921de3b262d",
+   "n_lines": 16
+  },
+  {
+   "anchor": "A-SK-e5e9e839",
+   "file": "SKILL.md",
+   "title": "Step 2: 分盘交叉分析",
+   "section_hash": "8f9356b50fc9",
+   "n_lines": 10
+  },
+  {
+   "anchor": "A-SK-4ff343c3",
+   "file": "SKILL.md",
+   "title": "2.1 D9逐星深度审计",
+   "section_hash": "f683ca038bc2",
+   "n_lines": 123
+  },
+  {
+   "anchor": "A-SK-bdc8d90a",
+   "file": "SKILL.md",
+   "title": "2.2 D10事业概述",
+   "section_hash": "4e6321e93ccd",
+   "n_lines": 13
+  },
+  {
+   "anchor": "A-SK-2a701c1b",
+   "file": "SKILL.md",
+   "title": "2.3 D4财产概述",
+   "section_hash": "39a86892f9ed",
+   "n_lines": 12
+  },
+  {
+   "anchor": "A-SK-80da0392",
+   "file": "SKILL.md",
+   "title": "2.4 D5权力概述",
+   "section_hash": "7145f3e5354e",
+   "n_lines": 15
+  },
+  {
+   "anchor": "A-SK-4ef21d02",
+   "file": "SKILL.md",
+   "title": "⏸️ 阶段1完成（自动暂停）",
+   "section_hash": "0a4926b22e64",
+   "n_lines": 18
+  },
+  {
+   "anchor": "A-SK-2ba23ac6",
+   "file": "SKILL.md",
+   "title": "阶段2开始：强制数据回调",
+   "section_hash": "a162eb3ff74b",
+   "n_lines": 16
+  },
+  {
+   "anchor": "A-SK-0288189c",
+   "file": "SKILL.md",
+   "title": "Step 3: 宫位诊断",
+   "section_hash": "d3a0937ff2aa",
+   "n_lines": 6
+  },
+  {
+   "anchor": "A-SK-f9de7a2d",
+   "file": "SKILL.md",
+   "title": "诊断框架",
+   "section_hash": "6cc4e6a0b975",
+   "n_lines": 7
+  },
+  {
+   "anchor": "A-SK-13d44d9c",
+   "file": "SKILL.md",
+   "title": "分盘交叉",
+   "section_hash": "d78b2ee67370",
+   "n_lines": 9
+  },
+  {
+   "anchor": "A-SK-6515cdaa",
+   "file": "SKILL.md",
+   "title": "事件关联陈述",
+   "section_hash": "cd802d6189aa",
+   "n_lines": 23
+  },
+  {
+   "anchor": "A-SK-afc5c4d6",
+   "file": "SKILL.md",
+   "title": "⚠️ 12宫强制全覆盖",
+   "section_hash": "f895137932c0",
+   "n_lines": 13
+  },
+  {
+   "anchor": "A-SK-76b7cef0",
+   "file": "SKILL.md",
+   "title": "Step 3后置：Parivartana（互溶）扫描",
+   "section_hash": "45d9a89fd375",
+   "n_lines": 28
+  },
+  {
+   "anchor": "A-SK-b0154099",
+   "file": "SKILL.md",
+   "title": "输出格式",
+   "section_hash": "41086abc1434",
+   "n_lines": 33
+  },
+  {
+   "anchor": "A-SK-0adc7293",
+   "file": "SKILL.md",
+   "title": "Step 4: 十大板块总结",
+   "section_hash": "b391ea13691e",
+   "n_lines": 4
+  },
+  {
+   "anchor": "A-SK-beb50ae8",
+   "file": "SKILL.md",
+   "title": "Step 4前置：Dasha回顾速查表（必须先生成）",
+   "section_hash": "122875838f25",
+   "n_lines": 22
+  },
+  {
+   "anchor": "A-SK-2e586969",
+   "file": "SKILL.md",
+   "title": "Step 4前置：格局激活验证（Yoga x Dasha x D9联动）",
+   "section_hash": "c73a56b35ad7",
+   "n_lines": 38
+  },
+  {
+   "anchor": "A-SK-00d89f24",
+   "file": "SKILL.md",
+   "title": "⚠️ 语言风格（此步骤最重要的规则）",
+   "section_hash": "1d7a69779967",
+   "n_lines": 65
+  },
+  {
+   "anchor": "A-SK-42de71ff",
+   "file": "SKILL.md",
+   "title": "各板块内容指引",
+   "section_hash": "4ee0ff7710dd",
+   "n_lines": 84
+  },
+  {
+   "anchor": "A-SK-9d1a2ffe",
+   "file": "SKILL.md",
+   "title": "Step 5: 技术附录",
+   "section_hash": "cf541c4ad8d0",
+   "n_lines": 25
+  },
+  {
+   "anchor": "A-SK-de36cedd",
+   "file": "SKILL.md",
+   "title": "文件结构",
+   "section_hash": "4112ac6e569f",
+   "n_lines": 23
+  },
+  {
+   "anchor": "A-SK-fbf30621",
+   "file": "SKILL.md",
+   "title": "子skill路由 & 报告打包",
+   "section_hash": "69f5b2898641",
+   "n_lines": 74
+  },
+  {
+   "anchor": "A-SK-7d564415",
+   "file": "SKILL.md",
+   "title": "Q&A模式",
+   "section_hash": "f5c83f5d2fc4",
+   "n_lines": 7
+  },
+  {
+   "anchor": "A-SK-6a212e4e",
+   "file": "SKILL.md",
+   "title": "⚠️ QA 阶段 Context 规则（与分析阶段相反）",
+   "section_hash": "9cb582da406f",
+   "n_lines": 24
+  },
+  {
+   "anchor": "A-SK-c69c0858",
+   "file": "SKILL.md",
+   "title": "报告打包",
+   "section_hash": "fbe684eb929b",
+   "n_lines": 7
+  },
+  {
+   "anchor": "A-SK-7851c05d",
+   "file": "SKILL.md",
+   "title": "关键原则",
+   "section_hash": "87a2069dbbf3",
+   "n_lines": 15
+  },
+  {
+   "anchor": "A-P12-e16507a2",
+   "file": "resources/p1_p12.md",
+   "title": "P1 角色身份 [关键权重]",
+   "section_hash": "f80e2ee9b772",
+   "n_lines": 29
+  },
+  {
+   "anchor": "A-P12-7c966796",
+   "file": "resources/p1_p12.md",
+   "title": "P1.3 纹理审计（必须标注，不可省略）",
+   "section_hash": "76447db3faf4",
+   "n_lines": 25
+  },
+  {
+   "anchor": "A-P12-385ea260",
+   "file": "resources/p1_p12.md",
+   "title": "P1.4 Maraka警示（健康分析时必须挂载）",
+   "section_hash": "f485e1aef634",
+   "n_lines": 25
+  },
+  {
+   "anchor": "A-P12-43e9b2d9",
+   "file": "resources/p1_p12.md",
+   "title": "P2 健康度 [重要权重]",
+   "section_hash": "864c79712158",
+   "n_lines": 37
+  },
+  {
+   "anchor": "A-P12-a8862470",
+   "file": "resources/p1_p12.md",
+   "title": "P2.5 Moon 盈亏合成规则（Moon 专项，防系统性方向错）",
+   "section_hash": "b468c3df1ede",
+   "n_lines": 15
+  },
+  {
+   "anchor": "A-P12-5400e71c",
+   "file": "resources/p1_p12.md",
+   "title": "P3 仓库耦合 [参考权重]",
+   "section_hash": "041fc28e9b53",
+   "n_lines": 28
+  },
+  {
+   "anchor": "A-P12-ac966706",
+   "file": "resources/p1_p12.md",
+   "title": "P4 资源SAV(掌宫) [辅助权重]",
+   "section_hash": "d57ee0adee62",
+   "n_lines": 18
+  },
+  {
+   "anchor": "A-P12-490fbcb3",
+   "file": "resources/p1_p12.md",
+   "title": "P5 路况(落宫性质) [重要权重]",
+   "section_hash": "8057ae9894b4",
+   "n_lines": 42
+  },
+  {
+   "anchor": "A-P12-e4ef872c",
+   "file": "resources/p1_p12.md",
+   "title": "P6 出口SAV(落宫) [辅助权重]",
+   "section_hash": "b79620601988",
+   "n_lines": 10
+  },
+  {
+   "anchor": "A-P12-e6a49e05",
+   "file": "resources/p1_p12.md",
+   "title": "P6.2 路况适配度（SAV+BAV交叉判定，必须执行）",
+   "section_hash": "e9ee484b6805",
+   "n_lines": 15
+  },
+  {
+   "anchor": "A-P12-561676e8",
+   "file": "resources/p1_p12.md",
+   "title": "P7 尊贵度 [关键权重]",
+   "section_hash": "d53471e81a44",
+   "n_lines": 42
+  },
+  {
+   "anchor": "A-P12-f36f9973",
+   "file": "resources/p1_p12.md",
+   "title": "P7.2 Uchcha Bhanga入旺受损检查（对入旺星必须执行）",
+   "section_hash": "29a00e9b223f",
+   "n_lines": 26
+  },
+  {
+   "anchor": "A-P12-a3f6ce0a",
+   "file": "resources/p1_p12.md",
+   "title": "P7.3 Graha Maitri友敌关系检查",
+   "section_hash": "e8c0db5f79be",
+   "n_lines": 21
+  },
+  {
+   "anchor": "A-P12-57a4f0e4",
+   "file": "resources/p1_p12.md",
+   "title": "P7.4 节点(Rahu/Ketu)强弱判定唯一口径",
+   "section_hash": "f7c43760f1ce",
+   "n_lines": 41
+  },
+  {
+   "anchor": "A-P12-ec83241c",
+   "file": "resources/p1_p12.md",
+   "title": "身份继承矩阵补充档（SKILL.md STEP 0矩阵的共享档位定义）",
+   "section_hash": "75a2719550b6",
+   "n_lines": 15
+  },
+  {
+   "anchor": "A-P12-5dafa5ba",
+   "file": "resources/p1_p12.md",
+   "title": "P8 年龄状态 [辅助权重]",
+   "section_hash": "7c0062881dc6",
+   "n_lines": 15
+  },
+  {
+   "anchor": "A-P12-65221eba",
+   "file": "resources/p1_p12.md",
+   "title": "P9 Shadbala [参考权重]",
+   "section_hash": "b793ee410dc5",
+   "n_lines": 12
+  },
+  {
+   "anchor": "A-P12-d3008850",
+   "file": "resources/p1_p12.md",
+   "title": "P10 相位 [重要权重]",
+   "section_hash": "d9a0b11dc52a",
+   "n_lines": 25
+  },
+  {
+   "anchor": "A-P12-2e42d91b",
+   "file": "resources/p1_p12.md",
+   "title": "P11 Nakshatra [辅助权重]",
+   "section_hash": "ad54e4626c8f",
+   "n_lines": 12
+  },
+  {
+   "anchor": "A-P12-39df91c0",
+   "file": "resources/p1_p12.md",
+   "title": "P12 格局Yogas [重要权重]",
+   "section_hash": "80c0877945e2",
+   "n_lines": 23
+  },
+  {
+   "anchor": "A-P12-65bc50fb",
+   "file": "resources/p1_p12.md",
+   "title": "冲突仲裁规则",
+   "section_hash": "ff0b8b602812",
+   "n_lines": 32
+  },
+  {
+   "anchor": "A-P12-8823193a",
+   "file": "resources/p1_p12.md",
+   "title": "Karaka 使用铁律：符号锚点 ≠ 写实剧本",
+   "section_hash": "b2cea5a2b66c",
+   "n_lines": 29
+  },
+  {
+   "anchor": "A-YG-83e33c19",
+   "file": "resources/yogas.md",
+   "title": "主要格局扫描清单",
+   "section_hash": "d4d14e2400c5",
+   "n_lines": 2
+  },
+  {
+   "anchor": "A-YG-ed82e30a",
+   "file": "resources/yogas.md",
+   "title": "Dharma-Karma Yoga（使命格局）",
+   "section_hash": "a80aea8d1527",
+   "n_lines": 9
+  },
+  {
+   "anchor": "A-YG-2703c00c",
+   "file": "resources/yogas.md",
+   "title": "Dhana Yoga（财富格局）",
+   "section_hash": "aaf9ca5d5507",
+   "n_lines": 10
+  },
+  {
+   "anchor": "A-YG-55d3555a",
+   "file": "resources/yogas.md",
+   "title": "Raja Yoga（王者格局）",
+   "section_hash": "83688397bda1",
+   "n_lines": 10
+  },
+  {
+   "anchor": "A-YG-97b7f1a2",
+   "file": "resources/yogas.md",
+   "title": "Viparita Raja Yoga（逆境王格局）",
+   "section_hash": "23d31aa96e9a",
+   "n_lines": 9
+  },
+  {
+   "anchor": "A-YG-6a24fe97",
+   "file": "resources/yogas.md",
+   "title": "Gajakesari Yoga（象王格局）",
+   "section_hash": "cbc3bb7602be",
+   "n_lines": 8
+  },
+  {
+   "anchor": "A-YG-b0def53f",
+   "file": "resources/yogas.md",
+   "title": "Adhi Yoga（辅弼格局）",
+   "section_hash": "f1935d1d0498",
+   "n_lines": 13
+  },
+  {
+   "anchor": "A-YG-6558db47",
+   "file": "resources/yogas.md",
+   "title": "Chandra-Mangala Yoga（月火格局）",
+   "section_hash": "95c40890e57c",
+   "n_lines": 8
+  },
+  {
+   "anchor": "A-YG-0eb63160",
+   "file": "resources/yogas.md",
+   "title": "Kemadruma Yoga（月亮孤独格局）",
+   "section_hash": "a119cd0b37d9",
+   "n_lines": 15
+  },
+  {
+   "anchor": "A-YG-bdc25787",
+   "file": "resources/yogas.md",
+   "title": "Pancha Mahapurusha Yoga（五大贤者格局）",
+   "section_hash": "53bc1affe314",
+   "n_lines": 26
+  },
+  {
+   "anchor": "A-YG-3f09036d",
+   "file": "resources/yogas.md",
+   "title": "Guru Chandala Yoga（木罗污染格局）",
+   "section_hash": "adf78d4358df",
+   "n_lines": 16
+  },
+  {
+   "anchor": "A-YG-cf1a052f",
+   "file": "resources/yogas.md",
+   "title": "Shakata Yoga（月木车轮格局）",
+   "section_hash": "00db5eb7331a",
+   "n_lines": 16
+  },
+  {
+   "anchor": "A-YG-70ca0a54",
+   "file": "resources/yogas.md",
+   "title": "Parivartana Yoga（互溶格局）",
+   "section_hash": "bd1ea1f5d261",
+   "n_lines": 18
+  },
+  {
+   "anchor": "A-YG-2e04b7f3",
+   "file": "resources/yogas.md",
+   "title": "评估框架",
+   "section_hash": "33ca4a11ecf3",
+   "n_lines": 26
+  },
+  {
+   "anchor": "A-YG-3b7b6edf",
+   "file": "resources/yogas.md",
+   "title": "赛道优势合成",
+   "section_hash": "09649804e617",
+   "n_lines": 39
+  },
+  {
+   "anchor": "A-HF-08da9b7f",
+   "file": "resources/house_framework.md",
+   "title": "分盘视角分离铁律（所有 varga：D9/D10/D4/D5/D7/D12… 通用；引用任何分盘前必读）",
+   "section_hash": "7a64ca22db8e",
+   "n_lines": 24
+  },
+  {
+   "anchor": "A-HF-2e4cc480",
+   "file": "resources/house_framework.md",
+   "title": "诊断四维度",
+   "section_hash": "051371b6c021",
+   "n_lines": 2
+  },
+  {
+   "anchor": "A-HF-321c8936",
+   "file": "resources/house_framework.md",
+   "title": "1. 管理者（宫头星/宫主）",
+   "section_hash": "83204aa64168",
+   "n_lines": 9
+  },
+  {
+   "anchor": "A-HF-5dd9273d",
+   "file": "resources/house_framework.md",
+   "title": "2. 租客（宫内行星）",
+   "section_hash": "a4e42a4b4b64",
+   "n_lines": 7
+  },
+  {
+   "anchor": "A-HF-6d206363",
+   "file": "resources/house_framework.md",
+   "title": "3. 相位（谁在看这个宫位）",
+   "section_hash": "db52ea9143b4",
+   "n_lines": 14
+  },
+  {
+   "anchor": "A-HF-623312fe",
+   "file": "resources/house_framework.md",
+   "title": "4. 硬件带宽（SAV）— 辅助维度",
+   "section_hash": "18489ec29218",
+   "n_lines": 18
+  },
+  {
+   "anchor": "A-HF-e7c456ac",
+   "file": "resources/house_framework.md",
+   "title": "宫位评级",
+   "section_hash": "5968793bd6c8",
+   "n_lines": 13
+  },
+  {
+   "anchor": "A-HF-7a3b6c2a",
+   "file": "resources/house_framework.md",
+   "title": "12宫速查",
+   "section_hash": "4e6c56032de8",
+   "n_lines": 19
+  },
+  {
+   "anchor": "A-HF-e7021dd6",
+   "file": "resources/house_framework.md",
+   "title": "事件关联陈述模板",
+   "section_hash": "11d8f0292c25",
+   "n_lines": 20
+  },
+  {
+   "anchor": "A-HF-3608fc12",
+   "file": "resources/house_framework.md",
+   "title": "多阶段事件推导",
+   "section_hash": "0f25289280fb",
+   "n_lines": 11
+  },
+  {
+   "anchor": "A-HF-dd22ff72",
+   "file": "resources/house_framework.md",
+   "title": "婚姻时间推导（三阶段模型）",
+   "section_hash": "d1585b317912",
+   "n_lines": 17
+  },
+  {
+   "anchor": "A-HF-66cafc56",
+   "file": "resources/house_framework.md",
+   "title": "Dasha事件推导硬约束（必须严格执行）",
+   "section_hash": "4191b65b013a",
+   "n_lines": 2
+  },
+  {
+   "anchor": "A-HF-a83b8c47",
+   "file": "resources/house_framework.md",
+   "title": "大运正负面判断规则",
+   "section_hash": "1f2407787b96",
+   "n_lines": 36
+  },
+  {
+   "anchor": "A-HF-089b31b6",
+   "file": "resources/house_framework.md",
+   "title": "小运叠加规则",
+   "section_hash": "34a2c12f61ab",
+   "n_lines": 11
+  },
+  {
+   "anchor": "A-HF-85499231",
+   "file": "resources/house_framework.md",
+   "title": "⚠️ 禁止的推导错误",
+   "section_hash": "04ad6dfaa54c",
+   "n_lines": 19
+  },
+  {
+   "anchor": "A-HF-580d3991",
+   "file": "resources/house_framework.md",
+   "title": "Dasha事件优先级（多事件同期激活时的排序规则）",
+   "section_hash": "acba7c9a7697",
+   "n_lines": 37
+  },
+  {
+   "anchor": "A-HF-3b1d7994",
+   "file": "resources/house_framework.md",
+   "title": "Badhaka（障碍星）审计",
+   "section_hash": "71c1b5efbc83",
+   "n_lines": 20
+  },
+  {
+   "anchor": "A-HF-4dbbeeda",
+   "file": "resources/house_framework.md",
+   "title": "Maraka（杀手星）审计",
+   "section_hash": "d042dbda58ec",
+   "n_lines": 13
+  },
+  {
+   "anchor": "A-HF-755d50cd",
+   "file": "resources/house_framework.md",
+   "title": "Sade Sati（土星七年半）解读规则",
+   "section_hash": "43f11341d8d5",
+   "n_lines": 23
+  },
+  {
+   "anchor": "A-QA-b36747e6",
+   "file": "resources/qa_rules.md",
+   "title": "⚠️ QA 伦理约束（优先级最高，在所有其他规则之前执行）",
+   "section_hash": "0f4cf6f18843",
+   "n_lines": 4
+  },
+  {
+   "anchor": "A-QA-790567cb",
+   "file": "resources/qa_rules.md",
+   "title": "伦理检查清单（每次 QA 回答前过一遍）",
+   "section_hash": "713e8e70efd4",
+   "n_lines": 20
+  },
+  {
+   "anchor": "A-QA-38db07cb",
+   "file": "resources/qa_rules.md",
+   "title": "怎么用 user_context 但不污染分析",
+   "section_hash": "9791611da2ee",
+   "n_lines": 26
+  },
+  {
+   "anchor": "A-QA-effdf3cb",
+   "file": "resources/qa_rules.md",
+   "title": "处理规则",
+   "section_hash": "25879fa06adc",
+   "n_lines": 68
+  },
+  {
+   "anchor": "A-QA-398d74e3",
+   "file": "resources/qa_rules.md",
+   "title": "QA数据源优先级",
+   "section_hash": "f42fddc61f0d",
+   "n_lines": 64
+  },
+  {
+   "anchor": "A-QA-b458c9fe",
+   "file": "resources/qa_rules.md",
+   "title": "Q&A约束",
+   "section_hash": "436686eb9d63",
+   "n_lines": 39
+  },
+  {
+   "anchor": "A-QA-a2f5e2b1",
+   "file": "resources/qa_rules.md",
+   "title": "QA人话规范",
+   "section_hash": "de7dc1d754d4",
+   "n_lines": 31
+  },
+  {
+   "anchor": "A-QA-ad32cb01",
+   "file": "resources/qa_rules.md",
+   "title": "分盘交叉规则（适用于所有问题类型）",
+   "section_hash": "e8bcf4f26d4c",
+   "n_lines": 33
   }
  ]
 }
