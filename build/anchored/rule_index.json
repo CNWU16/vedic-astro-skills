@@ -1,15 +1,15 @@
 {
- "source_commit": "73cd3e88b36d",
- "generated_at": "2026-07-05T19:23:47Z",
+ "source_commit": "443aa780d3d9",
+ "generated_at": "2026-07-05T19:44:48Z",
  "repo": "vedic-astrology-skills",
  "anchor_count": 279,
  "section_count": 113,
  "file_hashes": {
   "SKILL.md": "a4191b5b0e60",
-  "resources/p1_p12.md": "609d1890d1ac",
+  "resources/p1_p12.md": "34180e5b85ec",
   "resources/yogas.md": "ddba85ac3968",
   "resources/house_framework.md": "4391df153aa8",
-  "resources/qa_rules.md": "66569feda6e9"
+  "resources/qa_rules.md": "05564921c374"
  },
  "anchors": [
   {
@@ -1018,7 +1018,7 @@
    "file": "resources/p1_p12.md",
    "level": "L2",
    "title": "SAV > 32 = 溢出（资源充裕，自动运转）",
-   "text": "```\nSAV > 32 = 溢出（资源充裕，自动运转）\nSAV 26-32 = 平稳（正常运作）\nSAV 20-25 = 高阻（需要额外努力）\nSAV < 20 = 匮乏（几乎无法运作）\n\n特殊：凶宫(6/8/12) SAV高 = 反转效果\n  → 6宫SAV高 = 强大的竞争力/健康恢复力\n  → 8宫SAV高 = 意外收益/遗产/保险\n  适用边界：反转仅对凶宫的正面义项成立（6=竞争/服务力、8=遗产/研究、12=海外/灵性）；\n    灾祸类事件的频率/强度层按house_framework\"防火墙\"条解读（SAV低=防火墙），两层禁止混用\n```"
+   "text": "```\nSAV > 32 = 溢出（资源充裕，自动运转）\nSAV 26-32 = 平稳（正常运作）\nSAV 20-25 = 紧张（需要额外努力）\nSAV < 20 = 匮乏（几乎无法运作）\n\n特殊：凶宫(6/8/12) SAV高 = 反转效果\n  → 6宫SAV高 = 强大的竞争力/健康恢复力\n  → 8宫SAV高 = 意外收益/遗产/保险\n  适用边界：反转仅对凶宫的正面义项成立（6=竞争/服务力、8=遗产/研究、12=海外/灵性）；\n    灾祸类事件的频率/强度层按house_framework\"防火墙\"条解读（SAV低=防火墙），两层禁止混用\n```"
   },
   {
    "id": "A-P12-490fbcb3",
@@ -1844,7 +1844,7 @@
    "file": "resources/qa_rules.md",
    "level": "L3",
    "title": "1. **时机类问题**：用户问\"什么时候找到工作/对象/买房？\"",
-   "text": "1. **时机类问题**：用户问\"什么时候找到工作/对象/买房？\"\n   → 查Dasha时间线 + 对应宫位（10宫/7宫/4宫）+ SAV\n   → 找到激活期：\"[行星]大运的[行星]小运期间（[年月]-[年月]），你的[X]宫被激活...\"\n   → 给具体时间窗口，不说\"总有一天\"\n   → 时机类判定必须与appendix.md的Dasha速查表一致，\n     速查表未覆盖的时段按house_framework现算，禁止临时改判定"
+   "text": "1. **时机类问题**：用户问\"什么时候找到工作/对象/买房？\"\n   → 查Dasha时间线 + 对应宫位（10宫/7宫/4宫）+ SAV\n   → 找到激活期：\"[行星]大运的[行星]小运期间（[年月]-[年月]），你的[X]宫被激活...\"\n   → 给具体时间窗口，不说\"总有一天\"\n   → 时机类判定必须与appendix.md的Dasha速查表一致，\n     速查表未覆盖的时段按house_framework现算，禁止从原始Dasha数据即兴改判"
   },
   {
    "id": "A-QA-ef869684",
@@ -2349,7 +2349,7 @@
    "anchor": "A-P12-ac966706",
    "file": "resources/p1_p12.md",
    "title": "P4 资源SAV(掌宫) [辅助权重]",
-   "section_hash": "d57ee0adee62",
+   "section_hash": "00a8d92863a9",
    "n_lines": 18
   },
   {
@@ -2727,7 +2727,7 @@
    "anchor": "A-QA-effdf3cb",
    "file": "resources/qa_rules.md",
    "title": "处理规则",
-   "section_hash": "25879fa06adc",
+   "section_hash": "37e56f2cab59",
    "n_lines": 68
   },
   {
