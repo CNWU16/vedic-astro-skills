@@ -464,7 +464,8 @@ STEP 0: 身份继承矩阵（D1的P1身份 × D9强弱）
   → 每颗星必须标注属于哪个象限（含第三档"D9中"；D9 只6档 旺/庙/陷/友/敌/中，三档已全覆盖）
 
 STEP 1: 内核品质
-  Vargottama三分类：
+  Vargottama三分类（判定查表：读 structured_data 的 vargottama 字段(True/False)+D9尊贵度；
+    落陷V=vargottama且D9尊贵=陷、吉/凶V按行星自然吉凶——❌禁自推"是否Vargottama"）：
     吉星Vargottama = 最高稳态，0损耗兑现
     凶星Vargottama = "硬化结石"，破坏性基因根深蒂固（警告）
     落陷Vargottama = "结构性违约"，全线崩溃（严重警告）
