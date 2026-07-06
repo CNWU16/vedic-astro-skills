@@ -1,13 +1,13 @@
 {
- "source_commit": "61b073e57477",
- "generated_at": "2026-07-05T20:36:33Z",
+ "source_commit": "a91a3453d848",
+ "generated_at": "2026-07-06T18:11:04Z",
  "repo": "vedic-astrology-skills",
  "anchor_count": 279,
  "section_count": 113,
  "file_hashes": {
   "SKILL.md": "a81c018aa111",
-  "resources/p1_p12.md": "2db1327cfc6d",
-  "resources/yogas.md": "ddba85ac3968",
+  "resources/p1_p12.md": "ceea65684e85",
+  "resources/yogas.md": "e3481f00d63f",
   "resources/house_framework.md": "4391df153aa8",
   "resources/qa_rules.md": "05564921c374"
  },
@@ -1186,7 +1186,7 @@
    "file": "resources/p1_p12.md",
    "level": "L2",
    "title": "Parashari相位规则（全相位=7th, 特殊相位见下）：",
-   "text": "```\nParashari相位规则（全相位=7th, 特殊相位见下）：\n  所有行星 → 对面(7th)全力相位\n  Mars → 额外相位 4th 和 8th\n  Jupiter → 额外相位 5th 和 9th\n  Saturn → 额外相位 3rd 和 10th\n\n影响：\n  吉星相位 = 加油（保护/增益）\n  Mars相位 = 追尾+20%（冲突但增力）\n  Saturn相位 = 限速（延迟但持久）\n  Rahu相位 = 放大（膨胀/迷惑）\n  Sun相位 = 聚光灯（曝光/权威审视，该宫主题被摆上台面）\n  Ketu 不单独计相位（本体系不为Ketu的投射相位立论）\n\n  多相位叠加/吉凶相位并存 → 按house_framework\"相位合成铁律\"分层陈述\n  （吉定结果保底、凶定过程摩擦），禁止择一或对冲抵消\n\n具体参考reader提供的主要相位关系表。\n```"
+   "text": "```\nParashari相位规则（全相位=7th, 特殊相位见下）：\n  所有行星 → 对面(7th)全力相位\n  Mars → 额外相位 4th 和 8th\n  Jupiter → 额外相位 5th 和 9th\n  Saturn → 额外相位 3rd 和 10th\n\n影响：\n  吉星相位 = 加油（保护/增益）\n  Mars相位 = 追尾+20%（冲突但增力）\n  Saturn相位 = 限速（延迟但持久）\n  Rahu相位 = 放大（膨胀/迷惑）\n  Sun相位 = 聚光灯（曝光/权威审视，该宫主题被摆上台面）\n  Ketu 不单独计相位（本体系不为Ketu的投射相位立论）\n\n  多相位叠加/吉凶相位并存 → 按house_framework\"相位合成铁律\"分层陈述\n  （吉定结果保底、凶定过程摩擦），禁止择一或对冲抵消\n\n具体查 structured_data 的「Graha Drishti（吠陀行星相位·宫位照射）」表（星→宫照射，calc 已按上述规则算好，❌ 禁手推 Parashari 相位）。\n⚠️ 口径别混：**别用「主要相位关系」表**——那是**西占度数相位(orb 制：合/六合/刑/三合/冲)**，是另一套体系，不是 graha drishti。graha drishti(宫位照射)一律读「Graha Drishti」表。\n```"
   },
   {
    "id": "A-P12-2e42d91b",
@@ -1249,7 +1249,7 @@
    "file": "resources/yogas.md",
    "level": "L2",
    "title": "用途：core在十大板块第10项\"格局评估\"时参考",
-   "text": "> 用途：core在十大板块第10项\"格局评估\"时参考\n> 原则：说潜力和突破口，不定命"
+   "text": "> 用途：core在十大板块第10项\"格局评估\"时参考\n> 原则：说潜力和突破口，不定命\n> ⚠️ **互视 = graha drishti（宫位照射）**：所有格局条件里的\"互视\"一律读 structured_data 的「Graha Drishti」表判定（calc 已算好、口径 p1_p12 P10）——❌禁手推、❌别用「主要相位关系」(那是西占度数相位、另一套体系)。"
   },
   {
    "id": "A-YG-83e33c19",
@@ -2426,8 +2426,8 @@
    "anchor": "A-P12-d3008850",
    "file": "resources/p1_p12.md",
    "title": "P10 相位 [重要权重]",
-   "section_hash": "d9a0b11dc52a",
-   "n_lines": 25
+   "section_hash": "b799f1ed7b8e",
+   "n_lines": 26
   },
   {
    "anchor": "A-P12-2e42d91b",
