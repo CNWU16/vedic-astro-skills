@@ -1,11 +1,11 @@
 {
- "source_commit": "8911cf0bc335",
- "generated_at": "2026-07-06T18:35:53Z",
+ "source_commit": "8d8dba58ea17",
+ "generated_at": "2026-07-06T19:05:18Z",
  "repo": "vedic-astrology-skills",
- "anchor_count": 279,
+ "anchor_count": 280,
  "section_count": 113,
  "file_hashes": {
-  "SKILL.md": "a81c018aa111",
+  "SKILL.md": "85bfeb6451cd",
   "resources/p1_p12.md": "f8564ac28d5a",
   "resources/yogas.md": "e3481f00d63f",
   "resources/house_framework.md": "4391df153aa8",
@@ -816,6 +816,13 @@
    "level": "L3",
    "title": "5. **禁止模板化解读覆盖真实经历**：",
    "text": "5. **禁止模板化解读覆盖真实经历**：\n   ❌ Rahu在4宫 → \"你对家庭期望值太高，降低期望就好\"（忽略父亲出轨事实）\n   ✅ Rahu在4宫 → \"你的家庭确实遭受了混乱和欺骗的冲击，这是客观伤害\""
+  },
+  {
+   "id": "A-SK-6ec31834",
+   "file": "SKILL.md",
+   "level": "L3",
+   "title": "6. **QA 中用户新补充的传记信息 → 增量回写 user_context.md**：按「增量回写规则」（见 vedic-reader「user_conte",
+   "text": "6. **QA 中用户新补充的传记信息 → 增量回写 user_context.md**：按「增量回写规则」（见 vedic-reader「user_context.md 使用限制」）把用户 QA 中新说的关切/经历/事件/特质 append 到对应小节，写完回读确认；只 append 新信息、不重复已有、**不改分析结论**。此前 QA 补充用完即弃、换 skill 或下次会话丢失，本条补齐（**仅 QA 阶段**，分析阶段维持禁写）。"
   },
   {
    "id": "A-SK-c69c0858",
@@ -2286,8 +2293,8 @@
    "anchor": "A-SK-6a212e4e",
    "file": "SKILL.md",
    "title": "⚠️ QA 阶段 Context 规则（与分析阶段相反）",
-   "section_hash": "9cb582da406f",
-   "n_lines": 24
+   "section_hash": "4993e212fecd",
+   "n_lines": 26
   },
   {
    "anchor": "A-SK-c69c0858",
