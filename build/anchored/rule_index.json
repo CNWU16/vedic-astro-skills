@@ -1,13 +1,13 @@
 {
- "source_commit": "8d8dba58ea17",
- "generated_at": "2026-07-06T19:05:18Z",
+ "source_commit": "7b7455413e41",
+ "generated_at": "2026-07-06T20:38:52Z",
  "repo": "vedic-astrology-skills",
  "anchor_count": 280,
  "section_count": 113,
  "file_hashes": {
-  "SKILL.md": "85bfeb6451cd",
-  "resources/p1_p12.md": "f8564ac28d5a",
-  "resources/yogas.md": "e3481f00d63f",
+  "SKILL.md": "fa3c7a7ae9a0",
+  "resources/p1_p12.md": "10b739327fc8",
+  "resources/yogas.md": "f50e74b6ff3c",
   "resources/house_framework.md": "4391df153aa8",
   "resources/qa_rules.md": "05564921c374"
  },
@@ -1193,7 +1193,7 @@
    "file": "resources/p1_p12.md",
    "level": "L2",
    "title": "Parashari相位规则（全相位=7th, 特殊相位见下）：",
-   "text": "```\nParashari相位规则（全相位=7th, 特殊相位见下）：\n  所有行星 → 对面(7th)全力相位\n  Mars → 额外相位 4th 和 8th\n  Jupiter → 额外相位 5th 和 9th\n  Saturn → 额外相位 3rd 和 10th\n\n影响：\n  吉星相位 = 加油（保护/增益）\n  Mars相位 = 追尾+20%（冲突但增力）\n  Saturn相位 = 限速（延迟但持久）\n  Rahu相位 = 放大（膨胀/迷惑）——「Graha Drishti」表 Rahu 行带「（放大）」标记，读到即按此加权\n  Sun相位 = 聚光灯（曝光/权威审视，该宫主题被摆上台面）\n  Ketu相位 = 断离/剥离（照第7对宫，无特殊5/9相位；口径对齐底层 jhora Ketu=[7]）\n\n  多相位叠加/吉凶相位并存 → 按house_framework\"相位合成铁律\"分层陈述\n  （吉定结果保底、凶定过程摩擦），禁止择一或对冲抵消\n\n具体查 structured_data 的「Graha Drishti（吠陀行星相位·宫位照射）」表（星→宫照射，calc 已按上述规则算好，❌ 禁手推 Parashari 相位）。\n⚠️ 口径别混：**别用「主要相位关系」表**——那是**西占度数相位(orb 制：合/六合/刑/三合/冲)**，是另一套体系，不是 graha drishti。graha drishti(宫位照射)一律读「Graha Drishti」表。\n```"
+   "text": "```\nParashari相位规则（全相位=7th, 特殊相位见下）：\n  所有行星 → 对面(7th)全力相位\n  Mars → 额外相位 4th 和 8th\n  Jupiter → 额外相位 5th 和 9th\n  Saturn → 额外相位 3rd 和 10th\n\n影响：\n  吉星相位 = 加油（保护/增益）\n  Mars相位 = 追尾+20%（冲突但增力）\n  Saturn相位 = 限速（延迟但持久）\n  Rahu相位 = 放大（膨胀/迷惑）——「Graha Drishti」表 Rahu 行带「（放大）」标记，读到即按此加权\n  Sun相位 = 聚光灯（曝光/权威审视，该宫主题被摆上台面）\n  Ketu相位 = 断离/剥离（照第7对宫，无特殊5/9相位；口径对齐底层 jhora Ketu=[7]）\n\n  多相位叠加/吉凶相位并存 → 按house_framework\"相位合成铁律\"分层陈述\n  （吉定结果保底、凶定过程摩擦），禁止择一或对冲抵消\n\n具体查 structured_data 的「Graha Drishti（吠陀行星相位·宫位照射）」表（星→宫照射，calc 已按上述规则算好，❌ 禁手推 Parashari 相位）。\n⚠️ 口径别混：graha drishti(宫位照射)一律读「Graha Drishti」表；**❌禁自行推算西占度数 orb 相位**（合/六合/刑/三合/冲——不属 KN Rao 体系，原「主要相位关系」表已废弃删除，此禁令防幻觉/历史残留）。\n```"
   },
   {
    "id": "A-P12-2e42d91b",
@@ -1256,7 +1256,7 @@
    "file": "resources/yogas.md",
    "level": "L2",
    "title": "用途：core在十大板块第10项\"格局评估\"时参考",
-   "text": "> 用途：core在十大板块第10项\"格局评估\"时参考\n> 原则：说潜力和突破口，不定命\n> ⚠️ **互视 = graha drishti（宫位照射）**：所有格局条件里的\"互视\"一律读 structured_data 的「Graha Drishti」表判定（calc 已算好、口径 p1_p12 P10）——❌禁手推、❌别用「主要相位关系」(那是西占度数相位、另一套体系)。"
+   "text": "> 用途：core在十大板块第10项\"格局评估\"时参考\n> 原则：说潜力和突破口，不定命\n> ⚠️ **互视 = graha drishti（宫位照射）**：所有格局条件里的\"互视\"一律读 structured_data 的「Graha Drishti」表判定（calc 已算好、口径 p1_p12 P10）——❌禁手推、❌禁用西占度数 orb 相位（六合/三合/刑/冲——不属本体系，原「主要相位关系」表已废弃删除）。\n> ⚠️ **合相 = 同 rashi 同宫**（看落宫/同星座；度数强弱分档唯一口径见 p1_p12「合相度数三档」）——❌不是西占跨座 orb 角。**互溶 = parivartana**（两宫主互换落座）。"
   },
   {
    "id": "A-YG-83e33c19",
@@ -2069,7 +2069,7 @@
    "anchor": "A-SK-1f6f90f1",
    "file": "SKILL.md",
    "title": "数据来源",
-   "section_hash": "4632e63e639a",
+   "section_hash": "4d78a11fa643",
    "n_lines": 14
   },
   {
@@ -2433,7 +2433,7 @@
    "anchor": "A-P12-d3008850",
    "file": "resources/p1_p12.md",
    "title": "P10 相位 [重要权重]",
-   "section_hash": "d5c1be08fd7f",
+   "section_hash": "54a4d5e0f8f4",
    "n_lines": 26
   },
   {

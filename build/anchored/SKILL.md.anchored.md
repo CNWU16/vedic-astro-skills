@@ -251,7 +251,7 @@ description: "吠陀占星核心分析引擎(KN Rao体系)。接收structured_da
 从structured_data.md读取（不重新计算）：
 - Shadbala排名和强弱标注
 - 行星尊贵度（复合尊贵度：旺/入庙/至友/友方/中性/敌方/死敌/陷，直接从structured_data读取，禁止自行重算）
-- 主要相位关系
+- Graha Drishti（吠陀行星相位·宫位照射；西占 orb 相位表已废弃删除）
 - 宫主表
 - SAV/BAV数据
 - Nakshatra
