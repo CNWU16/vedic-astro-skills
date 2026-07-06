@@ -320,7 +320,8 @@ P5 落宫效率（判断信号的可靠程度）：
 
 **⚠️ 补充信息处理规则**：
 用户在验前事阶段补充的任何个人经历/事件：
-- 写入 **user_context.md**（独立文件），不写入 structured_data.md
+- **必须写入 user_context.md**（独立文件，不存在则创建），不写入 structured_data.md
+- 不限验前事——**用户在任意阶段补充的新传记信息一律按「增量回写规则」append**（规则见 vedic-reader「user_context.md 使用限制」）
 - vedic-core/career/love 分析时保持客观，基于星盘数据推导
 
 **评分与后续决策**（按命中率×时间来源分支）：

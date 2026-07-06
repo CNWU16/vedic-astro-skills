@@ -45,10 +45,11 @@ Node模式: [Mean Node / True Node]
 感情状态: [单身 / 恋爱中 / 已婚]
 ```
 
-> ⚠️ 以下字段**不写入**structured_data.md，写入user_context.md：
+> ⚠️ 以下字段**不写入**structured_data.md，**必须写入 user_context.md**（不存在则创建；写入机制见 vedic-reader「user_context.md 使用限制 + 增量回写规则」）：
 > - 职业状态
 > - 核心关切/具体问题
 > - 用户补充的人生事件
+> - 特质类（配偶/职业/专业/家庭氛围/性格等校准证据）
 
 ## D1基础数据
 

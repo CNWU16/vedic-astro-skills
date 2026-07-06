@@ -30,6 +30,8 @@
 | 出国/移民 | **12** | 9(远行) | — | Rahu |
 | 获奖/荣誉 | **10/11** | — | AmK | Sun, Jupiter |
 
+> 本表是事件→宫位/Karaka 映射；实际匹配按 SKILL「Layer 1-4 四层强制查」逐层判定（宫主/落宫/graha drishti 照射/Karaka）。次宫列的 maraka（如父去世 2从9、母去世 2从4）走 Layer1（该宫宫主）或 Layer4（Karaka）对应列，不是独立第五层。
+
 ---
 
 ## 匹配判定规则
@@ -45,7 +47,7 @@
 大运/小运主星落在事件对应宫位
 → "Jupiter大运期间结婚，Jupiter落在7宫" = 中匹配
 
-大运/小运主星照射事件对应宫位
+大运/小运主星照射事件对应宫位（照射 = graha drishti，读「Graha Drishti」表判定，见 SKILL Layer3；❌别用「主要相位关系」西占相位表）
 → "Jupiter大运期间结婚，Jupiter从1宫照射7宫" = 中匹配
 
 大运/小运主星 = 事件的Karaka
@@ -54,7 +56,7 @@
 
 ### 弱匹配 (⚠️)
 ```
-大运/小运主星与事件宫位的宫主有相位
+大运/小运主星与事件宫位的宫主有相位（相位 = graha drishti，读「Graha Drishti」表，见 SKILL Layer3；不是西占度数相位）
 → 间接关联，可以接受但权重低
 ```
 
