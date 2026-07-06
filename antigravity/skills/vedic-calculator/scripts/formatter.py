@@ -265,12 +265,13 @@ def format_structured_data(chart, transit_data, meta, user_info):
     lines.append("| 行星 | 落宫 | 照射宫位 | 照到的行星 |")
     lines.append("|------|------|---------|-----------|")
     gd = chart.get('graha_drishti', {})
-    for name in ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu']:
+    for name in ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu']:
         if name in gd:
             i = gd[name]
             ah = '/'.join(str(x) for x in i['aspected_houses'])
             ap = '/'.join(i['aspected_planets']) or '—'
-            lines.append(f"| {name} | {i['from_house']}宫 | {ah}宫 | {ap} |")
+            tag = '（放大）' if i.get('amplify') else ''
+            lines.append(f"| {name}{tag} | {i['from_house']}宫 | {ah}宫 | {ap} |")
     lines.append("")
 
     # House Lords

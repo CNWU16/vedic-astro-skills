@@ -216,6 +216,7 @@ Antardasha: [planet] (YYYY-MM ~ YYYY-MM)
 | [planet] | [house] | [houses] | [planets] |
 
 > ⚠️ 这是 graha drishti（星→宫照射，P10/格局互视/rectifier 第3层读本表、禁手推）；与上面「主要相位关系」(西占度数相位)是两套体系、别混。calc 已算(engine graha_drishti 字段)，此段缺失则降级禁手推。
+> 口径：所有星→第7；Mars +4/8；Jupiter +5/9；Saturn +3/10；Rahu/Ketu 仅第7（无特殊相位，对齐底层 jhora）。Rahu 行带「（放大）」标记 = 相位放大/膨胀迷惑。
 
 ### 宫主表
 | 宫位 | 领域 | 宫主 | 宫主落宫 |

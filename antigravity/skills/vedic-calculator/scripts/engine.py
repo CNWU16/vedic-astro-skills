@@ -307,12 +307,14 @@ def calc_aspects(planets):
 
 def calc_graha_drishti(planets):
     """Parashari graha drishti（行星宫位相位，P10 规则数据化，禁模型手推）。
-    所有行星 → 第7宫；Mars +4/8；Jupiter +5/9；Saturn +3/10；Rahu 仅第7（放大）；Ketu 不计。
-    每颗星从其落宫数第 N 宫。返回 {planet: {from_house, aspected_houses, aspected_planets}}。
+    所有行星 → 第7宫；Mars +4/8；Jupiter +5/9；Saturn +3/10；Rahu/Ketu 仅第7（无特殊相位）。
+    节点口径对齐底层 jhora const.graha_drishti（Rahu=[7]、Ketu=[7]）；Rahu 带 amplify=True（相位=放大/膨胀迷惑）。
+    每颗星从其落宫数第 N 宫。返回 {planet: {from_house, aspected_houses, aspected_planets, amplify}}。
     （注：这是吠陀 graha drishti = 宫位照射，与 calc_aspects 的西占度数相位是两套体系，别混。）
     """
     special = {'Mars': [4, 8], 'Jupiter': [5, 9], 'Saturn': [3, 10]}
-    drishti_planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu']
+    # 含 Ketu：对齐底层 jhora const.graha_drishti（Rahu=[7]、Ketu=[7]），节点保留基础对宫第7、不给特殊相位
+    drishti_planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu']
     house_occupants = {}
     for name in drishti_planets:
         p = planets.get(name)
@@ -324,13 +326,14 @@ def calc_graha_drishti(planets):
         if not p or 'house' not in p:
             continue
         h = p['house']
-        angles = [7] + special.get(name, [])   # Rahu 无 special → 仅第7
+        angles = [7] + special.get(name, [])   # Rahu/Ketu 无 special → 仅第7
         aspected_houses = sorted(set(((h - 1 + (a - 1)) % 12) + 1 for a in angles))
         aspected_planets = sorted(set(pl for hh in aspected_houses
                                       for pl in house_occupants.get(hh, [])))
         result[name] = {'from_house': h,
                         'aspected_houses': aspected_houses,
-                        'aspected_planets': aspected_planets}
+                        'aspected_planets': aspected_planets,
+                        'amplify': name == 'Rahu'}   # Rahu 相位=放大（膨胀/迷惑），下游按此加权、禁静默丢
     return result
 
 
