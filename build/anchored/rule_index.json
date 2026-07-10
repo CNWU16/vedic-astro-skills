@@ -1,14 +1,14 @@
 {
- "source_commit": "d9668cb11d59",
- "generated_at": "2026-07-07T13:59:03Z",
+ "source_commit": "2b1901da05c8",
+ "generated_at": "2026-07-10T18:33:32Z",
  "repo": "vedic-astrology-skills",
- "anchor_count": 282,
+ "anchor_count": 283,
  "section_count": 113,
  "file_hashes": {
   "SKILL.md": "85cdfba01a14",
-  "resources/p1_p12.md": "81af555aa7b9",
-  "resources/yogas.md": "f9176b04c646",
-  "resources/house_framework.md": "ed44485019fe",
+  "resources/p1_p12.md": "3df88803c633",
+  "resources/yogas.md": "67c595a172c2",
+  "resources/house_framework.md": "65d1ff1cb131",
   "resources/qa_rules.md": "fba48e552d23"
  },
  "anchors": [
@@ -1039,7 +1039,7 @@
    "file": "resources/p1_p12.md",
    "level": "L2",
    "title": "吉路（1/4/5/7/9/10宫）= 损耗低，发挥顺畅",
-   "text": "```\n吉路（1/4/5/7/9/10宫）= 损耗低，发挥顺畅\n6宫 = 50%效率（竞争/疾病/服务环境）\n8宫 = 30%效率（变化/危机/隐藏）\n12宫 = 20%效率（损耗/隔离/灵性）\n\nVRY（Viparita Raja Yoga）= 逆境王格\n  ⚠️ 本段是全 skill 的 VRY 唯一判定定义（落宫式，KN Rao 传统）。其他文件一律引用本段，不得另立口径。\n  基础条件：6/8/12宫主落入其他凶宫(6/8/12)（含落入自己之外的凶宫；两凶宫主互溶 = 最强特例，双向成立）\n  分类：\n    Harsha Yoga (6宫主入6/8/12) = 通过对手失误获利\n    Sarala Yoga (8宫主入6/8/12) = 通过危机/继承获得地位\n    Vimala Yoga (12宫主入6/8/12) = 低支出或在别人亏损的行业获利\n```"
+   "text": "```\n吉路（1/4/5/7/9/10宫）= 损耗低，发挥顺畅\n6宫 = 50%效率（竞争/疾病/服务环境）\n8宫 = 30%效率（变化/危机/隐藏）\n12宫 = 20%效率（损耗/隔离/灵性）\n\nVRY（Viparita Raja Yoga）= 逆境王格\n  ⚠️ 本段是全 skill 的 VRY 唯一判定定义（落宫式，KN Rao 传统）。其他文件一律引用本段，不得另立口径。\n  基础条件：6/8/12宫主落入其他凶宫(6/8/12)（含落入自己之外的凶宫；两凶宫主互溶 = 最强特例，双向成立）\n  ⚠️ **结构成立与否读 structured_data「结构格局预扫·VRY」表 active 字段**（calc 已核\"落其他凶宫、落自宫不算\"，如 12主落12 ≠ Vimala）；模型只做强度评估（下方孤立性/1宫主强度），❌禁自推结构是否成立、禁用先验\"12主落12也算\"\n  分类：\n    Harsha Yoga (6宫主入6/8/12) = 通过对手失误获利\n    Sarala Yoga (8宫主入6/8/12) = 通过危机/继承获得地位\n    Vimala Yoga (12宫主入6/8/12) = 低支出或在别人亏损的行业获利\n```"
   },
   {
    "id": "A-P12-c4e9a774",
@@ -1095,7 +1095,7 @@
    "file": "resources/p1_p12.md",
    "level": "L2",
    "title": "入旺(Exalted) = F1赛车（最高性能）",
-   "text": "```\n入旺(Exalted) = F1赛车（最高性能）\nMoolatrikona(MT) = 特等座驾\n入庙(Own) = 豪华车（在自己家，舒适）\n友方(Friend) = 普通车（还行）\n中性(Neutral) = 一般\n敌方(Enemy) = 破车（不舒服）\n落陷(Debilitated) = 故障车\n\n落陷补救(NBRY - Neecha Bhanga Raja Yoga)：\n  以下任一条满足即触发部分或完全补救：\n  1. 落陷星本身在角宫(1/4/7/10) → 位置补救（最基础条件）\n  2. 落陷星的落座主（dispositor）在角宫 → 后台补救\n  3. 落陷星有吉星（Jupiter/Venus/Mercury/Moon）相位 → 外援补救\n  4. 落陷星的旺主（该星入旺星座的守护星）在角宫或三角宫 → 潜力激活\n  5. 落陷星与旺主合相 → 直接激活\n  6. 落陷星的落座主自身强健（入旺/入庙/友方且Shadbala≥100%） → 基座托举\n\n  补救强度判定（互斥分档）：\n    满足1条 → [部分补救] 效力恢复40-60%\n    满足2条 → [强力补救] 效力恢复70-90%\n    满足≥3条 → [完全补救] 视同正常行星\n\n  ⚠️ D9入旺/D9强不在上述六条救济项内——D1弱+D9强不构成NBRY，\n    唯一裁决见下方\"身份继承矩阵补充档\"\n\nPushkara补丁（唯一定义——D9审计\"落陷检查Pushkara补丁\"指的就是本条）：\n  Pushkara Navamsa = 行星落在滋养性的navamsa区段（每星座固定两个），\n    落入者受滋养保护——受损/落陷行星获得恢复力缓冲，困境后能回血；\n  Pushkara Bhaga = 星座内一个精确滋养度数点，效力更强的点状加持。\n  判定：❌ 不要自行按度数推算——structured_data 的\n  \"Pushkara Navamsa（滋养保护区）/ Pushkara Bhaga（精确滋养度）\"行由calc精确计算，直接读。\n  应用：落陷星在Pushkara → 违约程度减轻一档（如\"违约\"缓和为\"艰难但可恢复\"）；\n        正常星在Pushkara → 顺境更稳，锦上添花，一句带过即可。\n\n  ⚠️ 审计时必须逐条检查，不可只查1-2条就下结论\n```"
+   "text": "```\n入旺(Exalted) = F1赛车（最高性能）\nMoolatrikona(MT) = 特等座驾\n入庙(Own) = 豪华车（在自己家，舒适）\n友方(Friend) = 普通车（还行）\n中性(Neutral) = 一般\n敌方(Enemy) = 破车（不舒服）\n落陷(Debilitated) = 故障车\n\n落陷补救(NBRY - Neecha Bhanga Raja Yoga)：\n  以下任一条满足即触发部分或完全补救：\n  1. 落陷星本身在角宫(1/4/7/10) → 位置补救（最基础条件）\n  2. 落陷星的落座主（dispositor）在角宫 → 后台补救\n  3. 落陷星有吉星（Jupiter/Venus/Mercury/Moon）相位 → 外援补救\n  4. 落陷星的旺主（该星入旺星座的守护星）在角宫或三角宫 → 潜力激活\n  5. 落陷星与旺主合相 → 直接激活\n  6. 落陷星的落座主自身强健（入旺/入庙/友方且Shadbala≥100%） → 基座托举\n\n  补救强度判定（互斥分档）：\n    满足1条 → [部分补救] 效力恢复40-60%\n    满足2条 → [强力补救] 效力恢复70-90%\n    满足≥3条 → [完全补救] 视同正常行星（→ 大运负面条件2 不再计入\"落陷\"，落陷已取消；燃烧/败相若在仍计。见 house_framework 负面条件2）\n\n  ⚠️ D9入旺/D9强不在上述六条救济项内——D1弱+D9强不构成NBRY，\n    唯一裁决见下方\"身份继承矩阵补充档\"\n\nPushkara补丁（唯一定义——D9审计\"落陷检查Pushkara补丁\"指的就是本条）：\n  Pushkara Navamsa = 行星落在滋养性的navamsa区段（每星座固定两个），\n    落入者受滋养保护——受损/落陷行星获得恢复力缓冲，困境后能回血；\n  Pushkara Bhaga = 星座内一个精确滋养度数点，效力更强的点状加持。\n  判定：❌ 不要自行按度数推算——structured_data 的\n  \"Pushkara Navamsa（滋养保护区）/ Pushkara Bhaga（精确滋养度）\"行由calc精确计算，直接读。\n  应用：落陷星在Pushkara → 违约程度减轻一档（如\"违约\"缓和为\"艰难但可恢复\"）；\n        正常星在Pushkara → 顺境更稳，锦上添花，一句带过即可。\n\n  ⚠️ 审计时必须逐条检查，不可只查1-2条就下结论\n```"
   },
   {
    "id": "A-P12-f36f9973",
@@ -1137,7 +1137,7 @@
    "file": "resources/p1_p12.md",
    "level": "L2",
    "title": "Rahu/Ketu 无宫可管、无尊贵度、无Shadbala——P1/P7/P9对节点全部不适用。",
-   "text": "```\nRahu/Ketu 无宫可管、无尊贵度、无Shadbala——P1/P7/P9对节点全部不适用。\n本节是全系统判定节点强弱的唯一口径，其他文件（Dasha速查表、love/career等）\n一律引用本节；❌ 禁止引用任何\"节点旺陷表\"（各派互斥，本体系不采用）。\n\n三要素代理判定（逐项检查）：\n  1. 定位星(dispositor)状态：节点落座星座的守护星\n     正面 = 入旺/入庙/友方 且 Shadbala≥100%（节点有稳固后台）\n     负面 = 落陷/燃烧/战争败北/Shadbala<100%（节点悬空失控）\n  2. 落宫性质：\n     正面 = 吉路(1/4/5/7/9/10) 或 Rahu落3/11（Upachaya增长位）\n     负面 = 凶路(6/8/12)\n  3. 紧密合相星(<5°)：\n     正面 = 与自然吉星紧合（能量被引导，借该吉星的领域出力）\n     负面 = 与自然凶星紧合（破坏性放大）\n     无紧合 = 本要素不计，只看要素1+2\n\n综合：正面≥2项 → 节点偏强；负面≥2项 → 节点偏弱；正负各半 → 混合，分层陈述\n```"
+   "text": "```\nRahu/Ketu 无宫可管、无尊贵度、无Shadbala——P1/P7/P9对节点全部不适用。\n本节是全系统判定节点强弱的唯一口径，其他文件（Dasha速查表、love/career等）\n一律引用本节；❌ 禁止引用任何\"节点旺陷表\"（各派互斥，本体系不采用）。\n⚠️ 自然吉凶名单（本节\"与自然吉/凶星紧合\"判定的唯一口径，消除 Sun 归类歧义）：\n   自然吉星 = Jupiter / Venus / Mercury / Moon；\n   自然凶星 = Saturn / Mars / **Sun（温和 mild malefic）** / Rahu / Ketu。\n\n三要素代理判定（逐项检查）：\n  1. 定位星(dispositor)状态：节点落座星座的守护星\n     正面 = 入旺/入庙/友方 且 Shadbala≥100%（节点有稳固后台）\n     负面 = 落陷/燃烧/战争败北/Shadbala<100%（节点悬空失控）\n  2. 落宫性质：\n     正面 = 吉路(1/4/5/7/9/10) 或 Rahu落3/11（Upachaya增长位）\n     负面 = 凶路(6/8/12)\n  3. 紧密合相星(<5°)：\n     正面 = 与自然吉星紧合（能量被引导，借该吉星的领域出力）\n     负面 = 与自然凶星紧合（破坏性放大）\n     无紧合 = 本要素不计，只看要素1+2\n\n综合：正面≥2项 → 节点偏强；负面≥2项 → 节点偏弱；正负各半 → 混合，分层陈述\n```"
   },
   {
    "id": "A-P12-40e57462",
@@ -1322,11 +1322,11 @@
    "text": "### Viparita Raja Yoga（逆境王格局）"
   },
   {
-   "id": "A-YG-5964b7e5",
+   "id": "A-YG-6529eda4",
    "file": "resources/yogas.md",
    "level": "L2",
-   "title": "条件：6/8/12宫主落入其他凶宫(6/8/12)——唯一判定定义见 p1_p12.md P5（落宫式；两凶宫主互溶=最强特例）",
-   "text": "```\n条件：6/8/12宫主落入其他凶宫(6/8/12)——唯一判定定义见 p1_p12.md P5（落宫式；两凶宫主互溶=最强特例）\n含义：在困难中崛起，从别人的损失中获益\n评估：\n  存在 → \"你有一种特殊能力：越是困难的环境，你越能找到出路\"\n  注意：不要过度美化，VRY的代价是必须经历逆境\n```"
+   "title": "条件：6/8/12宫主落入其他凶宫(6/8/12)——唯一判定定义见 p1_p12.md P5（落宫式；两凶宫主互溶=最强特例）。**结构成立读 structu",
+   "text": "```\n条件：6/8/12宫主落入其他凶宫(6/8/12)——唯一判定定义见 p1_p12.md P5（落宫式；两凶宫主互溶=最强特例）。**结构成立读 structured_data「结构格局预扫·VRY」表 active 字段，禁自推**\n含义：在困难中崛起，从别人的损失中获益\n评估：\n  存在 → \"你有一种特殊能力：越是困难的环境，你越能找到出路\"\n  注意：不要过度美化，VRY的代价是必须经历逆境\n```"
   },
   {
    "id": "A-YG-6a24fe97",
@@ -1644,6 +1644,13 @@
    "text": "⚠️ 节点例外：大运/小运星为 Rahu/Ketu 时，本节正负面条件不可计算（节点无掌宫身份/自身尊贵度）——改用 p1_p12「Dasha速查表节点专用正负面条件子表」（P7.4）；速查表节点行\"P1身份\"列填\"—\"、\"尊贵度\"列填定位星状态。"
   },
   {
+   "id": "A-HF-1ada9986",
+   "file": "resources/house_framework.md",
+   "level": "L2",
+   "title": "⚠️ **P1身份读 structured_data「功能身份」表 primary_role**（禁自判主身份）；一星身兼吉凶宫主（is_dual=是）→ 正/",
+   "text": "⚠️ **P1身份读 structured_data「功能身份」表 primary_role**（禁自判主身份）；一星身兼吉凶宫主（is_dual=是）→ 正/负面条件1 **按主身份计一次、不双计**（MT 已定主，兼管的另一宫作叙述注明、不另计对侧）。"
+  },
+  {
    "id": "A-HF-9d8e6e64",
    "file": "resources/house_framework.md",
    "level": "L2",
@@ -1655,7 +1662,7 @@
    "file": "resources/house_framework.md",
    "level": "L2",
    "title": "1. P1身份=凶角色（Destroyer管8/12 或 Growth-Hacker管6）",
-   "text": "```\n1. P1身份=凶角色（Destroyer管8/12 或 Growth-Hacker管6）\n2. P2受损（燃烧/落陷/败相）\n3. 落在凶路（6/8/12宫）且无VRY补救\n4. P9 Shadbala<100%\n5. 与凶星紧密合相（<5°）\n```"
+   "text": "```\n1. P1身份=凶角色（Destroyer管8/12 或 Growth-Hacker管6）\n2. P2受损（燃烧/落陷/败相）——⚠️ 落陷若经 NBRY【完全补救】（视同正常行星，见 p1_p12 NBRY）则**不计落陷**；燃烧/败相仍计。部分/强力补救仍计落陷，叙述注明缓冲\n3. 落在凶路（6/8/12宫）且无VRY补救\n4. P9 Shadbala<100%\n5. 与凶星紧密合相（<5°）\n```"
   },
   {
    "id": "A-HF-9898448e",
@@ -2377,8 +2384,8 @@
    "anchor": "A-P12-490fbcb3",
    "file": "resources/p1_p12.md",
    "title": "P5 路况(落宫性质) [重要权重]",
-   "section_hash": "8057ae9894b4",
-   "n_lines": 42
+   "section_hash": "36b96c52336f",
+   "n_lines": 43
   },
   {
    "anchor": "A-P12-e4ef872c",
@@ -2398,7 +2405,7 @@
    "anchor": "A-P12-561676e8",
    "file": "resources/p1_p12.md",
    "title": "P7 尊贵度 [关键权重]",
-   "section_hash": "d53471e81a44",
+   "section_hash": "4d9724f76983",
    "n_lines": 42
   },
   {
@@ -2419,8 +2426,8 @@
    "anchor": "A-P12-57a4f0e4",
    "file": "resources/p1_p12.md",
    "title": "P7.4 节点(Rahu/Ketu)强弱判定唯一口径",
-   "section_hash": "dd5025c86d97",
-   "n_lines": 46
+   "section_hash": "4f49ba6496a3",
+   "n_lines": 49
   },
   {
    "anchor": "A-P12-ec83241c",
@@ -2510,7 +2517,7 @@
    "anchor": "A-YG-97b7f1a2",
    "file": "resources/yogas.md",
    "title": "Viparita Raja Yoga（逆境王格局）",
-   "section_hash": "23d31aa96e9a",
+   "section_hash": "e2d858ff8243",
    "n_lines": 9
   },
   {
@@ -2671,8 +2678,8 @@
    "anchor": "A-HF-a83b8c47",
    "file": "resources/house_framework.md",
    "title": "大运正负面判断规则",
-   "section_hash": "477828067bec",
-   "n_lines": 37
+   "section_hash": "98320cf03d94",
+   "n_lines": 39
   },
   {
    "anchor": "A-HF-089b31b6",
