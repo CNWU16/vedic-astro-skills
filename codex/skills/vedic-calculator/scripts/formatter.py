@@ -118,7 +118,7 @@ def format_structured_data(chart, transit_data, meta, user_info):
         for name, val in sb.items():
             if isinstance(val, dict) and 'total_rupas' in val:
                 sb_items.append((name, val))
-        sb_items.sort(key=lambda x: x[1]['total_rupas'], reverse=True)
+        sb_items.sort(key=lambda x: x[1].get('strength_pct', 0), reverse=True)  # 排名按达标率 strength_pct(=Rupas/BPHS_required)，非绝对Rupas——各星required不同(Mer 7/Sat 5)，pct 才反映"强不强"，与强弱列(≥150/≥100)及 house_framework≥120% 同口径
         for rank, (name, val) in enumerate(sb_items, 1):
             rupas = round(val['total_rupas'], 2)
             pct = round(val.get('strength_pct', 0), 2)
@@ -266,6 +266,36 @@ def format_structured_data(chart, transit_data, meta, user_info):
             tag = '（放大）' if i.get('amplify') else ''
             lines.append(f"| {name}{tag} | {i['from_house']}宫 | {ah}宫 | {ap} |")
     lines.append("")
+
+    # 功能身份（P1 主身份，B3：一星多宫主由 Moolatrikona 宫定主）
+    fn = chart.get('functional', {})
+    if fn:
+        lines.append("### 功能身份（P1 主身份·一星多宫主由 Moolatrikona 宫定主）")
+        lines.append("> ⚠️ calc 已按 MT 宫定主身份（禁手推）；is_dual=身兼吉宫(1/5/9)+凶宫(6/8/12) → 正负面按**主身份计一次、不双计**，叙述注明兼管。")
+        lines.append("| 行星 | 管的宫 | MT宫 | 主身份 | Yogakaraka | 身兼吉凶 |")
+        lines.append("|------|--------|------|--------|-----------|---------|")
+        for name in ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn']:
+            if name in fn:
+                v = fn[name]
+                lh = '/'.join(str(x) for x in v['lorded_houses'])
+                yk = '是' if v['is_yogakaraka'] else '—'
+                dl = '是' if v['is_dual_benefic_malefic'] else '—'
+                lines.append(f"| {name} | {lh} | {v['moolatrikona_house']} | {v['primary_role']} | {yk} | {dl} |")
+        lines.append("")
+
+    # 结构格局预扫（A1：VRY 结构核验，禁自推）
+    yp = chart.get('yoga_prescan', {}).get('vry', {})
+    if yp:
+        lines.append("### 结构格局预扫 · VRY（calc 核验·禁自推结构）")
+        lines.append("> ⚠️ VRY 结构条件由 calc 判定（6/8/12宫主落**其他**凶宫、落自宫不算）；模型只做强度评估、禁自推是否成立。")
+        lines.append("| 子格 | 结构成立 | 宫主 | 落宫 | 判据 |")
+        lines.append("|------|---------|------|------|------|")
+        for key, cn in [('harsha', 'Harsha(6主)'), ('sarala', 'Sarala(8主)'), ('vimala', 'Vimala(12主)')]:
+            if key in yp:
+                v = yp[key]
+                act = '成立' if v['active'] else '不成立'
+                lines.append(f"| {cn} | {act} | {v['lord']} | {v['lord_house']}宫 | {v['rule']} |")
+        lines.append("")
 
     # House Lords
     lines.append("### 宫主表")

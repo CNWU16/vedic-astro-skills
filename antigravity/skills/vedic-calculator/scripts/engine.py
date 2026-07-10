@@ -309,6 +309,55 @@ def calc_house_lords(lagna_sign_idx):
         lords[house] = {'sign': SIGNS[sign_idx], 'lord': lord, 'domain': HOUSE_DOMAINS[house]}
     return lords
 
+# 每颗星的 Moolatrikona 星座（Parashari 固定）——用于一星多宫主时定主身份，禁模型手推
+MOOLATRIKONA_SIGN = {'Sun': 'Leo', 'Moon': 'Taurus', 'Mars': 'Aries', 'Mercury': 'Virgo',
+                     'Jupiter': 'Sagittarius', 'Venus': 'Libra', 'Saturn': 'Aquarius'}
+
+def _role_of_house(h):
+    if h == 1: return 'Core-Driver'
+    if h in (5, 9): return 'Faithful'
+    if h in (8, 12): return 'Destroyer'
+    if h in (2, 4, 7, 10): return 'Trader'
+    return 'Growth-Hacker'  # 3/6/11
+
+def calc_functional(lagna_sign_idx, planets):
+    """P1 功能身份（B3：一星多宫主时以 Moolatrikona 宫定主身份，禁模型手推/双计）。
+    返回 {planet: {lorded_houses, moolatrikona_house, primary_role, is_yogakaraka, is_dual_benefic_malefic}}。
+    Rahu/Ketu 无宫可管，不产出。"""
+    lords = calc_house_lords(lagna_sign_idx)
+    ruled = {}
+    for h in range(1, 13):
+        ruled.setdefault(lords[h]['lord'], []).append(h)
+    TRIKONA, KENDRA_NO1, DUS = {1, 5, 9}, {4, 7, 10}, {6, 8, 12}
+    result = {}
+    for name, houses in ruled.items():
+        hs = set(houses)
+        mt_sign = MOOLATRIKONA_SIGN.get(name)
+        mt_house = get_house(SIGNS.index(mt_sign), lagna_sign_idx) if mt_sign else None
+        is_yk = bool(hs & {5, 9}) and bool(hs & KENDRA_NO1)  # 同掌三角(5/9)+角宫(4/7/10)=Yogakaraka
+        base = mt_house if (mt_house in hs) else min(houses)
+        result[name] = {'lorded_houses': sorted(houses),
+                        'moolatrikona_house': mt_house,
+                        'primary_role': 'Yogakaraka' if is_yk else _role_of_house(base),
+                        'is_yogakaraka': is_yk,
+                        'is_dual_benefic_malefic': bool(hs & TRIKONA) and bool(hs & DUS)}
+    return result
+
+def calc_yoga_prescan(lagna_sign_idx, planets):
+    """结构格局预扫（A1：机械可判的结构条件由 calc 给核验结果，规则读字段禁自推/先验）。
+    含 VRY(逆境王格)：6/8/12宫主落**其他**凶宫（落自宫不算——堵"12主落12也算Vimala"假阳性）。"""
+    lords = calc_house_lords(lagna_sign_idx)
+    DUS = {6, 8, 12}
+    vry = {}
+    for h, key in [(6, 'harsha'), (8, 'sarala'), (12, 'vimala')]:
+        lord = lords[h]['lord']
+        p = planets.get(lord)
+        lh = p['house'] if (p and 'house' in p) else None
+        vry[key] = {'active': (lh in (DUS - {h})) if lh else False,
+                    'lord': lord, 'lord_house': lh,
+                    'rule': f'{h}宫主落其他凶宫{sorted(DUS - {h})}（自宫不算）'}
+    return {'vry': vry}
+
 def calc_vimsottari_dasha(moon_lon, birth_year, birth_month, birth_day, birth_hour, birth_minute):
     """Calculate Vimsottari Dasha periods"""
     nak = get_nakshatra(moon_lon)
@@ -695,7 +744,9 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
     
     # 9. Graha drishti（吠陀宫位照射）——西占 orb 相位表已废弃删除：不属 KN Rao 体系、无判定消费方
     graha_drishti = calc_graha_drishti(planets)  # P10 Parashari graha drishti（宫位照射，禁手推）
-    
+    functional = calc_functional(lagna['sign_idx'], planets)      # B3 P1主身份（一星多宫主MT定主，禁手推）
+    yoga_prescan = calc_yoga_prescan(lagna['sign_idx'], planets)  # A1 结构格局预扫（VRY，禁自推）
+
     # 10. House lords
     house_lords = calc_house_lords(lagna['sign_idx'])
     # Add planet positions to house lords
@@ -782,6 +833,8 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
         'combustion': combustion,
         'karakas': karakas,
         'graha_drishti': graha_drishti,
+        'functional': functional,
+        'yoga_prescan': yoga_prescan,
         'house_lords': house_lords,
         'dashas': dashas,
         'shadbala': shadbala_data,
