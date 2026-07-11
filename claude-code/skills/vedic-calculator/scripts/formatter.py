@@ -283,18 +283,37 @@ def format_structured_data(chart, transit_data, meta, user_info):
                 lines.append(f"| {name} | {lh} | {v['moolatrikona_house']} | {v['primary_role']} | {yk} | {dl} |")
         lines.append("")
 
-    # 结构格局预扫（A1：VRY 结构核验，禁自推）
-    yp = chart.get('yoga_prescan', {}).get('vry', {})
+    # 结构格局预扫（全格局：VRY/关系类/落宫/Mahapurusha，calc 核验，禁自推结构/越宫）
+    yp = chart.get('yoga_prescan', {})
     if yp:
-        lines.append("### 结构格局预扫 · VRY（calc 核验·禁自推结构）")
-        lines.append("> ⚠️ VRY 结构条件由 calc 判定（6/8/12宫主落**其他**凶宫、落自宫不算）；模型只做强度评估、禁自推是否成立。")
-        lines.append("| 子格 | 结构成立 | 宫主 | 落宫 | 判据 |")
-        lines.append("|------|---------|------|------|------|")
-        for key, cn in [('harsha', 'Harsha(6主)'), ('sarala', 'Sarala(8主)'), ('vimala', 'Vimala(12主)')]:
-            if key in yp:
-                v = yp[key]
-                act = '成立' if v['active'] else '不成立'
-                lines.append(f"| {cn} | {act} | {v['lord']} | {v['lord_house']}宫 | {v['rule']} |")
+        lines.append("### 结构格局预扫（全格局·calc 核验·禁自推结构/越宫）")
+        lines.append("> ⚠️ 本表只给\"**结构骨架成立=T/F + 参与星**\"；强度评估/污染修正/解除后语义/吉凶程度**一律模型做、禁自推结构是否成立**。"
+                     "口径：VRY 12主落12自宫不算；Adhi 从Moon起6/7/8宫（禁越宫）；互动=合相/互视/互溶（见格局关系类段）。")
+        lines.append("| 格局 | 结构成立 | 参与 / 说明 |")
+        lines.append("|------|---------|-----------|")
+        vry = yp.get('vry', {})
+        for key, cn in [('harsha', 'VRY-Harsha(6主)'), ('sarala', 'VRY-Sarala(8主)'), ('vimala', 'VRY-Vimala(12主)')]:
+            v = vry.get(key, {})
+            lines.append(f"| {cn} | {'成立' if v.get('active') else '不成立'} | {v.get('lord','')}落{v.get('lord_house','')}宫 |")
+        def yrow(key, cn, note=''):
+            v = yp.get(key, {})
+            lines.append(f"| {cn} | {'成立' if v.get('active') else '不成立'} | {note} |")
+        dk = yp.get('dharma_karma', {}).get('lords', ['', ''])
+        yrow('dharma_karma', 'Dharma-Karma', f"9主{dk[0]}/10主{dk[1]} 互动")
+        dh = yp.get('dhana', {}).get('lords', ['', ''])
+        yrow('dhana', 'Dhana', f"2主{dh[0]}/11主{dh[1]} 互动")
+        yrow('raja', 'Raja', f"命中 {len(yp.get('raja', {}).get('hits', []))} 组三角×角宫主互动")
+        yrow('chandra_mangala', 'Chandra-Mangala', 'Moon-Mars 合相/互视')
+        yrow('guru_chandala', 'Guru-Chandala', 'Jup-Rahu 合相')
+        yrow('gajakesari', 'Gajakesari', 'Jup/Moon 互为角宫')
+        ad = yp.get('adhi', {})
+        yrow('adhi', 'Adhi', f"吉星{ad.get('benefics', [])}在从Moon起{ad.get('from_moon_678', [])}宫" + ('（有凶混杂）' if ad.get('malefic_contam') else ''))
+        km = yp.get('kemadruma', {})
+        lines.append(f"| Kemadruma | {'成立' if km.get('active') else '不成立'} | {'已解除' if km.get('cancelled') else '未解除'} |")
+        sk = yp.get('shakata', {})
+        lines.append(f"| Shakata | {'成立' if sk.get('active') else '不成立'} | {'已解除' if sk.get('cancelled') else '未解除'} |")
+        for g, v in yp.get('mahapurusha', {}).items():
+            lines.append(f"| Mahapurusha-{g}({v.get('star')}) | {'成立' if v.get('active') else '不成立'} | {v.get('house')}宫 {v.get('sign')} |")
         lines.append("")
 
     # 格局关系类（互视/互溶下沉，格局条件"互视/互溶"读本段、禁自推）

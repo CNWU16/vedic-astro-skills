@@ -343,20 +343,90 @@ def calc_functional(lagna_sign_idx, planets):
                         'is_dual_benefic_malefic': bool(hs & TRIKONA) and bool(hs & DUS)}
     return result
 
-def calc_yoga_prescan(lagna_sign_idx, planets):
-    """结构格局预扫（A1：机械可判的结构条件由 calc 给核验结果，规则读字段禁自推/先验）。
-    含 VRY(逆境王格)：6/8/12宫主落**其他**凶宫（落自宫不算——堵"12主落12也算Vimala"假阳性）。"""
-    lords = calc_house_lords(lagna_sign_idx)
-    DUS = {6, 8, 12}
+def calc_yoga_prescan(lagna_sign_idx, planets, house_lords, graha_drishti, mutual_drishti, parivartana):
+    """结构格局预扫（机械可判的格局结构条件由 calc 核验，规则读字段禁自推/先验/越宫）。
+    ⚠️ 只判"结构骨架成立=T/F + 参与星"；强度评估/污染修正/解除后语义/吉凶程度一律留模型。
+    含 VRY / Dharma-Karma / Dhana / Raja / Chandra-Mangala / Guru-Chandala /
+       Gajakesari / Adhi / Kemadruma / Shakata / Pancha-Mahapurusha。"""
+    DUS, KENDRA, TRIKONA = {6, 8, 12}, {1, 4, 7, 10}, {1, 5, 9}
+    MALEFIC_NAT = {'Saturn', 'Mars', 'Sun', 'Rahu', 'Ketu'}
+    EXALT = {'Sun': 'Aries', 'Moon': 'Taurus', 'Mars': 'Capricorn', 'Mercury': 'Virgo',
+             'Jupiter': 'Cancer', 'Venus': 'Pisces', 'Saturn': 'Libra'}
+    OWN = {'Sun': ['Leo'], 'Moon': ['Cancer'], 'Mars': ['Aries', 'Scorpio'], 'Mercury': ['Gemini', 'Virgo'],
+           'Jupiter': ['Sagittarius', 'Pisces'], 'Venus': ['Taurus', 'Libra'], 'Saturn': ['Capricorn', 'Aquarius']}
+    ALL9 = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu']
+
+    def h_of(name):
+        p = planets.get(name)
+        return p['house'] if p and 'house' in p else None
+    def nth_from(h, n):
+        return (((h - 1 + (n - 1)) % 12) + 1) if h else None
+    def rel(frm, to):
+        return (((to - frm) % 12) + 1) if (frm and to) else None
+    def occ(h, exclude=()):
+        return [n for n in ALL9 if planets.get(n, {}).get('house') == h and n not in exclude]
+    def lord(h):
+        return house_lords[h]['lord']
+    def exalt_or_own(name):
+        s = planets.get(name, {}).get('sign')
+        return s == EXALT.get(name) or s in OWN.get(name, [])
+    def conj(a, b):
+        ha = h_of(a)
+        return ha is not None and ha == h_of(b)
+    def mutual(a, b):
+        return sorted([a, b]) in mutual_drishti
+    def aspects(a, b):  # a 照 b（graha drishti 单向）
+        return b in graha_drishti.get(a, {}).get('aspected_planets', [])
+    def pariv(hx, hy):
+        return any(sorted(pv['houses']) == sorted([hx, hy]) for pv in parivartana)
+    def interact(hx, hy):  # 两宫主"互动"= 合相/互视/互溶
+        la, lb = lord(hx), lord(hy)
+        return (la != lb) and (conj(la, lb) or mutual(la, lb) or pariv(hx, hy))
+
+    res = {}
+    # VRY
     vry = {}
-    for h, key in [(6, 'harsha'), (8, 'sarala'), (12, 'vimala')]:
-        lord = lords[h]['lord']
-        p = planets.get(lord)
-        lh = p['house'] if (p and 'house' in p) else None
-        vry[key] = {'active': (lh in (DUS - {h})) if lh else False,
-                    'lord': lord, 'lord_house': lh,
-                    'rule': f'{h}宫主落其他凶宫{sorted(DUS - {h})}（自宫不算）'}
-    return {'vry': vry}
+    for h, k in [(6, 'harsha'), (8, 'sarala'), (12, 'vimala')]:
+        lh = h_of(lord(h))
+        vry[k] = {'active': (lh in (DUS - {h})) if lh else False, 'lord': lord(h),
+                  'lord_house': lh, 'rule': f'{h}宫主落其他凶宫{sorted(DUS - {h})}（自宫不算）'}
+    res['vry'] = vry
+    # A 类：宫主互动型（互动=合相/互视/互溶）
+    res['dharma_karma'] = {'active': interact(9, 10), 'lords': [lord(9), lord(10)]}
+    res['dhana'] = {'active': interact(2, 11), 'lords': [lord(2), lord(11)]}
+    raja = [[t, k, lord(t), lord(k)] for t in TRIKONA for k in KENDRA if t != k and interact(t, k)]
+    res['raja'] = {'active': len(raja) > 0, 'hits': raja}
+    res['chandra_mangala'] = {'active': conj('Moon', 'Mars') or mutual('Moon', 'Mars')}
+    res['guru_chandala'] = {'active': conj('Jupiter', 'Rahu')}
+    # B 类：落宫/相对位置型
+    mh, jh = h_of('Moon'), h_of('Jupiter')
+    res['gajakesari'] = {'active': (rel(mh, jh) in KENDRA) if (mh and jh) else False,
+                         'rule': 'Jup/Moon 互为角宫(相距1/4/7/10)'}
+    adhi_h = [nth_from(mh, n) for n in (6, 7, 8)] if mh else []
+    adhi_b = [b for b in ['Jupiter', 'Venus', 'Mercury'] if h_of(b) in adhi_h]
+    res['adhi'] = {'active': len(adhi_b) > 0, 'benefics': adhi_b, 'from_moon_678': adhi_h,
+                   'malefic_contam': any(any(o in MALEFIC_NAT for o in occ(h)) for h in adhi_h),
+                   'rule': '吉星(Jup/Ven/Mer)落从Moon起6/7/8宫（无凶混杂更纯）'}
+    if mh:
+        h_next, h_prev = nth_from(mh, 2), nth_from(mh, 12)
+        kbase = (len(occ(h_next, ('Moon',))) == 0 and len(occ(h_prev, ('Moon',))) == 0)
+        cancel = (mh in KENDRA) or (len(occ(mh, ('Moon',))) > 0) or aspects('Jupiter', 'Moon')
+        res['kemadruma'] = {'active': kbase, 'cancelled': cancel,
+                            'rule': 'Moon 2/12宫(从Moon)无星；解除:Moon在Kendra/有合相/受Jup照'}
+    else:
+        res['kemadruma'] = {'active': False, 'cancelled': False}
+    res['shakata'] = {'active': (rel(mh, jh) in {6, 8}) if (mh and jh) else False,
+                      'cancelled': (jh in KENDRA) or (mh in KENDRA) or exalt_or_own('Jupiter'),
+                      'rule': 'Jup/Moon 互为6/8宫；解除:Jup或Moon在Kendra/Jup入旺庙'}
+    # C 类：Pancha Mahapurusha（在Kendra且入旺/入庙）
+    maha = {}
+    for gname, star in [('Ruchaka', 'Mars'), ('Bhadra', 'Mercury'), ('Hamsa', 'Jupiter'),
+                        ('Malavya', 'Venus'), ('Shasha', 'Saturn')]:
+        sh = h_of(star)
+        maha[gname] = {'active': (sh in KENDRA) and exalt_or_own(star), 'star': star,
+                       'house': sh, 'sign': planets.get(star, {}).get('sign')}
+    res['mahapurusha'] = maha
+    return res
 
 def calc_mutual_drishti(graha_drishti):
     """互视对（mutual drishti，格局"互视"唯一口径）：A照B落宫 且 B照A落宫（双向），
@@ -783,7 +853,6 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
     # 9. Graha drishti（吠陀宫位照射）——西占 orb 相位表已废弃删除：不属 KN Rao 体系、无判定消费方
     graha_drishti = calc_graha_drishti(planets)  # P10 Parashari graha drishti（宫位照射，禁手推）
     functional = calc_functional(lagna['sign_idx'], planets)      # B3 P1主身份（一星多宫主MT定主，禁手推）
-    yoga_prescan = calc_yoga_prescan(lagna['sign_idx'], planets)  # A1 结构格局预扫（VRY，禁自推）
 
     # 10. House lords
     house_lords = calc_house_lords(lagna['sign_idx'])
@@ -794,6 +863,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon, tz_str="Asia/
             info['lord_house'] = planets[planet]['house']
     mutual_drishti = calc_mutual_drishti(graha_drishti)   # 互视对（双向，格局"互视"唯一口径，单向不算）
     parivartana = calc_parivartana(house_lords, planets)  # 互溶对（两宫主互换落座，格局"互溶"唯一口径）
+    yoga_prescan = calc_yoga_prescan(lagna['sign_idx'], planets, house_lords, graha_drishti, mutual_drishti, parivartana)  # 全11格局结构预扫（禁自推/越宫）
 
     # 11. Vimsottari Dasha (PyJHora — no fallback)
     dashas = _dasha_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset)

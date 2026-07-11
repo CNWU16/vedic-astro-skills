@@ -11,6 +11,9 @@
 
 ## 主要格局扫描清单
 
+> ⚠️ **格局"结构成立与否"一律读 structured_data「结构格局预扫（全格局）」表 active 字段**（calc 已核：VRY / Dharma-Karma / Dhana / Raja / Chandra-Mangala / Guru-Chandala / Gajakesari / Adhi / Kemadruma / Shakata / Pancha-Mahapurusha）——❌禁自推结构是否成立、❌禁越宫（Adhi 从 Moon 起6/7/8、VRY 落自宫不算、Mahapurusha 需在 Kendra 且入旺/庙、互动=合相/互视/互溶见关系类段）。
+> 下方各格局的"**条件**"是**结构定义**（供理解，成立与否以预扫表为准）；各格局的"**评估**"才是模型的活——**强度评估 / 污染修正（燃烧/逆行/战争打折）/ 解除后语义 / 吉凶程度**（读参与星 Shadbala/尊贵度/燃烧等）。**结构下沉、强度语义留模型**。
+
 ### Dharma-Karma Yoga（使命格局）
 ```
 条件：9宫主和10宫主互动（合相/互视/互溶）
