@@ -6,6 +6,23 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [v8.0] - 2026-07-12
+
+> 🔮 **vedic-prashna 卜卦/时盘上线** — 八Skill架构（独立生态位）
+
+### ✨ 新增 vedic-prashna（卜卦/时盘）
+
+求问者心中有一具体问题、在某刻提问，即以"提问那一刻的时间地点"起盘（Prashna Kundali）答那个问题。不需本命盘，独立生态位。
+
+- **纯 Parashari 主判读**：Lagna / Moon / 相关宫 / Karaka 五步 + 三档结论 + Dasha/Moon Nakshatra 择时（KN Rao 路线）
+- **独立生态位**：不接入本命 pipeline，不需 `structured_data.md`；触发后不激活 core/love/career/synastry/rectifier
+- **Tajika/KP 沙箱可选层（默认关）**：Tajika 作可叠加副层、KP 作互斥独立栈；计算脚本物理隔离在 `vedic-prashna/scripts/`，engine.py 绝不加异体系字段，主系统 5 个分析 skill 零改动
+- **本命交叉可选**：有本命盘时可开交叉，走"矛盾裁决"通道（本命=根盘不违、单向不逆升）
+- **产物独立目录**：`prashna_<时间>_<label>/`，产物名 `structured_prashna.md`，与本命 `structured_data.md` 严格区分
+- **回归断言**：consistency_lint 第 7 组 4 条隔离断言（engine 无异体系 key、主 skill 无 prashna 术语、产物物理隔离、主系统不反向 import 沙箱）
+
+---
+
 ## [v7.0] - 2026-06-18
 
 > 💞 **vedic-synastry 合盘上线** — 七Skill架构

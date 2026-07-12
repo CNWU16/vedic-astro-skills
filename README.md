@@ -1,21 +1,21 @@
 <p align="center">
-  <h1 align="center">🔱 Vedic Astro Skills v7.0</h1>
+  <h1 align="center">🔱 Vedic Astro Skills v8.0</h1>
   <p align="center">
     <strong>AI驱动的吠陀占星分析系统 | AI-Powered Vedic Astrology Analysis System</strong>
   </p>
   <p align="center">
-    <img src="https://img.shields.io/badge/version-v7.0-blue" alt="Version">
+    <img src="https://img.shields.io/badge/version-v8.0-blue" alt="Version">
     <img src="https://img.shields.io/badge/python-3.8~3.13-green" alt="Python">
     <img src="https://img.shields.io/badge/license-AGPL--3.0-orange" alt="License">
-    <img src="https://img.shields.io/badge/skills-7-purple" alt="Skills">
+    <img src="https://img.shields.io/badge/skills-8-purple" alt="Skills">
   </p>
 </p>
 
 ---
 
-> **七个专精 Skill 协同工作，从原生排盘到完整人生审计，再到双人合盘。**
+> **八个专精 Skill 协同工作，从原生排盘到完整人生审计、双人合盘，再到即时卜卦（Prashna）。**
 >
-> Seven specialized skills working together — from native chart calculation to complete life audit and two-person synastry.
+> Eight specialized skills working together — from native chart calculation to complete life audit and two-person synastry, plus moment-based Prashna (horary).
 
 **兼容 Antigravity、Claude Code 和 Codex。** Compatible with Antigravity, Claude Code, and Codex.
 
@@ -24,7 +24,7 @@
 ## 📖 目录 / Table of Contents
 
 - [安装 / Installation](#-安装--installation)
-- [七Skill架构 / Architecture](#-七skill架构--architecture)
+- [八Skill架构 / Architecture](#-八skill架构--architecture)
 - [快速开始 / Quick Start](#-快速开始--quick-start)
 - [各Skill说明 / Skill Details](#-各skill说明--skill-details)
 - [项目结构 / Project Structure](#-项目结构--project-structure)
@@ -42,8 +42,8 @@
 <summary><b>Codex</b></summary>
 
 ```bash
-# 从 GitHub 安装全部 7 个 skill（缺一不可）
-# Install all 7 skills from GitHub (all required)
+# 从 GitHub 安装全部 8 个 skill（缺一不可）
+# Install all 8 skills from GitHub (all required)
 
 git clone https://github.com/CNWU16/vedic-astro-skills.git
 cp -r vedic-astro-skills/codex/skills/vedic-* ~/.codex/skills/
@@ -64,9 +64,9 @@ cp -r vedic-astro-skills/claude-code/skills/vedic-* ~/.claude/skills/
 <details>
 <summary><b>Antigravity</b></summary>
 
-将 `antigravity/skills/` 下的 7 个文件夹复制到你的 Antigravity skills 目录：
+将 `antigravity/skills/` 下的 8 个文件夹复制到你的 Antigravity skills 目录：
 
-Copy all 7 folders from `antigravity/skills/` to your Antigravity skills directory:
+Copy all 8 folders from `antigravity/skills/` to your Antigravity skills directory:
 
 ```
 vedic-reader/
@@ -76,13 +76,14 @@ vedic-career/
 vedic-love/
 vedic-rectifier/
 vedic-synastry/      ← 合盘（需两份盘）/ Synastry (needs two charts)
+vedic-prashna/       ← 卜卦/时盘（独立·不需本命）/ Prashna (standalone, no natal chart)
 ```
 
 </details>
 
-> ⚠️ **建议一次装全 7 个 skill。** vedic-calculator 是计算基座，其余分析 skill 都依赖它生成的 `structured_data.md`。其中 **vedic-synastry（合盘）是双人分析 skill**——它比较两个人的盘，用法与单人 skill 不同（需双方各一份盘）。
+> ⚠️ **建议一次装全 8 个 skill。** vedic-calculator 是计算基座，多数分析 skill 都依赖它生成的 `structured_data.md`。其中 **vedic-synastry（合盘）是双人分析 skill**——需双方各一份盘；**vedic-prashna（卜卦/时盘）是独立生态位**——不需本命盘，以提问时刻起盘答一事，与本命分析路径分开。
 >
-> **Install all 7 skills.** vedic-calculator is the computational foundation that the other analysis skills depend on. Among them, **vedic-synastry (synastry) is a two-person skill** — it compares two charts and works differently from single-person skills (needs one chart per person).
+> **Install all 8 skills.** vedic-calculator is the computational foundation that most analysis skills depend on. Among them, **vedic-synastry (synastry) is a two-person skill** (needs one chart per person); **vedic-prashna (Prashna/horary) is a standalone module** — it needs no natal chart and casts a chart for the moment of asking.
 
 ### Step 2: 安装 Python 依赖 / Install Python dependencies
 
@@ -108,7 +109,7 @@ python vedic-calculator/scripts/setup_env.py
 
 ---
 
-## 🏛️ 七Skill架构 / Architecture
+## 🏛️ 八Skill架构 / Architecture
 
 ```
 用户星盘 (PDF/截图/文本)          用户出生信息 (日期+时间+地点)
@@ -141,6 +142,13 @@ Chart file (PDF/image/text)      Birth info (date+time+place)
                               ▲
               另一个人的 structured_data.md
               second person's chart
+
+─── 独立生态位 / Standalone（不接入上面的数据流）───
+┌──────────────────────────────────────┐
+│ vedic-prashna — 卜卦/时盘 (Prashna)      │
+│ 不需本命，以提问时刻起盘答一事            │
+│ No natal chart; cast for the moment    │
+└──────────────────────────────────────┘
 ```
 
 | Skill | 功能 Function | 触发词 Trigger |
@@ -152,6 +160,7 @@ Chart file (PDF/image/text)      Birth info (date+time+place)
 | 💘 **love** | 3Step恋爱时机分析 / Love timing analysis | "分析感情" "恋爱运势" "桃花时机" |
 | 📐 **rectifier** | 5事件逆推出生时间 ±5min / Birth time rectification | "校准时间" "时间矫正" |
 | 💞 **synastry** | 双人合盘：跨盘叠盘 + 六维矩阵关系分析 / Two-person synastry | "合盘" "两个人合不合" "婚配" "合作搭档" |
+| 🔮 **prashna** | 卜卦/时盘：提问时刻起盘答一事，不需本命（独立生态位）/ Prashna horary | "卜卦" "占问" "起一卦" "时盘" "即时盘" |
 
 ---
 
@@ -184,6 +193,7 @@ Chart file (PDF/image/text)      Birth info (date+time+place)
 用户: 分析事业      → vedic-career 职业蓝图
 用户: 分析感情      → vedic-love 恋爱时机
 用户: 合盘 / 我和XX合不合 → vedic-synastry 双人合盘（再提供对方出生信息即可）
+用户: 卜卦 / 起一卦 / 占问一事 → vedic-prashna 即时起盘（独立·不需本命）
 ```
 
 ### reader 内部路由 / Internal Routing
@@ -306,6 +316,14 @@ Compares two charts: a neutral scan first, then a five-layer analysis under one 
 
 ---
 
+### 🔮 vedic-prashna — 卜卦/时盘 / Prashna (Horary)
+
+独立生态位，不需本命盘。求问者心中有一具体问题、在某刻提问，即以"提问那一刻的时间地点"起盘（Prashna Kundali）答那个问题。主判读走纯 Parashari（KN Rao 路线）；Tajika/KP 作可选沙箱层，默认关，物理隔离于本 skill 内、绝不污染主系统。
+
+Standalone module, no natal chart needed. Casts a chart for the exact moment a question is asked (Prashna Kundali) and answers that one question. Main judgment is pure Parashari (KN Rao line); Tajika/KP are optional, sandboxed, and off by default — physically isolated inside this skill.
+
+---
+
 ## 📁 项目结构 / Project Structure
 
 ```
@@ -347,12 +365,20 @@ vedic-astro-skills/
 │   │   └── scripts/
 │   │       ├── build_synastry_data.py    # 跨盘计算引擎（纯标准库）
 │   │       └── validate_synastry_data.py # 双盘自检
-│   └── vedic-rectifier/
-│       ├── SKILL.md                 # 时间校准
-│       ├── requirements.txt
-│       ├── resources/
+│   ├── vedic-rectifier/
+│   │   ├── SKILL.md                 # 时间校准
+│   │   ├── requirements.txt
+│   │   ├── resources/
+│   │   └── scripts/
+│   │       └── time_scan.py         # Lagna/D9 扫描器
+│   └── vedic-prashna/               # 卜卦/时盘（独立·不需本命）
+│       ├── SKILL.md                 # Prashna 引擎（纯 Parashari 主判读）
+│       ├── resources/               # 判读规范/宫位卡拉卡/月亮政策/本命交叉政策 等
 │       └── scripts/
-│           └── time_scan.py         # Lagna/D9 扫描器
+│           ├── build_prashna_data.py    # 卜卦盘计算
+│           ├── calc_moon_vedic.py       # 月亮状态
+│           ├── calc_optional_tajika.py  # Tajika 可选层（沙箱·默认关）
+│           └── calc_optional_kp.py      # KP 可选层（沙箱·默认关）
 ├── claude-code/skills/              # Claude Code 版本 (同上)
 └── codex/skills/                    # Codex 原生版本（含 agents/openai.yaml）
 ```
@@ -369,6 +395,7 @@ vedic-astro-skills/
 | **精确算法 Algorithms** | PyJHora 4.8.6 (SAV/Dasha/分盘) + 9项Shadbala修正 |
 | **分盘 Divisions** | 15 张分盘 D1~D60 (PyJHora) |
 | **合盘 Synastry** | 跨盘叠盘 + Ashtakoota 八项 + 六维矩阵（纯吠陀判据，不混西方占星）|
+| **卜卦 Prashna** | 提问时刻起盘答一事（纯 Parashari 主判读；Tajika/KP 沙箱可选层默认关）|
 | **容错策略 Error Handling** | Fail-fast（不给错误结果）+ `setup_env.py` 自动修复 |
 | **校验 Validation** | 16条数学校验（SAV=337、BAV行和常量、Ra-Ke对冲等）|
 | **反偏见 Anti-bias** | 正反双审 — 禁止只挑用户想听的数据 |
@@ -381,6 +408,7 @@ vedic-astro-skills/
 
 | 版本 | 日期 | 亮点 |
 |:---|:---|:---|
+| **v8.0** | 2026-07-12 | 🔮 **vedic-prashna 卜卦/时盘上线** — 独立生态位（不需本命）+ 纯 Parashari 主判读 + Tajika/KP 沙箱可选层（默认关）|
 | **v7.0** | 2026-06-18 | 💞 **vedic-synastry 合盘上线** — 两段式入口（中性平扫 → 关系框架）+ 跨盘叠盘 + 六维矩阵（不给匹配度总分）|
 | v6.1 | 2026-06-08 | 🎯 **PyJHora 精确引擎** — Dasha ≤2天 + Shadbala 9项fix + fail-fast + 无fallback |
 | v6.0 | 2026-06-07 | 🧮 vedic-calculator 上线 — 原生排盘引擎 + 移植性改造 + 全系统接入 |
