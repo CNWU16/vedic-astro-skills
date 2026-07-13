@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vedic Prashna"
+  short_description: "Answer a specific question with a Vedic horary chart"
+  default_prompt: "Use $vedic-prashna to cast a Prashna chart for my specific question."

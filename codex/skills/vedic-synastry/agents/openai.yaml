@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vedic Synastry"
+  short_description: "Analyze compatibility and timing between two Vedic charts"
+  default_prompt: "Use $vedic-synastry to compare two Vedic charts and analyze the relationship."
