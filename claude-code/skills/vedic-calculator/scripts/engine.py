@@ -89,6 +89,13 @@ if _missing:
 
 # === 配置 ===
 swe.set_sid_mode(swe.SIDM_TRUE_CITRA)
+# 星历路径：显式指向 skill 自带 ephe（.se1），确保首次 calculate_full_chart 的 calc_ut 就用
+# Swiss 星历。否则 engine 自身从不 set_ephe_path，首盘 calc_planet 在 PyJHora 模块（首次调用
+# 中途才 set_ephe_path）之前跑 → 跌回 Moshier 近似，与后续盘差 ~0.5 角秒（PQ-02 同进程重复
+# 排盘漂移的真根因；产品诊断的 sid_mode 修法经实测无效）。
+_EPHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ephe')
+if os.path.isdir(_EPHE_DIR):
+    swe.set_ephe_path(_EPHE_DIR)
 
 SIGNS = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo',
          'Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces']
