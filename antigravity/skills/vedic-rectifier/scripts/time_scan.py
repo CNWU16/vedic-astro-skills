@@ -209,8 +209,8 @@ def print_results(results, date_str, time_str, lat, lon):
         print(f"{r['delta']:+4d}min | {r['asc_deg']:8.2f}° | {r['sign']:>4}{r['sign_cn']} | {r['deg_in_sign']:6.2f}° | {r['d9']:>4} | {r['d10']:>4} |{marker_str}{is_base}")
 
 
-def save_results(results, date_str, time_str, lat, lon, filepath):
-    """保存为Markdown表格"""
+def save_results(results, date_str, time_str, lat, lon, filepath, dasha_ep=None):
+    """保存为Markdown表格（含两点法 Dasha——3c 段内定位的硬腿数据源，必须落盘）"""
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(f"# 时间扫描结果\n\n")
         f.write(f"> 基准: {date_str} {time_str} UTC\n")
@@ -225,6 +225,19 @@ def save_results(results, date_str, time_str, lat, lon, filepath):
             f.write(f"| {r['delta']:+4d}min | {r['asc_deg']:.2f}° | "
                     f"{r['sign']} {r['deg_in_sign']:.1f}° | "
                     f"{r['d9']} | {r['d10']} | {marker} |\n")
+
+        # 两点法 Dasha 也落盘（3c 段内定位的硬腿数据源；此前只 print 到 stdout、读存盘文件的 agent 拿不到 → 会退化成纯结构匹配）
+        f.write("\n## 两点法 Dasha（段首 / 段末；AD 日期=本地时区）\n")
+        f.write("> 对每个事件日期在段首/段末两条时间线各查落哪个 MD/AD → 反推所需段内出生子窗 → 各事件子窗取覆盖峰值(众数区)。\n")
+        f.write("> ⚠️ 若上表有【Moon跨Nak】标记 → 该段 Dasha 起始主星跳变、两点不连续，须在跨点切段后分别用两点法。\n\n")
+        if dasha_ep is None or '_error' in (dasha_ep or {}):
+            err = (dasha_ep or {}).get('_error', '未传入两点法 Dasha')
+            f.write("⚠️⚠️ **DASHA_UNAVAILABLE**：" + err + "\n")
+            f.write("→ ❌ 禁在无两点法 Dasha 下进 3c 段内定位/定盘（会退化成纯结构=过拟合风险）；请修复 Dasha 依赖后重跑。\n")
+        else:
+            for label, dashas in dasha_ep.items():
+                f.write(f"\n### {label}\n")
+                f.write(_fmt_dasha(dashas) + "\n")
 
     print(f"\n已保存: {filepath}")
 
@@ -250,7 +263,11 @@ def print_dasha_endpoints(dasha_ep):
     print("        反推该事件落进'正确 MD/AD'所需的段内出生子窗 → 各事件子窗取覆盖峰值(众数区)")
     print("   ⚠️ 若上方扫描出现【Moon跨Nak】标记 → 该段 Dasha 起始主星跳变，两点不连续，须在跨点切段后分别用两点法")
     if '_error' in dasha_ep:
-        print("  ⚠️ " + dasha_ep['_error'])
+        print("\n" + "=" * 60)
+        print("⚠️⚠️⚠️ DASHA_UNAVAILABLE — 两点法 Dasha 不可用：" + dasha_ep['_error'])
+        print("→ ❌ 硬腿数据源缺失！禁在无两点法 Dasha 下进 3c 段内定位/定盘")
+        print("   （否则退化成纯结构匹配=过拟合风险）；请修复 Dasha 依赖后重跑。")
+        print("=" * 60)
         return
     for label, dashas in dasha_ep.items():
         print(f"\n### {label}")
@@ -274,7 +291,7 @@ def main():
     print_dasha_endpoints(dasha_ep)
 
     if args.save:
-        save_results(results, args.date, args.time, args.lat, args.lon, args.save)
+        save_results(results, args.date, args.time, args.lat, args.lon, args.save, dasha_ep)
 
     # 输出变化点摘要
     print("\n## 关键变化点（Lagna/D9换座 + Moon跨Nak）")
