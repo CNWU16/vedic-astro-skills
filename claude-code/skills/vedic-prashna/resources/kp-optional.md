@@ -1,164 +1,240 @@
-# KP 独立判读栈 · 判读消费入口（C 类独立切换）
+# KP Horary 独立栈（1–249）
 
-> **定位**：KP (Krishnamurti Paddhati) = 独立占星体系，用 **sub-lord signify 判事件成败**。
-> **纪律**：
-> - **默认关**。只在用户显式切换时启用。
-> - **与 Parashari 主判读互斥**——启用 KP 后判读走 KP-only 栈；Parashari 主判读段虽在 md 里但判读时忽略。
-> - **绝不同时输出为主结论**——判读单顶部明确 "本次判读走 KP 栈"。
-> - **技术选型**：Placidus house system(KP 传统) + True Citra ayanamsa(与主盘一致，与 KP 原用 KP ayanamsa 差异<1°) + Vimshottari 比例分 sub。
+## 定位
 
----
+KP 是与 Parashari 标准层互斥的独立体系，不是副证据。只有用户明确要求 KP，
+并亲自给出 `1–249` 数字时运行。
 
-## 1. 触发条件
+不得：
 
-用户显式说以下任一 → build 时加 `--enable-kp`：
-
-- "用 KP 看这个盘" / "用 KP 判"
-- "看看 sub-lord"
-- "KP 独立体系"
-- "切换到 KP"
-- "用 Krishnamurti 派"
-
-**默认策略**：用户没提上述关键词 → 走 Parashari 主判读，不启用 KP。
-
-**特殊约束（互斥）**：如果用户同时说了 Tajika 和 KP，先澄清"要 Parashari 主 + Tajika 副参考，还是切换到 KP 独立栈？"，不能同时启用。
+- 从提问文字、当前分钟或随机数替用户生成号码；
+- 只用时刻上升点却称为经典 KP Horary；
+- 把 KP 输出追加到 `structured_prashna.md`；
+- 同时显示 KP 与 Parashari 两套主结论再“综合”；
+- 使用 True Citra 代替 Krishnamurti ayanamsa；
+- 使用标准层的 Moon ingress、Chandra Kriya 或 natal Dasha timing。
 
 ---
 
-## 2. 数据契约（读什么）
+## 原生来源
 
-`structured_prashna.md` 里"## KP 独立判读栈"段固定含 2 个子表：
+本栈以 K.S. Krishnamurti Readers 为规则源：
 
-### 2.1 `12 宫 Placidus Cusp KP 三主`
-| 字段 | 含义 |
+- Reader I, *Casting the Horoscope*：Placidus／Raphael houses、
+  Krishnamurti ayanamsa；
+- Reader III, *Predictive Stellar Astrology*：Vimshottari 比例 sub、249 区；
+- Reader IV, *Marriage, Married Life & Children*：婚姻、重聚语义的交叉核对；
+- Reader VI, *Horary Astrology*：1–249 输入、significator 顺序、cusp
+  sub-lord、当前已实现题型宫组、Ruling Planets。
+
+扫描合集：
+<https://archive.org/details/kp-readers>
+
+---
+
+## Phase KP-0：输入门
+
+必收：
+
+| 输入 | 要求 |
 |---|---|
-| house | 宫号(1-12) |
-| cusp | 该 cusp 的度数(星座内 D°MM') |
-| sign | Cusp 所在星座 |
-| sign_lord | 星座主星 |
-| star_lord | Cusp 所在 Nakshatra 的主星 |
-| **sub_lord** | Cusp 所在 sub 的主星（KP 判读的核心） |
+| 具体问题 | 一个可观察结果 |
+| KP number | 用户给出的整数 `1–249` |
+| 判盘时刻 | 开始判断问题的时刻 |
+| 判盘地点 | 当时判断所在地；经纬和 IANA 时区 |
+| 题型 | 必须命中已实现的题型规则 |
 
-### 2.2 `行星 KP 三主`
-- Lagna + Sun/Moon/Mars/Mercury/Jupiter/Venus/Saturn + Rahu/Ketu
-- 每颗给 sign / sign_lord / star_lord / **sub_lord**
+当前支持：
 
----
+| topic | 判断 cusp | 正向宫 | 反向宫 | 来源范围 |
+|---|---:|---|---|---|
+| `love-materialization` | 5 | 7、11 | 6、12 | 恋情能否落实 |
+| `business-partnership-continuity` | 7 | 5、11 | 6、12 | 合作关系能否延续 |
 
-## 3. KP 判读元流程
+题型必须按唯一的可观察结果选择。同一问题同时命中多个 topic 时，返回输入门重新
+澄清，不在一张 KP 盘中合并宫组。
 
-**KP 主判据**：**相关宫的 cusp sub_lord signify 哪些宫 → 判事件成败**。
+当前不自动支持 `marital-reunion`。Reader IV／VI 至少保留三个不同语境：
 
-### 3.1 定问题类别对应的 KP 相关宫
+- “重聚并恢复家庭生活”使用 2、7、11 的事件 significators；
+- “丈夫是否回来同住”先检查 11 cusp，并分别列 11、7、6 与 12、7、6；
+- 离婚章节另把 reunion 写为 1、5、7、11。
 
-（同 `house-karaka-map.md` 里的宫位映射，但 KP 用 Placidus cusp 视角）：
-- 问婚 → 7 宫 cusp
-- 问事业 → 10 宫 cusp
-- 问健康 → 1 宫 + 6 宫 cusp
-- 问失物 → 2 宫 cusp
-- 问诉讼 → 6 宫 + 7 宫 cusp
-- ...
+这些不能拼成“7 cusp；2/7/11 对 6/12”的统一 promise 公式。拆出单义题型并完成
+出版例盘测试前，入口必须失败关闭。
 
-### 3.2 查该 cusp 的 sub_lord
-
-从"12 宫 Placidus Cusp KP 三主"表读 sub_lord。
-
-### 3.3 判 sub_lord 是否 signify 事件正宫
-
-**KP 4-fold significator 简化版**（判 sub_lord 是否代表相关宫）：
-1. sub_lord **在**相关宫 (as tenant) → 强 signify
-2. sub_lord **是**相关宫的宫主 (sign_lord of cusp) → 中 signify
-3. sub_lord 与相关宫主 **共 Nakshatra**（sub_lord 的 star_lord 是相关宫主）→ 弱 signify
-4. sub_lord 与相关宫 **在同一 star_lord 下**（sub_lord 的 star_lord 是相关宫的 star_lord）→ 微弱 signify
-
-任一满足即 signify；越强越明确。
-
-### 3.4 结论判定
-
-- 相关宫 cusp sub_lord signify **相关宫本身** → ✓ **成**
-- 相关宫 cusp sub_lord signify **6/8/12** (dushtana) → ✗ **不成/损失/阻碍**
-- 相关宫 cusp sub_lord signify **中性宫**(无直接支持也无阻碍) → ~ **悬**
-
-**辅助 signify 规则**：
-- Rahu/Ketu 在 KP 里是**特殊 agent**：它们的 sub-lord 语义取"其占用星座主星"(即 sign_lord where they sit) 与"其 conjunct 的行星"的合并语义
-- 判读时优先取 conjunct 的语义，其次取 sign_lord
+进入下一阶段条件：号码、题型、时刻和地点完整。
 
 ---
 
-## 4. 判读单结构（KP 栈专用）
+## Phase KP-1：独立起盘
 
-**判读单顶部**必须写：
+运行：
 
-```markdown
-# Prashna 判读单：<问题简述>  [KP 判读栈·独立体系]
-
-> ⚠️ 本次判读走 KP 独立判读栈；与 Parashari 主判读体系不同、不叠加。
-> Parashari 段(D1/Karaka/Dasha/graha_drishti/SAV) 数据仍在 md 里，但本判读**忽略**。
+```bash
+python scripts/build_kp_horary.py \
+  --datetime "<YYYY-MM-DD HH:MM|now>" \
+  --lat <lat> --lon <lon> --tz "<IANA>" \
+  --number <1-249> \
+  --topic "<supported-topic>" \
+  --question "<single observable question>" \
+  --label "<kebab-case>" \
+  --out-parent "<parent>"
 ```
 
-**结论段结构**（保留三档 + 时间窗 + 建议，但依据换成 KP）：
+输出：
 
-```markdown
-## 一、能不能成? [KP 栈]
-**结论**：[✓成 / ~悬 / ✗不成]
-**KP 主证据**：相关宫 <N> cusp sub_lord = <X>；<X> signify <哪些宫> → <结论>。
-
-## 二、何时成? [KP 栈]
-**主时间窗**：由**当前 Vimshottari 大运/小运的 sub_lord** signify 事件相关宫时触发。
-- 大运主 <M> 内、小运主 <A>、Praty 主 <P> 的段落中，sub_lord signify 相关宫 → 事件窗
-- 与 Moon transit 换 sub-lord 触发日结合(见 Chandra Kriya 段的 next_nakshatra_switch)
-
-## 三、KP 主证据表
-### 3.1 相关宫 cusp 三主
-| 宫 | Cusp | Sign | Sign lord | Star lord | **Sub lord** | Signify |
-|...|
-
-### 3.2 sub_lord Signify 分析
-| Sub lord | 落宫 | 主哪些宫 | Star lord 主哪些宫 | 综合 signify |
-|...|
-
-## 四、建议 [KP 栈]
-[可作 / 可等 / 宜避] — <一句话理由>
+```text
+kp_horary_<yyyymmdd_HHMM>_<label>/
+├── structured_kp.md
+└── structured_kp.json
 ```
 
-**禁做**：
-- ❌ 混用 Parashari 的 Chara Karaka / DK / UL / SAV 等做 KP 判据
-- ❌ 用 graha_drishti 做 KP 主判据（KP 不用 Parashari 相位；有需要用 KP 的 aspects 请查 KP 专门文献）
-- ❌ 判读单同时给 Parashari 和 KP 两套结论（互斥切换 = 二选一）
+不得运行标准 `build_prashna_data.py`，也不得读取 `structured_prashna.md`。
+`structured_kp.md` 必须显示用户原问题、KP number 和 topic，防止号码盘脱离问题
+语境后被误用。
+
+技术口径：
+
+1. 用 Vimshottari 比例把每个 nakshatra 分九 sub；
+2. 在 sign 边界进一步切分，得到 249 个 sign/star/sub 区；
+3. 用户号码取对应区间起点为 Nirayana Ascendant；
+4. 用 Krishnamurti ayanamsa 转为 tropical Ascendant；
+5. 按判盘地纬度求 Placidus cusps，再扣回 Krishnamurti ayanamsa；
+6. 行星取判盘时刻；Rahu／Ketu 使用 Mean Node；
+7. 第一 cusp 位于号码区间精确起点是定义，不判输入敏感。
+
+进入下一阶段条件：249 表已知边界、Asc 求解、12 cusps 和 ayanamsa 自检通过。
 
 ---
 
-## 5. 边界情况
+## Phase KP-2：Significator chain
 
-### 5.1 KP 与 Parashari 结论明显打架
-KP 和 Parashari 是不同体系，出现打架是**正常**的：
-- 用户开 KP = 承认走 KP 栈的结论
-- **不做"综合"** —— 综合就是混体系，违背 C 类独立切换定位
+对每颗行星完整建立：
 
-### 5.2 sub_lord 无明确 signify
-若 sub_lord 与相关宫、相关宫主、dushtana 都无 signify 关系：
-- 判**~悬**档，说明"KP 层此题无强 signify，事的方向不明"
-- 建议用户改用 Parashari 主判读或补澄清问题
+| 强度 | 规则 |
+|---|---|
+| A | 行星位于某宫 occupant 的 star |
+| B | 行星自身占据该宫 |
+| C | 行星位于该宫 owner 的 star |
+| D | 行星自身为该宫 owner |
 
-### 5.3 用户混用 Tajika + KP
-- 拒绝同时启用（第 1 节 §触发条件最后一段）
-- 让用户二选一：Parashari 主 + Tajika 副 (B 类) vs KP 独立栈 (C 类)
+再建立 Rahu／Ketu agent：
+
+- 所处星座主；
+- node 自身的 star-lord 链仍保留。
+- 行星落在 node star 时，必须继续取得该 node 所代理行星的宫位结果，不能在 node
+  自身占宫处截断。
+
+Reader VI 例盘也使用 node 对合相／相位行星的代理，但本阶段尚未从原典建立可复核
+的合相 orb 和相位政策。因此：
+
+- 合相／相位 agent 暂停，不进入 significator chain；
+- 旧版 `3°` proximity 是实现约定，不是已核证原典阈值，已从判定权中移除；
+- 当前只把星座主 agency 标为 operative。
+
+当前也不实现合相／相位对普通 significator 的第五级扩展；不得让模型凭印象补写。
+
+`NODE_AGENT` 是代理来源标签，不是虚构的“第五强度”。输出排序继承被代理证据的
+A／B／C／D 等级；当前不对“node 比星座主更强”的原文另造数值倍数。
+
+进入下一阶段条件：每颗星的 occupancy、ownership、star-lord occupancy／ownership
+和 node agent 都可回查。
 
 ---
 
-## 6. 自检（KP 判读单写完前必核）
+## Phase KP-3：Cusp sub-lord promise
 
-- [ ] 判读单顶部是否标注"【KP 判读栈·独立体系】"?
-- [ ] KP 主判据是否只用 cusp sub_lord signify 分析，未混入 Parashari 判据？
-- [ ] KP 结论是否与 Parashari 结论并列输出（禁）—— 应二选一？
-- [ ] 时间窗是否用 Vimshottari sub-lord 段 + Moon 换 sub 触发日，不用 Tajika applying？
-- [ ] Rahu/Ketu 处理是否按 "conjunct 优先、sign_lord 次之"？
-- [ ] 用户是否明确切换到 KP 而非误开？
+1. 读取题型的判断 cusp；
+2. 取得该 cusp 的 sub-lord；
+3. 取得该 sub-lord 所落 constellation 的 lord；
+4. 读取该 constellation lord 的完整 significator houses；
+5. 与题型专属正向／反向宫组比较；
+6. 另列 cusp sub-lord、constellation lord、position sub-lord 的 temporary
+   retrograde materialization gate。
+
+禁止把 cusp sub-lord 自身的全部 A／B／C／D 宫位直接混成 promise 投票。Reader VI
+的句式是“cusp sub-lord 落在某星宿，而该星宿主是目标宫 significator”。
+
+机械状态：
+
+| 命中 | 状态 |
+|---|---|
+| 只命中正向 | `promised_candidate` |
+| 只命中反向 | `denied_candidate` |
+| 正反同时 | `mixed` |
+| 都未命中 | `unsupported` |
+
+若相关 temporary-retrograde gate 阻塞，保留方向但输出
+`positive_indication_blocked`、`negative_indication_blocked` 或
+`mixed_with_retrograde_block`，不得把“负向事件未能落实”偷换成正向 promise。
+
+若 operative promise 路径的 constellation／star／agent 任一环穿过 Rahu／Ketu，
+当前因 node 合相／相位代理尚未完成，输出 `incomplete_node_agency`，不得用不完整
+代理链宣布 promise 或 denial。
+
+这些状态在例盘验证完成前仍是实验结果，不得改写成宿命式断语。
+
+禁止使用统一的“相关宫＝成、6/8/12＝不成”。例如房产投资的原生规则可能把
+12宫列为正向输入，证明 blanket dushtana 规则不成立。
 
 ---
 
-## 7. 技术 caveat
+## Phase KP-4：Ruling Planets
 
-- **Ayanamsa 差异**：本 skill 用 True Citra，与 KP 原生 KP ayanamsa 差异 <1°，在 sub_lord 边界处偶有归属摇摆(边界±5' 内的 cusp)——判读时若 sub_lord 处 sub 边界(offset<0.5° in nak) 请手工核对。
-- **House system**：本层用 Placidus 是 KP 传统；与主盘 whole-sign house 结果**不同**，这是 KP 独立性的一部分，不算 bug。
-- **未实现**：Ruling Planets(RP) 是 KP 提问时刻的"当权星"筛选层，属高阶补充，未来可加进本 policy。
+按顺序取：
+
+1. 判盘时刻 Asc star lord；
+2. Asc sign lord；
+3. Moon star lord；
+4. Moon sign lord；
+5. day lord；
+6. 代表上述星座主的 Rahu／Ketu。
+
+Day lord 按当地**日出到次日日出**换日，不按民用午夜换日。
+
+若 ruling planet 位于逆行星的 star，列入 rejected，不用于后续筛选。此规则只检查
+Mars、Mercury、Jupiter、Venus、Saturn；Reader VI 明确说 Rahu／Ketu 不按
+temporary retrograde 处理，因此不得因为 node 的正常逆向运动而剔除其 star 内的
+ruling planet。
+
+Ruling Planets 当前只输出筛选表，不承担日期预测。
+
+---
+
+## Phase KP-5：边界与 Timing
+
+每个 cusp 和行星必须输出距最近：
+
+- sign boundary；
+- star boundary；
+- sub boundary
+
+的角分距离。5′ 内列入敏感点，但第一 cusp 的号码定义边界除外。
+
+固定输出：
+
+> KP timing 尚未启用。不得借用标准层 Moon ingress 或 natal Dasha。未来上线必须
+> 同时实现 horary Moon 的 Vimshottari balance、事件 significator 的
+> Dasha/Bhukti/Antara、Ruling Planets 筛选、快慢过运分层和出版例盘测试。
+
+---
+
+## 进入可用状态的门
+
+标题在以下测试全部通过前必须保留“实验栈”：
+
+- Reader VI 的 number 48 = Gemini 8°40′、Rahu star、Jupiter sub；
+- number 74 = Cancer 14°53′20″、Saturn star、Jupiter sub；
+- 249 个区间连续、无重叠、覆盖 360°；
+- 1969／1970／2000 Krishnamurti ayanamsa 表；
+- number Asc → Placidus cusp 已知例；
+- A/B/C/D significator 强度；
+- node sign-lord agent 正反例；
+- node conjunction/aspect agent 的原典 orb、相位政策及正反例；
+- 两个已实现题型的 promise／deny／mixed／unsupported；
+- Reader VI number 156 的合作延续 known-answer；
+- 婚姻重聚各语义的独立 cusp／宫组与出版例盘；
+- Ruling Planets 顺序、日出换日与逆行过滤；
+- star/sub/sign 边界两侧；
+- Timing 独立套件。

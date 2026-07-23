@@ -1,137 +1,112 @@
-# Moon 吠陀动向 · 判读消费入口（moon-policy）
+# Moon 当前事实：标准层消费边界
 
-> **用途**：SKILL.md 主判读 Step 3 的**唯一消费入口**——把 `calc_moon_vedic.py` 算出的 `chandra_kriya` + `moon_next_contact` 字段映射为判读语义。
-> **纪律**：
-> - 数据由沙箱内 `scripts/calc_moon_vedic.py` 生成，Prashna 起盘时由 `build_prashna_data.py` 自动追加到 `structured_prashna.md` 里"## Moon 吠陀动向"段。
-> - **禁止模型手推 Moon 空亡/换段时刻/换段后接触**——机械可算的字段一律读表，承共享 engine 下沉哲学。
-> - **禁止引 VoC(西占)、Tajika applying-separating aspect**——本 policy 全走整宫落点 + Graha Drishti 吠陀口径，无 orb。
+> **用途**：消费 `calc_moon_vedic.py` 输出的 Moon 位置、月相和当前整宫接触。
+> Moon 数据不生成“成／不成”，也不承担生产级事件择时。
 
 ---
 
-## 1. 数据契约（读什么）
+## 1. 来源位置
 
-`structured_prashna.md` 的"## Moon 吠陀动向"段固定含两个子段：
+Moon 在不同 Prashna 专题中有具体用途，但当前来源集不支持以下全局断言：
 
-### 1.1 `Chandra Kriya`
-| 字段 | 含义 |
+- “Moon 是所有问题权重最高的 significator”；
+- “Moon 必须连接事项宫主，否则事情不成”；
+- “Moon 月宿主是每题固定的第四 significator”；
+- “无同宫、无 Graha Drishti 就是空亡”。
+
+`B-article-153` 曾用 Lagna、Lagna 主、Moon 及月宿检查一张失踪者盘是否反映
+问题；这是一个 Bhavan 单案例，只能作为**软验证候选**，不能扩展成全局硬门。
+
+---
+
+## 2. 数据契约
+
+默认 `structured_prashna.md` 只含三组 Moon 数据：
+
+### `moon_position`
+
+| 字段 | 用途 |
 |---|---|
-| moon_sign / moon_nakshatra / moon_pada / moon_house | Moon 当前定位 |
-| moon_nak_lord | Moon 所在 Nakshatra 的主星 = 当前 Vimshottari Dasha 段主 |
-| remaining_in_nakshatra_deg / _days_approx | Moon 出当前 Nakshatra 剩余度数与天数 |
-| remaining_in_sign_deg / _days_approx | Moon 出当前 Sign 剩余度数与天数 |
-| conjunctions | 与 Moon 同 sign 的行星列表（合宫接触） |
-| aspecting_planets / aspecting_details | 有 Graha Drishti 触及 Moon 所在 sign 的行星列表与相位角 |
-| is_void | Moon 空亡判定（无合宫且无 drishti 触及） |
-| void_note | 若 Void，说明触发 judgment-rubric §3 拒绝式 #1 |
+| moon_sign / moon_house | 当前 D1 落点 |
+| moon_nakshatra / moon_pada | 描述；专题规则或软验证明确需要时才消费 |
+| moon_nakshatra_lord | 描述；不是固定 significator |
 
-### 1.2 `moon_next_contact`
-| 字段 | 含义 |
+### `moon_contacts`
+
+| 字段 | 用途 |
 |---|---|
-| next_nakshatra_switch.datetime / days_from_query | Moon 换到下一个 Nakshatra 的精确时刻(swisseph 二分) |
-| next_nakshatra_switch.new_nakshatra / new_nak_lord | 新 Nakshatra 名 + 主星（= 新 Vimshottari 段主） |
-| next_sign_switch.datetime / days_from_query | Moon 换 sign 的精确时刻 |
-| next_sign_switch.new_sign / new_house | 新 sign + Lagna 视角新宫 |
-| next_sign_switch.new_conjunctions / new_aspecting_details | 换 sign 后 Moon 所在新 sign 的接触集合（用当前 chart 行星位近似，几天内漂移可忽略） |
+| conjunctions | 与 Moon 同整宫／同 sign 的行星 |
+| graha_drishti_planets | 通过七曜整宫 Graha Drishti 照 Moon 的行星 |
+| graha_drishti_details | 来源宫与照射类型 |
 
----
+### `moon_strength_factors`
 
-## 2. 语义映射（判读时怎么用）
-
-### 2.1 Void（空亡）→ 拒绝式判据
-
-若 `chandra_kriya.is_void == True`：
-- **直接触发 judgment-rubric §3 拒绝式 #1**：Moon 无载体 → **✗ 不成** 档
-- 判读单 §一 主证据一句话：**"心念(Moon)在提问的这个 sign 内孤立无援——事无法启动"**
-- 判读单 §四建议默认 **"宜避 / 可等下一 Nakshatra 转段再问"**
-
-### 2.2 当前接触集合 → 心念现在指向哪
-
-若 `chandra_kriya.is_void == False`：
-- **合宫接触的行星**：Moon 与之最紧密——判读时权重最高
-  - 若合宫方是**事件 Karaka** 或 **相关宫主** → **心念直指事件本身**，成的可能性显著上升
-  - 若合宫方是 6/8/12 宫主 → 心念被"阻碍/突变/损失"包裹，倾向 ~悬 或 ✗不成
-- **Graha Drishti 触及的行星**：次密——按远近相位加权
-  - Jupiter/Venus 触及 → 良吉扶助
-  - Saturn/Mars 触及 → 阻力/延迟；如果 Karaka 就是 Saturn/Mars 类，反而是"事在推进的自然阻力"
-  - Rahu 触及 → **amplify=True**（承 engine 口径，膨胀/迷惑），判读时**必须标注 Rahu 放大**
-
-### 2.3 换 Nakshatra 时刻 → 主择时触发日
-
-`next_nakshatra_switch.datetime` = **主择时候选点**：
-- Moon 换 Nakshatra ≈ Vimshottari 段主换段（Ketu→Venus→Sun→Moon→Mars→Rahu→Jupiter→Saturn→Mercury 依 Nakshatra 主定）
-- 判读单 §二 主时间窗必引：**"Moon 于 YYYY-MM-DD HH:MM 换入 <Nakshatra>，Vimshottari 转入 <lord> 段"**
-- 新段主若与本题 significator（相关宫主/Karaka）同名 → **强触发窗**
-- 新段主若与 significator 有 graha drishti/mutual/parivartana → **中触发窗**
-- 新段主与 significator 完全无关 → 此换段仅为"心念小转"，不作主时间窗
-
-### 2.4 换 Sign 时刻 + 换后接触 → 心念下一步指向哪
-
-`next_sign_switch.datetime` + `new_conjunctions/new_aspecting_details`:
-- 换 sign 后 Moon 所在宫更新 → **Moon 触及集合更新**
-- 若换后新接触集合里出现 significator（相关宫主/Karaka）→ 判读单 §二辅助线索必引：**"Moon 于 YYYY-MM-DD 换入 <sign>(新宫 N)，与 <significator> 建立接触"**
-- 若换后接触集合仍为空 → Moon 后段依然 Void：判读单 §三风险段必写"心念在换 sign 后仍无支撑，事持续冷淡"
-
----
-
-## 3. 边界情况
-
-### 3.1 Moon 处 Nakshatra 最后一 pada
-- `moon_pada == 4` 且 `remaining_in_nakshatra_deg < 1°`：Moon 极近换段
-- 若下一个 Nakshatra 主是 6/8/12 宫主 → **judgment-rubric §3 拒绝式 #5** 触发考虑：事往阻碍方向走
-- 判读时明写：**"Moon 距下一 Nakshatra <hh:mm，转入 <lord> 段，方向为..."**
-
-### 3.2 Moon 处 Gandanta（星座交界±30′内的水火转折带）
-Cancer-Leo / Scorpio-Sagittarius / Pisces-Aries 三处为传统 Gandanta。
-- 若 `moon_sign_idx ∈ {3, 7, 11}` 且 `moon_degree >= 29.5°` → 出宫向 Gandanta 断裂带
-- 若 `moon_sign_idx ∈ {4, 8, 0}` 且 `moon_degree < 0.5°` → 入宫从 Gandanta 出来
-- **judgment-rubric §3 拒绝式 #6** 触发考虑：事在断裂带 → 判"悬"或"不成"
-
-### 3.3 换 sign 时刻超过 2 天
-- 罕见（Moon 每 sign ~2.25 天）；若出现说明起盘输入异常，validate 时告警
-
----
-
-## 4. 判读单里的引用样例
-
-**§一 主证据行示例**：
-
-> "月亮(Moon)在 <sign> · <nakshatra>，被 <Karaka/相关宫主> 通过 <angle>th 相位照着——心念在事的位置上，事有载体。"
-
-**§二 主时间窗示例**：
-
-> "主窗口：<YYYY-MM-DD HH:MM> Moon 换入 <new_nak>，Vimshottari 从 <当前段主> 转入 <新段主>；这个新段主正是本题相关宫主，事件启动概率显著。"
-
-**§二 辅助线索示例**：
-
-> "约 <days> 天后（<datetime>），Moon 换入 <new_sign>，同时与 <planet> 建立接触——这是次级触发窗口。"
-
-**§三 风险段示例（Void 情形）**：
-
-> "月亮当前空亡（sign 内无合宫、无 graha drishti 触及）——你此刻的问和事本身没形成有效联系，Prashna Marga 传统里这叫'心念断线'，事难以启动。建议：等 <YYYY-MM-DD HH:MM> Moon 换 Nakshatra 后再问，届时接触集合会更新。"
-
----
-
-## 5. 术语翻译规则（承 SKILL.md 语言风格）
-
-判读单里出现术语必须当场翻译：
-
-| 术语 | 白话翻译 |
+| 字段 | 用途 |
 |---|---|
-| Chandra Kriya | Moon 状态的吠陀口径判定 |
-| Moon Void | 月亮空亡=心念孤立=事无载体 |
-| Graha Drishti | 行星整宫照射（吠陀相位，无 orb） |
-| Nakshatra | 月宿（27 分星宿，Moon 每约 1 天换一个） |
-| Vimshottari 段转 | 大运/小运的段落切换 |
-| Nakshatra 主(lord) | 该月宿对应的 Dasha 段主 |
-| Gandanta | 星座交界的断裂带（水火转折点） |
+| paksha | 盈亏及 Sun–Moon 距离事实 |
+| dignity | D1 尊贵度事实 |
+| house | Moon 所在宫 |
+
+这些字段只在适用规则账本中有明确 `rule_id` 和 `scope_match` 时产生方向。
 
 ---
 
-## 6. 自检（判读单写完前，Moon 相关必核）
+## 3. 消费顺序
 
-- [ ] Moon 段的所有字段是否来自 `structured_prashna.md`「## Moon 吠陀动向」段，未手推？
-- [ ] `is_void == True` 时是否落到 ✗不成 档（除非本命交叉裁决 override）？
-- [ ] 主时间窗是否引用 `next_nakshatra_switch.datetime` 而非凭记忆？
-- [ ] Rahu 若触及 Moon，是否明写"amplify=放大"？
-- [ ] 术语出现是否当场翻译？
-- [ ] 全流程未引 Tajika applying/separating aspect、未引 VoC 西占口径？
+1. 先从 `question-taxonomy.md` 取得 A／B／C 支持级；
+2. 读取该题型明确适用的 `P` 专题规则；
+3. 专题规则明确使用 Moon 时，按原规则使用；
+4. 只有 `B-article-153` 类型的题意验证需要时，才把月宿作为软验证；
+5. 其余情况下只把 Moon 作为当前心理／状态背景，不加入主规则权重。
+
+Moon 有接触也不自动有利；必须说明它接触了谁、为什么该行星在本题适用规则中
+有意义。Moon 无接触只是一项事实，不自动记负分。
+
+---
+
+## 4. Chandra Kriya 纠错边界
+
+*Prasna Marga* VIII.63–65 及 Appendix IV 的 Chandra Kriya 是按 Moon 在月宿内
+已行弧度计算的 60 种 lunar actions，不是“Moon 无接触”。
+
+当前默认层：
+
+- 不计算 Chandra Kriya；
+- 不借用 Tajika Khallāsara 或西方 Void of Course；
+- 不把该 Kerala 技法并入 K/P/B 标准层；
+- 只保留这段说明，防止再次制造假“空亡”字段。
+
+---
+
+## 5. Timing 边界
+
+默认层不计算 Moon ingress。即使另行计算天文换宿／换座时刻，也不得：
+
+- 写成 Vimshottari Dasha／Antardasha 切换；
+- 单独写成事件发生日期；
+- 用来替代尚未核证的 Prashna timing 模块。
+
+---
+
+## 6. 判读单写法
+
+有专题意义：
+
+> `[rule_id]` 明确使用 Moon；本盘 Moon 的 `<位置／接触／月相>` 对该规则构成
+> `<有利／不利／混合>` 证据。
+
+只有背景意义：
+
+> Moon 当前位于 `<sign/house>`，与 `<planet>` 有／无整宫接触。当前没有来源允许
+> 把这一事实单独升级为成败规则，因此只列背景。
+
+---
+
+## 7. 自检
+
+- [ ] 是否先取得题型支持级和适用 `rule_id`？
+- [ ] Moon 的每条判断是否说明原规则为何需要它？
+- [ ] 是否没有把月宿主固定加入所有题型？
+- [ ] 是否没有把“无接触”记为全局负分或盘无效？
+- [ ] 是否没有输出 Moon ingress 事件应期？
+- [ ] 是否没有混入 Chandra Kriya、Tajika 或西方 Void 语义？

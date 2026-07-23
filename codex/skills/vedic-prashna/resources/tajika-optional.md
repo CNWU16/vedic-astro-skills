@@ -1,132 +1,138 @@
-# Tajika 副层 · 判读消费入口（B 类可选启用）
+# Tajika sambandha/contact overlay
 
-> **定位**：Tajika 派 = 波斯-印度年运体系(Al-Biruni 传入印度化千年，Varshaphala 即用它)。**判据基于 orb applying/separating aspect**——与主体系(Parashari 整宫落点+Graha Drishti)**口径不同**。
-> **纪律**：
-> - **默认关**。只在用户显式开启时生成。
-> - **独立并行主判读、不叠加主结论**。判读单里若引用，必须标注"【Tajika 补充参考·orb 制】"。
-> - **与 Parashari 主结论冲突时，以 Parashari 为准**。
-> - Rahu/Ketu 不参与(KN Rao 主线口径)。
-> - Retro 参与的对跳过(applying/separating 判定不稳)。
+## 定位
 
----
+本层是默认关闭的实验副层，只处理经来源核证的 Tajika 接触关系。它不是完整
+16 yoga 引擎，不改变 Parashari 标准层的“成／悬／不成”，也不提供事件日期。
 
-## 1. 触发条件
+只在用户明确要求 Tajika、Itthasala、applying/separating 时读取并运行。必须先完成
+标准层 Phase 2，选定：
 
-用户显式说以下任一 → 建 build 时加 `--enable-tajika`：
+- 问者星：Lagna lord；
+- 事项星：唯一主事项宫之主。
 
-- "用 Tajika 看一下"
-- "加个年运层" / "加个 Tajika 层"
-- "orb 补充参考" / "看看 orb 层"
-- "看看 applying/separating"
-- "Ithasala 有没有" / "Muthashila 有没有"
-- "Moon 有没有 Manau"
-
-**默认不启用**：用户没提 Tajika/Ithasala/applying 等关键词 → 不加开关，不算 Tajika。
+不得固定加入自然 Karaka 或 Moon 作为第三主星。
 
 ---
 
-## 2. 数据契约（读什么）
+## 来源边界
 
-`structured_prashna.md` 里"## Tajika 补充参考"段固定含 5 个子表：
+主要来源：
 
-| 子表 | 含义 |
+1. *Tajika Nilakanthi*, Samjnatantra, Sodasayogadhyaya 2.15–72：
+   <https://archive.org/details/tajika_nilakanthi>
+2. Martin Gansten and Ola Wikander, “Sahl and the Tājika Yogas: Indian
+   Transformations of Arabic Astrology” (2011)：
+   <https://doi.org/10.1080/00033790.2010.533349>
+
+来源已经明确的计算：
+
+| 名称 | 本层定义 |
 |---|---|
-| Ithasala | 快星向慢星 applying aspect(offset < 0 且 |offset| ≤ orb sum) — "事在应" |
-| Ishraga  | 快星已过 exact aspect，separating(offset ≥ 0 且 ≤ orb sum) — "事已过" |
-| Muthashila | 0° applying 合相(aspect=0 且 offset<0) — "事将紧密结合" |
-| Manau | Moon → 中间星 Y → 目标 X 的光传递(Moon 与 X 无直接 Ithasala 时) |
-| skipped_retro | Retro 参与的对(该对跳过) |
+| Itthasala / Muthashila | 同一 applying 关系，不是两个 yoga |
+| Isharafa / Musharipha | 已过精确点的 separating 关系 |
+| Nakta | 较快的第三星从一方分离并向另一方应用，传递光线 |
+| Manau | Mars／Saturn 形成抢先接触而阻断主关系的候选 |
+| Kamboola | 主星对 Itthasala，并由 Moon 与一方或双方形成 Itthasala |
+| Khallasara | Moon 无 Itthasala／合相；只修正 Tajika 内的 Kamboola |
+| Radda | 接收方因逆行、燃烧、落陷等不能接光 |
 
-每条 Ithasala/Ishraga 记录字段：`fast/slow` 星名 + `aspect_angle`(0/60/90/120/180) + `offset_deg`(有符号，距 exact 的度数) + `orb_sum`(阈值)。
+暂不实现：
 
----
+- Ikkavala、Induvara；
+- Yamaya、Gairikamboola；
+- Duphalikuttha、Dutthotthadivira、Tambira；
+- Kuttha、Durapha。
 
-## 3. 语义映射（判读时怎么用）
-
-### 3.1 Ithasala 涉及本题 significator → "Tajika 层辅证"
-
-若 Ithasala 记录里的 fast/slow 至少一颗属于本题 significator 集合(Lagna 主 / Moon / 相关宫主 / 事件 Karaka)：
-- 判读单里可加一句 **"Tajika 层辅证：<X–Y Ithasala>，距 exact <n>°，方向与主结论一致"** — 但**不改主结论档次**。
-- 若 offset 小(<3°) → 事件在**即将触发**的近期窗口
-- 若 offset 大(>10°) → Tajika 层信号弱，仅作背景参考
-
-### 3.2 Muthashila（0° 合相 applying）
-
-- Muthashila 若涉及本题 significator → 事在"紧密结合"阶段；判读时可标注但仍以 Parashari 判据为主结论
-- Muthashila 的 fast 与 slow 若一颗是 Moon 一颗是事件 Karaka → Tajika 传统里最强的辅证
-
-### 3.3 Ishraga（分离）
-
-- Ishraga 涉及 significator → Tajika 层暗示"事已过"或"高峰已过"
-- 与 Parashari 主结论"成"打架时：**以 Parashari 为准**(主体系不用 orb，Tajika 层的"分离"可能只是 orb 内已飞过)
-- 与 Parashari 主结论"不成"一致时：可提"Tajika 层与主结论方向一致"作补充
-
-### 3.4 Manau（光传递）
-
-- Moon 通过中间星 Y 传光到目标 X = **Moon 间接接触 X**
-- 若 X 是相关宫主/事件 Karaka：判读单可加 "Tajika 层显示 Moon 通过 Y 间接触达 X — 心念与事件建立中转联系"
-- Manau 判据在 Prashna Marga 里属于"次级触发"，不作主结论
-
-### 3.5 Skipped Retro
-
-- 只作说明性列出，判读单里不引用
+这些名称在 Nilakantha 与其阿拉伯来源之间存在传承、拆词或重释问题。没有独立
+例盘与边界测试前，禁止模型凭名称补完。
 
 ---
 
-## 4. 判读单里的引用位置
+## 计算契约
 
-**唯一允许位置**：判读单末尾单独一节 `§六 Tajika 补充参考`(如果启用了)。
+运行：
 
-**模板**：
-
-```markdown
-## 六、Tajika 补充参考（orb 制副层）
-
-> 本节仅在用户开启 Tajika 副层时出现；与主判读独立并行、不叠加主结论。
-
-**Tajika 层观察**：
-- Ithasala 涉及本题 significator: <X–Y, 距 exact n°>
-- Muthashila: <A–B, 距 exact n°>
-- Manau: Moon → <Y> → <X>
-
-**与主判读关系**：[方向一致 · 补充证据] / [方向冲突 · 忽略，以主判读为准]
-
-**语义**：<白话解读，标注是 orb 层参考，不改主结论档次>
+```bash
+python scripts/build_tajika_overlay.py \
+  --datetime "<YYYY-MM-DD HH:MM>" \
+  --lat <lat> --lon <lon> --tz "<IANA>" \
+  --querent-lord <planet> \
+  --matter-lord <planet> \
+  --out-dir "<existing prashna_* directory>"
 ```
 
-**禁做**：
-- ❌ 把 Tajika 结论写进判读单 §一 主证据
-- ❌ 用 Tajika 数据改主结论档次(如"Parashari 判悬，但 Tajika 有 Ithasala 所以改成"成"")
-- ❌ 在 §二 主时间窗里用 Tajika applying orb 度数 逆推触发日(用 Dasha + Moon Nakshatra 转段，见 SKILL Step 4)
-- ❌ 不加"【Tajika 补充参考·orb 制】"字样直接混入解读
+输出固定为当前盘目录中的 `tajika_overlay.md`。标准
+`build_prashna_data.py` 不导入本模块，也没有 `--enable-tajika`。
+
+几何规则：
+
+- 七曜参与；Rahu／Ketu 不参与；
+- 相位为 0／60／90／120／180；
+- 60／90／120 必须同时计算两侧分支；
+- deeptamsha：Sun 15、Moon 12、Mars 8、Mercury 7、Jupiter 9、Venus 7、
+  Saturn 9；
+- 两星边界为 `(deeptamsha_A + deeptamsha_B) / 2`；
+- 逆行不全局跳过；使用有符号相对速度判断 applying／separating，并交给 Radda
+  等具体规则处理；
+- 距精确小于 1°的刚分离状态单列，不直接冒充完整 Isharafa。
+- 60／120 为友好相位；0／90／180 为敌意相位。Itthasala 只说明接触正在形成，
+  敌意相位不能被翻译成“顺利成事”。
 
 ---
 
-## 5. 边界情况
+## 消费规则
 
-### 5.1 全部 Tajika 表都为空
+只消费 `tajika_overlay.md` 中的主星对和已显示的第三星条件。
 
-若 Ithasala/Ishraga/Muthashila/Manau 全空(常见于起盘时刻 Moon 处 sign 中间且行星分散)：
-- 判读单里明写"Tajika 层无有效接触，本次副层无补充信号"
-- 主判读依原样，不受影响
+| 配置 | 可说 | 不可说 |
+|---|---|---|
+| 友好 Itthasala | 双方存在较顺畅的靠近／接通趋势 | 单凭它把标准层改判“成” |
+| 敌意 Itthasala | 接触正在形成，但通过阻力、冲突或不协调发生 | 把“有接触”翻译成“顺利成” |
+| Isharafa | 接触已经越过高点 | 自动等于永久不成 |
+| Nakta | 主星无直接接触时，可能经中间人／中介完成连接 | 主星已有接触时重复叠加；写成 Moon 专属 |
+| Manau | 有第三方／条件抢先阻断候选 | 未核时序就断言一定阻断 |
+| Kamboola | Moon 对主接触有增强候选 | 不分尊贵等级就称“最强” |
+| Khallasara | Tajika 内缺 Moon 接触 | 写成 Parashari 空亡或全局否决 |
+| Radda | 接收能力受损 | 忽略具体退回原因 |
 
-### 5.2 多个 Ithasala 涉及同一 significator
+当前 Radda 只执行可明确回查的接收方逆行、燃烧、落陷。`enemy`／`great_enemy`
+等一般敌友尊贵度不自动升级成 Radda；完整 Tajika strength 尚未实现。
 
-- 优先取 offset 最小(最近 exact)的记录
-- 其余按 offset 排序作次级参考
+若主星对无接触，只能写：
 
-### 5.3 Moon 参与的 Ithasala 与 Chandra Kriya 冲突
+> 本 Tajika contact overlay 未检出 deeptamsha 内的主星接触；副层无明确补充。
 
-- Chandra Kriya 说 Moon Void，但 Tajika 有 Moon–X Ithasala：**以 Chandra Kriya 为准**(Parashari)
-- 原因：Chandra Kriya 用整宫口径判空亡，Tajika 用 orb 判 applying — 主体系口径优先
+不得把“未检出”写成标准层“不成”。
 
 ---
 
-## 6. 自检（判读单写完前，Tajika 相关必核）
+## 输出要求
 
-- [ ] Tajika 段是否只在用户显式启用后才出现？
-- [ ] 引用 Tajika 时是否标注"【Tajika 补充参考·orb 制】"？
-- [ ] Tajika 结论是否**未改**主结论档次？
-- [ ] Tajika 时间窗是否**未替代** Dasha + Moon Nakshatra 转段的主择时？
-- [ ] 与主判读冲突时是否**明说**"以 Parashari 为准"？
-- [ ] Retro 涉及的对是否在跳过表里、未被误算？
+判读单若引用，只能增加独立章节：
+
+```markdown
+## Tajika contact overlay（实验副层）
+
+**主星对**：<Lagna lord> — <事项 lord>
+**直接接触**：<Itthasala / Isharafa / 无>
+**第三星条件**：<Nakta / Manau / 无>
+**Moon 修正**：<Kamboola / Khallasara / 无>
+**接收修正**：<Radda / 无>
+**与标准层关系**：只作并列观察，不改标准结论。
+**Timing**：未启用。
+```
+
+---
+
+## 进入可用状态的门
+
+在以下测试全部通过前，标题必须保留“实验副层”：
+
+- 0／60／90／120／180 两侧分支；
+- applying、exact、刚过 exact、Isharafa；
+- direct／retrograde 的有符号速度；
+- Nilakantha 的 Itthasala、Nakta、Manau 例盘；
+- Kamboola、Khallasara、Radda 的正反例；
+- 主星相同、Moon 为主星、边界等异常输入；
+- 两张固定盘回归。
