@@ -25,6 +25,12 @@
 2. Martin Gansten and Ola Wikander, “Sahl and the Tājika Yogas: Indian
    Transformations of Arabic Astrology” (2011)：
    <https://doi.org/10.1080/00033790.2010.533349>
+3. Balabhadra, *Hāyanaratna*, chapter 3, Martin Gansten Sanskrit-English
+   critical edition (2020)：
+   <https://archive.org/details/oapen-20.500.12657-42540>
+
+第三项用于交叉核对 Nilakantha 所引规则的原文传统和固定 worked examples；它仍只
+服务 Tajika 沙箱，不进入 KN Rao 兼容标准层。
 
 实现顺序固定为：
 
@@ -75,7 +81,8 @@ overlay 必须沿用标准盘的原始秒级时刻和实际地点，不能用开
 - 60／90／120 计算两侧分支；
 - deeptamsha：Sun 15、Moon 12、Mars 8、Mercury 7、Jupiter 9、Venus 7、
   Saturn 9；
-- 两星边界为 `(deeptamsha_A + deeptamsha_B) / 2`；
+- 正在应用的较快星是传光者，接触边界使用**较快星自己的 deeptamsha**；不得把
+  两星数值平均。换座候选同样使用即将换座的移动星自身 deeptamsha；
 - 逆行保留在有符号相对速度中，再由 Radda／Durapha 等具体 Yoga 处理；
 - 60／120 为友好相位；0／90／180 为敌意相位；
 - Itthasala 只说明接触正在形成，敌意相位不得翻译成“顺利成事”；
@@ -122,8 +129,10 @@ overlay 必须沿用标准盘的原始秒级时刻和实际地点，不能用开
 
 ## Timing
 
-只有主星对形成直接 Itthasala 时，允许显示
-`度差 × 12 日` 的 *Tajika Nilakanthi* 原典比例候选。必须同时写：
+只有主星对形成直接 Itthasala 时，允许显示 `度差 × 12 日` 的古典比例候选。该算法
+见 *Tajika Nilakanthi* 2.5–6 的 Hindi commentary；*Hāyanaratna* 3.3 又引
+*Tajikayogasudhanidhi* 6.35，并给出 Sun Leo 2°／Mars Scorpio 16°、
+`14° × 12 = 168 日` 的固定正例。必须同时写：
 
 - 这是原典比例候选，不是天文保证；
 - 只属于 Tajika 副层；
@@ -155,3 +164,7 @@ overlay 必须沿用标准盘的原始秒级时刻和实际地点，不能用开
 原页面没有单列 Prashna place；Delhi 坐标虽可复现公开 Lagna，仍不能把这个推断
 冒充完整出版输入。因此它只闭合接触几何，不独立满足“两张完整固定出版盘”或出版
 timing 正反例门。
+
+另已锁定 *Hāyanaratna* 3.3 的 Sun–Mars `14° × 12 = 168 日` 固定 worked
+example，用于同时回归“较快星自身 deeptamsha”和 timing 比例。它没有完整日期、
+地点和七曜输入，因此只完成规则级出版正例，仍不计入“两张完整固定出版盘”。

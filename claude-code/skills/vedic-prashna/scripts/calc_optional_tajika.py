@@ -260,7 +260,11 @@ def _contact(planets: dict, a: str, b: str) -> dict | None:
     relative_longitude = (float(fast["longitude"]) - float(slow["longitude"])) % 360.0
     branch, canonical, aspect_name, quality, error = _nearest_aspect(relative_longitude)
     distance = abs(error)
-    orb_limit = (TAJIKA_ORBS[faster] + TAJIKA_ORBS[slower]) / 2.0
+    # Samjnatantra 2.4 and the worked examples preserved in Hayanaratna
+    # 3.3 make the swifter planet the giver of light.  Its own deeptamsha
+    # is therefore the operative boundary; averaging the two planets'
+    # orbs incorrectly rejects the published Sun–Mars 14° example.
+    orb_limit = TAJIKA_ORBS[faster]
     if distance > orb_limit + 1e-9:
         return None
 
@@ -297,6 +301,7 @@ def _contact(planets: dict, a: str, b: str) -> dict | None:
         "distance_from_exact_deg": round(distance, 6),
         "signed_error_deg": round(error, 6),
         "orb_limit_deg": round(orb_limit, 6),
+        "orb_basis": f"{faster} own deeptamsha",
         "relative_speed_deg_per_day": round(relative_speed, 9),
         "linear_eta_days": round(eta_days, 4) if eta_days is not None and eta_days >= 0 else None,
         "retrograde": {
@@ -493,7 +498,7 @@ def _future_ingress_candidates(
         if profile["status"] != "strong":
             continue
         target_offset = (float(target_record["longitude"]) - ingress) % 360.0
-        orb_limit = (TAJIKA_ORBS[moving_planet] + TAJIKA_ORBS[target]) / 2.0
+        orb_limit = TAJIKA_ORBS[moving_planet]
         if target_offset <= orb_limit + 1e-9:
             candidates.append(
                 {
@@ -503,6 +508,7 @@ def _future_ingress_candidates(
                     "distance_to_ingress_deg": round(boundary_distance, 6),
                     "target_offset_from_ingress_deg": round(target_offset, 6),
                     "orb_limit_deg": round(orb_limit, 6),
+                    "orb_basis": f"{moving_planet} own deeptamsha",
                     "target_strength": profile,
                 }
             )
@@ -750,13 +756,19 @@ def compute(chart: dict, querent_lord: str, matter_lord: str) -> dict:
 
     classical_timing = {
         "status": "unavailable",
-        "source_rule": "TNK-2.5-6 commentary",
+        "source_rule": (
+            "TNK-2.5-6 Hindi commentary; Hayanaratna 3.3 "
+            "quoting Tajikayogasudhanidhi 6.35"
+        ),
         "scope": "direct querent-lord/matter-lord Itthasala only",
     }
     if _is_applying(primary):
         classical_timing = {
             "status": "candidate",
-            "source_rule": "TNK-2.5-6 commentary",
+            "source_rule": (
+                "TNK-2.5-6 Hindi commentary; Hayanaratna 3.3 "
+                "quoting Tajikayogasudhanidhi 6.35"
+            ),
             "scope": "direct querent-lord/matter-lord Itthasala only",
             "degree_difference": primary["distance_from_exact_deg"],
             "candidate_days": round(primary["distance_from_exact_deg"] * 12.0, 4),
@@ -838,7 +850,13 @@ def compute(chart: dict, querent_lord: str, matter_lord: str) -> dict:
 
     return {
         "scope": "Tajika Nilakanthi sixteen-yoga classifier; isolated experimental overlay",
-        "source_basis": ["Tajika Nilakanthi, Samjnatantra 2.3-59"],
+        "source_basis": [
+            "Tajika Nilakanthi, Samjnatantra 2.3-59",
+            (
+                "Balabhadra, Hayanaratna chapter 3 (Gansten 2020 critical "
+                "Sanskrit-English edition)"
+            ),
+        ],
         "primary_pair": {
             "querent_lord": querent_lord,
             "matter_lord": matter_lord,
@@ -866,7 +884,7 @@ def compute(chart: dict, querent_lord: str, matter_lord: str) -> dict:
             "planets": list(TAJIKA_PLANETS),
             "aspects_deg": [0, 60, 90, 120, 180],
             "orbs": TAJIKA_ORBS,
-            "pair_orb_formula": "(deeptamsha_A + deeptamsha_B) / 2",
+            "pair_orb_formula": "swifter planet's own deeptamsha",
             "hadda": "TNK-2.33-38",
             "nodes": "excluded",
             "retrograde": "included in geometry; evaluated by yoga-specific rules",

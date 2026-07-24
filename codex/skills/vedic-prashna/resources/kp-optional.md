@@ -64,6 +64,11 @@ KP 是与 Parashari 标准层在计算、文件和判读权上隔离的独立体
 这些不能拼成“7 cusp；2/7/11 对 6/12”的统一 promise 公式。拆出单义题型并完成
 出版例盘测试前，入口必须失败关闭。
 
+Reader IV 的 1966-06-09 “reunion with husband and domestic facility”例确实使用
+2、7、11，但它是提问时刻盘：原页没有 1–249 number，也没有单列地点，并以事件
+significators 与 query-time periods 推到 1968-03-09～29。它可以验证该语境的宫组
+与 period 叙述，不能伪装成当前 `1–249 + cusp sub-lord promise` 的端到端例盘。
+
 进入下一阶段条件：号码、题型、时刻和地点完整。
 
 ---
@@ -129,9 +134,11 @@ Node 代理按 Reader VI 的原文次序维护：
 3. 照射 node 的行星；
 4. node 所在 sign 的 lord。
 
-当前可确定地启用第 2、4 项。Readers 的七曜 orb 表没有 Rahu／Ketu 自身 orb；
-出版例盘又证明旧版固定 `3°` 会漏掉明确写作合相的 Sun–Rahu。因此第 1、3 项继续
-失败关闭，不能用自造的 node orb 解除。
+当前可确定地启用第 2、4 项。Reader I 的 applying／separating 表只笼统写
+“other planets”，没有明确把无实体的 Rahu／Ketu 包含进去；Reader VI 的逐星数值
+表同样没有 Rahu／Ketu。出版例盘又证明旧版固定 `3°` 会漏掉明确写作合相的
+Sun–Rahu。因此第 1、3 项继续失败关闭，不能把“other planets”推断成 node 数值，
+也不能用自造 orb 解除。
 
 Node 自身的 star-lord 链与第 2 项的完整代理结果都保留；第 4 项随后加入。行星落在
 node star 时，必须继续取得该 node 已启用代理行星的宫位结果，不能在 node 自身占宫
@@ -279,7 +286,8 @@ cusp、sub-lord、RP、period、宫位号、机械状态码或生产状态；这
 - node conjunction/aspect agent 的原典 orb、相位政策及正反例；
 - 两个已实现题型的 promise／deny／mixed／unsupported；
 - Reader VI number 156 的合作延续 known-answer；
-- 婚姻重聚各语义的独立 cusp／宫组与出版例盘；
+- 婚姻重聚各语义的独立方法路由；若进入本 1–249 栈，必须取得含用户 number、
+  判盘时刻、地点、cusp promise 与 known answer 的出版例盘；
 - Ruling Planets 顺序、日出换日与逆行过滤；
 - star/sub/sign 边界两侧；
 - Horary Moon balance、Bhukti／Antara／Shookshma 边界；
