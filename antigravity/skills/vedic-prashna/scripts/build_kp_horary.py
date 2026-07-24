@@ -9,10 +9,12 @@ import re
 from pathlib import Path
 
 from calc_optional_kp import (
+    KP_OUTCOME_SCOPES,
     TOPIC_RULES,
     compute,
     format_kp_judgment,
     format_kp_section,
+    validate_outcome_scope,
 )
 from prashna_time import datetime_slug, parse_local_datetime
 
@@ -32,6 +34,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--tz", required=True)
     parser.add_argument("--number", type=int, required=True)
     parser.add_argument("--topic", choices=tuple(TOPIC_RULES), required=True)
+    parser.add_argument(
+        "--outcome-scope",
+        choices=tuple(KP_OUTCOME_SCOPES),
+        required=True,
+        help="User-confirmed observable outcome; unsupported scopes fail closed",
+    )
     parser.add_argument("--question", required=True)
     parser.add_argument("--label", required=True)
     parser.add_argument("--out-parent", default=".")
@@ -45,6 +53,10 @@ def parse_args() -> argparse.Namespace:
         parser.error("--number must be between 1 and 249")
     if not args.question.strip():
         parser.error("--question must not be blank")
+    try:
+        validate_outcome_scope(args.topic, args.outcome_scope)
+    except ValueError as exc:
+        parser.error(str(exc))
     if not LABEL_RE.match(args.label):
         parser.error(f"--label must match {LABEL_RE.pattern}")
     try:

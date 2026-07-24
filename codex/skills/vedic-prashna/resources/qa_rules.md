@@ -90,13 +90,18 @@ python scripts/build_tajika_overlay.py \
 ## 5. KP 追问与后加 KP
 
 已有 KP 盘的追问沿用原 KP number、判盘时刻、地点和 topic，不重新选号码。
+先核对原盘的 outcome scope。`love-materialization` 的结论只回答是否建立明确、
+双方确认并持续推进的恋爱关系；不得外推为是否会恢复联系、互动回暖或恢复暧昧。
+若原问题只是这些低门槛结果，却误用了 `love-materialization`，保留原计算文件作为
+高门槛题型结果，但明确宣布它不能回答原低门槛问题；不得据此改判或重算。
 
 标准盘之后想查看 KP，不是把 KP 字段追加到原盘，而是新建独立 KP 栈。必须：
 
 1. 用户亲自给出 1–249；
 2. 记录开始判断 KP 问题的秒级时刻和实际地点；
-3. 使用同一个可观察结果对应的已支持 topic；
-4. 写入独立 `kp_horary_*` 目录。
+3. 让用户确认同一个可观察结果对应的 outcome scope；
+4. 只有 outcome scope 与已支持 topic 完全一致时才起盘；
+5. 写入独立 `kp_horary_*` 目录。
 
 这不允许 KP 回写或改判标准结论。
 

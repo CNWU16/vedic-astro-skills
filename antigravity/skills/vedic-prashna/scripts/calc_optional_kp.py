@@ -107,6 +107,7 @@ RETROGRADE_FILTER_PLANETS = frozenset(
 
 TOPIC_RULES = {
     "love-materialization": {
+        "outcome_scope": "explicit-mutual-relationship",
         "judgment_cusp": 5,
         "positive_houses": (7, 11),
         "positive_match": "all",
@@ -119,6 +120,7 @@ TOPIC_RULES = {
         ),
     },
     "business-partnership-continuity": {
+        "outcome_scope": "business-partnership-continuity",
         "judgment_cusp": 7,
         "positive_houses": (5, 11),
         "positive_match": "any",
@@ -127,6 +129,45 @@ TOPIC_RULES = {
         "source": (
             "KSK Reader VI, number 156 'Business and Partnership': "
             "7th cusp sub-lord; 5 or 11 continue, 6 or 12 break"
+        ),
+    },
+}
+
+KP_OUTCOME_SCOPES = {
+    "explicit-mutual-relationship": {
+        "topic": "love-materialization",
+        "supported": True,
+        "definition": "双方是否会建立明确确认并持续推进的恋爱关系",
+        "excluded_outcomes": (
+            "仅恢复联系",
+            "仅互动回暖",
+            "仅恢复暧昧",
+            "对方的秘密感受或意图",
+        ),
+    },
+    "romantic-interaction-rewarming": {
+        "topic": None,
+        "supported": False,
+        "definition": "双方是否会恢复轻松、暧昧或升温的互动",
+    },
+    "romantic-contact-resumption": {
+        "topic": None,
+        "supported": False,
+        "definition": "双方是否会重新联系、回复或见面",
+    },
+    "private-feelings-or-intent": {
+        "topic": None,
+        "supported": False,
+        "definition": "对方的秘密感受、想法或行动意图",
+    },
+    "business-partnership-continuity": {
+        "topic": "business-partnership-continuity",
+        "supported": True,
+        "definition": "既有商业合作关系是否会延续",
+        "excluded_outcomes": (
+            "仅一次回复",
+            "对方的秘密意图",
+            "尚未建立的合作能否开始",
         ),
     },
 }
@@ -140,6 +181,26 @@ SIGNIFICATOR_LEVEL_RANK = {
     "C_star_of_owner": 3,
     "D_owner": 4,
 }
+
+
+def validate_outcome_scope(topic: str, outcome_scope: str) -> dict:
+    """Fail closed when the observable outcome is outside a sourced KP topic."""
+    if topic not in TOPIC_RULES:
+        raise ValueError(f"Unsupported KP topic: {topic}")
+    if outcome_scope not in KP_OUTCOME_SCOPES:
+        raise ValueError(f"Unknown KP outcome scope: {outcome_scope}")
+    scope = KP_OUTCOME_SCOPES[outcome_scope]
+    if not scope["supported"]:
+        raise ValueError(
+            f"KP outcome scope '{outcome_scope}' is not source-validated; "
+            "do not substitute love-materialization or another supported topic"
+        )
+    if scope["topic"] != topic:
+        raise ValueError(
+            f"KP outcome scope '{outcome_scope}' belongs to topic "
+            f"'{scope['topic']}', not '{topic}'"
+        )
+    return deepcopy(scope)
 
 
 def _normalise_signed(angle: float) -> float:
@@ -1347,6 +1408,10 @@ def compute(
     return {
         "mode": "KP classical horary 1–249",
         "number": number,
+        "outcome_scope": {
+            "id": TOPIC_RULES[topic]["outcome_scope"],
+            **validate_outcome_scope(topic, TOPIC_RULES[topic]["outcome_scope"]),
+        },
         "number_segment": number_record,
         "judgment_time": dt_local.isoformat(),
         "judgment_timezone": timezone,
@@ -1388,6 +1453,7 @@ def compute(
 def format_kp_section(data: dict) -> str:
     topic = data["topic_result"]
     timing = data["timing"]
+    outcome_scope = data["outcome_scope"]
     question_lines = [f"- 问题：{data['question']}"] if data.get("question") else []
     lines = [
         "# KP Horary 独立栈（1–249）",
@@ -1398,6 +1464,14 @@ def format_kp_section(data: dict) -> str:
         "## 输入与技术口径",
         "",
         *question_lines,
+        (
+            f"- 可观察结果范围：**{outcome_scope['definition']}** "
+            f"（{outcome_scope['id']}）"
+        ),
+        (
+            "- 本题型不回答："
+            + "、".join(outcome_scope.get("excluded_outcomes", ()))
+        ),
         f"- 判盘时刻：{data['judgment_time']}（{data['judgment_timezone']}）",
         (
             f"- 判盘地点：{data['judgment_location']['latitude']}, "
@@ -1566,6 +1640,7 @@ def format_kp_judgment(data: dict) -> str:
     """Render a human-readable judgment without merging KP into Parashari."""
     topic = data["topic_result"]
     timing = data["timing"]
+    outcome_scope = data["outcome_scope"]
     topic_language = {
         "love-materialization": {
             "name": "关系能否从互动状态落实为明确关系",
@@ -1786,6 +1861,12 @@ def format_kp_judgment(data: dict) -> str:
         f"**能否给时间**：{plain_timing}",
         "",
         (
+            f"**范围**：本盘只回答“{outcome_scope['definition']}”，不回答"
+            + "、".join(outcome_scope.get("excluded_outcomes", ()))
+            + "。"
+        ),
+        "",
+        (
             "**怎样使用这个结果**：它只回答 KP 这套规则本身，不和标准层或 "
             "Tajika 投票，也不能用英文状态码代替现实判断。"
         ),
@@ -1799,6 +1880,7 @@ def format_kp_judgment(data: dict) -> str:
         ),
         f"- 用户给出的 Horary number：{data['number']}",
         f"- 问题类型：{topic_language['name']}",
+        f"- 用户确认的可观察结果：{outcome_scope['definition']}",
         "",
         "## 三、为什么会得到这个结论",
         "",
@@ -1825,6 +1907,7 @@ def format_kp_judgment(data: dict) -> str:
         "## 五、技术附录（可以跳过）",
         "",
         f"- 原始题型：{topic['topic']}",
+        f"- 结果范围 ID：{outcome_scope['id']}",
         f"- 判断 cusp：{topic['judgment_cusp']}",
         f"- Cusp sub-lord：{topic['cusp_sub_lord']}",
         f"- Star lord：{topic['cusp_sub_lord_star_lord']}",
@@ -1897,9 +1980,19 @@ def main() -> None:
     parser.add_argument("--tz", required=True)
     parser.add_argument("--number", type=int, required=True)
     parser.add_argument("--topic", choices=tuple(TOPIC_RULES), required=True)
+    parser.add_argument(
+        "--outcome-scope",
+        choices=tuple(KP_OUTCOME_SCOPES),
+        required=True,
+        help="User-confirmed observable outcome; unsupported scopes fail closed",
+    )
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
 
+    try:
+        validate_outcome_scope(args.topic, args.outcome_scope)
+    except ValueError as exc:
+        parser.error(str(exc))
     dt = parse_local_datetime(args.datetime, args.tz)
     data = compute(dt, args.lat, args.lon, args.tz, args.number, args.topic)
     if args.json:
