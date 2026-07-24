@@ -4,15 +4,17 @@ from __future__ import annotations
 
 import argparse
 import math
-from datetime import datetime
 from pathlib import Path
-from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from calc_optional_tajika import (
     TAJIKA_PLANETS,
-    calculate_full_chart,
     compute,
     format_tajika_section,
+)
+from prashna_time import (
+    calculate_prashna_chart,
+    format_wall_time,
+    parse_local_datetime,
 )
 
 
@@ -20,7 +22,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Build a Tajika contact overlay for an existing prashna_* directory"
     )
-    parser.add_argument("--datetime", required=True, help='"YYYY-MM-DD HH:MM" or "now"')
+    parser.add_argument(
+        "--datetime",
+        required=True,
+        help='"YYYY-MM-DD HH:MM[:SS[.ffffff]]" or "now"',
+    )
     parser.add_argument("--lat", type=float, required=True)
     parser.add_argument("--lon", type=float, required=True)
     parser.add_argument("--tz", required=True)
@@ -35,19 +41,9 @@ def parse_args() -> argparse.Namespace:
         parser.error("--lon must be a finite value between -180 and 180")
 
     try:
-        zone = ZoneInfo(args.tz)
-    except ZoneInfoNotFoundError:
-        parser.error(f"--tz is not a valid IANA timezone: {args.tz!r}")
-
-    if args.datetime.strip().lower() == "now":
-        args.dt = datetime.now(zone).replace(second=0, microsecond=0)
-    else:
-        try:
-            args.dt = datetime.strptime(args.datetime, "%Y-%m-%d %H:%M").replace(
-                tzinfo=zone
-            )
-        except ValueError:
-            parser.error('--datetime must be "YYYY-MM-DD HH:MM" or "now"')
+        args.dt = parse_local_datetime(args.datetime, args.tz)
+    except Exception as exc:
+        parser.error(str(exc))
 
     out_dir = Path(args.out_dir).expanduser().resolve()
     if not out_dir.is_dir() or not out_dir.name.startswith("prashna_"):
@@ -60,17 +56,16 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    chart = calculate_full_chart(
-        args.dt.year,
-        args.dt.month,
-        args.dt.day,
-        args.dt.hour,
-        args.dt.minute,
-        args.lat,
-        args.lon,
-        args.tz,
-    )
+    chart = calculate_prashna_chart(args.dt, args.lat, args.lon, args.tz)
     data = compute(chart, args.querent_lord, args.matter_lord)
+    data["judgment_time"] = (
+        f"{args.dt.strftime('%Y-%m-%d')} {format_wall_time(args.dt)}"
+    )
+    data["judgment_timezone"] = args.tz
+    data["judgment_location"] = {
+        "latitude": args.lat,
+        "longitude": args.lon,
+    }
     output = args.out_dir / "tajika_overlay.md"
     output.write_text(format_tajika_section(data), encoding="utf-8")
     print(f"[OK] Tajika overlay: {output}")

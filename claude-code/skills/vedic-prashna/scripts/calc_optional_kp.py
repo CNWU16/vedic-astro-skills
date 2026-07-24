@@ -9,18 +9,20 @@ The module is intentionally separate from the Parashari Prashna builder. It uses
 - the KP significator order documented in K.S. Krishnamurti's Readers;
 - question-specific house groups rather than a blanket 6/8/12 rule.
 
-Timing remains disabled until an independent Dasha/Ruling-Planet/transit suite has
-published-reference tests.
+Timing is source-scoped to the independent horary Moon balance,
+Dasha/Bhukti/Antara/Shookshma, Ruling-Planet intersection and the Moon/Sun/Jupiter
+transit scale printed in Reader VI.  It never borrows the standard-layer Moon
+ingress or a natal chart's Dasha.
 """
 from __future__ import annotations
 
 import argparse
+from copy import deepcopy
 import json
 import math
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta, timezone as datetime_timezone
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
 _HERE = Path(__file__).resolve().parent
 _CALC = _HERE.parent.parent / "vedic-calculator" / "scripts"
@@ -32,13 +34,14 @@ from engine import (  # noqa: E402
     DASHA_YEARS,
     NAKSHATRAS,
     SIGNS,
-    to_jd,
 )
 import swisseph as swe  # noqa: E402
+from prashna_time import local_datetime_to_jd, parse_local_datetime  # noqa: E402
 
 
 NAK_SPAN = 360.0 / 27.0
 TOTAL_YEARS = float(sum(DASHA_YEARS.values()))
+VIMSHOTTARI_YEAR_DAYS = 365.2425
 PLANET_IDS = {
     "Sun": swe.SUN,
     "Moon": swe.MOON,
@@ -51,6 +54,17 @@ PLANET_IDS = {
 SEVEN_PLANETS = tuple(PLANET_IDS)
 NODES = ("Rahu", "Ketu")
 ALL_KP_PLANETS = SEVEN_PLANETS + NODES
+KP_ASPECT_ANGLES = (0, 30, 45, 60, 90, 120, 135, 180)
+KP_ORBS = {
+    "Sun": 15.0,
+    "Moon": 15.0,
+    "Mars": 7.0,
+    "Mercury": 7.0,
+    "Jupiter": 9.0,
+    "Venus": 7.0,
+    "Saturn": 9.0,
+    # Reader VI prints Uranus 7°, but Uranus is outside this nine-graha stack.
+}
 SIGN_LORDS = {
     "Aries": "Mars",
     "Taurus": "Venus",
@@ -179,6 +193,79 @@ def _sub_lord(longitude: float) -> str:
     return DASHA_ORDER[(start_index + 8) % 9]
 
 
+def _ordered_lords(first_lord: str) -> tuple[str, ...]:
+    start = DASHA_ORDER.index(first_lord)
+    return tuple(DASHA_ORDER[(start + offset) % 9] for offset in range(9))
+
+
+def _split_angular_segment(
+    start: float,
+    end: float,
+    first_lord: str,
+) -> list[dict]:
+    current = start
+    result = []
+    span = end - start
+    for index, lord in enumerate(_ordered_lords(first_lord)):
+        child_end = (
+            end
+            if index == 8
+            else current + span * DASHA_YEARS[lord] / TOTAL_YEARS
+        )
+        result.append({"lord": lord, "start": current, "end": child_end})
+        current = child_end
+    return result
+
+
+def _vimshottari_path(longitude: float, depth: int = 4) -> list[dict]:
+    """Return the KP star/sub/sub-sub/sub-sub-sub path at a longitude.
+
+    Reader III divides every parent period in Vimshottari proportions, starting
+    from the parent lord.  The same construction therefore supplies both the
+    zodiacal KP levels and the current horary Moon period chain.
+    """
+    if not 1 <= depth <= 4:
+        raise ValueError("depth must be between 1 and 4")
+    longitude %= 360.0
+    star_index = _star_index(longitude)
+    star_start = star_index * NAK_SPAN
+    star_end = star_start + NAK_SPAN
+    star_lord = NAKSHATRAS[star_index][1]
+    path = [
+        {
+            "level": "mahadasha",
+            "lord": star_lord,
+            "start_longitude": star_start,
+            "end_longitude": star_end,
+        }
+    ]
+    parent_start = star_start
+    parent_end = star_end
+    parent_lord = star_lord
+    for level in ("bhukti", "antara", "shookshma")[: depth - 1]:
+        children = _split_angular_segment(parent_start, parent_end, parent_lord)
+        selected = next(
+            child
+            for child in children
+            if child["start"] - 1e-10
+            <= longitude
+            < child["end"] - 1e-10
+            or math.isclose(longitude, child["start"], abs_tol=1e-10)
+        )
+        path.append(
+            {
+                "level": level,
+                "lord": selected["lord"],
+                "start_longitude": selected["start"],
+                "end_longitude": selected["end"],
+            }
+        )
+        parent_start = selected["start"]
+        parent_end = selected["end"]
+        parent_lord = selected["lord"]
+    return path
+
+
 def _distance_to_boundaries(longitude: float, boundaries: tuple[float, ...]) -> float:
     return min(_circular_distance(longitude, boundary) for boundary in boundaries)
 
@@ -286,6 +373,7 @@ def _house_of(longitude: float, cusps: list[float]) -> int:
 
 
 def _position_record(name: str, longitude: float, speed: float | None = None) -> dict:
+    period_path = _vimshottari_path(longitude)
     record = {
         "name": name,
         "longitude": longitude % 360.0,
@@ -295,6 +383,8 @@ def _position_record(name: str, longitude: float, speed: float | None = None) ->
         "nakshatra": NAKSHATRAS[_star_index(longitude)][0],
         "star_lord": _star_lord(longitude),
         "sub_lord": _sub_lord(longitude),
+        "sub_sub_lord": period_path[2]["lord"],
+        "sub_sub_sub_lord": period_path[3]["lord"],
         "boundary_distance_arcmin": {
             "sign": round(_distance_to_boundaries(longitude, _SIGN_BOUNDARIES) * 60.0, 4),
             "star": round(_distance_to_boundaries(longitude, _STAR_BOUNDARIES) * 60.0, 4),
@@ -305,6 +395,25 @@ def _position_record(name: str, longitude: float, speed: float | None = None) ->
         record["speed"] = speed
         record["retrograde"] = speed < 0
     return record
+
+
+def _kp_aspect(a: dict, b: dict) -> dict | None:
+    """Reader VI pp.60-61 aspect/orb policy used for node agency."""
+    if a["name"] not in KP_ORBS or b["name"] not in KP_ORBS:
+        return None
+    separation = abs(_normalise_signed(a["longitude"] - b["longitude"]))
+    angle = min(KP_ASPECT_ANGLES, key=lambda value: abs(separation - value))
+    error = abs(separation - angle)
+    orb_limit = (KP_ORBS[a["name"]] + KP_ORBS[b["name"]]) / 2.0
+    if error > orb_limit + 1e-9:
+        return None
+    return {
+        "angle": angle,
+        "separation_deg": round(separation, 6),
+        "distance_from_exact_deg": round(error, 6),
+        "orb_limit_deg": round(orb_limit, 6),
+        "kind": "conjunction" if angle == 0 else "aspect",
+    }
 
 
 def _planet_positions(jd: float, ayanamsa: float) -> list[dict]:
@@ -322,17 +431,37 @@ def _planet_positions(jd: float, ayanamsa: float) -> list[dict]:
     return positions
 
 
-def _node_agents(records: dict[str, dict], node_name: str) -> list[str]:
-    """Return only the source-stable sign-lord agency for a node.
+def _node_agents(records: dict[str, dict], node_name: str) -> list[dict]:
+    """Return the source-stable portions of Reader VI's node-agency order.
 
-    Reader VI also uses conjunction/aspect agency in examples, but the current
-    source audit has not established a production-grade conjunction orb or
-    aspect policy. The previous 3° proximity rule was an implementation choice,
-    so it is removed from operative significations rather than allowed to alter
-    a promise result.
+    The printed order is: conjoined planet(s), constellation lord, aspecting
+    planet(s), sign lord.  The Readers print no Rahu/Ketu orb, so the two
+    contact-dependent slots remain unresolved.  Constellation- and sign-lord
+    agency are nevertheless deterministic and must not be silently collapsed
+    to sign lord alone.
     """
     node = records[node_name]
-    return [node["sign_lord"]]
+    candidates = (
+        {
+            "planet": node["star_lord"],
+            "priority": 2,
+            "agency": "constellation_lord",
+        },
+        {
+            "planet": node["sign_lord"],
+            "priority": 4,
+            "agency": "sign_lord",
+        },
+    )
+    result = []
+    seen = set()
+    for item in candidates:
+        if item["planet"] == node_name:
+            continue
+        if item["planet"] not in seen:
+            seen.add(item["planet"])
+            result.append(item)
+    return result
 
 
 def _add_signification(
@@ -397,21 +526,28 @@ def _build_significators(
                 f"{planet} owns house {house}",
             )
 
+    base_significations = deepcopy(significations)
     for node in NODES:
         agents = _node_agents(records, node)
-        records[node]["agent_planets"] = agents
+        records[node]["agent_planets"] = [item["planet"] for item in agents]
+        records[node]["agent_details"] = agents
         records[node]["contact_agent_policy"] = (
-            "disabled pending a sourced conjunction-orb and aspect policy; "
-            "only sign-lord agency is operative"
+            "conjunction/aspect slots fail closed because the Readers print "
+            "no Rahu/Ketu orb; constellation- and sign-lord slots are operative"
         )
-        for agent in agents:
-            for house, evidence in significations[agent].items():
+        for agent_record in agents:
+            agent = agent_record["planet"]
+            for house, evidence in base_significations[agent].items():
                 for item in evidence:
                     _add_signification(
                         significations[node],
                         int(house),
                         "NODE_AGENT",
-                        f"{node} represents {agent}: {item['via']}",
+                        (
+                            f"{node} represents {agent} through "
+                            f"{agent_record['agency']} (priority "
+                            f"{agent_record['priority']}): {item['via']}"
+                        ),
                         rank=item["rank"],
                         represented_level=item["level"],
                     )
@@ -472,12 +608,8 @@ def _ruling_planets(
     del tropical_cusps
     judgment_asc = (tropical_ascmc[0] - ayanamsa) % 360.0
     moon = records["Moon"]
-    civil_midnight_jd = to_jd(
-        dt_local.year,
-        dt_local.month,
-        dt_local.day,
-        0,
-        0,
+    civil_midnight_jd = local_datetime_to_jd(
+        dt_local.replace(hour=0, minute=0, second=0, microsecond=0),
         timezone,
     )
     sunrise_result, sunrise_times = swe.rise_trans(
@@ -507,11 +639,16 @@ def _ruling_planets(
     ]
     base_planets = {item["planet"] for item in ordered}
     for node in NODES:
-        if records[node]["sign_lord"] in base_planets:
+        represented = [
+            planet
+            for planet in records[node].get("agent_planets", [])
+            if planet in base_planets
+        ]
+        if represented:
             ordered.append(
                 {
                     "planet": node,
-                    "role": f"node_agent_of_{records[node]['sign_lord']}",
+                    "role": f"node_agent_of_{'_'.join(represented)}",
                 }
             )
 
@@ -556,7 +693,8 @@ def _ruling_planets(
             "Rahu/Ketu are not rejected as retrograde star lords"
         ),
         "node_ruling_agent_scope": (
-            "sign-lord agency active; conjunction/aspect agency deferred"
+            "constellation/sign-lord agency active; conjunction/aspect slots "
+            "fail closed because no node orb is printed"
         ),
         "source": "KSK Reader VI, Ruling Planets",
     }
@@ -680,6 +818,381 @@ def _evaluate_topic(
     }
 
 
+def _split_time_period(
+    start: datetime,
+    end: datetime,
+    first_lord: str,
+) -> list[dict]:
+    total_seconds = (end - start).total_seconds()
+    current = start
+    result = []
+    for index, lord in enumerate(_ordered_lords(first_lord)):
+        child_end = (
+            end
+            if index == 8
+            else current
+            + timedelta(
+                seconds=total_seconds * DASHA_YEARS[lord] / TOTAL_YEARS
+            )
+        )
+        result.append({"lord": lord, "start": current, "end": child_end})
+        current = child_end
+    return result
+
+
+def _current_horary_periods(dt_local: datetime, moon_longitude: float) -> dict:
+    """Map the horary Moon's KP levels to dated period intervals."""
+    path = _vimshottari_path(moon_longitude)
+    mahadasha = path[0]
+    mahadasha_days = DASHA_YEARS[mahadasha["lord"]] * VIMSHOTTARI_YEAR_DAYS
+    elapsed_fraction = (
+        moon_longitude % 360.0 - mahadasha["start_longitude"]
+    ) / NAK_SPAN
+    mahadasha_start = dt_local - timedelta(
+        days=mahadasha_days * elapsed_fraction
+    )
+    records = []
+    for item in path:
+        start_fraction = (
+            item["start_longitude"] - mahadasha["start_longitude"]
+        ) / NAK_SPAN
+        end_fraction = (
+            item["end_longitude"] - mahadasha["start_longitude"]
+        ) / NAK_SPAN
+        records.append(
+            {
+                "level": item["level"],
+                "lord": item["lord"],
+                "start": mahadasha_start
+                + timedelta(days=mahadasha_days * start_fraction),
+                "end": mahadasha_start
+                + timedelta(days=mahadasha_days * end_fraction),
+            }
+        )
+    balance = records[0]["end"] - dt_local
+    return {
+        "moon_longitude": moon_longitude % 360.0,
+        "moon_star": NAKSHATRAS[_star_index(moon_longitude)][0],
+        "current": records,
+        "mahadasha_balance_days": round(balance.total_seconds() / 86400.0, 6),
+        "year_basis_days": VIMSHOTTARI_YEAR_DAYS,
+        "source": "KSK Reader VI: horary Moon balance and conjoined periods",
+    }
+
+
+def _iter_shookshma_periods(
+    current_periods: dict,
+    *,
+    horizon_years: float = 12.0,
+):
+    judgment_time = current_periods["current"][0]["start"]
+    current_md = current_periods["current"][0]
+    limit = current_md["end"] + timedelta(
+        days=horizon_years * VIMSHOTTARI_YEAR_DAYS
+    )
+    md_lord = current_md["lord"]
+    md_start = current_md["start"]
+    md_end = current_md["end"]
+    while md_start < limit:
+        for bhukti in _split_time_period(md_start, md_end, md_lord):
+            for antara in _split_time_period(
+                bhukti["start"], bhukti["end"], bhukti["lord"]
+            ):
+                for shookshma in _split_time_period(
+                    antara["start"], antara["end"], antara["lord"]
+                ):
+                    yield {
+                        "mahadasha": md_lord,
+                        "bhukti": bhukti["lord"],
+                        "antara": antara["lord"],
+                        "shookshma": shookshma["lord"],
+                        "start": shookshma["start"],
+                        "end": shookshma["end"],
+                    }
+        next_index = (DASHA_ORDER.index(md_lord) + 1) % 9
+        md_lord = DASHA_ORDER[next_index]
+        md_start = md_end
+        md_end = md_start + timedelta(
+            days=DASHA_YEARS[md_lord] * VIMSHOTTARI_YEAR_DAYS
+        )
+
+
+def _timing_event_houses(topic_result: dict) -> list[int]:
+    if topic_result["directional_status"] == "positive_only":
+        return list(TOPIC_RULES[topic_result["topic"]]["positive_houses"])
+    if topic_result["directional_status"] == "negative_only":
+        return list(TOPIC_RULES[topic_result["topic"]]["negative_houses"])
+    return sorted(
+        set(TOPIC_RULES[topic_result["topic"]]["positive_houses"])
+        | set(TOPIC_RULES[topic_result["topic"]]["negative_houses"])
+    )
+
+
+def _transit_targets(ruling_planets: list[str]) -> list[dict]:
+    accepted = set(ruling_planets)
+    return [
+        {
+            "start_longitude": item["start_lon"],
+            "end_longitude": item["end_lon"],
+            "sign_lord": item["sign_lord"],
+            "star_lord": item["star_lord"],
+            "sub_lord": item["sub_lord"],
+        }
+        for item in NUMBER_TABLE
+        if item["sign_lord"] in accepted
+        and item["star_lord"] in accepted
+        and item["sub_lord"] in accepted
+    ]
+
+
+def _longitude_in_targets(longitude: float, targets: list[dict]) -> bool:
+    longitude %= 360.0
+    return any(
+        item["start_longitude"] - 1e-9
+        <= longitude
+        < item["end_longitude"] - 1e-9
+        for item in targets
+    )
+
+
+def _transit_longitude(at: datetime, planet: str) -> float:
+    utc = at.astimezone(datetime_timezone.utc)
+    hour = (
+        utc.hour
+        + utc.minute / 60.0
+        + utc.second / 3600.0
+        + utc.microsecond / 3_600_000_000.0
+    )
+    jd = swe.julday(utc.year, utc.month, utc.day, hour, swe.GREG_CAL)
+    ayanamsa = _ayanamsa_for_mode(jd, swe.SIDM_KRISHNAMURTI)
+    tropical = swe.calc_ut(jd, PLANET_IDS[planet], swe.FLG_SWIEPH)[0][0]
+    return (tropical - ayanamsa) % 360.0
+
+
+def _first_target_transit(
+    start: datetime,
+    end: datetime,
+    planet: str,
+    targets: list[dict],
+) -> dict | None:
+    if not targets or end <= start:
+        return None
+    step = {
+        "Moon": timedelta(hours=1),
+        "Sun": timedelta(hours=6),
+        "Jupiter": timedelta(days=1),
+    }[planet]
+    left = start
+    left_inside = _longitude_in_targets(_transit_longitude(left, planet), targets)
+    if left_inside:
+        return {
+            "planet": planet,
+            "entry": left,
+            "already_inside_at_window_start": True,
+        }
+    while left < end:
+        right = min(end, left + step)
+        right_inside = _longitude_in_targets(
+            _transit_longitude(right, planet), targets
+        )
+        if not left_inside and right_inside:
+            low = left
+            high = right
+            for _ in range(24):
+                if (high - low).total_seconds() <= 60:
+                    break
+                middle = low + (high - low) / 2
+                if _longitude_in_targets(
+                    _transit_longitude(middle, planet), targets
+                ):
+                    high = middle
+                else:
+                    low = middle
+            return {
+                "planet": planet,
+                "entry": high.replace(second=0, microsecond=0),
+                "already_inside_at_window_start": False,
+            }
+        left = right
+        left_inside = right_inside
+    return None
+
+
+def _compute_kp_timing(
+    dt_local: datetime,
+    records: dict[str, dict],
+    topic_result: dict,
+    significators_by_house: dict[str, list[dict]],
+    ruling_planets: dict,
+) -> dict:
+    moon_periods = _current_horary_periods(
+        dt_local, records["Moon"]["longitude"]
+    )
+    event_houses = _timing_event_houses(topic_result)
+    event_significators = sorted(
+        {
+            item["planet"]
+            for house in event_houses
+            for item in significators_by_house[str(house)]
+        }
+    )
+    accepted_ruling_planets = [
+        item["planet"] for item in ruling_planets["accepted"]
+    ]
+    period_lords = [
+        planet
+        for planet in accepted_ruling_planets
+        if planet in event_significators
+    ]
+    base = {
+        "source": (
+            "KSK Reader VI: horary Moon balance; event significators ∩ "
+            "Ruling Planets; Moon/Sun/Jupiter transit scale"
+        ),
+        "moon_periods": moon_periods,
+        "event_houses": event_houses,
+        "event_significators": event_significators,
+        "accepted_ruling_planets": accepted_ruling_planets,
+        "period_lords": period_lords,
+        "period_candidates": [],
+        "transit": {
+            "status": "not_searched",
+            "targets": [],
+        },
+        "scope_note": (
+            "Independent KP horary timing only; never imported into the "
+            "Parashari standard layer."
+        ),
+    }
+    if topic_result["node_agency_incomplete"]:
+        return {
+            **base,
+            "status": "blocked_node_agency",
+            "reason": (
+                "The operative promise path crosses node agency whose "
+                "conjunction/aspect orb remains unspecified in the Readers."
+            ),
+        }
+    if topic_result["directional_status"] != "positive_only":
+        return {
+            **base,
+            "status": "not_authorized_without_positive_promise",
+            "reason": (
+                "A materialization date is not authorized unless the "
+                "topic-specific promise is positive-only."
+            ),
+        }
+    if topic_result["retrograde_gate"]["blocked_by"]:
+        return {
+            **base,
+            "status": "blocked_temporary_retrograde",
+            "reason": (
+                "The direction remains positive, but Reader VI does not "
+                "authorize materialization while an operative lord is "
+                "temporarily retrograde."
+            ),
+        }
+    if not period_lords:
+        return {
+            **base,
+            "status": "no_rp_significator_intersection",
+            "reason": "No accepted Ruling Planet is an event significator.",
+        }
+
+    candidates = []
+    for period in _iter_shookshma_periods(moon_periods):
+        if period["end"] <= dt_local:
+            continue
+        if all(
+            period[level] in period_lords
+            for level in ("mahadasha", "bhukti", "antara", "shookshma")
+        ):
+            candidate = dict(period)
+            candidate["start"] = max(period["start"], dt_local)
+            candidates.append(candidate)
+            if len(candidates) == 5:
+                break
+    base["period_candidates"] = candidates
+    if not candidates:
+        return {
+            **base,
+            "status": "no_four_level_period_within_horizon",
+            "reason": (
+                "No Dasha/Bhukti/Antara/Shookshma interval wholly governed "
+                "by the RP-significator intersection was found in 12 years."
+            ),
+        }
+
+    targets = _transit_targets(accepted_ruling_planets)
+    serialised_targets = [
+        {
+            **item,
+            "start_longitude": round(item["start_longitude"], 8),
+            "end_longitude": round(item["end_longitude"], 8),
+        }
+        for item in targets
+    ]
+    base["transit"]["targets"] = serialised_targets
+    transit_result = None
+    selected_scale = None
+    for candidate in candidates:
+        delay_days = (candidate["start"] - dt_local).total_seconds() / 86400.0
+        if delay_days <= 31.0:
+            selected_scale = "Moon"
+        elif delay_days < VIMSHOTTARI_YEAR_DAYS:
+            selected_scale = "Sun"
+        else:
+            selected_scale = "Jupiter"
+        transit_result = _first_target_transit(
+            candidate["start"],
+            candidate["end"],
+            selected_scale,
+            targets,
+        )
+        if transit_result:
+            transit_result["period"] = candidate
+            break
+    if transit_result:
+        base["transit"] = {
+            "status": "candidate",
+            "scale_planet": selected_scale,
+            "entry": transit_result["entry"],
+            "already_inside_at_window_start": transit_result[
+                "already_inside_at_window_start"
+            ],
+            "period": transit_result["period"],
+            "targets": serialised_targets,
+        }
+        return {
+            **base,
+            "status": "candidate",
+            "warning": (
+                "Source-scoped KP candidate; precision remains bounded by "
+                "the published-example suite and the selected transit scale."
+            ),
+        }
+    base["transit"]["status"] = "no_entry_in_candidate_periods"
+    base["transit"]["scale_planet"] = selected_scale
+    return {
+        **base,
+        "status": "period_candidate_without_transit_entry",
+        "reason": (
+            "Four-level period candidates exist, but Moon/Sun/Jupiter did "
+            "not enter an RP-governed sign/star/sub segment inside them."
+        ),
+    }
+
+
+def _json_safe(value):
+    if isinstance(value, datetime):
+        return value.isoformat()
+    if isinstance(value, dict):
+        return {key: _json_safe(child) for key, child in value.items()}
+    if isinstance(value, list):
+        return [_json_safe(child) for child in value]
+    return value
+
+
 def compute(
     dt_local: datetime,
     latitude: float,
@@ -697,14 +1210,7 @@ def compute(
     if topic not in TOPIC_RULES:
         raise ValueError(f"Unsupported KP topic: {topic}")
 
-    jd = to_jd(
-        dt_local.year,
-        dt_local.month,
-        dt_local.day,
-        dt_local.hour,
-        dt_local.minute,
-        timezone,
-    )
+    jd = local_datetime_to_jd(dt_local, timezone)
     kp_ayanamsa = _ayanamsa_for_mode(jd, swe.SIDM_KRISHNAMURTI)
     true_citra = _ayanamsa_for_mode(jd, swe.SIDM_TRUE_CITRA)
     number_record = dict(NUMBER_TABLE[number - 1])
@@ -725,6 +1231,11 @@ def compute(
             record["number_boundary_policy"] = (
                 "The 1–249 number selects the following segment at its exact start; "
                 "this is deterministic, not input sensitivity."
+            )
+        elif house == 7:
+            record["number_boundary_policy"] = (
+                "Placidus cusp 7 is exactly opposite the number-defined cusp 1; "
+                "an exact anti-Asc sign boundary is deterministic, not time sensitivity."
             )
         cusp_records.append(record)
 
@@ -751,10 +1262,22 @@ def compute(
         planet_records,
         significations,
     )
+    timing = _json_safe(
+        _compute_kp_timing(
+            dt_local,
+            records_by_name,
+            topic_result,
+            significators_by_house,
+            ruling_planets,
+        )
+    )
 
     sensitive_points = []
     for record in cusp_records + planet_records:
-        if record.get("house") == 1 and record["name"] == "Cusp 1":
+        if (
+            record["name"] in {"Cusp 1", "Cusp 7"}
+            and "number_boundary_policy" in record
+        ):
             continue
         if min(record["boundary_distance_arcmin"].values()) <= 5.0:
             sensitive_points.append(
@@ -780,8 +1303,9 @@ def compute(
         },
         "house_system": "Placidus; number-derived nirayana Ascendant",
         "node_mode": (
-            "Mean Node; sign-lord agency active; conjunction/aspect agency "
-            "disabled pending a sourced policy"
+            "Mean Node; constellation- and sign-lord agency active in Reader "
+            "VI order; conjunction/aspect slots fail closed because no node "
+            "orb is printed"
         ),
         "horary_ascendant": _position_record("Horary Asc", nirayana_asc),
         "house_cusps": cusp_records,
@@ -795,29 +1319,33 @@ def compute(
             "sensitive_points": sensitive_points,
             "all_points_include_raw_boundary_distances": True,
         },
-        "timing": {
-            "status": "disabled",
-            "reason": (
-                "KP Dasha/Bhukti/Antara plus Ruling-Planet and transit timing "
-                "still lacks the required published-reference test suite."
-            ),
-        },
-        "production_status": "experimental",
+        "timing": timing,
+        "production_status": (
+            "experimental_node_contact_source_gap"
+            if topic_result["node_agency_incomplete"]
+            else "experimental_validated_candidate_pending_full_published_example_suite"
+        ),
     }
 
 
 def format_kp_section(data: dict) -> str:
     topic = data["topic_result"]
+    timing = data["timing"]
     question_lines = [f"- 问题：{data['question']}"] if data.get("question") else []
     lines = [
         "# KP Horary 独立栈（1–249）",
         "",
         "> 本文件不属于 Parashari 标准盘，也不与标准结论拼票。",
-        "> 当前仍为实验栈；Timing 未启用。",
+        f"> 当前状态：{data['production_status']}。",
         "",
         "## 输入与技术口径",
         "",
         *question_lines,
+        f"- 判盘时刻：{data['judgment_time']}（{data['judgment_timezone']}）",
+        (
+            f"- 判盘地点：{data['judgment_location']['latitude']}, "
+            f"{data['judgment_location']['longitude']}"
+        ),
         f"- Horary number：**{data['number']}**",
         (
             f"- Number Asc：{data['number_segment']['sign']} "
@@ -898,7 +1426,10 @@ def format_kp_section(data: dict) -> str:
                 or "无"
             ),
             "- Node 逆行政策：Rahu/Ketu 的正常逆向运动不触发 star-lord 剔除。",
-            "- Node agent：当前只启用 sign-lord agency；合相／相位 agency 暂停。",
+            (
+                "- Node agent：星宿主与星座主按 Reader VI 次序启用；"
+                "合相／相位槽因原典未给 node orb 而失败关闭。"
+            ),
             "",
             "## 边界与 Timing",
             "",
@@ -915,15 +1446,301 @@ def format_kp_section(data: dict) -> str:
                     or "无"
                 )
             ),
-            "- Timing：未启用；不得借用标准层 Moon ingress 或 natal Dasha。",
+            f"- Timing 状态：**{timing['status']}**",
+            (
+                "- Horary Moon 当前链："
+                + " / ".join(
+                    f"{item['level']}={item['lord']}"
+                    for item in timing["moon_periods"]["current"]
+                )
+            ),
+            (
+                "- Event significators ∩ Ruling Planets："
+                + ("/".join(timing["period_lords"]) or "无")
+            ),
+            (
+                "- 四级 period 候选："
+                + (
+                    "；".join(
+                        (
+                            f"{item['mahadasha']}-"
+                            f"{item['bhukti']}-"
+                            f"{item['antara']}-"
+                            f"{item['shookshma']} "
+                            f"{item['start']} → {item['end']}"
+                        )
+                        for item in timing["period_candidates"][:3]
+                    )
+                    or "无"
+                )
+            ),
+            (
+                "- 过运候选："
+                + (
+                    f"{timing['transit']['scale_planet']} "
+                    f"{timing['transit']['entry']}"
+                    if timing["transit"]["status"] == "candidate"
+                    else timing["transit"]["status"]
+                )
+            ),
+            (
+                "- Timing 体系边界：独立使用 horary Moon balance、"
+                "RP 交集与 Moon/Sun/Jupiter 分层；不得借用标准层 Moon "
+                "ingress 或 natal Dasha。"
+            ),
         ]
     )
     return "\n".join(lines) + "\n"
 
 
+def format_kp_judgment(data: dict) -> str:
+    """Render a human-readable judgment without merging KP into Parashari."""
+    topic = data["topic_result"]
+    timing = data["timing"]
+    topic_language = {
+        "love-materialization": {
+            "name": "关系能否从互动状态落实为明确关系",
+            "positive": {
+                7: "关系有走向明确伙伴关系的条件",
+                11: "期待的关系结果有实现条件",
+            },
+            "negative": {
+                6: "分歧、摩擦或不对等会妨碍关系落实",
+                12: "疏离、退出或消耗会妨碍关系落实",
+            },
+        },
+        "business-partnership-continuity": {
+            "name": "合作关系能否继续",
+            "positive": {
+                5: "合作仍有继续投入和维系的条件",
+                11: "合作目标仍有实现和收益条件",
+            },
+            "negative": {
+                6: "争议、竞争或责任冲突会妨碍合作继续",
+                12: "退出、损耗或终止条件会妨碍合作继续",
+            },
+        },
+    }[topic["topic"]]
+    status_labels = {
+        "promised_candidate": "正向落实候选",
+        "denied_candidate": "反向／否定候选",
+        "mixed": "混合",
+        "unsupported": "当前题型未取得承诺",
+        "positive_indication_blocked": "正向候选暂时受逆行门阻塞",
+        "negative_indication_blocked": "反向候选暂时受逆行门阻塞",
+        "mixed_with_retrograde_block": "混合且受逆行门阻塞",
+        "incomplete_node_agency": "Node 代理链不完整，失败关闭",
+    }
+    directional_labels = {
+        "positive_only": "只命中题型正向宫组",
+        "negative_only": "只命中题型反向宫组",
+        "mixed": "正向与反向宫组同时命中",
+        "unsupported": "正向与反向宫组均未命中",
+    }
+    positive = "、".join(map(str, topic["positive_hits"])) or "无"
+    negative = "、".join(map(str, topic["negative_hits"])) or "无"
+    positive_meanings = "；".join(
+        topic_language["positive"][house] for house in topic["positive_hits"]
+    ) or "没有命中支持结果落实的条件"
+    negative_meanings = "；".join(
+        topic_language["negative"][house] for house in topic["negative_hits"]
+    ) or "没有命中阻碍结果落实的条件"
+    sensitive = " / ".join(
+        item["name"] for item in data["sensitivity"]["sensitive_points"]
+    ) or "无"
+    accepted_ruling_planets = (
+        " / ".join(timing["accepted_ruling_planets"]) or "无"
+    )
+    period_candidates = "；".join(
+        (
+            f"{item['mahadasha']}-{item['bhukti']}-"
+            f"{item['antara']}-{item['shookshma']} "
+            f"{item['start']} → {item['end']}"
+        )
+        for item in timing["period_candidates"][:3]
+    ) or "无"
+    transit = timing["transit"]
+    transit_reading = (
+        f"{transit['scale_planet']} 于 {transit['entry']} 进入候选区间"
+        if transit["status"] == "candidate"
+        else transit["status"]
+    )
+    timing_boundary = (
+        "当前同时取得正向 promise、四级 period 与过运入口；只作为 KP "
+        "实验栈候选，不是标准层日期。"
+        if timing["status"] == "candidate"
+        else (
+            "当前未满足 KP 事件日期的全部授权条件；不得由模型补造或借用"
+            "其他栈日期。"
+        )
+    )
+    plain_status = {
+        "promised_candidate": (
+            "这套 KP 规则只命中了支持结果落实的条件，没有同时命中否定条件。"
+            "因此方向偏正面，但仍不是百分之百保证。"
+        ),
+        "denied_candidate": (
+            "这套 KP 规则只命中了阻碍或否定结果的条件，当前不支持把事情判成"
+            "能够顺利落实。"
+        ),
+        "mixed": (
+            "支持结果落实的条件和阻碍结果落实的条件同时出现。也就是说，事情并非"
+            "完全没机会，但当前不足以判断它会稳定落地。"
+        ),
+        "unsupported": (
+            "关键判断链没有命中本题的支持条件，也没有命中明确否定条件；这套 KP "
+            "规则目前无法给出方向。"
+        ),
+        "positive_indication_blocked": (
+            "方向本来偏正面，但关键行星仍处于临时逆行阻塞中；现在不能把正向信号"
+            "当成已经能够落实。"
+        ),
+        "negative_indication_blocked": (
+            "盘里出现负向条件，但相关负向结果本身也被临时逆行阻塞；这不等于自动"
+            "转成正面，只表示当前结果尚未落实。"
+        ),
+        "mixed_with_retrograde_block": (
+            "支持和阻碍同时存在，而且关键行星还有临时逆行阻塞；当前更不能给出"
+            "确定结果。"
+        ),
+        "incomplete_node_agency": (
+            "关键判断链经过 Rahu／Ketu，而原典没有给足合相与相位所需的 node orb。"
+            "为了避免自造规则，本盘在这里停止，不能宣布成或不成。"
+        ),
+    }[topic["status"]]
+    plain_timing = {
+        "candidate": (
+            "KP 同时找到了正向结果、四级时间周期和过运入口；下面的时间只能作为"
+            "候选窗口，不能当成保证日期。"
+        ),
+        "blocked_node_agency": (
+            "关键链经过尚未闭合的 Rahu／Ketu 代理规则，因此不允许给日期。"
+        ),
+        "blocked_temporary_retrograde": (
+            "关键行星的临时逆行阻塞尚未解除，因此不允许给日期。"
+        ),
+        "not_authorized_without_positive_promise": (
+            "结果本身不是单纯正向，所以 KP 规则不允许继续推算发生日期。"
+        ),
+        "no_rp_significator_intersection": (
+            "主宰行星与事件行星没有交集，因此没有可用的时间主星。"
+        ),
+        "no_four_level_period_within_horizon": (
+            "在当前搜索范围内没有找到四级时间主星都吻合的周期。"
+        ),
+        "period_candidate_without_transit_entry": (
+            "找到了时间周期，但没有找到对应的过运入口，因此不能落到日期。"
+        ),
+    }[timing["status"]]
+    lines = [
+        f"# KP 独立判读单（研究验证版）：{data.get('question', '未附问题')}",
+        "",
+        "## 一、先说人话",
+        "",
+        f"**结论**：{plain_status}",
+        "",
+        (
+            f"**支持面**：{positive_meanings}。"
+        ),
+        "",
+        (
+            f"**阻力面**：{negative_meanings}。"
+        ),
+        "",
+        f"**时间**：{plain_timing}",
+        "",
+        (
+            "**怎样使用这个结果**：它只回答 KP 这套规则本身，不和标准层或 "
+            "Tajika 投票，也不能用英文状态码代替现实判断。"
+        ),
+        "",
+        "## 二、这张盘使用了什么",
+        "",
+        f"- 判盘时刻：{data['judgment_time']}（{data['judgment_timezone']}）",
+        (
+            f"- 判盘地点：{data['judgment_location']['latitude']}, "
+            f"{data['judgment_location']['longitude']}"
+        ),
+        f"- 用户给出的 Horary number：{data['number']}",
+        f"- 问题类型：{topic_language['name']}",
+        "",
+        "## 三、为什么会得到这个结论",
+        "",
+        (
+            "- 关键判断链同时连接到上面列出的支持条件和阻碍条件，"
+            "所以不能把结果写成单纯正向或单纯负向。"
+        ),
+        (
+            "- 这里判断的是“能否落实”，不是推测对方的秘密想法，"
+            "也不是用一次短暂回暖代替稳定结果。"
+        ),
+        "",
+        "## 四、时间为什么能算或不能算",
+        "",
+        f"- 当前时间结论：{plain_timing}",
+        (
+            "- 只有结果先呈现单纯正向，且逆行、节点代理、时间周期和过运"
+            "条件全部通过，才允许显示候选时间。"
+        ),
+        "",
+        "## 五、技术附录（可以跳过）",
+        "",
+        f"- 原始题型：{topic['topic']}",
+        f"- 判断 cusp：{topic['judgment_cusp']}",
+        f"- Cusp sub-lord：{topic['cusp_sub_lord']}",
+        f"- Star lord：{topic['cusp_sub_lord_star_lord']}",
+        f"- 支持宫命中：{positive}",
+        f"- 阻碍宫命中：{negative}",
+        f"- 原始机械状态：{topic['status']}",
+        f"- 原始方向状态：{topic['directional_status']}",
+        (
+            f"- 状态翻译：{status_labels.get(topic['status'], topic['status'])}；"
+            f"{directional_labels.get(topic['directional_status'], topic['directional_status'])}"
+        ),
+        f"- Star-lord significator houses：{topic['star_lord_signifies']}",
+        f"- 来源规则：{topic['source_rule']}",
+        f"- Temporary retrograde gate：{topic['retrograde_gate']['status']}",
+        (
+            "- Rahu／Ketu 规则完整性："
+            + (
+                "关键路径经过未闭合的 node 接触代理，已停止推断"
+                if topic["node_agency_incomplete"]
+                else "本题关键路径未经过当前 node 缺口"
+            )
+        ),
+        f"- Timing 原始状态：{timing['status']}",
+        (
+            "- 当前四级时间链："
+            + " / ".join(
+                f"{item['level']}={item['lord']}"
+                for item in timing["moon_periods"]["current"]
+            )
+        ),
+        (
+            "- 事件行星与主宰行星交集："
+            + ("/".join(timing["period_lords"]) or "无")
+        ),
+        f"- 已接受的主宰行星：{accepted_ruling_planets}",
+        f"- 四级周期候选：{period_candidates}",
+        f"- 过运入口：{transit_reading}",
+        f"- 5′ 内敏感点：{sensitive}",
+        f"- {timing_boundary}",
+        (
+            "- 本判读单只解释 KP 1–249 结果。它不读取或修改 "
+            "structured_prashna.md，也不把 KP 状态换算为标准层的“成／悬／不成”。"
+        ),
+        f"- 研究验证状态：{data['production_status']}。",
+    ]
+    return "\n".join(lines) + "\n"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Independent KP 1–249 horary engine")
-    parser.add_argument("--datetime", required=True, help='"YYYY-MM-DD HH:MM" or "now"')
+    parser.add_argument(
+        "--datetime",
+        required=True,
+        help='"YYYY-MM-DD HH:MM[:SS[.ffffff]]" or "now"',
+    )
     parser.add_argument("--lat", type=float, required=True)
     parser.add_argument("--lon", type=float, required=True)
     parser.add_argument("--tz", required=True)
@@ -932,11 +1749,7 @@ def main() -> None:
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
 
-    zone = ZoneInfo(args.tz)
-    if args.datetime.strip().lower() == "now":
-        dt = datetime.now(zone).replace(second=0, microsecond=0)
-    else:
-        dt = datetime.strptime(args.datetime, "%Y-%m-%d %H:%M").replace(tzinfo=zone)
+    dt = parse_local_datetime(args.datetime, args.tz)
     data = compute(dt, args.lat, args.lon, args.tz, args.number, args.topic)
     if args.json:
         print(json.dumps(data, ensure_ascii=False, indent=2))

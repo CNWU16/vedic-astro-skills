@@ -318,9 +318,13 @@ Compares two charts: a neutral scan first, then a five-layer analysis under one 
 
 ### 🔮 vedic-prashna — 卜卦/时盘 / Prashna (Horary)
 
-独立生态位，不需本命盘。求问者心中有一具体问题、在某刻提问，即以"提问那一刻的时间地点"起盘（Prashna Kundali）答那个问题。主判读走纯 Parashari（KN Rao 路线）；Tajika/KP 作可选沙箱层，默认关，物理隔离于本 skill 内、绝不污染主系统。
+独立生态位，不需本命盘。默认标准层以 *Shatpanchasika* 为主文本，并通过 KN Rao／Bharatiya Vidya Bhavan 兼容性筛选；以秒级提问时刻和地点起盘，用可审计规则账本回答一个可观察结果的当前成败倾向。Moon 无接触不再被误判为“空亡／不成”，标准层也不会用本命 Dasha、Moon ingress 或今日过运硬给日期。
 
-Standalone module, no natal chart needed. Casts a chart for the exact moment a question is asked (Prashna Kundali) and answers that one question. Main judgment is pure Parashari (KN Rao line); Tajika/KP are optional, sandboxed, and off by default — physically isolated inside this skill.
+Standalone module with no natal chart required. Its default layer is rooted in *Shatpanchasika* and compatibility-screened against KN Rao/Bharatiya Vidya Bhavan practice. It preserves the asking time to the second, answers one observable outcome through an auditable rule ledger, and does not treat an uncontacted Moon as an automatic denial or invent dates from natal-style timing tools.
+
+Tajika 十六 Yoga 是默认关闭的过程副层；KP 是默认关闭、必须由用户亲给 1–249 数字的独立栈。两者拥有独立文件、判据和人话判读，不与标准层拼票。已实现路径可以测试使用，但在出版例盘门全部闭合前继续明确标为实验候选；标准层目前也不提供生产级事件日期。
+
+The optional Tajika sixteen-yoga overlay and the separate KP 1–249 stack are off by default, file-isolated, and never vote with the standard judgment. KP requires a user-supplied number. Implemented paths are usable for testing, while both optional stacks remain explicitly experimental until their published-example gates are complete; the standard layer currently does not claim production-grade event dates.
 
 ---
 
@@ -372,13 +376,17 @@ vedic-astro-skills/
 │   │   └── scripts/
 │   │       └── time_scan.py         # Lagna/D9 扫描器
 │   └── vedic-prashna/               # 卜卦/时盘（独立·不需本命）
-│       ├── SKILL.md                 # Prashna 引擎（纯 Parashari 主判读）
-│       ├── resources/               # 判读规范/宫位卡拉卡/月亮政策/本命交叉政策 等
+│       ├── SKILL.md                 # 标准层 + 隔离的 Tajika/KP 工作流
+│       ├── resources/               # 来源、题型、规则账本、Moon、Q&A 与可选栈规范
 │       └── scripts/
-│           ├── build_prashna_data.py    # 卜卦盘计算
-│           ├── calc_moon_vedic.py       # 月亮状态
-│           ├── calc_optional_tajika.py  # Tajika 可选层（沙箱·默认关）
-│           └── calc_optional_kp.py      # KP 可选层（沙箱·默认关）
+│           ├── build_prashna_data.py    # 标准层独立构建器
+│           ├── prashna_time.py          # 秒级提问盘时间与 D1 刷新
+│           ├── format_prashna_standard.py
+│           ├── calc_moon_vedic.py       # Moon 当前事实（不生成空亡结论）
+│           ├── build_tajika_overlay.py
+│           ├── calc_optional_tajika.py  # Tajika 十六 Yoga（默认关）
+│           ├── build_kp_horary.py
+│           └── calc_optional_kp.py      # KP 1–249 独立栈（默认关）
 ├── claude-code/skills/              # Claude Code 版本 (同上)
 └── codex/skills/                    # Codex 原生版本（含 agents/openai.yaml）
 ```
@@ -395,7 +403,7 @@ vedic-astro-skills/
 | **精确算法 Algorithms** | PyJHora 4.8.6 (SAV/Dasha/分盘) + 9项Shadbala修正 |
 | **分盘 Divisions** | 15 张分盘 D1~D60 (PyJHora) |
 | **合盘 Synastry** | 跨盘叠盘 + Ashtakoota 八项 + 六维矩阵（纯吠陀判据，不混西方占星）|
-| **卜卦 Prashna** | 提问时刻起盘答一事（纯 Parashari 主判读；Tajika/KP 沙箱可选层默认关）|
+| **卜卦 Prashna** | 秒级提问盘；*Shatpanchasika* rooted 标准层 + 隔离的 Tajika 十六 Yoga／KP 1–249 可选栈 |
 | **容错策略 Error Handling** | Fail-fast（不给错误结果）+ `setup_env.py` 自动修复 |
 | **校验 Validation** | 16条数学校验（SAV=337、BAV行和常量、Ra-Ke对冲等）|
 | **反偏见 Anti-bias** | 正反双审 — 禁止只挑用户想听的数据 |

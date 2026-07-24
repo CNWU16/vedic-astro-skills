@@ -1,4 +1,4 @@
 interface:
   display_name: "Vedic Prashna"
-  short_description: "Answer a specific question from a Prashna (horary) chart"
-  default_prompt: "Use $vedic-prashna to cast a Prashna chart and answer my question."
+  short_description: "Cast Prashna charts and handle isolated stack follow-ups"
+  default_prompt: "Use $vedic-prashna to cast a second-precise Prashna chart or answer a follow-up about an existing standard, Tajika, or KP result."

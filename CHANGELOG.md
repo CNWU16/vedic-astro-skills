@@ -6,9 +6,33 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased] - 2026-07-24
+
+### vedic-prashna 安全重构
+
+- 标准层改为以 *Shatpanchasika* 为主文本、经 KN Rao／Bharatiya Vidya Bhavan
+  兼容性筛选的规则账本；不再把 KN Rao 的本命工具自动迁入提问盘。
+- 删除“Moon 无接触＝空亡／不成”的全局硬门；Moon 只按题目专属规则消费，其余
+  只列当前事实。
+- 新增秒和小数秒保留、时区 DST 严格校验，以及 Lagna／rising Navamsa 输入敏感性
+  分离报告。
+- 标准、Tajika、KP 在构建器、产物和结论权限上完全隔离；既有盘 Q&A 可分栈追问，
+  跨栈比较只并列、不投票。
+- Tajika 副层实现十六 Yoga、Kamboola 16 档、Shunyamarga、Radda／Durapha
+  优先级与受限 timing 候选；出版例盘套件完成前继续标为实验候选。
+- KP 独立栈实现用户给号 1–249、Krishnamurti ayanamsa、Placidus cusps、
+  A/B/C/D significator chain、Ruling Planets、四级 period 与 timing 失败关闭。
+  未核证的 node 接触代理、婚姻重聚语义和出版 timing 套件不作推断，整栈继续标为
+  实验候选。
+- 标准、Tajika、KP 判读单均改为先说人话、后列可回查技术证据。
+
+---
+
 ## [v8.0] - 2026-07-12
 
 > 🔮 **vedic-prashna 卜卦/时盘上线** — 八Skill架构（独立生态位）
+>
+> 此节记录 v8.0 初版行为；当前安全口径以上方 Unreleased 重构为准。
 
 ### ✨ 新增 vedic-prashna（卜卦/时盘）
 

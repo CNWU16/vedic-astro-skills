@@ -11,7 +11,7 @@
 
 沙箱化硬约束(vedic-prashna/SKILL.md §沙箱化硬约束):
 - 本脚本只存在于 vedic-prashna/scripts/，绝不下沉共享 vedic-calculator/scripts/engine.py。
-- 只读复用共享 engine 的 calculate_full_chart/get_house 等基础工具。
+- 只读复用共享 engine 的基础工具，并由本 skill 保留秒级时间。
 - 输出仅由 build_prashna_data.py 追加到 prashna_*/structured_prashna.md。
 
 对应 SKILL.md §主判读方法论 · Step 3 消费入口。
@@ -19,9 +19,7 @@
 import argparse
 import json
 import sys
-from datetime import datetime
 from pathlib import Path
-from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 # --- 复用共享 vedic-calculator(只读) ---
 _HERE = Path(__file__).resolve().parent            # vedic-prashna/scripts/
@@ -31,8 +29,9 @@ if str(_CALC) not in sys.path:
 
 # 导入 engine 会顺带 set_sid_mode(SIDM_TRUE_CITRA)，与主排盘一致
 from engine import (                                # noqa: E402
-    calculate_full_chart, get_house,
+    get_house,
 )
+from prashna_time import calculate_prashna_chart, parse_local_datetime  # noqa: E402
 
 
 # Prashna Moon 判读用 SPECIAL_DRISHTI(承 engine.calc_graha_drishti 口径)
@@ -190,7 +189,11 @@ def format_moon_section(moon_data):
 # ---------------------------------------------------------------------------
 def main():
     ap = argparse.ArgumentParser(description="Prashna Moon 吠陀动向独立 CLI")
-    ap.add_argument("--datetime", required=True, help='"YYYY-MM-DD HH:MM" 或 "now"')
+    ap.add_argument(
+        "--datetime",
+        required=True,
+        help='"YYYY-MM-DD HH:MM[:SS[.ffffff]]" 或 "now"',
+    )
     ap.add_argument("--lat", type=float, required=True)
     ap.add_argument("--lon", type=float, required=True)
     ap.add_argument("--tz", required=True)
@@ -198,17 +201,10 @@ def main():
     args = ap.parse_args()
 
     try:
-        local_zone = ZoneInfo(args.tz)
-    except ZoneInfoNotFoundError:
-        ap.error(f"--tz 不是可用的 IANA 时区: {args.tz!r}")
-    dt = (
-        datetime.now(local_zone).replace(tzinfo=None)
-        if args.datetime.strip().lower() == "now"
-        else datetime.strptime(args.datetime, "%Y-%m-%d %H:%M")
-    )
-
-    chart = calculate_full_chart(dt.year, dt.month, dt.day, dt.hour, dt.minute,
-                                 args.lat, args.lon, args.tz)
+        dt = parse_local_datetime(args.datetime, args.tz)
+    except Exception as exc:
+        ap.error(str(exc))
+    chart = calculate_prashna_chart(dt, args.lat, args.lon, args.tz)
     data = compute(chart, dt, args.tz)
     if args.json:
         print(json.dumps(data, ensure_ascii=False, indent=2))
