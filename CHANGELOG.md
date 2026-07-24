@@ -24,6 +24,12 @@ All notable changes to this project will be documented in this file.
   A/B/C/D significator chain、Ruling Planets、四级 period 与 timing 失败关闭。
   未核证的 node 接触代理、婚姻重聚语义和出版 timing 套件不作推断，整栈继续标为
   实验候选。
+- 修正 KP 恋情落实判据：正向必须同时关联 7、11，反向关联 6 或 12 任一即可；
+  不再把部分正向命中误判为正向或制造假 `mixed`。
+- 修复 1–249 表在嵌套 Vimshottari 子区间末端的浮点缝隙，并把号码定义的第 1
+  cusp 与精确对冲的第 7 cusp 回写为定义值；249 个号码现可逐一完整起盘。
+- KP 判读单改为直接回答“当前偏向／关键理由／现实含义／能否给时间”；真正
+  `mixed` 明确说明缺少来源支持的优先裁决规则，不再写成“有机会也有阻力”。
 - 标准、Tajika、KP 判读单均改为先说人话、后列可回查技术证据。
 
 ---

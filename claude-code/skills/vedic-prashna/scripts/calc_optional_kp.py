@@ -109,19 +109,24 @@ TOPIC_RULES = {
     "love-materialization": {
         "judgment_cusp": 5,
         "positive_houses": (7, 11),
+        "positive_match": "all",
         "negative_houses": (6, 12),
+        "negative_match": "any",
         "source": (
             "KSK Reader VI, 'Will my Love Affairs Materialise?': "
-            "5th cusp sub-lord's star lord; 7/11 promise, 6/12 deny"
+            "5th cusp sub-lord's star lord; 7 and 11 promise, "
+            "6 or 12 deny"
         ),
     },
     "business-partnership-continuity": {
         "judgment_cusp": 7,
         "positive_houses": (5, 11),
+        "positive_match": "any",
         "negative_houses": (6, 12),
+        "negative_match": "any",
         "source": (
             "KSK Reader VI, number 156 'Business and Partnership': "
-            "7th cusp sub-lord; 5/11 continue, 6/12 break"
+            "7th cusp sub-lord; 5 or 11 continue, 6 or 12 break"
         ),
     },
 }
@@ -244,14 +249,35 @@ def _vimshottari_path(longitude: float, depth: int = 4) -> list[dict]:
     parent_lord = star_lord
     for level in ("bhukti", "antara", "shookshma")[: depth - 1]:
         children = _split_angular_segment(parent_start, parent_end, parent_lord)
-        selected = next(
-            child
-            for child in children
-            if child["start"] - 1e-10
-            <= longitude
-            < child["end"] - 1e-10
-            or math.isclose(longitude, child["start"], abs_tol=1e-10)
-        )
+        selected = None
+        for index, child in enumerate(children):
+            # KP number segments use their exact starting boundary.  When a
+            # computed longitude is indistinguishable from an interior start,
+            # select the segment beginning there (the right-hand segment).
+            if index and math.isclose(
+                longitude,
+                child["start"],
+                rel_tol=0.0,
+                abs_tol=1e-10,
+            ):
+                selected = child
+                break
+            if child["start"] <= longitude < child["end"]:
+                selected = child
+                break
+        if selected is None and math.isclose(
+            longitude,
+            children[-1]["end"],
+            rel_tol=0.0,
+            abs_tol=1e-10,
+        ):
+            # A longitude just below the parent end can round to that end at a
+            # deeper subdivision.  It still belongs to the final child.
+            selected = children[-1]
+        if selected is None:
+            raise ValueError(
+                "Longitude fell outside a contiguous Vimshottari subdivision"
+            )
         path.append(
             {
                 "level": level,
@@ -721,11 +747,28 @@ def _evaluate_topic(
     houses = {int(house) for house in source_significations}
     positive = sorted(houses.intersection(rule["positive_houses"]))
     negative = sorted(houses.intersection(rule["negative_houses"]))
-    if positive and not negative:
+
+    def condition_met(required_houses: tuple[int, ...], match: str) -> bool:
+        required = set(required_houses)
+        if match == "all":
+            return required.issubset(houses)
+        if match == "any":
+            return bool(required.intersection(houses))
+        raise ValueError(f"Unsupported topic match mode: {match}")
+
+    positive_condition_met = condition_met(
+        rule["positive_houses"],
+        rule["positive_match"],
+    )
+    negative_condition_met = condition_met(
+        rule["negative_houses"],
+        rule["negative_match"],
+    )
+    if positive_condition_met and not negative_condition_met:
         directional_status = "positive_only"
-    elif negative and not positive:
+    elif negative_condition_met and not positive_condition_met:
         directional_status = "negative_only"
-    elif positive and negative:
+    elif positive_condition_met and negative_condition_met:
         directional_status = "mixed"
     else:
         directional_status = "unsupported"
@@ -802,6 +845,16 @@ def _evaluate_topic(
         "position_sub_lord_house": records[position_sub_lord]["house"],
         "positive_hits": positive,
         "negative_hits": negative,
+        "positive_condition": {
+            "required_houses": list(rule["positive_houses"]),
+            "match": rule["positive_match"],
+            "met": positive_condition_met,
+        },
+        "negative_condition": {
+            "required_houses": list(rule["negative_houses"]),
+            "match": rule["negative_match"],
+            "met": negative_condition_met,
+        },
         "directional_status": directional_status,
         "retrograde_gate": {
             "checks": retrograde_checks,
@@ -1222,6 +1275,10 @@ def compute(
     cusp_longitudes = [
         (tropical_cusps[house] - kp_ayanamsa) % 360.0 for house in range(1, 13)
     ]
+    # Cusp 1 is defined by the user's number, not by the numerical residue of
+    # the ARMC solver.  Placidus cusp 7 is its exact opposition.
+    cusp_longitudes[0] = nirayana_asc % 360.0
+    cusp_longitudes[6] = (nirayana_asc + 180.0) % 360.0
 
     cusp_records = []
     for house, cusp_longitude in enumerate(cusp_longitudes, start=1):
@@ -1373,6 +1430,18 @@ def format_kp_section(data: dict) -> str:
         ),
         f"- 正向命中：{topic['positive_hits']}",
         f"- 反向命中：{topic['negative_hits']}",
+        (
+            "- 正向条件："
+            f"{topic['positive_condition']['match']} "
+            f"{topic['positive_condition']['required_houses']}；"
+            f"met={topic['positive_condition']['met']}"
+        ),
+        (
+            "- 反向条件："
+            f"{topic['negative_condition']['match']} "
+            f"{topic['negative_condition']['required_houses']}；"
+            f"met={topic['negative_condition']['met']}"
+        ),
         f"- 方向状态：{topic['directional_status']}",
         (
             f"- 逆行 materialization gate："
@@ -1500,6 +1569,12 @@ def format_kp_judgment(data: dict) -> str:
     topic_language = {
         "love-materialization": {
             "name": "关系能否从互动状态落实为明确关系",
+            "positive_requirement": (
+                "明确伙伴关系与期待结果两项条件必须同时成立"
+            ),
+            "negative_requirement": (
+                "分歧摩擦或疏离退出任一条件成立即构成否定"
+            ),
             "positive": {
                 7: "关系有走向明确伙伴关系的条件",
                 11: "期待的关系结果有实现条件",
@@ -1511,6 +1586,12 @@ def format_kp_judgment(data: dict) -> str:
         },
         "business-partnership-continuity": {
             "name": "合作关系能否继续",
+            "positive_requirement": (
+                "继续投入或合作收益任一条件成立即可构成正向"
+            ),
+            "negative_requirement": (
+                "责任冲突或退出终止任一条件成立即构成否定"
+            ),
             "positive": {
                 5: "合作仍有继续投入和维系的条件",
                 11: "合作目标仍有实现和收益条件",
@@ -1532,10 +1613,10 @@ def format_kp_judgment(data: dict) -> str:
         "incomplete_node_agency": "Node 代理链不完整，失败关闭",
     }
     directional_labels = {
-        "positive_only": "只命中题型正向宫组",
-        "negative_only": "只命中题型反向宫组",
-        "mixed": "正向与反向宫组同时命中",
-        "unsupported": "正向与反向宫组均未命中",
+        "positive_only": "完整正向条件成立，明确否定条件未成立",
+        "negative_only": "完整正向条件未成立，明确否定条件成立",
+        "mixed": "正向与反向完整条件同时成立",
+        "unsupported": "正向与反向完整条件均未成立",
     }
     positive = "、".join(map(str, topic["positive_hits"])) or "无"
     negative = "、".join(map(str, topic["negative_hits"])) or "无"
@@ -1545,6 +1626,14 @@ def format_kp_judgment(data: dict) -> str:
     negative_meanings = "；".join(
         topic_language["negative"][house] for house in topic["negative_hits"]
     ) or "没有命中阻碍结果落实的条件"
+    positive_condition_met = topic["positive_condition"]["met"]
+    negative_condition_met = topic["negative_condition"]["met"]
+    positive_condition_text = (
+        "已完整成立" if positive_condition_met else "未完整成立"
+    )
+    negative_condition_text = (
+        "已成立" if negative_condition_met else "未成立"
+    )
     sensitive = " / ".join(
         item["name"] for item in data["sensitivity"]["sensitive_points"]
     ) or "无"
@@ -1576,32 +1665,32 @@ def format_kp_judgment(data: dict) -> str:
     )
     plain_status = {
         "promised_candidate": (
-            "这套 KP 规则只命中了支持结果落实的条件，没有同时命中否定条件。"
-            "因此方向偏正面，但仍不是百分之百保证。"
+            "当前偏向落实。题型要求的完整正向条件成立，明确否定条件未成立；"
+            "这是方向判断，不是百分之百保证。"
         ),
         "denied_candidate": (
-            "这套 KP 规则只命中了阻碍或否定结果的条件，当前不支持把事情判成"
-            "能够顺利落实。"
+            "当前偏向不落实。题型要求的完整正向条件没有成立，而至少一个明确"
+            "否定条件已经成立。"
         ),
         "mixed": (
-            "支持结果落实的条件和阻碍结果落实的条件同时出现。也就是说，事情并非"
-            "完全没机会，但当前不足以判断它会稳定落地。"
+            "这套 KP 规则目前无法裁决：原典要求的完整正向条件与明确否定条件"
+            "同时成立，但当前题型没有来源支持的优先裁决规则。"
         ),
         "unsupported": (
-            "关键判断链没有命中本题的支持条件，也没有命中明确否定条件；这套 KP "
-            "规则目前无法给出方向。"
+            "这套 KP 规则目前无法判断：完整正向条件没有成立，明确否定条件也"
+            "没有成立。"
         ),
         "positive_indication_blocked": (
-            "方向本来偏正面，但关键行星仍处于临时逆行阻塞中；现在不能把正向信号"
-            "当成已经能够落实。"
+            "方向本来偏向落实，但关键行星仍处于临时逆行阻塞中；现在不能把"
+            "正向条件当成已经能够落实。"
         ),
         "negative_indication_blocked": (
-            "盘里出现负向条件，但相关负向结果本身也被临时逆行阻塞；这不等于自动"
-            "转成正面，只表示当前结果尚未落实。"
+            "方向本来偏向不落实，但相关负向结果也被临时逆行阻塞；这不自动"
+            "转成正面，只表示当前负向结果尚未落实。"
         ),
         "mixed_with_retrograde_block": (
-            "支持和阻碍同时存在，而且关键行星还有临时逆行阻塞；当前更不能给出"
-            "确定结果。"
+            "完整正向条件和明确否定条件同时成立，且关键行星还有临时逆行"
+            "阻塞；原典没有提供当前题型的优先裁决规则。"
         ),
         "incomplete_node_agency": (
             "关键判断链经过 Rahu／Ketu，而原典没有给足合相与相位所需的 node orb。"
@@ -1632,22 +1721,69 @@ def format_kp_judgment(data: dict) -> str:
             "找到了时间周期，但没有找到对应的过运入口，因此不能落到日期。"
         ),
     }[timing["status"]]
+    reason = {
+        "promised_candidate": (
+            f"{topic_language['positive_requirement']}，本盘{positive_condition_text}；"
+            f"{topic_language['negative_requirement']}，本盘{negative_condition_text}。"
+        ),
+        "denied_candidate": (
+            f"{topic_language['positive_requirement']}，本盘{positive_condition_text}；"
+            f"{topic_language['negative_requirement']}，本盘{negative_condition_text}。"
+        ),
+        "mixed": (
+            "完整正向条件和明确否定条件都成立；现有来源没有规定哪一边优先。"
+        ),
+        "unsupported": (
+            "完整正向条件与明确否定条件都未成立，所以不能硬选正面或负面。"
+        ),
+        "positive_indication_blocked": (
+            "完整正向条件成立、明确否定条件未成立，但落实门仍被临时逆行阻塞。"
+        ),
+        "negative_indication_blocked": (
+            "完整正向条件未成立、明确否定条件成立，但负向落实门也被临时逆行阻塞。"
+        ),
+        "mixed_with_retrograde_block": (
+            "完整正向与明确否定条件都成立，且落实门仍被临时逆行阻塞。"
+        ),
+        "incomplete_node_agency": (
+            "关键链穿过原典未给足参数的节点代理；为了不自造规则，判断在此停止。"
+        ),
+    }[topic["status"]]
+    reality = {
+        "promised_candidate": positive_meanings,
+        "denied_candidate": negative_meanings,
+        "mixed": (
+            "不能把任何一边写成优先结果；这不是“有机会也有阻力”，而是规则"
+            "本身在此缺少裁决条款"
+        ),
+        "unsupported": (
+            "当前证据不足以产生方向；部分命中不等于完整正向条件"
+        ),
+        "positive_indication_blocked": (
+            f"{positive_meanings}，但目前尚不能视为已经能够落地"
+        ),
+        "negative_indication_blocked": (
+            f"{negative_meanings}，但目前尚不能视为负向结果已经落地"
+        ),
+        "mixed_with_retrograde_block": (
+            "既无优先裁决规则，落实门又未放行，因此不能给确定方向"
+        ),
+        "incomplete_node_agency": (
+            "当前没有权限输出成或不成；补齐来源前保持失败关闭"
+        ),
+    }[topic["status"]]
     lines = [
         f"# KP 独立判读单（研究验证版）：{data.get('question', '未附问题')}",
         "",
         "## 一、先说人话",
         "",
-        f"**结论**：{plain_status}",
+        f"**当前偏向**：{plain_status}",
         "",
-        (
-            f"**支持面**：{positive_meanings}。"
-        ),
+        f"**关键理由**：{reason}",
         "",
-        (
-            f"**阻力面**：{negative_meanings}。"
-        ),
+        f"**现实含义**：{reality}。",
         "",
-        f"**时间**：{plain_timing}",
+        f"**能否给时间**：{plain_timing}",
         "",
         (
             "**怎样使用这个结果**：它只回答 KP 这套规则本身，不和标准层或 "
@@ -1667,9 +1803,12 @@ def format_kp_judgment(data: dict) -> str:
         "## 三、为什么会得到这个结论",
         "",
         (
-            "- 关键判断链同时连接到上面列出的支持条件和阻碍条件，"
-            "所以不能把结果写成单纯正向或单纯负向。"
+            f"- 正向条件：{positive_condition_text}。{positive_meanings}。"
         ),
+        (
+            f"- 否定条件：{negative_condition_text}。{negative_meanings}。"
+        ),
+        f"- 裁决理由：{reason}",
         (
             "- 这里判断的是“能否落实”，不是推测对方的秘密想法，"
             "也不是用一次短暂回暖代替稳定结果。"
@@ -1691,6 +1830,18 @@ def format_kp_judgment(data: dict) -> str:
         f"- Star lord：{topic['cusp_sub_lord_star_lord']}",
         f"- 支持宫命中：{positive}",
         f"- 阻碍宫命中：{negative}",
+        (
+            "- 正向条件："
+            f"{topic['positive_condition']['match']} "
+            f"{topic['positive_condition']['required_houses']}；"
+            f"met={topic['positive_condition']['met']}"
+        ),
+        (
+            "- 反向条件："
+            f"{topic['negative_condition']['match']} "
+            f"{topic['negative_condition']['required_houses']}；"
+            f"met={topic['negative_condition']['met']}"
+        ),
         f"- 原始机械状态：{topic['status']}",
         f"- 原始方向状态：{topic['directional_status']}",
         (
