@@ -1,6 +1,6 @@
 ---
 name: vedic-calculator
-description: "Calculate a complete Vedic/Jyotish natal chart directly from birth date, exact time, and place, producing the canonical structured_data.md for downstream analysis. Use for requests such as 'calculate my Vedic chart', 'cast my birth chart', 'generate a chart from my birth details', or Chinese triggers including '直接排盘', '计算星盘', '快速排盘', and '算一下'. Also use when vedic-reader has birth details but no chart file. / 吠陀占星排盘计算引擎。"
+description: "Calculate a complete Vedic/Jyotish natal chart directly from birth date, exact time, and place, producing the canonical structured_data.md for downstream analysis. Use for requests such as 'calculate my Vedic chart', 'cast my birth chart', 'generate a chart from my birth details'; Chinese triggers including '直接排盘', '计算星盘', '快速排盘', and '算一下'; or Japanese triggers including '出生図を作って', 'ホロスコープを計算して', and 'ヴェーダ占星術で出生図を出して'. Also use when vedic-reader has birth details but no chart file. / 吠陀占星排盘计算引擎。"
 ---
 
 # vedic-calculator: 吠陀占星排盘引擎
@@ -12,6 +12,7 @@ description: "Calculate a complete Vedic/Jyotish natal chart directly from birth
 - Keep canonical filenames, CLI flags, JSON keys, `structured_data.md` schema headings, technical codes, and Sanskrit/English identifiers unchanged. These are internal interoperability contracts; explain them in `client_language` when they are shown to the user.
 - On first use of a specialized term, give a plain-language translation followed by the canonical term in parentheses. Never translate canonical identifiers inside calculations or evidence citations.
 - If the user changes language mid-run, preserve the existing data and artifact lineage; switch client-facing language from that point onward unless the user explicitly asks to regenerate earlier artifacts.
+- When `client_language` is Japanese, read `resources/ja-calculator.md` completely before the first Japanese client-facing message. Apply it only as a terminology, register, intake, and rendering layer; it never changes calculations, schemas, evidence, phases, or output requirements.
 
 > 基于pysweph天文引擎 + dashaflow算法模块，直接从出生时间计算完整星盘数据。
 > 输出格式完全兼容vedic-reader的structured_data.md，可直接交给vedic-core分析。

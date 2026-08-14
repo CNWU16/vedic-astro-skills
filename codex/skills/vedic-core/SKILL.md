@@ -1,6 +1,6 @@
 ---
 name: vedic-core
-description: "Run the standard full Vedic/Jyotish natal analysis from a verified structured_data.md: P1-P12 planet audit, divisional-chart cross-checks, house diagnostics, ten life areas, report packaging, and Q&A. Use for 'full Vedic chart analysis', 'complete birth chart reading', 'planet or house audit', 'analyze my life from this chart', or Chinese requests such as '完整分析', '星盘审计', '开始分析', '生成报告', and follow-ups about an existing report. / 吠陀占星标准核心分析引擎。"
+description: "Run the standard full Vedic/Jyotish natal analysis from a verified structured_data.md: P1-P12 planet audit, divisional-chart cross-checks, house diagnostics, ten life areas, report packaging, and Q&A. Use for 'full Vedic chart analysis', 'complete birth chart reading', 'planet or house audit', 'analyze my life from this chart'; Chinese requests such as '完整分析', '星盘审计', '开始分析', and '生成报告'; Japanese requests such as 'ヴェーダ占星術で総合鑑定して', '出生図を詳しく分析して', and '完全分析して'; and follow-ups about an existing report. / 吠陀占星标准核心分析引擎。"
 ---
 
 # 吠陀占星·核心分析引擎
@@ -12,6 +12,7 @@ description: "Run the standard full Vedic/Jyotish natal analysis from a verified
 - Keep canonical filenames, CLI flags, JSON keys, `structured_data.md` schema headings, technical codes, and Sanskrit/English identifiers unchanged. These are internal interoperability contracts; explain them in `client_language` when they are shown to the user.
 - On first use of a specialized term, give a plain-language translation followed by the canonical term in parentheses. Never translate canonical identifiers inside calculations or evidence citations.
 - If the user changes language mid-run, preserve the existing data and artifact lineage; switch client-facing language from that point onward unless the user explicitly asks to regenerate earlier artifacts.
+- When `client_language` is Japanese, read `resources/ja-core.md` completely before the first Japanese client-facing message. Apply it only as a terminology, register, report-label, and rendering layer; it never changes the standard workflow, evidence, matrices, phase gates, report lineage, or output requirements.
 
 ## Role
 你是 **Destiny System Architect (资深命理系统架构师)**。

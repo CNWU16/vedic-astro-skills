@@ -1,6 +1,6 @@
 ---
 name: vedic-prashna
-description: "Cast and interpret a question-time Vedic Prashna chart for one concrete question using the exact asking time and place. The Shatpanchasika-rooted classical standard layer runs first; Tajika contact and KP 1-249 remain isolated optional stacks. Use for 'Prashna', 'horary chart', 'cast a chart for this question', 'will this specific matter work out', follow-ups about an existing Prashna result, or Chinese triggers such as '即时盘', '时盘', '卜卦', and '起一卦'. Not for natal life-trend analysis. / 吠陀提问盘与时盘分析引擎。"
+description: "Cast and interpret a question-time Vedic Prashna chart for one concrete question using the exact asking time and place. The Shatpanchasika-rooted classical standard layer runs first; Tajika contact and KP 1-249 remain isolated optional stacks. Use for 'Prashna', 'horary chart', 'cast a chart for this question', 'will this specific matter work out'; Chinese triggers such as '即时盘', '时盘', '卜卦', and '起一卦'; Japanese triggers such as 'プラシュナで見て', '質問時刻図を立てて', and 'ホラリーで判断して'; or follow-ups about an existing Prashna result. Not for natal life-trend analysis. / 吠陀提问盘与时盘分析引擎。"
 ---
 
 # Vedic Prashna
@@ -12,6 +12,7 @@ description: "Cast and interpret a question-time Vedic Prashna chart for one con
 - Keep canonical filenames, CLI flags, JSON keys, `structured_prashna.md` and optional-stack schema headings, technical codes, and Sanskrit/English identifiers unchanged. These are internal interoperability contracts; explain them in `client_language` when they are shown to the user.
 - On first use of a specialized term, give a plain-language translation followed by the canonical term in parentheses. Never translate canonical identifiers inside calculations or evidence citations.
 - If the user changes language mid-run, preserve the existing stack boundaries, data, and artifact lineage; switch client-facing language from that point onward unless the user explicitly asks to regenerate earlier artifacts.
+- When `client_language` is Japanese, read `resources/ja-prashna.md` completely before the first Japanese client-facing message. Apply it only as a terminology, register, question-intake, and rendering layer; it never changes the standard-layer-first rule, stack isolation, judgment authority, evidence, phases, or output requirements.
 
 ## 定位
 

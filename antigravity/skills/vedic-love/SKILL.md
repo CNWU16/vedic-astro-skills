@@ -1,6 +1,6 @@
 ---
 name: vedic-love
-description: "Analyze relationship patterns, emotional needs, partnership capacity, and relationship timing from a verified Vedic/Jyotish chart. Use for 'Vedic love reading', 'relationship patterns in my chart', 'when might a relationship begin', 5th/7th-house, PK/DK, Upapada or D9 questions, and Chinese requests such as '感情分析', '恋爱运势', or '桃花时机'. / 吠陀占星关系与恋爱时机分析引擎。"
+description: "Analyze relationship patterns, emotional needs, partnership capacity, and relationship timing from a verified Vedic/Jyotish chart. Use for 'Vedic love reading', 'relationship patterns in my chart', 'when might a relationship begin', 5th/7th-house, PK/DK, Upapada or D9 questions; Chinese requests such as '感情分析', '恋爱运势', or '桃花时机'; and Japanese requests such as '恋愛運を見て', '恋愛傾向を分析して', or '恋愛のタイミングを知りたい'. / 吠陀占星关系与恋爱时机分析引擎。"
 ---
 
 # 吠陀恋爱时机分析引擎 (Vedic Love Timing Architect)
@@ -12,6 +12,7 @@ description: "Analyze relationship patterns, emotional needs, partnership capaci
 - Keep canonical filenames, CLI flags, JSON keys, `structured_data.md` schema headings, technical codes, and Sanskrit/English identifiers unchanged. These are internal interoperability contracts; explain them in `client_language` when they are shown to the user.
 - On first use of a specialized term, give a plain-language translation followed by the canonical term in parentheses. Never translate canonical identifiers inside calculations or evidence citations.
 - If the user changes language mid-run, preserve the existing data and artifact lineage; switch client-facing language from that point onward unless the user explicitly asks to regenerate earlier artifacts.
+- When `client_language` is Japanese, read `resources/ja-love.md` completely before the first Japanese client-facing message. Apply it only as a terminology, register, intake, and rendering layer; it never changes the relationship workflow, evidence, timing rules, phases, or output requirements.
 
 ## 概述
 

@@ -6,7 +6,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [Unreleased] - 2026-07-24
+## [Unreleased] - 2026-08-14
+
+### Japanese runtime and documentation support
+
+- Added Japanese trigger metadata to all eight skills while preserving English and Chinese discovery phrases.
+- Added one per-skill Japanese localization resource for stable Jyotish terminology, natural polite register, intake wording, questionnaire phrasing, report labels, and client-facing answer order.
+- Added a native Japanese HTML shell with `--lang ja`, `lang="ja"`, Japanese cover and section labels, and Noto/Hiragino/Yu Japanese font fallbacks.
+- Added `README.ja.md` and `codex-patch/README.ja.md`; the canonical calculation, evidence, phase, scoring, schema, and report-lineage rules remain single-source and untranslated.
 
 ### English runtime and documentation support
 

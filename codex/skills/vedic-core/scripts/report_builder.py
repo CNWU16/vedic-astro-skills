@@ -5,7 +5,7 @@ Auto-detects open-source (vedic-core) vs Pro (vedic-core-pro) output files.
 Dynamically numbers sections — no hardcoded "Part II" when Part I is missing.
 
 Usage:
-  python report_builder.py <folder> [--name "Name"] [--lagna "Cancer"] [--lang cn]
+  python report_builder.py <folder> [--name "Name"] [--lagna "Cancer"] [--lang cn|en|ja]
 
 Auto-detected file patterns:
   Identity:     p0_identity.md (Pro only)
@@ -38,7 +38,7 @@ except ImportError:
 
 # ── CSS ──
 CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600&family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
   --parchment: #f8f4ec; --parchment-deep: #f0eadb;
@@ -51,7 +51,7 @@ CSS = """
 @page { size: A4; margin: 22mm 20mm 24mm 20mm; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+  font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
   font-size: 14px; line-height: 1.85; color: var(--text);
   background: #e8e0d0;
   max-width: 780px; margin: 0 auto; padding: 48px 56px;
@@ -77,13 +77,13 @@ body {
   letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px;
 }
 .cover h1 {
-  font-family: "Noto Serif SC", "Songti SC", serif;
+  font-family: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif SC", "Songti SC", serif;
   font-size: 52px; font-weight: 700;
   color: var(--brown); line-height: 1.3; margin-bottom: 6px;
   border-bottom: none; padding-bottom: 0;
 }
 .cover .cover-accent {
-  font-family: "Noto Serif SC", serif;
+  font-family: "Noto Serif JP", "Yu Mincho", "Noto Serif SC", serif;
   font-size: 28px; font-weight: 400; color: var(--gold);
   letter-spacing: 6px; margin-bottom: 12px;
 }
@@ -108,7 +108,7 @@ body {
 
 .toc { page-break-after: always; padding: 40px 0; }
 .toc h2 {
-  font-family: "Noto Serif SC", serif; font-size: 22px; color: var(--brown);
+  font-family: "Noto Serif JP", "Yu Mincho", "Noto Serif SC", serif; font-size: 22px; color: var(--brown);
   margin-bottom: 24px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
   font-weight: 600;
 }
@@ -136,16 +136,16 @@ body {
   font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
 }
 .section-header h2 {
-  font-family: "Noto Serif SC", serif; font-size: 21px; font-weight: 700;
+  font-family: "Noto Serif JP", "Yu Mincho", "Noto Serif SC", serif; font-size: 21px; font-weight: 700;
   margin-top: 2px; border: none; color: var(--brown) !important; padding-bottom: 0;
 }
 
 h1 {
-  font-family: "Noto Serif SC", "Crimson Pro", serif; font-size: 22px; color: var(--brown);
+  font-family: "Noto Serif JP", "Yu Mincho", "Noto Serif SC", "Crimson Pro", serif; font-size: 22px; color: var(--brown);
   margin: 32px 0 14px; font-weight: 600;
 }
 h2 {
-  font-family: "Noto Serif SC", "Crimson Pro", serif; font-size: 18px; color: var(--brown);
+  font-family: "Noto Serif JP", "Yu Mincho", "Noto Serif SC", "Crimson Pro", serif; font-size: 18px; color: var(--brown);
   margin: 28px 0 12px; font-weight: 600;
 }
 h3 {
@@ -306,6 +306,63 @@ SECTION_REGISTRY = [
      []),
 ]
 
+JA_SECTION_TITLES = {
+    "identity": "出生図の中心テーマ",
+    "planets_a": "惑星監査（太陽・月）",
+    "planets_b": "惑星監査（火星・水星）",
+    "planets_c": "惑星監査（木星・金星）",
+    "planets_d": "惑星監査（土星・ラーフ・ケートゥ＋総括）",
+    "planets": "惑星監査（P1-P12）",
+    "d9": "ナヴァーンシャ（D9）の詳細監査",
+    "divisional": "分割図のクロス分析",
+    "yogas": "ヨーガ監査",
+    "houses_a": "ハウス診断（第1～第6ハウス）",
+    "houses_b": "ハウス診断（第7～第12ハウス）",
+    "houses": "ハウス診断",
+    "prediction": "運気の動的予測",
+    "topics": "テーマ別クロス監査",
+    "life": "人生全体の構造",
+    "life2": "人生全体の構造",
+    "blueprint": "人生設計図",
+    "appendix": "技術付録",
+    "rectify": "出生時刻修正レポート",
+    "career1": "キャリア — 人物像と働き方",
+    "career2": "キャリア — 戦略判断",
+    "career3a": "キャリア — 精密な統合分析",
+    "career3b": "キャリア — 最終戦略",
+    "career3c": "キャリア — リスクと助言",
+    "career": "キャリア構造",
+    "love1": "恋愛 — 関係パターンと相手像",
+    "love2": "恋愛 — 時期の窓",
+    "love3": "恋愛 — 助言とリスク",
+    "love": "恋愛と結婚",
+    "qa": "質疑応答",
+}
+
+JA_GROUP_TITLES = {
+    "G0": "出生図の中心テーマ",
+    "G1": "惑星監査",
+    "G2": "分割図分析",
+    "G3": "ハウス診断",
+    "G4": "運気の動的予測",
+    "G5": "人生全体の構造",
+    "G6": "キャリア分析",
+    "G7": "恋愛分析",
+    "appendix": "技術付録",
+}
+
+
+def localized_base_title(key, group, sub, cn_title, en_title, lang):
+    """Return a client-facing title without changing artifact identities."""
+    if lang == "cn":
+        return cn_title
+    if lang == "en":
+        return en_title
+    if key in JA_SECTION_TITLES:
+        return JA_SECTION_TITLES[key]
+    base = JA_GROUP_TITLES.get(group, en_title)
+    return f"{base}（{sub}）" if sub and sub != "cont" else base
+
 
 # ── Part numbering ──
 
@@ -333,20 +390,28 @@ def make_section_title(group, sub, base_title, part_num, lang):
       appendix → "附录：技术附录"
     """
     if group == "appendix":
-        prefix = "附录" if lang == "cn" else "Appendix"
-        return f"{prefix}：{base_title}" if lang == "cn" else f"{prefix}: {base_title}"
+        if lang == "cn":
+            return f"附录：{base_title}"
+        if lang == "ja":
+            return f"付録：{base_title}"
+        return f"Appendix: {base_title}"
 
-    label = cn_part_label(part_num) if lang == "cn" else en_part_label(part_num)
+    if lang == "cn":
+        label = cn_part_label(part_num)
+    elif lang == "ja":
+        label = f"第{part_num}部"
+    else:
+        label = en_part_label(part_num)
 
     if sub == "cont":
-        suffix = "（续）" if lang == "cn" else " (cont.)"
-        sep = "：" if lang == "cn" else ": "
+        suffix = "（续）" if lang == "cn" else "（続き）" if lang == "ja" else " (cont.)"
+        sep = "：" if lang in ("cn", "ja") else ": "
         return f"{label}{suffix}{sep}{base_title}"
     elif sub:
-        sep = "：" if lang == "cn" else ": "
+        sep = "：" if lang in ("cn", "ja") else ": "
         return f"{label}{sub}{sep}{base_title}"
     else:
-        sep = "：" if lang == "cn" else ": "
+        sep = "：" if lang in ("cn", "ja") else ": "
         return f"{label}{sep}{base_title}"
 
 
@@ -437,30 +502,49 @@ def detect_package(found, lang="cn", brand=None):
         # ❌ 不能用 "identity"——该 key 也映射开源版的 p1_overview.md，会把开源误判为 Pro。
         # ✅ prediction(p5_prediction.md) / blueprint(p6c_blueprint.md) 才是 Pro 专属。
         is_pro = "prediction" in found or "blueprint" in found
-    version = "Pro" if is_pro else "开源版" if lang == "cn" else "Open Source"
+    if is_pro:
+        version = "Pro"
+    elif lang == "cn":
+        version = "开源版"
+    elif lang == "ja":
+        version = "公開版"
+    else:
+        version = "Open Source"
 
     parts = []
-    if has_core:    parts.append("核心" if lang == "cn" else "Core")
-    if has_career:  parts.append("事业" if lang == "cn" else "Career")
-    if has_love:    parts.append("感情" if lang == "cn" else "Love")
-    if has_rectify: parts.append("校准" if lang == "cn" else "Rectification")
-    if has_qa:      parts.append("答疑" if lang == "cn" else "Q&A")
+    part_labels = {
+        "cn": ("核心", "事业", "感情", "校准", "答疑"),
+        "en": ("Core", "Career", "Love", "Rectification", "Q&A"),
+        "ja": ("総合分析", "キャリア", "恋愛", "出生時刻修正", "質疑応答"),
+    }[lang]
+    if has_core:    parts.append(part_labels[0])
+    if has_career:  parts.append(part_labels[1])
+    if has_love:    parts.append(part_labels[2])
+    if has_rectify: parts.append(part_labels[3])
+    if has_qa:      parts.append(part_labels[4])
 
     pkg = " + ".join(parts)
     if lang == "cn":
         return pkg, f"{version} | {pkg} 完整报告", version
+    if lang == "ja":
+        return pkg, f"{version}｜{pkg} 総合鑑定レポート", version
     return pkg, f"{version} | {pkg} Complete Reading", version
 
 
 # ── HTML builders ──
 
 def build_cover(name, lagna, gender, status, pkg, desc, lang="cn"):
-    top = "DATA-DRIVEN VEDIC ASTROLOGY" if lang == "en" else "数据驱动吠陀占星"
-    title = "吠陀占星" if lang == "cn" else "Vedic Astrology"
-    accent = "完 整 解 读" if lang == "cn" else "Complete Reading"
+    top = {
+        "cn": "数据驱动吠陀占星",
+        "en": "DATA-DRIVEN VEDIC ASTROLOGY",
+        "ja": "DATA-DRIVEN VEDIC ASTROLOGY",
+    }[lang]
+    title = {"cn": "吠陀占星", "en": "Vedic Astrology", "ja": "ヴェーダ占星術"}[lang]
+    accent = {"cn": "完 整 解 读", "en": "Complete Reading", "ja": "総合鑑定"}[lang]
     L = {
         "cn": ["客户", "上升", "信息", "套餐", "体系", "软件", "大运", "量化"],
         "en": ["Client", "Lagna", "Profile", "Package", "System", "Software", "Dasha", "Metrics"],
+        "ja": ["クライアント", "ラグナ", "基本情報", "レポート", "体系", "ソフトウェア", "ダシャー", "指標"],
     }[lang]
     return f"""
 <div class="cover">
@@ -483,7 +567,7 @@ def build_cover(name, lagna, gender, status, pkg, desc, lang="cn"):
 
 
 def build_toc(sections, lang="cn"):
-    toc_title = "目录" if lang == "cn" else "Table of Contents"
+    toc_title = {"cn": "目录", "en": "Table of Contents", "ja": "目次"}[lang]
     items = []
     for title, _ in sections:
         items.append(f'<li class="toc-part">{title}</li>')
@@ -501,13 +585,14 @@ def _fix_table_spacing(text):
     return '\n'.join(fixed)
 
 
-def build_section(num, title, md_text):
+def build_section(num, title, md_text, lang="cn"):
     md_text = _fix_table_spacing(md_text)
     body = markdown.markdown(md_text, extensions=["tables", "fenced_code"])
+    section_label = "セクション" if lang == "ja" else "Section"
     return f"""
 <div class="section">
   <div class="section-header">
-    <div class="section-number">Section {num}</div>
+    <div class="section-number">{section_label} {num}</div>
     <h2>{title}</h2>
   </div>
   {body}
@@ -523,6 +608,7 @@ def main():
         epilog="""
 Examples:
   python report_builder.py ./client_folder --name "John" --lang en
+  python report_builder.py ./client_folder --name "山田" --lang ja
   python report_builder.py ./analysis --name "测试" --lagna "天蝎座" --lang cn
         """)
     parser.add_argument("folder", help="Folder with MD files (checks 'parts/' subfolder too)")
@@ -530,7 +616,7 @@ Examples:
     parser.add_argument("--lagna", default="—", help="Ascendant")
     parser.add_argument("--gender", default="—", help="Gender")
     parser.add_argument("--status", default="—", help="Current status")
-    parser.add_argument("--lang", default="cn", choices=["cn", "en"], help="Language (default: cn)")
+    parser.add_argument("--lang", default="cn", choices=["cn", "en", "ja"], help="Language (default: cn)")
     parser.add_argument("--output", default=None, help="Output HTML path")
     parser.add_argument("--include", default=None,
                         help="Comma-separated sections to include: core,career,love,qa,rectify (default: all)")
@@ -603,7 +689,7 @@ Examples:
     sections = []  # [(display_title, html_content)]
     sec_num = 1
     for key, (priority, group, sub, cn_title, en_title, content) in ordered_items:
-        base = cn_title if lang == "cn" else en_title
+        base = localized_base_title(key, group, sub, cn_title, en_title, lang)
         part_num = group_to_part.get(group, 0)
         title = make_section_title(group, sub, base, part_num, lang)
         sections.append((title, content))
@@ -616,7 +702,7 @@ Examples:
     sections_html = []
     for i, (title, content) in enumerate(sections, 1):
         num_str = f"{i:02d}"
-        sections_html.append(build_section(num_str, title, content))
+        sections_html.append(build_section(num_str, title, content, lang))
 
     footer_cn = """<div class="footer-note">
   本报告基于传统吠陀占星方法（Parashari Jyotish | KN Rao School）。<br>
@@ -626,13 +712,22 @@ Examples:
   Generated using traditional Vedic astrological methods (Parashari Jyotish | KN Rao School).<br>
   Every claim backed by quantified planetary metrics. For self-reflection purposes only.<br>
   &copy; Data-Driven Vedic Astrology</div>"""
-    footer = footer_cn if lang == "cn" else footer_en
+    footer_ja = """<div class="footer-note">
+  伝統的なヴェーダ占星術（Parashari Jyotish | KN Rao School）に基づいて作成しています。<br>
+  判断はチャート指標と監査可能な根拠に基づきます。自己理解と文化的研究を目的としたレポートです。<br>
+  &copy; Data-Driven Vedic Astrology</div>"""
+    footer = {"cn": footer_cn, "en": footer_en, "ja": footer_ja}[lang]
 
-    html_lang = "zh-CN" if lang == "cn" else "en"
+    html_lang = {"cn": "zh-CN", "en": "en", "ja": "ja"}[lang]
+    html_title = {
+        "cn": f"吠陀占星完整解读 — {args.name}",
+        "en": f"Vedic Astrology Reading — {args.name}",
+        "ja": f"ヴェーダ占星術 総合鑑定 — {args.name}",
+    }[lang]
     html = f"""<!DOCTYPE html>
 <html lang="{html_lang}"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vedic Astrology Reading — {args.name}</title>
+<title>{html_title}</title>
 <style>{CSS}</style></head>
 <body>{cover}{toc}{"".join(sections_html)}{footer}</body></html>"""
 

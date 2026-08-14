@@ -1,6 +1,6 @@
 ---
 name: vedic-reader
-description: "Import, extract, normalize, and validate Vedic/Jyotish chart data from PDFs, screenshots, text, or common astrology software exports; route birth details to vedic-calculator when no chart file exists. Use for 'read my Vedic chart', 'import this JHora chart', 'extract chart data', 'analyze this Jyotish chart', any supplied chart PDF/image, or Chinese triggers such as '读盘', '读取星盘', '看盘', and '排盘'. / 吠陀占星读盘与数据校验引擎。"
+description: "Import, extract, normalize, and validate Vedic/Jyotish chart data from PDFs, screenshots, text, or common astrology software exports; route birth details to vedic-calculator when no chart file exists. Use for 'read my Vedic chart', 'import this JHora chart', 'extract chart data', 'analyze this Jyotish chart', any supplied chart PDF/image; Chinese triggers such as '读盘', '读取星盘', '看盘', and '排盘'; or Japanese triggers such as '出生図を読んで', 'チャートを読み込んで', and 'このホロスコープを検証して'. / 吠陀占星读盘与数据校验引擎。"
 ---
 
 # 吠陀占星 读盘引擎 (Vedic Chart Reader)
@@ -12,6 +12,7 @@ description: "Import, extract, normalize, and validate Vedic/Jyotish chart data 
 - Keep canonical filenames, CLI flags, JSON keys, `structured_data.md` schema headings, status markers, technical codes, and Sanskrit/English identifiers unchanged. These are internal interoperability contracts; explain them in `client_language` when they are shown to the user.
 - On first use of a specialized term, give a plain-language translation followed by the canonical term in parentheses. Never translate canonical identifiers inside extracted facts, calculations, or evidence citations.
 - If the user changes language mid-run, preserve the existing data, feedback labels, and artifact lineage; switch client-facing language from that point onward unless the user explicitly asks to regenerate earlier artifacts.
+- When `client_language` is Japanese, read `resources/ja-reader.md` completely before the first Japanese client-facing message. Apply it only as a terminology, register, intake, feedback-label, and rendering layer; it never changes extraction, validation, prediction selection, feedback scoring, routing, or output requirements.
 
 ## 引导开场白
 

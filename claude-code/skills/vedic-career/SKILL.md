@@ -1,6 +1,6 @@
 ---
 name: vedic-career
-description: "Analyze career direction, strengths, role fit, work patterns, and Dasha timing from a verified Vedic/Jyotish chart. Use for 'Vedic career reading', 'career direction from my chart', 'what work suits me', 'career timing', D9/D10 or 10th-house career questions, and Chinese requests such as '职业分析', '事业方向', or '星盘职业分析'. / 吠陀占星职业分析引擎。"
+description: "Analyze career direction, strengths, role fit, work patterns, and Dasha timing from a verified Vedic/Jyotish chart. Use for 'Vedic career reading', 'career direction from my chart', 'what work suits me', 'career timing', D9/D10 or 10th-house career questions; Chinese requests such as '职业分析', '事业方向', or '星盘职业分析'; and Japanese requests such as '適職を知りたい', '仕事運を見て', or 'キャリアを分析して'. / 吠陀占星职业分析引擎。"
 ---
 
 # 吠陀职业架构分析引擎 (Vedic Career Architect)
@@ -12,6 +12,7 @@ description: "Analyze career direction, strengths, role fit, work patterns, and 
 - Keep canonical filenames, CLI flags, JSON keys, `structured_data.md` schema headings, technical codes, and Sanskrit/English identifiers unchanged. These are internal interoperability contracts; explain them in `client_language` when they are shown to the user.
 - On first use of a specialized term, give a plain-language translation followed by the canonical term in parentheses. Never translate canonical identifiers inside calculations or evidence citations.
 - If the user changes language mid-run, preserve the existing data and artifact lineage; switch client-facing language from that point onward unless the user explicitly asks to regenerate earlier artifacts.
+- When `client_language` is Japanese, read `resources/ja-career.md` completely before the first Japanese client-facing message. Apply it only as a terminology, register, intake, and rendering layer; it never changes the career workflow, evidence, scoring, phases, or output requirements.
 
 ## 概述
 

@@ -14,7 +14,7 @@ routing, and client-facing rendering. It also provides a single language rule:
 client-facing content follows the user's requested language while canonical data,
 filenames, technical identifiers, evidence, and conclusions remain unchanged.
 
-[中文安装说明](README.md)
+[日本語インストールガイド](README.ja.md) · [中文安装说明](README.md)
 
 ## Contents
 
@@ -114,6 +114,10 @@ Chinese or English wording inside a routed module is a semantic template, not a
 forced output language. Translation must not alter canonical filenames, schema
 headings, CLI flags, technical codes, Sanskrit/English identifiers, candidate
 labels, scores, evidence citations, chart judgment, phase state, or report lineage.
+
+For Japanese runs, each selected skill loads its own `resources/ja-*.md`
+localization layer. The patch continues to control execution and evidence boundaries;
+the Japanese resource controls terminology and client-facing rendering only.
 
 ## User-context boundary
 

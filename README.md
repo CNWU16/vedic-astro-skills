@@ -13,6 +13,7 @@
 
 <p align="center">
   <a href="README.en.md"><strong>English documentation</strong></a> ·
+  <a href="README.ja.md"><strong>日本語</strong></a> ·
   <a href="README.md">中文 / Bilingual</a>
 </p>
 
@@ -226,6 +227,10 @@ Chart file (PDF/image/text)      Birth info (date+time+place)
 > scratch, or **“read my Vedic chart”** when you already have a chart file. The
 > suite matches the user's language for client-facing questions, reports, and Q&A
 > while keeping its internal data contract stable.
+>
+> 日本語では **「この出生情報でヴェーダ占星術の出生図を作って」** から始められます。
+> 各 Skill は日本語の専門用語、敬体、入力文、レポート見出しを必要なときだけ読み込み、
+> 計算・証拠・フェーズ・内部データ契約は共通のまま保ちます。
 
 ### 用法示例 / Usage
 

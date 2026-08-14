@@ -9,7 +9,7 @@ exact time, and place; the calculator creates the canonical chart data and route
 it directly into validation and full analysis. A pre-generated PDF or screenshot
 is supported, but it is not required.
 
-[中文 / Bilingual README](README.md)
+[日本語](README.ja.md) · [中文 / Bilingual README](README.md)
 
 ## What is included
 
@@ -31,7 +31,7 @@ is supported, but it is not required.
 - D1 and divisional-chart calculations, Vimshottari Dasha, native MD/AD/PD
   boundaries, Chara Dasha, Shadbala, SAV/BAV, dignity, house-lord, and yoga data.
 - Separate standard natal, synastry, rectification, and Prashna workflows.
-- English and Chinese client-facing conversations, questionnaires, reports, Q&A,
+- English, Japanese, and Chinese client-facing conversations, questionnaires, reports, Q&A,
   warnings, and HTML report shells.
 - Canonical filenames, schema headings, CLI flags, and technical identifiers remain
   stable across languages so calculation and analysis modules stay interoperable.
@@ -131,6 +131,11 @@ physically and logically isolated and are never merged into the standard vote.
 Each skill chooses the client-facing language from the user's explicit request;
 otherwise it follows the latest substantive user message. This applies to chat,
 intake, progress notices, reports, Q&A, warnings, and user-facing HTML.
+
+Japanese runs additionally load a small per-skill localization resource that fixes
+terminology, polite register, intake wording, and report labels without duplicating
+or translating the calculation and judgment workflow. Japanese HTML uses
+`report_builder.py --lang ja`.
 
 Internal interoperability remains stable across languages:
 
