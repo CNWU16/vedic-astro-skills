@@ -8,11 +8,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-08-14
 
-### Repository homepage cleanup
+### Comprehensive multilingual repository documentation
 
-- Rebuilt the default `README.md` as a concise Chinese-first homepage instead of a mixed Chinese/English document.
-- Added a compact trilingual introduction and language guide while keeping the full English and Japanese documentation in separate files.
-- Made direct chart calculation from birth date, exact time, and place the primary homepage message.
+- Rebuilt the default `README.md` as a Chinese-first homepage with a compact trilingual introduction and clearly separated full-language entry points.
+- Restored comprehensive module, workflow, technical architecture, validation, installation, Codex Patch, repository, version, and licensing documentation without returning to line-by-line bilingual mixing.
+- Expanded `README.en.md` and `README.ja.md` to the same information architecture so that both links now lead to full documentation rather than shortened summaries.
+- Made direct chart calculation from birth date, exact time, and place the primary onboarding path while keeping PDF, screenshot, and text import as optional validation routes.
+- Reconciled technical claims with the current skills and changelog: documented complete MD/AD/PD output, divisional stability auditing, the 16-rule Reader validation set, and traceable v6.1 regression results; removed the old unauditable generic `>97%` accuracy claim.
 
 ### Japanese runtime and documentation support
 
