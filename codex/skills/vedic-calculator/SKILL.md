@@ -1,9 +1,17 @@
 ---
 name: vedic-calculator
-description: 吠陀占星排盘计算引擎。当用户提供出生时间和地点，需要从零计算星盘数据时触发。输入出生日期、时间、地点，直接输出structured_data.md，跳过JHora排盘和PDF读取流程。当用户提到'直接排盘''计算星盘''不用jhora''快速排盘''算一下'等关键词时触发。也在vedic-reader判断无PDF输入时建议使用。
+description: "Calculate a complete Vedic/Jyotish natal chart directly from birth date, exact time, and place, producing the canonical structured_data.md for downstream analysis. Use for requests such as 'calculate my Vedic chart', 'cast my birth chart', 'generate a chart from my birth details', or Chinese triggers including '直接排盘', '计算星盘', '快速排盘', and '算一下'. Also use when vedic-reader has birth details but no chart file. / 吠陀占星排盘计算引擎。"
 ---
 
 # vedic-calculator: 吠陀占星排盘引擎
+
+## Language contract / 语言契约
+
+- Set `client_language` from the user's explicit language request; otherwise match the language of the latest substantive user message.
+- Use `client_language` for all chat replies, intake questions, confirmations, progress updates, user-visible warnings, reports, and Q&A. Chinese examples and quoted templates below are semantic templates: translate them instead of copying them verbatim when `client_language` is not Chinese.
+- Keep canonical filenames, CLI flags, JSON keys, `structured_data.md` schema headings, technical codes, and Sanskrit/English identifiers unchanged. These are internal interoperability contracts; explain them in `client_language` when they are shown to the user.
+- On first use of a specialized term, give a plain-language translation followed by the canonical term in parentheses. Never translate canonical identifiers inside calculations or evidence citations.
+- If the user changes language mid-run, preserve the existing data and artifact lineage; switch client-facing language from that point onward unless the user explicitly asks to regenerate earlier artifacts.
 
 > 基于pysweph天文引擎 + dashaflow算法模块，直接从出生时间计算完整星盘数据。
 > 输出格式完全兼容vedic-reader的structured_data.md，可直接交给vedic-core分析。

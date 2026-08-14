@@ -1,9 +1,17 @@
 ---
 name: vedic-career
-description: 吠陀占星(Vedic/Jyotish)职业分析引擎。当用户提供星盘PDF、截图或文本数据，并要求进行职业分析、事业解读、星盘事业方向分析时触发此技能。也在用户提到"印度占星"、"吠陀占星"、"Jyotish"、"星盘职业分析"、"D9分析"、"Navamsa事业"、"10宫分析"等关键词时触发。
+description: "Analyze career direction, strengths, role fit, work patterns, and Dasha timing from a verified Vedic/Jyotish chart. Use for 'Vedic career reading', 'career direction from my chart', 'what work suits me', 'career timing', D9/D10 or 10th-house career questions, and Chinese requests such as '职业分析', '事业方向', or '星盘职业分析'. / 吠陀占星职业分析引擎。"
 ---
 
 # 吠陀职业架构分析引擎 (Vedic Career Architect)
+
+## Language contract / 语言契约
+
+- Set `client_language` from the user's explicit language request; otherwise match the language of the latest substantive user message.
+- Use `client_language` for all chat replies, intake questions, confirmations, progress updates, user-visible warnings, reports, and Q&A. Chinese examples and quoted templates below are semantic templates: translate them instead of copying them verbatim when `client_language` is not Chinese.
+- Keep canonical filenames, CLI flags, JSON keys, `structured_data.md` schema headings, technical codes, and Sanskrit/English identifiers unchanged. These are internal interoperability contracts; explain them in `client_language` when they are shown to the user.
+- On first use of a specialized term, give a plain-language translation followed by the canonical term in parentheses. Never translate canonical identifiers inside calculations or evidence citations.
+- If the user changes language mid-run, preserve the existing data and artifact lineage; switch client-facing language from that point onward unless the user explicitly asks to regenerate earlier artifacts.
 
 ## 概述
 

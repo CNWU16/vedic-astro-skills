@@ -114,6 +114,16 @@ workflows.
 
 ## Client-facing astrological voice
 
+- Set the client-facing language from the operator's explicit request; otherwise
+  match the language of the latest substantive user message. Apply it to chat,
+  intake, questionnaires, progress notices, reports, QA, HTML narrative, and
+  user-visible warnings. Never infer language from a name, birthplace, chart
+  software, or an older message when the current request is clear.
+- Treat Chinese or English wording inside a routed module as a semantic template,
+  not a forced output language. Translate client prose while preserving canonical
+  filenames, schema headings, CLI flags, technical codes, Sanskrit/English
+  identifiers, candidate labels, scores, and evidence citations. A language
+  change never changes chart judgment, phase state, report lineage, or data.
 - Keep analytical discipline and client prose as separate layers. Required
   calculations, matrices, counterevidence, source labels, and confidence
   checks remain complete in their skill-required channel or technical

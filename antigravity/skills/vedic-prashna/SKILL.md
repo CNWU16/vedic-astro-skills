@@ -1,9 +1,17 @@
 ---
 name: vedic-prashna
-description: 吠陀占星提问盘/时盘(Prashna)分析与追问引擎。接收一个具体问题、秒级提问时刻和地点，以 Shatpanchasika 为主文本并经 KN Rao/Bharatiya Vidya Bhavan 兼容性筛选的古典 Prashna 标准层回答当前成败倾向；也处理既有即时盘的澄清、细化和跨栈追问。Tajika contact overlay 与 KP 1–249 Horary 默认关闭，计算与结论互相隔离。当用户提到“卜卦”“即时盘”“时盘”“Prashna”“起一卦”“我现在想问”“这个盘为什么”“继续看这个盘”等具体占问或追问时触发；不用于本命盘人生趋势。
+description: "Cast and interpret a question-time Vedic Prashna chart for one concrete question using the exact asking time and place. The Shatpanchasika-rooted classical standard layer runs first; Tajika contact and KP 1-249 remain isolated optional stacks. Use for 'Prashna', 'horary chart', 'cast a chart for this question', 'will this specific matter work out', follow-ups about an existing Prashna result, or Chinese triggers such as '即时盘', '时盘', '卜卦', and '起一卦'. Not for natal life-trend analysis. / 吠陀提问盘与时盘分析引擎。"
 ---
 
 # Vedic Prashna
+
+## Language contract / 语言契约
+
+- Set `client_language` from the user's explicit language request; otherwise match the language of the latest substantive user message.
+- Use `client_language` for all chat replies, intake questions, confirmations, progress updates, user-visible warnings, judgments, reports, and Q&A. Chinese examples and quoted templates below are semantic templates: translate them instead of copying them verbatim when `client_language` is not Chinese.
+- Keep canonical filenames, CLI flags, JSON keys, `structured_prashna.md` and optional-stack schema headings, technical codes, and Sanskrit/English identifiers unchanged. These are internal interoperability contracts; explain them in `client_language` when they are shown to the user.
+- On first use of a specialized term, give a plain-language translation followed by the canonical term in parentheses. Never translate canonical identifiers inside calculations or evidence citations.
+- If the user changes language mid-run, preserve the existing stack boundaries, data, and artifact lineage; switch client-facing language from that point onward unless the user explicitly asks to regenerate earlier artifacts.
 
 ## 定位
 

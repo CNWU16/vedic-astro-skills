@@ -1,5 +1,7 @@
 # Vedic AGENTS 执行规则安装说明
 
+[English installation guide](README.en.md) · [中文说明](README.md)
+
 > **Codex Patch v1.0.0**，独立于 Vedic Skill Suite 版本、盲问协议 v1.3 和
 > 分析师剪辑协议 v2.3。
 

@@ -8,6 +8,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-07-24
 
+### English runtime and documentation support
+
+- Added English-first trigger metadata while retaining Chinese trigger phrases for all eight skills.
+- Added a shared client-language contract for chat, intake, questionnaires, progress notices,
+  warnings, reports, Q&A, and language-matched HTML report shells.
+- Kept canonical filenames, `structured_data.md` schemas, CLI flags, technical identifiers,
+  evidence, calculations, and report lineage unchanged across languages.
+- Added `README.en.md` and `codex-patch/README.en.md`, with direct chart calculation from
+  birth date, exact time, and place presented as the primary onboarding path.
+
 ### 新增 codex-patch（Codex 执行规则补丁包）
 
 - 新增仓库根目录 `codex-patch/`，独立于 `codex/skills/`，不改动任何 skill 文件。

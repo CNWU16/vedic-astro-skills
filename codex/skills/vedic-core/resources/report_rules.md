@@ -16,19 +16,27 @@ report_builder.py 在本skill的 `scripts/` 目录下。
 
 ## 打包命令
 
+先根据当前 Skill 的 `client_language` 选择 `--lang`：
+
+- English → `--lang en`
+- 中文 → `--lang cn`
+- 其他语言 → 使用正文实际采用的语言；HTML 外壳暂选 `en`，不得因此把正文改回英文或中文
+
 ```python
 # 打包全部已有文件
-python scripts/report_builder.py [工作目录] --lang cn
+python scripts/report_builder.py [工作目录] --lang [cn|en]
 
 # 只打包core
-python scripts/report_builder.py [工作目录] --include core --lang cn
+python scripts/report_builder.py [工作目录] --include core --lang [cn|en]
 
 # 只打包core + career
-python scripts/report_builder.py [工作目录] --include core,career --lang cn
+python scripts/report_builder.py [工作目录] --include core,career --lang [cn|en]
 ```
 
 report_builder自动检测目录中存在哪些MD文件，只打包存在的。
 `--include`参数可选择只打包特定部分。
+`--lang`只控制封面、目录、章节标题和页脚；正文语言来自已有 Markdown，禁止把
+中文正文塞进英文外壳，或把英文正文塞进中文外壳。
 
 ## ⚠️ 禁止行为
 

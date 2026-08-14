@@ -1,9 +1,17 @@
 ---
 name: vedic-reader
-description: "吠陀占星读盘引擎。从任意来源的星盘材料(PDF/截图/文本)中自适应提取行星数据，包含南印/北印图识别、多分盘提取、数学校验。支持Jagannatha Hora、Parashara's Light等各种占星软件导出。当用户提到'读盘''提取数据''星盘数据''读取星盘''分析星盘''印占''占星''vedic''星盘''激活占星''看盘''排盘'等关键词时触发。也在用户提供星盘PDF文件或截图时自动触发。"
+description: "Import, extract, normalize, and validate Vedic/Jyotish chart data from PDFs, screenshots, text, or common astrology software exports; route birth details to vedic-calculator when no chart file exists. Use for 'read my Vedic chart', 'import this JHora chart', 'extract chart data', 'analyze this Jyotish chart', any supplied chart PDF/image, or Chinese triggers such as '读盘', '读取星盘', '看盘', and '排盘'. / 吠陀占星读盘与数据校验引擎。"
 ---
 
 # 吠陀占星 读盘引擎 (Vedic Chart Reader)
+
+## Language contract / 语言契约
+
+- Set `client_language` from the user's explicit language request; otherwise match the language of the latest substantive user message.
+- Use `client_language` for all chat replies, intake questions, confirmations, progress updates, user-visible warnings, pre-validation statements, reports, and Q&A. Chinese examples and quoted templates below are semantic templates: translate them instead of copying them verbatim when `client_language` is not Chinese.
+- Keep canonical filenames, CLI flags, JSON keys, `structured_data.md` schema headings, status markers, technical codes, and Sanskrit/English identifiers unchanged. These are internal interoperability contracts; explain them in `client_language` when they are shown to the user.
+- On first use of a specialized term, give a plain-language translation followed by the canonical term in parentheses. Never translate canonical identifiers inside extracted facts, calculations, or evidence citations.
+- If the user changes language mid-run, preserve the existing data, feedback labels, and artifact lineage; switch client-facing language from that point onward unless the user explicitly asks to regenerate earlier artifacts.
 
 ## 引导开场白
 

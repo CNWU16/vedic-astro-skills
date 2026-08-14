@@ -11,6 +11,11 @@
   </p>
 </p>
 
+<p align="center">
+  <a href="README.en.md"><strong>English documentation</strong></a> ·
+  <a href="README.md">中文 / Bilingual</a>
+</p>
+
 ---
 
 > **八个专精 Skill 协同工作，从原生排盘到完整人生审计、双人合盘，再到即时卜卦（Prashna）。**
@@ -202,14 +207,14 @@ Chart file (PDF/image/text)      Birth info (date+time+place)
 
 | Skill | 功能 Function | 触发词 Trigger |
 |:------|:------|:------|
-| 🧮 **calculator** | 原生排盘引擎，给出生时间直接计算 / Native chart engine | "直接排盘" "计算星盘" "快速排盘" |
-| 📖 **reader** | 从 PDF/截图提取出生信息，以calc生成主数据并执行16条校验 / Extract birth data, calculate, and validate | "读盘" "星盘" "印占" "占星" "看盘" |
-| 🔬 **core** | P1-P12行星审计 + 宫位诊断 + 十大板块 / Planet audit + life summary | "开始分析" "帮我分析" "星盘审计" |
-| 💼 **career** | 4Phase职业蓝图 / Career blueprint | "分析事业" "职业分析" |
-| 💘 **love** | 3Step恋爱时机分析 / Love timing analysis | "分析感情" "恋爱运势" "桃花时机" |
-| 📐 **rectifier** | ≥5件重大事件 + 结构证据校准出生时间，目标精度 ±5min / Birth time rectification | "校准时间" "时间矫正" |
-| 💞 **synastry** | 双人合盘：跨盘叠盘 + 六维矩阵关系分析 / Two-person synastry | "合盘" "两个人合不合" "婚配" "合作搭档" |
-| 🔮 **prashna** | 卜卦/时盘：提问时刻起盘答一事，不需本命（独立生态位）/ Prashna horary | "卜卦" "占问" "起一卦" "时盘" "即时盘" |
+| 🧮 **calculator** | 原生排盘引擎，给出生时间直接计算 / Native chart engine | “直接排盘” · “calculate my Vedic chart” · “cast my birth chart” |
+| 📖 **reader** | 从 PDF/截图提取出生信息，以calc生成主数据并执行16条校验 / Extract birth data, calculate, and validate | “读盘” · “read my Vedic chart” · “import this JHora chart” |
+| 🔬 **core** | P1-P12行星审计 + 宫位诊断 + 十大板块 / Planet audit + life summary | “开始分析” · “full Vedic chart analysis” · “complete birth chart reading” |
+| 💼 **career** | 4Phase职业蓝图 / Career blueprint | “职业分析” · “Vedic career reading” · “career timing” |
+| 💘 **love** | 3Step恋爱时机分析 / Love timing analysis | “感情分析” · “Vedic love reading” · “relationship timing” |
+| 📐 **rectifier** | ≥5件重大事件 + 结构证据校准出生时间，目标精度 ±5min / Birth time rectification | “校准时间” · “birth time rectification” · “my birth time may be wrong” |
+| 💞 **synastry** | 双人合盘：跨盘叠盘 + 六维矩阵关系分析 / Two-person synastry | “合盘” · “Vedic synastry” · “compare our birth charts” |
+| 🔮 **prashna** | 卜卦/时盘：提问时刻起盘答一事，不需本命（独立生态位）/ Prashna horary | “即时盘” · “Prashna” · “cast a horary chart for this question” |
 
 ---
 
@@ -217,7 +222,10 @@ Chart file (PDF/image/text)      Birth info (date+time+place)
 
 > 💡 **只需说"读盘"或"占星"即可启动。** reader 是统一入口，会根据你提供的内容自动选择最佳路径。
 >
-> Just say "读盘" or "占星" to start. Reader is the unified entry point and auto-routes based on your input.
+> In English, say **“calculate my Vedic chart from my birth details”** to start from
+> scratch, or **“read my Vedic chart”** when you already have a chart file. The
+> suite matches the user's language for client-facing questions, reports, and Q&A
+> while keeping its internal data contract stable.
 
 ### 用法示例 / Usage
 
