@@ -7,7 +7,7 @@ PDF やスクリーンショットの読み込みにも対応していますが�
 用意する必要はありません。出生情報だけで、計算、データ検証、惑星監査、
 分割図照合、人生テーマ分析まで一つの流れで実行できます。
 
-[English](README.en.md) · [中文 / Bilingual](README.md)
+[简体中文](README.md) · [English](README.en.md)
 
 ## 収録 Skill
 

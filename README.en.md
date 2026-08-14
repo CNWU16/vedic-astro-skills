@@ -9,7 +9,7 @@ exact time, and place; the calculator creates the canonical chart data and route
 it directly into validation and full analysis. A pre-generated PDF or screenshot
 is supported, but it is not required.
 
-[日本語](README.ja.md) · [中文 / Bilingual README](README.md)
+[简体中文](README.md) · [日本語](README.ja.md)
 
 ## What is included
 

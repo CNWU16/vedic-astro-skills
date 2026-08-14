@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-08-14
 
+### Repository homepage cleanup
+
+- Rebuilt the default `README.md` as a concise Chinese-first homepage instead of a mixed Chinese/English document.
+- Added a compact trilingual introduction and language guide while keeping the full English and Japanese documentation in separate files.
+- Made direct chart calculation from birth date, exact time, and place the primary homepage message.
+
 ### Japanese runtime and documentation support
 
 - Added Japanese trigger metadata to all eight skills while preserving English and Chinese discovery phrases.
