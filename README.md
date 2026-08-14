@@ -416,7 +416,7 @@ Calculate my Vedic chart from these birth details and write the full report in E
 この出生情報からヴェーダ占星術の出生図を作成し、総合鑑定を日本語で書いてください。
 ```
 
-## 🛡️ Codex 推荐补丁
+## 🛡 Codex 推荐补丁
 
 Skill 本体可以独立运行。`codex-patch` 是面向 Codex 的执行兼容层，不改动任何
 `SKILL.md`，也不替代八个 Skill。它主要处理：
@@ -473,7 +473,7 @@ python report_builder.py <report-folder> --name "山田" --lang ja
 
 语言在运行中切换时，既有数据和报告谱系保持不变，只切换之后的客户端内容。
 
-## 🗂️ 仓库结构与更新
+## 🗂 仓库结构与更新
 
 ```text
 vedic-astro-skills/
@@ -521,7 +521,7 @@ python3 scripts/check_skill_parity.py
 完整记录和历史口径变更见 [CHANGELOG.md](CHANGELOG.md)。较早版本的说明不一定代表
 当前行为，以上方 Unreleased 和当前 `SKILL.md` 为准。
 
-## ⚖️ 许可与使用边界
+## ⚖ 许可与使用边界
 
 本仓库实现传统吠陀占星的结构化计算与分析工作流，适用于文化学习、研究和个人探索。
 它不能替代医疗、法律、金融或其他安全关键领域的专业判断。

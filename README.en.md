@@ -420,7 +420,7 @@ Asking place: London, United Kingdom
 A Prashna question must describe one observable result. A new object, objective, or action is a new
 question; the same chart is not repeatedly recast to seek a preferred answer.
 
-## 🛡️ Recommended Codex patch
+## 🛡 Recommended Codex patch
 
 The skills can run independently. `codex-patch` is a Codex execution-compatibility layer; it does
 not edit or replace any `SKILL.md`. It covers:
@@ -480,7 +480,7 @@ python report_builder.py <report-folder> --name "山田" --lang ja
 If the user changes language during a run, existing data and report lineage remain intact; only
 subsequent client-facing content changes language.
 
-## 🗂️ Repository layout and updates
+## 🗂 Repository layout and updates
 
 ```text
 vedic-astro-skills/
@@ -529,7 +529,7 @@ new task.
 See [CHANGELOG.md](CHANGELOG.md) for the complete record. Historical sections describe behavior at
 that time; the current `SKILL.md` files and the latest Unreleased notes are authoritative.
 
-## ⚖️ License and scope
+## ⚖ License and scope
 
 This repository implements structured calculation and analysis workflows for traditional Vedic
 astrology. It is intended for cultural study, research, and personal exploration. It is not a
