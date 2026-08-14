@@ -257,11 +257,21 @@ structured_data.md 生成后，向用户输出：
   b) 发送 JHora PDF 补充 Shadbala
 ```
 
+排盘完成后不要把小火人资料导出插入上述正常 a/b 流程。先让用户按上面的流程继续，
+只在消息最后补一句可选提示：“如果想把这张盘带到小火人里使用，可以再说‘整理一段可复制给小火人的资料’。”
+用户明确提出“小火人资料”“可复制资料”“关系资料”或类似请求时，才进入导出分支；普通排盘用户不自动接收额外长资料。
+
 - 用户选 a) 或说"直接分析"/"开始" → 触发 vedic-reader（精简模式：跳过提取，直接读 structured_data → 验前事）
 - 用户发送 PDF → 核对出生信息一致性 → 从PDF文本层提取有效Shadbala
   → 与calc Shadbala逐行对照 → PDF存在的行展示PDF值，差异行标注并提示用户
   → PDF缺失行保留calc → 其余PDF数据仅交叉验证
   → 再触发reader验前事
+
+- 用户明确请求小火人资料 → 保留已生成的 canonical `structured_data.md` 不变，运行
+  `scripts/make_xiaohuo_person_card.py structured_data.md`，把 stdout 返回的一段
+  `xiaohuo-person-v1` 纯文字直接发给用户；不要生成图片，不要求用户打开或理解文件，
+  也不要把资料卡当作新的排盘结果。双人使用时，两个人分别排盘、分别生成一段个人资料，
+  再在双人对话中标为 A/B 粘贴。
 
 
 ## engine 返回数据结构
