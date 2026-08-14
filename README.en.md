@@ -1,40 +1,49 @@
-<div align="center">
+<p align="center">
+  <h1 align="center">🔱 Vedic Astro Skills v8.0</h1>
+  <p align="center"><strong>Calculate a Vedic chart from birth details and continue directly to full analysis</strong></p>
+  <p align="center">
+    <sub>从出生信息直接排盘，进入完整吠陀占星分析<br>
+    出生情報から出生図を直接計算し、そのまま総合分析へ</sub>
+  </p>
+  <p align="center">
+    <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-v8.0-blue" alt="Version"></a>
+    <a href="#python-environment"><img src="https://img.shields.io/badge/python-3.8--3.13-green" alt="Python"></a>
+    <a href="#-the-eight-skills"><img src="https://img.shields.io/badge/skills-8-purple" alt="Skills"></a>
+    <a href="#-license-and-scope"><img src="https://img.shields.io/badge/license-AGPL--3.0-orange" alt="License"></a>
+  </p>
+</p>
 
-# 🔱 Vedic Astro Skills
-
-### Calculate a Vedic chart from birth details and continue directly to full analysis
-
-**🌐 Choose language / 选择语言 / 言語を選択**<br>
-[简体中文](README.md) · **English (current)** · [日本語](README.ja.md)
-
-Eight coordinated Jyotish skills for Codex, Claude Code, and Antigravity.
-
-[![Version](https://img.shields.io/badge/version-v8.0-blue)](CHANGELOG.md)
-[![Python](https://img.shields.io/badge/python-3.8--3.13-green)](#python-environment)
-[![Skills](https://img.shields.io/badge/skills-8-purple)](#the-eight-skills)
-[![Languages](https://img.shields.io/badge/languages-中文%20%7C%20English%20%7C%20日本語-teal)](#language-behavior)
-[![License](https://img.shields.io/badge/license-AGPL--3.0-orange)](#license-and-scope)
-
-</div>
+<p align="center">
+  🌐 <a href="README.md"><strong>简体中文</strong></a> ·
+  <strong>English documentation</strong> ·
+  <a href="README.ja.md"><strong>日本語ドキュメント</strong></a>
+</p>
 
 ---
 
-## Contents
+> **Eight specialized skills work together from direct birth-chart calculation through validation, complete natal analysis, career, relationships, birth-time rectification, synastry, and Prashna.**
+>
+> Compatible with Codex, Claude Code, and Antigravity. PDFs, screenshots, and text charts are optional import routes, not prerequisites.
 
-- [What this suite does](#what-this-suite-does)
-- [Workflow](#workflow)
-- [The eight skills](#the-eight-skills)
-- [Skill details](#skill-details)
-- [Technical architecture and data integrity](#technical-architecture-and-data-integrity)
-- [Installation](#installation)
-- [Quick start](#quick-start)
-- [Recommended Codex patch](#recommended-codex-patch)
-- [Language behavior](#language-behavior)
-- [Repository layout and updates](#repository-layout-and-updates)
-- [Version history](#version-history)
-- [License and scope](#license-and-scope)
+<details>
+<summary><strong>📖 Open table of contents</strong></summary>
 
-## What this suite does
+- [What this suite does](#-what-this-suite-does)
+- [Workflow](#-workflow)
+- [The eight skills](#-the-eight-skills)
+- [Skill details](#-skill-details)
+- [Technical architecture and data integrity](#-technical-architecture-and-data-integrity)
+- [Installation](#-installation)
+- [Quick start](#-quick-start)
+- [Recommended Codex patch](#-recommended-codex-patch)
+- [Language behavior](#-language-behavior)
+- [Repository layout and updates](#-repository-layout-and-updates)
+- [Version history](#-version-history)
+- [License and scope](#-license-and-scope)
+
+</details>
+
+## ✨ What this suite does
 
 This is not merely a prompt collection for interpreting an existing PDF. The primary workflow
 starts from birth details:
@@ -62,7 +71,7 @@ The suite provides:
 - client-facing Chinese, English, and Japanese chat, intake, reports, Q&A, and HTML shells;
 - parity-checked Antigravity, Claude Code, and Codex distributions.
 
-## Workflow
+## 🔄 Workflow
 
 ```mermaid
 flowchart LR
@@ -82,7 +91,7 @@ All natal modules consume the same validated `structured_data.md`. `vedic-prashn
 its own `structured_prashna.md` and output directory. It does not automatically import natal
 Dasha, divisional charts, or SAV into a Prashna judgment.
 
-## The eight skills
+## 🧩 The eight skills
 
 | Skill | Primary input | Responsibility | Main artifact |
 |---|---|---|---|
@@ -98,10 +107,10 @@ Dasha, divisional charts, or SAV into a Prashna judgment.
 Installing all eight skills is recommended. At runtime, only the module required for the current
 task is selected; the workflows are not all loaded at once.
 
-## Skill details
+## 🔍 Skill details
 
 <details>
-<summary><strong>vedic-calculator: calculate directly from birth details</strong></summary>
+<summary><strong>🧮 vedic-calculator: calculate directly from birth details</strong></summary>
 
 `vedic-calculator` is the computational foundation of the natal pipeline. From date, exact time,
 coordinates, and an IANA timezone, it creates the canonical `structured_data.md`.
@@ -126,7 +135,7 @@ a Xiaohuo person card. It does not replace or modify the canonical chart data.
 </details>
 
 <details>
-<summary><strong>vedic-reader: import, validate, and pre-validate</strong></summary>
+<summary><strong>📖 vedic-reader: import, validate, and pre-validate</strong></summary>
 
 `vedic-reader` supports two entry routes:
 
@@ -150,7 +159,7 @@ routing into the full core or a topic module.
 </details>
 
 <details>
-<summary><strong>vedic-core: standard full natal analysis</strong></summary>
+<summary><strong>🔬 vedic-core: standard full natal analysis</strong></summary>
 
 The public repository includes the Standard `vedic-core`. It creates staged, auditable artifacts
 rather than generating one undifferentiated essay:
@@ -169,7 +178,7 @@ the primary client-facing narrative. Neither layer replaces the other.
 </details>
 
 <details>
-<summary><strong>vedic-career: direction, role fit, and timing</strong></summary>
+<summary><strong>💼 vedic-career: direction, role fit, and timing</strong></summary>
 
 The career workflow runs four phases: workplace niche, talent/Yoga scan, D9 deep audit, and full
 synthesis. It combines D1, D9, D10, and Dasha to distinguish what the person is good at, which
@@ -179,7 +188,7 @@ artifacts cover profile, strategy, and risks rather than merely listing occupati
 </details>
 
 <details>
-<summary><strong>vedic-love: relationship patterns and timing</strong></summary>
+<summary><strong>💘 vedic-love: relationship patterns and timing</strong></summary>
 
 The relationship workflow first assesses natal emotional patterns, needs, and partnership
 capacity. It then identifies timing windows through Dasha and relationship indicators, followed
@@ -189,7 +198,7 @@ houses, Venus, Moon, PK/DK, UL, and D9, while keeping supporting and limiting ev
 </details>
 
 <details>
-<summary><strong>vedic-rectifier: birth-time rectification</strong></summary>
+<summary><strong>📐 vedic-rectifier: birth-time rectification</strong></summary>
 
 Rectification is intended for an uncertain, approximate, or possibly misrecorded birth time. The
 standard entry uses five or more major life events together with personal traits, Dasha timelines,
@@ -203,7 +212,7 @@ borderline or underdetermined case does not receive invented minute-level precis
 </details>
 
 <details>
-<summary><strong>vedic-synastry: two-person chart comparison</strong></summary>
+<summary><strong>💞 vedic-synastry: two-person chart comparison</strong></summary>
 
 Synastry requires one validated `structured_data.md` per person. It begins with a relationship-
 neutral signal scan. The user can then stop at the nature scan, choose a general deep analysis, or
@@ -218,7 +227,7 @@ percentage or infer the real-world relationship type from the chart.
 </details>
 
 <details>
-<summary><strong>vedic-prashna: separate question-time chart</strong></summary>
+<summary><strong>🔮 vedic-prashna: separate question-time chart</strong></summary>
 
 Prashna accepts one concrete, observable question and casts a chart for the exact asking time and
 place. The default standard layer is rooted in *Shatpanchasika* and compatibility-screened against
@@ -232,7 +241,7 @@ experimental candidates until their published-example and boundary suites are co
 
 </details>
 
-## Technical architecture and data integrity
+## 🧮 Technical architecture and data integrity
 
 ### Calculation architecture
 
@@ -290,7 +299,7 @@ These are traceable repository regression results, not a universal accuracy perc
 location, time boundary, and chart. The older unauditable “>97% accuracy” statement has therefore
 not been restored. See [CHANGELOG.md](CHANGELOG.md) for the underlying history.
 
-## Installation
+## 📦 Installation
 
 Clone the repository, then install all eight skills:
 
@@ -347,7 +356,7 @@ in the required order, restores ephemeris files, and validates a minimal SAV cal
 > `pyswisseph` package while this suite uses `pysweph`; the setup script handles the conflict with
 > ordered installation and `--no-deps`.
 
-## Quick start
+## ⚡ Quick start
 
 ### Start from birth details
 
@@ -411,7 +420,7 @@ Asking place: London, United Kingdom
 A Prashna question must describe one observable result. A new object, objective, or action is a new
 question; the same chart is not repeatedly recast to seek a preferred answer.
 
-## Recommended Codex patch
+## 🛡️ Recommended Codex patch
 
 The skills can run independently. `codex-patch` is a Codex execution-compatibility layer; it does
 not edit or replace any `SKILL.md`. It covers:
@@ -446,7 +455,7 @@ If `vedic-core-pro` is installed separately, it does not need a second patch. Th
 handles Standard/Pro selection and lineage isolation. This public repository ships the Standard
 `vedic-core` by default.
 
-## Language behavior
+## 🌐 Language behavior
 
 Chinese, English, and Japanese runs share one calculation, evidence, scoring, phase, and file
 contract. The algorithms are not copied into three translated workflow trees.
@@ -471,7 +480,7 @@ python report_builder.py <report-folder> --name "山田" --lang ja
 If the user changes language during a run, existing data and report lineage remain intact; only
 subsequent client-facing content changes language.
 
-## Repository layout and updates
+## 🗂️ Repository layout and updates
 
 ```text
 vedic-astro-skills/
@@ -504,7 +513,7 @@ To update a local installation, run `git pull` and recopy all eight skills as on
 should also update the router and all eleven patch modules as one coherent package, then start a
 new task.
 
-## Version history
+## 📋 Version history
 
 | Version | Main change |
 |---|---|
@@ -520,7 +529,7 @@ new task.
 See [CHANGELOG.md](CHANGELOG.md) for the complete record. Historical sections describe behavior at
 that time; the current `SKILL.md` files and the latest Unreleased notes are authoritative.
 
-## License and scope
+## ⚖️ License and scope
 
 This repository implements structured calculation and analysis workflows for traditional Vedic
 astrology. It is intended for cultural study, research, and personal exploration. It is not a
@@ -533,7 +542,7 @@ substitute for medical, legal, financial, or other safety-critical professional 
 - Written permission is required to use the instruction files in a paid API, hosted service, or
   commercial product offered to third parties.
 
-## Support
+## ☕ Support
 
 If this suite is useful to you, you can support ongoing maintenance through WeChat Pay or Alipay:
 

@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Rebuilt the default `README.md` as a Chinese-first homepage with a compact trilingual introduction and clearly separated full-language entry points.
 - Restored comprehensive module, workflow, technical architecture, validation, installation, Codex Patch, repository, version, and licensing documentation without returning to line-by-line bilingual mixing.
 - Expanded `README.en.md` and `README.ja.md` to the same information architecture so that both links now lead to full documentation rather than shortened summaries.
+- Restored the original homepage's stronger visual rhythm with a compact trilingual hero, one-line language navigation, a collapsed table of contents, restrained section icons, and scannable per-skill disclosure blocks.
 - Made direct chart calculation from birth date, exact time, and place the primary onboarding path while keeping PDF, screenshot, and text import as optional validation routes.
 - Reconciled technical claims with the current skills and changelog: documented complete MD/AD/PD output, divisional stability auditing, the 16-rule Reader validation set, and traceable v6.1 regression results; removed the old unauditable generic `>97%` accuracy claim.
 

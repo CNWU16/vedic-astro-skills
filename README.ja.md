@@ -1,40 +1,49 @@
-<div align="center">
+<p align="center">
+  <h1 align="center">🔱 Vedic Astro Skills v8.0</h1>
+  <p align="center"><strong>出生情報から出生図を直接計算し、そのまま総合分析へ</strong></p>
+  <p align="center">
+    <sub>从出生信息直接排盘，进入完整吠陀占星分析<br>
+    Calculate a Vedic chart from birth details and continue directly to full analysis</sub>
+  </p>
+  <p align="center">
+    <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-v8.0-blue" alt="Version"></a>
+    <a href="#python-環境"><img src="https://img.shields.io/badge/python-3.8--3.13-green" alt="Python"></a>
+    <a href="#-8つの-skill"><img src="https://img.shields.io/badge/skills-8-purple" alt="Skills"></a>
+    <a href="#-ライセンスと利用範囲"><img src="https://img.shields.io/badge/license-AGPL--3.0-orange" alt="License"></a>
+  </p>
+</p>
 
-# 🔱 Vedic Astro Skills
-
-### 出生情報から出生図を直接計算し、そのまま総合分析へ
-
-**🌐 言語を選択 / Choose language / 选择语言**<br>
-[简体中文](README.md) · [English](README.en.md) · **日本語（現在のページ）**
-
-Codex、Claude Code、Antigravity 向けの、8つの連携型ヴェーダ占星術（Jyotish）Skill です。
-
-[![Version](https://img.shields.io/badge/version-v8.0-blue)](CHANGELOG.md)
-[![Python](https://img.shields.io/badge/python-3.8--3.13-green)](#python-環境)
-[![Skills](https://img.shields.io/badge/skills-8-purple)](#8つの-skill)
-[![Languages](https://img.shields.io/badge/languages-中文%20%7C%20English%20%7C%20日本語-teal)](#多言語対応)
-[![License](https://img.shields.io/badge/license-AGPL--3.0-orange)](#ライセンスと利用範囲)
-
-</div>
+<p align="center">
+  🌐 <a href="README.md"><strong>简体中文</strong></a> ·
+  <a href="README.en.md"><strong>English documentation</strong></a> ·
+  <strong>日本語ドキュメント</strong>
+</p>
 
 ---
 
-## 目次
+> **8つの専門 Skill が連携し、出生情報からの直接計算、データ検証、総合出生図分析、キャリア、恋愛・関係性、出生時刻修正、二人のチャート比較、Prashna までを扱います。**
+>
+> Codex、Claude Code、Antigravity に対応します。PDF、画像、テキストのチャートは任意の読み込み方法であり、必須ではありません。
 
-- [この Skill Suite でできること](#この-skill-suite-でできること)
-- [全体ワークフロー](#全体ワークフロー)
-- [8つの Skill](#8つの-skill)
-- [各 Skill の詳細](#各-skill-の詳細)
-- [技術構成とデータ整合性](#技術構成とデータ整合性)
-- [インストール](#インストール)
-- [クイックスタート](#クイックスタート)
-- [推奨 Codex パッチ](#推奨-codex-パッチ)
-- [多言語対応](#多言語対応)
-- [リポジトリ構成と更新](#リポジトリ構成と更新)
-- [バージョン履歴](#バージョン履歴)
-- [ライセンスと利用範囲](#ライセンスと利用範囲)
+<details>
+<summary><strong>📖 目次を開く</strong></summary>
 
-## この Skill Suite でできること
+- [この Skill Suite でできること](#-この-skill-suite-でできること)
+- [全体ワークフロー](#-全体ワークフロー)
+- [8つの Skill](#-8つの-skill)
+- [各 Skill の詳細](#-各-skill-の詳細)
+- [技術構成とデータ整合性](#-技術構成とデータ整合性)
+- [インストール](#-インストール)
+- [クイックスタート](#-クイックスタート)
+- [推奨 Codex パッチ](#-推奨-codex-パッチ)
+- [多言語対応](#-多言語対応)
+- [リポジトリ構成と更新](#-リポジトリ構成と更新)
+- [バージョン履歴](#-バージョン履歴)
+- [ライセンスと利用範囲](#-ライセンスと利用範囲)
+
+</details>
+
+## ✨ この Skill Suite でできること
 
 これは、作成済みの PDF を解説するだけのプロンプト集ではありません。基本の入口は
 出生情報です。
@@ -60,7 +69,7 @@ JHora などの PDF、スクリーンショット、テキスト出力も読み�
 - 中国語・英語・日本語の会話、入力、質問票、レポート、Q&A、HTML 外枠
 - Antigravity、Claude Code、Codex の3配布面に対する整合性チェック
 
-## 全体ワークフロー
+## 🔄 全体ワークフロー
 
 ```mermaid
 flowchart LR
@@ -80,7 +89,7 @@ flowchart LR
 `vedic-prashna` は独自の `structured_prashna.md` と出力ディレクトリを使い、
 本命 Dasha、分割図、SAV を自動的に質問時刻図の判断へ混ぜません。
 
-## 8つの Skill
+## 🧩 8つの Skill
 
 | Skill | 主な入力 | 役割 | 主な成果物 |
 |---|---|---|---|
@@ -96,10 +105,10 @@ flowchart LR
 8つをまとめてインストールすることを推奨します。実行時には現在の依頼に必要な Skill
 だけが選択され、すべてのワークフローが同時に読み込まれるわけではありません。
 
-## 各 Skill の詳細
+## 🔍 各 Skill の詳細
 
 <details>
-<summary><strong>vedic-calculator：出生情報から直接計算</strong></summary>
+<summary><strong>🧮 vedic-calculator：出生情報から直接計算</strong></summary>
 
 `vedic-calculator` は本命ワークフローの計算基盤です。生年月日、正確な時刻、緯度経度、
 IANA タイムゾーンから、標準データ `structured_data.md` を作成します。
@@ -124,7 +133,7 @@ IANA タイムゾーンから、標準データ `structured_data.md` を作成�
 </details>
 
 <details>
-<summary><strong>vedic-reader：読み込み、整合性検証、事前検証</strong></summary>
+<summary><strong>📖 vedic-reader：読み込み、整合性検証、事前検証</strong></summary>
 
 `vedic-reader` には二つの入口があります。
 
@@ -146,7 +155,7 @@ Ayanamsa、Nakshatra、Chara Karaka、MD/AD/PD の連続性、D9 公式、分割
 </details>
 
 <details>
-<summary><strong>vedic-core：Standard の完全出生図分析</strong></summary>
+<summary><strong>🔬 vedic-core：Standard の完全出生図分析</strong></summary>
 
 公開リポジトリには Standard の `vedic-core` が含まれます。一つの長い文章を一度に
 生成するのではなく、監査可能な成果物を段階的に作ります。
@@ -165,7 +174,7 @@ Ayanamsa、Nakshatra、Chara Karaka、MD/AD/PD の連続性、D9 公式、分割
 </details>
 
 <details>
-<summary><strong>vedic-career：キャリアの方向性、役割適性、時期</strong></summary>
+<summary><strong>💼 vedic-career：キャリアの方向性、役割適性、時期</strong></summary>
 
 キャリア分析は、職場での生態的位置、才能と Yoga、D9 詳細監査、全体統合の4段階です。
 D1、D9、D10、Dasha を組み合わせ、「何が得意か」「どの役割に向くか」「どの環境で力を
@@ -175,7 +184,7 @@ D1、D9、D10、Dasha を組み合わせ、「何が得意か」「どの役割�
 </details>
 
 <details>
-<summary><strong>vedic-love：恋愛・関係性のパターンと時期</strong></summary>
+<summary><strong>💘 vedic-love：恋愛・関係性のパターンと時期</strong></summary>
 
 まず出生図から、感情面で必要とするもの、惹かれ方、関係を築き維持する力を確認します。
 次に Dasha と関係指標から時期の窓を特定し、最後にトランジットで窓の性質を確認します。
@@ -185,7 +194,7 @@ D1、D9、D10、Dasha を組み合わせ、「何が得意か」「どの役割�
 </details>
 
 <details>
-<summary><strong>vedic-rectifier：出生時刻修正</strong></summary>
+<summary><strong>📐 vedic-rectifier：出生時刻修正</strong></summary>
 
 出生時刻が曖昧、大まか、または記録にずれがある可能性がある場合に使います。標準入口では、
 5件以上の主要な出来事と個人特性、Dasha 時系列、D1/D9/D10 の切替、分単位の天文計算を
@@ -198,7 +207,7 @@ D1、D9、D10、Dasha を組み合わせ、「何が得意か」「どの役割�
 </details>
 
 <details>
-<summary><strong>vedic-synastry：二人のチャート比較</strong></summary>
+<summary><strong>💞 vedic-synastry：二人のチャート比較</strong></summary>
 
 一人につき一つの検証済み `structured_data.md` が必要です。最初に現実の関係種類を前提と
 しない中立スキャンを行います。その後、性質判断だけで止める、一般的な詳細分析を行う、
@@ -212,7 +221,7 @@ Graha Drishti、共通する時期を分析します。最終的には、感情�
 </details>
 
 <details>
-<summary><strong>vedic-prashna：独立した質問時刻図</strong></summary>
+<summary><strong>🔮 vedic-prashna：独立した質問時刻図</strong></summary>
 
 一つの観察可能な結果に絞った質問を受け取り、その質問が確定した正確な日時と場所で
 プラシュナ（質問時刻図）を作ります。既定の標準層は *Shatpanchasika* を基礎とし、
@@ -226,7 +235,7 @@ KN Rao／Bharatiya Vidya Bhavan の実践との互換性を確認しています
 
 </details>
 
-## 技術構成とデータ整合性
+## 🧮 技術構成とデータ整合性
 
 ### 計算構成
 
@@ -280,7 +289,7 @@ v6.1 で記録された回帰サンプル：
 一律の精度パーセントではありません。そのため、以前の監査継続が難しい「精度 >97%」という
 表現は復元していません。詳細は [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
-## インストール
+## 📦 インストール
 
 リポジトリを取得し、8つの Skill をまとめてインストールします。
 
@@ -337,7 +346,7 @@ Codex または Claude Code では、インストール先にある同名スク�
 > `pyswisseph` を依存として宣言していますが、この Suite は `pysweph` を使います。
 > 自動スクリプトが導入順序と `--no-deps` で競合を処理します。
 
-## クイックスタート
+## ⚡ クイックスタート
 
 ### 出生情報から始める
 
@@ -401,7 +410,7 @@ JHora PDF、画像、テキストを添付します。
 Prashna は一つの観察可能な結果に絞ります。対象、目的、行動が変われば新しい質問です。
 望む答えを得るために同じ質問を繰り返し起図しません。
 
-## 推奨 Codex パッチ
+## 🛡️ 推奨 Codex パッチ
 
 Skill 本体は単独でも実行できます。`codex-patch` は Codex 向けの実行互換レイヤーであり、
 `SKILL.md` を変更したり、8つの Skill を置き換えたりしません。主な役割：
@@ -436,7 +445,7 @@ cp -r vedic-astro-skills/codex-patch/vedic_*.md ~/.codex/
 Standard/Pro の選択と lineage 分離を担当します。この公開リポジトリには Standard の
 `vedic-core` が標準で含まれます。
 
-## 多言語対応
+## 🌐 多言語対応
 
 中国語・英語・日本語は、同じ計算、証拠、score、phase、ファイル契約を共有します。
 アルゴリズム本文を三つの翻訳ワークフローへ複製していません。
@@ -460,7 +469,7 @@ python report_builder.py <report-folder> --name "山田" --lang ja
 実行途中で言語が変わっても、既存データと report lineage は維持し、その後の顧客向け内容だけを
 新しい言語へ切り替えます。
 
-## リポジトリ構成と更新
+## 🗂️ リポジトリ構成と更新
 
 ```text
 vedic-astro-skills/
@@ -492,7 +501,7 @@ python3 scripts/check_skill_parity.py
 ローカル版を更新する場合は、リポジトリで `git pull` を行い、8つの Skill をまとめて再コピーします。
 Codex ではルーターと11モジュールも一つのパッケージとして更新し、その後に新しいタスクを開始します。
 
-## バージョン履歴
+## 📋 バージョン履歴
 
 | バージョン | 主な変更 |
 |---|---|
@@ -508,7 +517,7 @@ Codex ではルーターと11モジュールも一つのパッケージとして
 完全な記録は [CHANGELOG.md](CHANGELOG.md) を参照してください。過去の節は当時の動作を示します。
 現在の動作は最新の Unreleased と各 `SKILL.md` を真源とします。
 
-## ライセンスと利用範囲
+## ⚖️ ライセンスと利用範囲
 
 このリポジトリは、伝統的なヴェーダ占星術の構造化計算・分析ワークフローを実装しています。
 文化的学習、研究、個人の自己理解を目的とし、医療、法律、金融、その他の安全上重要な専門判断を
@@ -521,7 +530,7 @@ Codex ではルーターと11モジュールも一つのパッケージとして
 - 第三者向けの有料 API、ホスト型サービス、商用製品へ指示ファイルを利用するには、書面による
   許可が必要です。
 
-## プロジェクトを支援する
+## ☕ プロジェクトを支援する
 
 この Skill Suite が役立った場合は、WeChat Pay または Alipay で継続的なメンテナンスを
 支援できます。

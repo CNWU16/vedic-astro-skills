@@ -1,46 +1,49 @@
-<div align="center">
+<p align="center">
+  <h1 align="center">🔱 Vedic Astro Skills v8.0</h1>
+  <p align="center"><strong>从出生信息直接排盘，进入完整吠陀占星分析</strong></p>
+  <p align="center">
+    <sub>Calculate a Vedic chart from birth details and continue directly to full analysis<br>
+    出生情報から出生図を直接計算し、そのまま総合分析へ</sub>
+  </p>
+  <p align="center">
+    <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-v8.0-blue" alt="Version"></a>
+    <a href="#python-环境"><img src="https://img.shields.io/badge/python-3.8--3.13-green" alt="Python"></a>
+    <a href="#-八个-skill"><img src="https://img.shields.io/badge/skills-8-purple" alt="Skills"></a>
+    <a href="#-许可与使用边界"><img src="https://img.shields.io/badge/license-AGPL--3.0-orange" alt="License"></a>
+  </p>
+</p>
 
-# 🔱 Vedic Astro Skills
-
-### 从出生信息直接排盘，进入完整吠陀占星分析
-
-**🌐 选择语言 / Choose language / 言語を選択**<br>
-**简体中文（当前页）** · [English](README.en.md) · [日本語](README.ja.md)
-
-**输入出生日期、准确时间和地点，即可直接排盘并进入完整分析。**<br>
-Enter your birth date, exact time, and place to calculate a Vedic chart and continue directly to a complete analysis.<br>
-生年月日・正確な出生時刻・出生地から出生図を直接作成し、そのまま総合鑑定へ進めます。
-
-[中文完整介绍 ↓](#这套-skill-能做什么) · [Full English documentation →](README.en.md) · [日本語ドキュメント →](README.ja.md)
-
-面向 Codex、Claude Code 和 Antigravity 的八模块吠陀占星（Jyotish）Skill 套件。
-
-[![Version](https://img.shields.io/badge/version-v8.0-blue)](CHANGELOG.md)
-[![Python](https://img.shields.io/badge/python-3.8--3.13-green)](#python-环境)
-[![Skills](https://img.shields.io/badge/skills-8-purple)](#八个-skill)
-[![Languages](https://img.shields.io/badge/languages-中文%20%7C%20English%20%7C%20日本語-teal)](#多语言机制)
-[![License](https://img.shields.io/badge/license-AGPL--3.0-orange)](#许可与使用边界)
-
-</div>
+<p align="center">
+  🌐 <strong>简体中文</strong> ·
+  <a href="README.en.md"><strong>English documentation</strong></a> ·
+  <a href="README.ja.md"><strong>日本語ドキュメント</strong></a>
+</p>
 
 ---
 
-## 目录
+> **八个专精 Skill 协同工作：从出生信息直接排盘，到数据校验、完整本命分析、职业、感情、出生时间校准、双人合盘与 Prashna。**
+>
+> 兼容 Codex、Claude Code 和 Antigravity；PDF、截图与文本星盘是可选导入方式，不是使用前提。
 
-- [这套 Skill 能做什么](#这套-skill-能做什么)
-- [整体工作流](#整体工作流)
-- [八个 Skill](#八个-skill)
-- [各模块详细说明](#各模块详细说明)
-- [技术架构与数据完整性](#技术架构与数据完整性)
-- [安装](#安装)
-- [快速开始](#快速开始)
-- [Codex 推荐补丁](#codex-推荐补丁)
-- [多语言机制](#多语言机制)
-- [仓库结构与更新](#仓库结构与更新)
-- [版本历史](#版本历史)
-- [许可与使用边界](#许可与使用边界)
+<details>
+<summary><strong>📖 展开目录</strong></summary>
 
-## 这套 Skill 能做什么
+- [这套 Skill 能做什么](#-这套-skill-能做什么)
+- [整体工作流](#-整体工作流)
+- [八个 Skill](#-八个-skill)
+- [各模块详细说明](#-各模块详细说明)
+- [技术架构与数据完整性](#-技术架构与数据完整性)
+- [安装](#-安装)
+- [快速开始](#-快速开始)
+- [Codex 推荐补丁](#-codex-推荐补丁)
+- [多语言机制](#-多语言机制)
+- [仓库结构与更新](#-仓库结构与更新)
+- [版本历史](#-版本历史)
+- [许可与使用边界](#-许可与使用边界)
+
+</details>
+
+## ✨ 这套 Skill 能做什么
 
 这不是一个只负责解释现成 PDF 的提示词集合。多数用户可以直接从出生信息开始：
 
@@ -64,7 +67,7 @@ Enter your birth date, exact time, and place to calculate a Vedic chart and cont
 - 中文、英文、日文的对话、采集、问卷、报告、Q&A 与 HTML 外壳；
 - Codex、Claude Code、Antigravity 三个发行面保持内容一致。
 
-## 整体工作流
+## 🔄 整体工作流
 
 ```mermaid
 flowchart LR
@@ -84,7 +87,7 @@ flowchart LR
 `structured_prashna.md` 和判读目录，不需要本命盘，也不会自动调用本命 Dasha、
 分盘或 SAV 给提问盘下结论。
 
-## 八个 Skill
+## 🧩 八个 Skill
 
 | Skill | 主要输入 | 核心职责 | 主要产物 |
 |---|---|---|---|
@@ -99,10 +102,10 @@ flowchart LR
 
 建议完整安装八个 Skill。实际运行时按任务调用相应模块，不会把所有工作流同时加载。
 
-## 各模块详细说明
+## 🔍 各模块详细说明
 
 <details>
-<summary><strong>vedic-calculator：从出生信息直接排盘</strong></summary>
+<summary><strong>🧮 vedic-calculator：从出生信息直接排盘</strong></summary>
 
 `vedic-calculator` 是本命链路的计算基座。它使用出生日期、准确时间、经纬度与
 IANA 时区，生成下游模块统一消费的 `structured_data.md`。
@@ -132,7 +135,7 @@ IANA 时区，生成下游模块统一消费的 `structured_data.md`。
 </details>
 
 <details>
-<summary><strong>vedic-reader：读盘、校验与验前事</strong></summary>
+<summary><strong>📖 vedic-reader：读盘、校验与验前事</strong></summary>
 
 `vedic-reader` 同时支持两条入口：
 
@@ -154,7 +157,7 @@ Reader 执行完整的 16 条校验体系，包括 SAV/BAV 常量、行星完整
 </details>
 
 <details>
-<summary><strong>vedic-core：标准版完整本命分析</strong></summary>
+<summary><strong>🔬 vedic-core：标准版完整本命分析</strong></summary>
 
 公开仓库包含标准版 `vedic-core`。它不是一次性生成一篇泛化长文，而是按阶段形成
 可回查的分析产物：
@@ -173,7 +176,7 @@ Reader 执行完整的 16 条校验体系，包括 SAV/BAV 常量、行星完整
 </details>
 
 <details>
-<summary><strong>vedic-career：职业方向与时机</strong></summary>
+<summary><strong>💼 vedic-career：职业方向与时机</strong></summary>
 
 职业模块按四个阶段执行：职场生态位扫描、天赋格局扫描、D9 深度审计、全维合成。
 它联合 D1、D9、D10 与 Dasha，区分“擅长什么”“适合什么角色”“怎样的组织环境
@@ -183,7 +186,7 @@ Reader 执行完整的 16 条校验体系，包括 SAV/BAV 常量、行星完整
 </details>
 
 <details>
-<summary><strong>vedic-love：关系模式与恋爱时机</strong></summary>
+<summary><strong>💘 vedic-love：关系模式与恋爱时机</strong></summary>
 
 关系模块先分析原盘的情感模式、需求与承载能力，再通过 Dasha 和相关关系点位锁定
 时间窗口，最后结合过运判断窗口性质。它使用 5/7 宫、Venus、Moon、PK/DK、UL、
@@ -192,7 +195,7 @@ D9 等吠陀指标，并要求支持证据与制约证据同时进入结论。
 </details>
 
 <details>
-<summary><strong>vedic-rectifier：出生时间校准</strong></summary>
+<summary><strong>📐 vedic-rectifier：出生时间校准</strong></summary>
 
 校准模块适合具体时间不确定、只有大致时间或怀疑记录有偏差的情况。标准入口需要
 五件或更多重大人生事件，并结合个人特质、Dasha 时间线、D1/D9/D10 等分盘切换和
@@ -205,7 +208,7 @@ D9 等吠陀指标，并要求支持证据与制约证据同时进入结论。
 </details>
 
 <details>
-<summary><strong>vedic-synastry：双人合盘</strong></summary>
+<summary><strong>💞 vedic-synastry：双人合盘</strong></summary>
 
 合盘需要双方各一份已验证的 `structured_data.md`。流程先做不预设现实关系类型的
 中性性质平扫，再由用户选择：只看性质、通用深析，或进入 romantic、business、
@@ -218,7 +221,7 @@ friendship、family 四种专属框架。
 </details>
 
 <details>
-<summary><strong>vedic-prashna：独立提问时刻盘</strong></summary>
+<summary><strong>🔮 vedic-prashna：独立提问时刻盘</strong></summary>
 
 Prashna 只回答一个可观察结果明确的问题，使用问题正式形成时的准确时间和地点起盘。
 默认标准层以 *Shatpanchasika* 为主文本，并通过 KN Rao/Bharatiya Vidya Bhavan
@@ -230,7 +233,7 @@ Prashna 只回答一个可观察结果明确的问题，使用问题正式形成
 
 </details>
 
-## 技术架构与数据完整性
+## 🧮 技术架构与数据完整性
 
 ### 计算架构
 
@@ -284,7 +287,7 @@ Prashna 只回答一个可观察结果明确的问题，使用问题正式形成
 因此本版没有恢复旧 README 中无法持续审计的“准确率 >97%”说法。详细历史见
 [CHANGELOG.md](CHANGELOG.md)。
 
-## 安装
+## 📦 安装
 
 建议先克隆仓库，再一次安装全部八个 Skill：
 
@@ -341,7 +344,7 @@ Codex 或 Claude Code 用户也可以把路径换成对应安装目录中的同�
 > `pyswisseph`，而当前实现使用 `pysweph`；自动脚本通过正确安装顺序和
 > `--no-deps` 处理冲突。
 
-## 快速开始
+## ⚡ 快速开始
 
 ### 从出生信息开始
 
@@ -413,7 +416,7 @@ Calculate my Vedic chart from these birth details and write the full report in E
 この出生情報からヴェーダ占星術の出生図を作成し、総合鑑定を日本語で書いてください。
 ```
 
-## Codex 推荐补丁
+## 🛡️ Codex 推荐补丁
 
 Skill 本体可以独立运行。`codex-patch` 是面向 Codex 的执行兼容层，不改动任何
 `SKILL.md`，也不替代八个 Skill。它主要处理：
@@ -448,7 +451,7 @@ cp -r vedic-astro-skills/codex-patch/vedic_*.md ~/.codex/
 如果用户另外安装了 `vedic-core-pro`，不需要第二份补丁；同一补丁会负责 Standard
 与 Pro 的选择和报告谱系隔离。公开仓库默认提供的核心引擎是标准版 `vedic-core`。
 
-## 多语言机制
+## 🌐 多语言机制
 
 三个语言版本共享同一套计算、证据、评分、阶段与文件契约，不复制三份算法正文。
 
@@ -470,7 +473,7 @@ python report_builder.py <report-folder> --name "山田" --lang ja
 
 语言在运行中切换时，既有数据和报告谱系保持不变，只切换之后的客户端内容。
 
-## 仓库结构与更新
+## 🗂️ 仓库结构与更新
 
 ```text
 vedic-astro-skills/
@@ -502,7 +505,7 @@ python3 scripts/check_skill_parity.py
 更新本机安装时，先在仓库执行 `git pull`，再整体复制八个 Skill。Codex 用户还应把
 路由器和 11 个模块作为同一个补丁版本更新，避免新旧模块混用，并在更新后新建任务。
 
-## 版本历史
+## 📋 版本历史
 
 | 版本 | 主要变化 |
 |---|---|
@@ -518,7 +521,7 @@ python3 scripts/check_skill_parity.py
 完整记录和历史口径变更见 [CHANGELOG.md](CHANGELOG.md)。较早版本的说明不一定代表
 当前行为，以上方 Unreleased 和当前 `SKILL.md` 为准。
 
-## 许可与使用边界
+## ⚖️ 许可与使用边界
 
 本仓库实现传统吠陀占星的结构化计算与分析工作流，适用于文化学习、研究和个人探索。
 它不能替代医疗、法律、金融或其他安全关键领域的专业判断。
@@ -529,7 +532,7 @@ python3 scripts/check_skill_parity.py
 - 个人、非商业使用可以自由学习和修改；
 - 未经书面授权，不得把指令文件用于向第三方提供收费 API、网页服务或商业产品。
 
-## 支持项目
+## ☕ 支持项目
 
 如果这套 Skill 对你有帮助，可以通过微信或支付宝支持后续维护：
 
