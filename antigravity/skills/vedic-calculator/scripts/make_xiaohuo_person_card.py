@@ -156,7 +156,7 @@ def parse_dk(text: str) -> str:
     return ""
 
 
-def parse_current_dasha(text: str) -> tuple[str, str]:
+def parse_current_dasha(text: str) -> tuple[str, str, str]:
     # The formatter emits an explicit current-status block.  Prefer it over
     # table heuristics: the AD table's heading contains “当前”, so scanning
     # every marked line can accidentally reuse the MD row as the AD value.
@@ -169,10 +169,14 @@ def parse_current_dasha(text: str) -> tuple[str, str]:
         ad_match = re.search(
             r"(?im)^\s*Antardasha\s*:\s*([^\n]+?)\s*$", body
         )
+        pd_match = re.search(
+            r"(?im)^\s*Pratyantardasha\s*:\s*([^\n]+?)\s*$", body
+        )
         md = clean(md_match.group(1)) if md_match else ""
         ad = clean(ad_match.group(1)) if ad_match else ""
-        if md or ad:
-            return md, ad
+        pd = clean(pd_match.group(1)) if pd_match else ""
+        if md or ad or pd:
+            return md, ad, pd
 
     md_body = section(text, r"###\s*Vimsottari Dasha")
     md = ""
@@ -190,7 +194,7 @@ def parse_current_dasha(text: str) -> tuple[str, str]:
         if len(row) >= 4 and ("←" in line or "当前" in row[0]):
             ad = f"{row[1]}（{row[2]} 至 {row[3]}）"
             break
-    return md, ad
+    return md, ad, ""
 
 
 def parse_current_transit(text: str) -> tuple[str, list[tuple[str, str, str]]]:
@@ -254,12 +258,22 @@ def display_row(name: str, row: list[str] | None) -> str:
     return f"{name}：" + "；".join(values[:3]) + (f"；{values[3]}" if values[3] != "—" else "")
 
 
+def display_lagna(row: list[str] | None) -> str:
+    """Keep the required Lagna key simple so downstream chat models do not miss it."""
+    row = row or []
+    sign = (row[0] if len(row) > 0 else "") or "—"
+    house = (row[1] if len(row) > 1 else "") or "—"
+    degree = (row[2] if len(row) > 2 else "") or "—"
+    house = house if house.upper().startswith("H") else f"H{house}"
+    return f"Lagna: {sign}; {house}; {degree}（上升）"
+
+
 def build_card(text: str, label: str, include_birth: bool = False) -> str:
     meta = metadata(text)
     planets = parse_planets(text)
     moon_name, moon_pada = parse_moon_nakshatra(text)
     ul_sign, ul_house = parse_ul(text)
-    md, ad = parse_current_dasha(text)
+    md, ad, pd = parse_current_dasha(text)
     transit_date, transits = parse_current_transit(text)
     ayanamsa = meta_value(meta, "Ayanamsa", "岁差", "Ayanamsa方法") or "未提供"
     precision = meta_value(meta, "有效精度", "时间精度") or "未提供"
@@ -279,7 +293,7 @@ def build_card(text: str, label: str, include_birth: bool = False) -> str:
         if date or time or place:
             lines.append("出生资料：" + "；".join(value for value in (date, time, place) if value))
     lines.append("")
-    lines.append(display_row("Lagna（上升）", planets.get("Lagna")))
+    lines.append(display_lagna(planets.get("Lagna")))
     for name in PLANETS:
         lines.append(display_row(name, planets.get(name)))
     lines.append(f"Moon Nakshatra/Pada：{moon_name or '未提供'} / {moon_pada or '未提供'}")
@@ -288,11 +302,18 @@ def build_card(text: str, label: str, include_birth: bool = False) -> str:
         ul += f"；{ul_house}宫"
     lines.append(f"UL：{ul}")
     lines.append(f"DK：{parse_dk(text) or '未提供'}")
-    lines.append(f"当前 MD/AD：{md or '未提供'} / {ad or '未提供'}")
+    lines.append(
+        f"当前 MD/AD/PD：{md or '未提供'} / {ad or '未提供'} / {pd or '未提供'}"
+    )
     if transits:
         lines.append(f"当前过运（提取时间：{transit_date or '未提供'}）：")
         lines.extend(f"{planet}：{sign}；{house}" for planet, sign, house in transits)
-    lines.append("备注：这是一段由已计算盘面整理出的可复制资料，不是新的排盘结果。")
+        if transit_date:
+            lines.append(
+                f"时间规则：以上过运是 {transit_date} 的静态快照；只有会话日期同为 "
+                f"{transit_date} 时才可作为真实当日过运。其他日期需重新运行 Calc 生成当天资料卡。"
+            )
+    lines.append("备注：本卡整理自已计算盘面，不会自行排盘或刷新星历。")
     return "\n".join(lines) + "\n"
 
 
