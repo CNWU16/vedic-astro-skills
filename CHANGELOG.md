@@ -8,6 +8,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-10-10
 
+### 产品回灌：SOP 预分析清单口径对齐 + 五大贤者格局中文正名（措辞，无数值变化）
+
+- `vedic-rectifier/resources/pre_validation_sop.md` 构造SOP 步骤1 的预分析清单「相位(第3项)」改为「Graha Drishti(第3项)」，
+  与 reader Step 4 读取清单一致（西占 orb 表已于 2026-07-07 删除，旧写法指向不存在的数据结构）；
+  同文件「霈月级」错字改「需月级」。reader 内嵌的同文副本同步修改。
+- `vedic-core/resources/yogas.md` 五大贤者格局五条补中文正名：火星/水星/木星/金星/土星贤者格局（英文名照带）；
+  `vedic-career` 的「五大伟人」统一为「五大贤者格局」。
+
 ### rectifier `time_scan.py`：本地时间入参 + 表头双时间（修 UTC 日期借位坑）⚠️ 影响校时结果
 
 **现象**：08:00 前出生（本地时:分 < 时区偏移）的盘，调用方手算 UTC 时只做钟面减法、没把日期退 1 天，

@@ -205,7 +205,7 @@ Phase 4 Part 3   → 写入 career_phase4c.md
 
 **步骤:**
 1. **格局扫描** — 仅提取接通事业/财富系统的格局：
-   - 五大伟人格局(Panch Mahapurusha): 参考预分析尊贵度
+   - 五大贤者格局(Pancha Mahapurusha): 参考预分析尊贵度
    - 贵格(Raja Yoga): 参考预分析宫主表 + Graha Drishti 互视（合相=同宫、互溶=parivartana，见 yogas.md）
    - 富格(Dhana Yoga): 参考2/11宫主互动
    - Vipreet Raja Yoga: 6/8/12宫主互飞
@@ -269,7 +269,7 @@ Phase 4 Part 3   → 写入 career_phase4c.md
 **STEP 0 格局滤镜:** 回调Phase2格局+Phase3质检结果
 - 若有富格 → 必须包含"商业变现模型"，严禁建议纯死工资
 - 若有贵格 → 必须包含"阶层跃升/管理权"，严禁纯技术执行
-- 若有五大伟人 → 该星体特质必须作为核心手段
+- 若有五大贤者格局 → 该星体特质必须作为核心手段
 - 若D9质检降级 → 调低该能力的依赖权重
 
 **STEP 1 多宫位合成:**

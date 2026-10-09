@@ -101,19 +101,19 @@
 条件：Mars/Mercury/Jupiter/Venus/Saturn 落在Kendra(1/4/7/10) 且 入旺或入庙
   → 5颗星各形成一个独立格局：
 
-  Ruchaka (Mars in Kendra + 入旺Capricorn/入庙Aries或Scorpio)
+  火星贤者格局 Ruchaka Yoga (Mars in Kendra + 入旺Capricorn/入庙Aries或Scorpio)
     → 勇武、领导力、体魄强健、军事/执法/工程才能
 
-  Bhadra (Mercury in Kendra + 入旺Virgo/入庙Gemini)
+  水星贤者格局 Bhadra Yoga (Mercury in Kendra + 入旺Virgo/入庙Gemini)
     → 智慧、商业才能、沟通/写作/教育天赋
 
-  Hamsa (Jupiter in Kendra + 入旺Cancer/入庙Sagittarius或Pisces)
+  木星贤者格局 Hamsa Yoga (Jupiter in Kendra + 入旺Cancer/入庙Sagittarius或Pisces)
     → 学识、精神智慧、道德感、教育/学术/法律
 
-  Malavya (Venus in Kendra + 入旺Pisces/入庙Taurus或Libra)
+  金星贤者格局 Malavya Yoga (Venus in Kendra + 入旺Pisces/入庙Taurus或Libra)
     → 艺术鉴赏、人际魅力、奢华享受、美学/设计/外交
 
-  Shasha (Saturn in Kendra + 入旺Libra/入庙Capricorn或Aquarius)
+  土星贤者格局 Shasha Yoga (Saturn in Kendra + 入旺Libra/入庙Capricorn或Aquarius)
     → 权威、纪律、管理才能、政治/行政/建筑
 
 评估：
