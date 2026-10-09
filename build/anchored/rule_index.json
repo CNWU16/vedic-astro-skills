@@ -1,13 +1,13 @@
 {
- "source_commit": "a911eb16706b",
- "generated_at": "2026-09-03T21:01:37Z",
+ "source_commit": "56610d7558e1",
+ "generated_at": "2026-10-09T18:22:09Z",
  "repo": "vedic-astrology-skills",
  "anchor_count": 305,
  "section_count": 121,
  "file_hashes": {
   "SKILL.md": "6768d467638c",
   "resources/p1_p12.md": "602156a34eb4",
-  "resources/yogas.md": "37ca883b5942",
+  "resources/yogas.md": "378a9521af0b",
   "resources/house_framework.md": "0db55f1c2f7a",
   "resources/qa_rules.md": "789d2a3b192a"
  },
@@ -1515,7 +1515,7 @@
    "file": "resources/yogas.md",
    "level": "L2",
    "title": "条件：Mars/Mercury/Jupiter/Venus/Saturn 落在Kendra(1/4/7/10) 且 入旺或入庙",
-   "text": "```\n条件：Mars/Mercury/Jupiter/Venus/Saturn 落在Kendra(1/4/7/10) 且 入旺或入庙\n  → 5颗星各形成一个独立格局：\n\n  Ruchaka (Mars in Kendra + 入旺Capricorn/入庙Aries或Scorpio)\n    → 勇武、领导力、体魄强健、军事/执法/工程才能\n\n  Bhadra (Mercury in Kendra + 入旺Virgo/入庙Gemini)\n    → 智慧、商业才能、沟通/写作/教育天赋\n\n  Hamsa (Jupiter in Kendra + 入旺Cancer/入庙Sagittarius或Pisces)\n    → 学识、精神智慧、道德感、教育/学术/法律\n\n  Malavya (Venus in Kendra + 入旺Pisces/入庙Taurus或Libra)\n    → 艺术鉴赏、人际魅力、奢华享受、美学/设计/外交\n\n  Shasha (Saturn in Kendra + 入旺Libra/入庙Capricorn或Aquarius)\n    → 权威、纪律、管理才能、政治/行政/建筑\n\n评估：\n  参与星燃烧/逆行/战争 → 格局打折\n  参与星受凶星相位 → 效力减弱\n  成立 → \"你有[格局名]，在[领域]有先天的高起点\"\n```"
+   "text": "```\n条件：Mars/Mercury/Jupiter/Venus/Saturn 落在Kendra(1/4/7/10) 且 入旺或入庙\n  → 5颗星各形成一个独立格局：\n\n  火星贤者格局 Ruchaka Yoga (Mars in Kendra + 入旺Capricorn/入庙Aries或Scorpio)\n    → 勇武、领导力、体魄强健、军事/执法/工程才能\n\n  水星贤者格局 Bhadra Yoga (Mercury in Kendra + 入旺Virgo/入庙Gemini)\n    → 智慧、商业才能、沟通/写作/教育天赋\n\n  木星贤者格局 Hamsa Yoga (Jupiter in Kendra + 入旺Cancer/入庙Sagittarius或Pisces)\n    → 学识、精神智慧、道德感、教育/学术/法律\n\n  金星贤者格局 Malavya Yoga (Venus in Kendra + 入旺Pisces/入庙Taurus或Libra)\n    → 艺术鉴赏、人际魅力、奢华享受、美学/设计/外交\n\n  土星贤者格局 Shasha Yoga (Saturn in Kendra + 入旺Libra/入庙Capricorn或Aquarius)\n    → 权威、纪律、管理才能、政治/行政/建筑\n\n评估：\n  参与星燃烧/逆行/战争 → 格局打折\n  参与星受凶星相位 → 效力减弱\n  成立 → \"你有[格局名]，在[领域]有先天的高起点\"\n```"
   },
   {
    "id": "A-YG-3f09036d",
@@ -2748,7 +2748,7 @@
    "anchor": "A-YG-bdc25787",
    "file": "resources/yogas.md",
    "title": "Pancha Mahapurusha Yoga（五大贤者格局）",
-   "section_hash": "53bc1affe314",
+   "section_hash": "2e21ae6e612d",
    "n_lines": 26
   },
   {
