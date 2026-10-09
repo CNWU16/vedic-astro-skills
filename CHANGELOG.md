@@ -8,6 +8,37 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-10-10
 
+### 即时盘：成／悬档加时间副层；新增复合、求职／考试专项门控与情感安抚规则
+
+**起因**：标准层原先不给任何时间，用户最常追问的"大概什么时候"只能答"不支持"；复合、求职、考试三类高频问题
+没有专项归行，容易按"最像的宫"硬判。时间副层的每条算法都已对照 *Prasna Marga*（Raman 译注）与
+*Shatpanchasika*（Ayer 译本）原文核过。
+
+- **时间副层**（新增 `vedic-prashna/resources/timing-layer.md`、`scripts/calc_timing.py`、`scripts/build_timing_overlay.py`）：
+  只在成、悬两档运行，不成档不给时间；成写"约……"，悬写"如果能成，大约……"。四个候选：
+  - T1 `P-V.5`：从 Lagna 顺数到第一个有七曜的宫，宫数 × 12 天；只用于人的归来／到达题；
+  - T2 `M-XIV.85`：从事项宫数到其宫主所在宫（含首尾）；宫主在 7–12 宫按天、1–6 宫按月（Raman 注的假设，输出时注明）；
+  - T3 `M-XIV.85`：Moon 下次进入事项宫主所在星座，作最近的触发日；事项宫主就是 Moon 时不适用；
+  - T4 `M-XIV.82`：上升 Navamsa 主星的时间单位 × 该星在本座第几个 Navamsa，只作参考。
+  
+  候选结果不同时并列，不平均、不折中。时间不进规则账本、不改三档；不用提问盘的 120 年 Vimshottari、
+  Chara Dasha 或过运；与 Tajika、KP 的时间不互相校正。标准 builder 不导入时间副层，产物另写 `timing_overlay.md`。
+  判读单"四、Timing 状态"改为"四、时间"，白话字段改为"大概什么时候"。
+- **复合／联系专项**（`question-taxonomy.md` §2.7）：能否复合按 `P-III.3~4` 和解规则类比（B 级），人形星座取
+  Gemini、Virgo、Libra、Aquarius（III.3 Ayer 注）；对方会否联系／回复 `P-I.3`（B）；主动挽回 `P-I.4`（A）；
+  "还爱不爱我""对方和现任会不会分手"为 C 级不判；打听行踪、"怎么让他回来"等操控／打听类不判，一句话说明并给替代问法。
+  同一段关系的不同问法算同一问题，沿用第一张盘的结论。
+- **求职／考试专项**（§2.8）：找工作／offer／面试／升职 `P-IV.3` + `P-II.1~2`（A）；裁员／保工作 `P-II.1~2`（B）；
+  竞争性考试 `P-III.1` 类比（B）；达标性考试 `P-I.4`（A）；"面试表现如何"为 C 级，改问"能不能拿到这个 offer"。
+  多环节只问最近一个还没出结果的环节；面试卡点只说卡在自己这边还是职位那边，不从盘里读性格、口才等特质。
+- **走失宠物**按失物 `P-I.5`（Ayer 示范题 "My cattle have strayed away from home"），只判能否找回。
+- **情感安抚六条**（SKILL Phase 6）：只安抚一次、不用套话；追问不重复；安抚不改结论；有盘面依据；
+  操控／打听类不说教；出现自伤或极端语句先回应安全，不起盘。
+- Ayer 注中按 functional character 取吉凶的主张不采纳：标准层按 `P-I.3` 用七曜自然吉凶
+  （Ayer 在 I.3、I.4 注里也写明 Bhattotpala 取自然吉凶）。
+- 隔离回归测由 4 条断言扩为 6 条（新增：标准 builder 不导入时间副层；时间副层不导入 Tajika／KP），
+  另加时间副层原典算例（Raman 注 XIV.82、XIV.85 两例，`P-V.5`，Moon 入座搜索）。
+
 ### 产品回灌：SOP 预分析清单口径对齐 + 五大贤者格局中文正名（措辞，无数值变化）
 
 - `vedic-rectifier/resources/pre_validation_sop.md` 构造SOP 步骤1 的预分析清单「相位(第3项)」改为「Graha Drishti(第3项)」，

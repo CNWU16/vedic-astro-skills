@@ -16,7 +16,7 @@
 | `K` | KN Rao 本人直接表述或本人署名案例 | 可进入，但不得扩大原文适用范围 |
 | `P` | *Shatpanchasika* 原文／可定位译文 | 可进入；专题规则只用于对应题型 |
 | `B` | Bhavan／Journal of Astrology 实例 | 可作兼容性与用法证据，不冒充 KN Rao 原话 |
-| `M` | *Prasna Marga*／Kerala 系 | 默认不进入；只用于纠错边界或独立模块 |
+| `M` | *Prasna Marga*／Kerala 系 | 默认不进入；只用于纠错边界或独立模块（时间副层见 `timing-layer.md`） |
 | `T` | Tajika | 仅 Tajika 沙箱 |
 | `KP` | Krishnamurti Paddhati | 仅 KP 独立栈 |
 | `E` | 工程／产品规则 | 可作输入、隔离和置信度门控，不冒充古典教义 |
@@ -49,13 +49,20 @@
 | Moon 无同宫／Graha Drishti 即“空亡”或“不成” | 无支持 | — | 禁入 |
 | Moon 月宿主是所有题型固定 significator | `B` 单案例 | — | 禁作全局硬门 |
 | Chandra Kriya 是 60 种 lunar actions | `M-VIII.63~65` | Kerala 模块 | 仅纠错边界 |
-| Moon ingress 等于 Dasha 切换或事件应期 | `U` | — | 禁入 |
+| Moon ingress 等于 Dasha 切换 | `U` | — | 禁入 |
+| Moon 下次进入事项宫主所在星座作为触发日 | `M-XIV.85` | 时间副层 | 只在 `timing-layer.md`，不进规则账本 |
 | Chara Karaka、DK、UL、AL 用于默认 Prashna | `U` | — | 禁入 |
 | SAV／BAV 用于默认 Prashna | `U` | — | 禁入 |
 | D9 只读取 rising Navamsa；完整 D9 人生解读 | `P-I.4`／`U` | 一般所谋之事／其余 | 只保留 rising Navamsa |
 | D10／D4／D5 等本命分盘 | `U` | — | 禁入 |
 | 提问盘生成的 120 年 Vimshottari／Chara Dasha | 与 `K/M` 边界冲突 | — | 禁入 |
 | *Prasna Marga* 一年／一月 Prasna Dasa | `M-VI.39,65~67` | Kerala | 不自动进入 K/P/B 主层 |
+| 宫数／Navamsa 数换算应事时间 | `M-XIV.81~82,85`、`P-V.5` | 时间副层 | 只在 `timing-layer.md`；不改三档 |
+| 固定座上升得位（Sthana labha），动座相反，变动座混合；吉星照 Lagna 与 Moon-lagna 吉 | `P-II.1~2` | 位置得失；Ayer 注扩展到求职 | 求职／保工作题主规则（见 `question-taxonomy.md` §2.8） |
+| 吉星落 10／7 宫赐位置（position）；凶星落 12／11 宫不吉；Moon 在 Lagna 不利、在 10 宫有利 | `P-IV.3` | 位置 | 求职题主规则 |
+| 吉星落 10／1／7 宫则胜；Mars／Saturn 落 9 宫败，Mercury／Jupiter／Venus 落 9 宫胜 | `P-III.1` | 战事胜负；Ayer 注扩展到选举等 competitive efforts | 竞争性考试类比，B级 |
+| 人形星座上升且有吉星、吉星落 12／11 宫、吉星落 kendra 或人形 Lagna 受吉星照则和解；凶星落变动座则冲突，凶星同样落位受凶星照则相反 | `P-III.3~4` | 王者和解；Ayer 注扩展到 settlement of scores | 复合类比，B级（见 `question-taxonomy.md` §2.7） |
+| Ayer 注中按 functional character 取吉凶 | 译者注 | — | 不采纳；标准层用 `P-I.3` 七曜自然吉凶（Bhattotpala 取自然吉凶） |
 | D1 尊贵度、自然吉凶、受克和燃烧事实 | `P-I.3` 及注释 | 行星承事能力 | 次级，不单项定档 |
 | 逆行统一等于失败 | `U` | — | 禁入；只在专题规则明示时使用 |
 | 3／6／8／12 一律作为同级阻碍宫 | 与 `P` 题目语义冲突 | — | 禁入 |
@@ -105,7 +112,7 @@ B级输出必须标“通用古典规则判读”；这是来源覆盖等级，�
 6. D1 尊贵度、engine 的行星特定燃烧结果、逆行事实；
 7. Moon 月相、位置、当前整宫接触；月宿只作描述或题目软验证；
 8. 简单互视与宫主交换的结构事实，不自动附带 natal yoga 分类；
-9. 明确的择时禁用说明。
+9. 时间副层的指针说明（时间本身只写在 `timing_overlay.md`）。
 
 默认产物禁止出现：
 
@@ -149,7 +156,7 @@ B级输出必须标“通用古典规则判读”；这是来源覆盖等级，�
 - **不成**：至少两条相互独立的适用主规则偏不利，且没有同级救援；
 - 单一 Moon、单一宫位、单一尊贵度或单一缺失不能独立判“不成”。
 
-成败档次与 timing 状态分开；缺少 timing 模块本身不改变成败档次。
+成败档次与时间副层分开：时间只在成／悬档给出，不因时间远近改档（见 `timing-layer.md`）。
 若临界字段未被本题适用规则消费，只报告该字段敏感，不得因此自动降档。
 
 ---
@@ -169,4 +176,6 @@ B级输出必须标“通用古典规则判读”；这是来源覆盖等级，�
 - G. N. Saxena, [“Case Study of a Prediction – Missing Persons”](https://www.journalofastrology.com/article.php?article_id=153)：
   Bhavan 实例；含 Tajika，不可整体搬入标准层。
 - [*Prasna Marga*, B. V. Raman 译本](https://archive.org/details/PrasnaMargaBVR)：
-  VI.39、65–67；VIII.63–65 及 Appendix IV。
+  VI.39、65–67；VIII.63–65；XIV.81–82、85 及 Appendix IV。
+- *Shatpanchasika*, V. A. K. Ayer 译本（*Indian Horary*）：II.1–2、III.1、III.3–4、
+  IV.2–3、V.5 及译者注。

@@ -29,9 +29,9 @@ Jaimini、Dasha、分盘或 SAV 工具自动迁入提问盘。
 
 - 当前证据支持“成／悬／不成”哪一档；
 - 吉凶条件和现实建议；
-- timing 模块是否可用。
+- 成或悬时，一个有原典出处的大致时间（时间副层）。
 
-当前默认层**不提供生产级事件日期**。
+时间副层不改三档；不成档不给时间，也不承诺精确到某天某时。
 
 ---
 
@@ -43,7 +43,8 @@ Jaimini、Dasha、分盘或 SAV 工具自动迁入提问盘。
 2. `resources/question-taxonomy.md`：单问与 A／B／C 支持级；
 3. `resources/house-karaka-map.md`：一个主事项宫和专题入口；
 4. `resources/judgment-rubric.md`：适用规则账本和三档组合；
-5. `resources/moon-policy.md`：Moon 当前事实的使用边界。
+5. `resources/moon-policy.md`：Moon 当前事实的使用边界；
+6. `resources/timing-layer.md`：时间副层（只在成／悬档运行）。
 
 只在用户显式启用时读取：
 
@@ -62,13 +63,14 @@ Jaimini、Dasha、分盘或 SAV 工具自动迁入提问盘。
    `formatter.py` 后再删段。
 3. 不修改 core/love/career/synastry/rectifier 等其他 skill。
 4. 标准产物只写入 `prashna_<yyyymmdd_HHMMSS>_<label>/`，文件名
-   `structured_prashna.md` 和 `prashna_judgment_<label>.md`。显式 Tajika overlay
-   只在该目录增加 `tajika_overlay.md`。KP 只写入独立
-   `kp_horary_<yyyymmdd_HHMMSS>_<label>/`，文件名 `structured_kp.md`、
+   `structured_prashna.md` 和 `prashna_judgment_<label>.md`。时间副层只在该目录
+   增加 `timing_overlay.md`；显式 Tajika overlay 只在该目录增加
+   `tajika_overlay.md`。KP 只写入独立 `kp_horary_<yyyymmdd_HHMMSS>_<label>/`，文件名 `structured_kp.md`、
    `structured_kp.json` 和 `kp_judgment_<label>.md`。
 5. 不读取或写入 `user_context.md`。
 6. Tajika／KP 计算只存在本 skill；标准 builder 不导入两者，也不接受 optional
-   flag。
+   flag。时间副层由独立 `scripts/build_timing_overlay.py` 生成：标准 builder 不导入
+   它，它也不导入 Tajika／KP。
 7. 不读取其他 `prashna_*` 目录；追问只沿用当前盘。
 
 ---
@@ -109,7 +111,10 @@ Jaimini、Dasha、分盘或 SAV 工具自动迁入提问盘。
 4. “现在”必须在提问地时区捕获，禁止在处理数分钟后另取整分钟；
 5. 地点／时区未知时澄清，不用机器时区代替；
 6. A/B 二选一不得机械起两张同刻盘；
-7. 同一问题和现实状态未变化时沿用第一次清晰提问盘，不使用24小时／3个月阈值。
+7. 同一问题和现实状态未变化时沿用第一次清晰提问盘，不使用24小时／3个月阈值；
+8. 复合／联系类按 `question-taxonomy.md` §2.7 归到一行，求职／考试类按 §2.8；
+   操控／打听类不判，一句话说明并给替代问法；
+9. 出现自伤或极端语句时先回应安全，不起盘（§2.9）。
 
 进入下一阶段条件：问题唯一、支持级为A或B、时间地点完整。
 
@@ -151,7 +156,9 @@ python scripts/build_prashna_data.py \
 3. B级只使用通用宫／宫主规则和明确匹配的 Bhavan 辅证；
 4. 始终保留 Lagna 与 Lagna 主；
 5. Moon 只在专题规则明确需要时成为主输入；
-6. 不固定加入自然 Karaka、Moon 月宿主或 Chara Karaka。
+6. 不固定加入自然 Karaka、Moon 月宿主或 Chara Karaka；
+7. 复合、求职、考试、走失宠物按 `question-taxonomy.md` §2.7／§2.8 和
+   `house-karaka-map.md` 取 rule_id 与事项宫。
 
 建立并在聊天和判读单中完整显示：
 
@@ -179,7 +186,7 @@ python scripts/build_prashna_data.py \
 - Moon 最高权重；
 - 月宿主固定成为 significator；
 - Chandra Kriya、Tajika Khallāsara 或西方 Void 混入；
-- Moon ingress 承担 Dasha 或事件 timing。
+- Moon ingress 承担 Dasha 或进入规则账本（Moon 入座触发日只在时间副层）。
 
 进入下一阶段条件：Moon 每条判断都说明适用 rule_id，或明确标为背景。
 
@@ -198,28 +205,39 @@ python scripts/build_prashna_data.py \
 输入敏感只有在可能改变本题账本实际使用的 Lagna、rising Navamsa、事项宫或宫主
 结构时才能影响档次。未被本题规则消费的临界字段只报告，不改票。
 
-成败档次与 timing 状态分开。没有 timing 模块不自动把“成”降为“悬”。
+成败档次与时间副层分开：时间远近不改档，给不出精确日期也不把“成”降为“悬”。
 
 进入下一阶段条件：结论可从已显示账本逐条复核。
 
 ---
 
-## Phase 5：Timing
+## Phase 5：时间副层
 
-默认固定输出：
+读取 `timing-layer.md`。结论为成或悬时运行：
 
-> 当前标准层未启用生产级 Prashna timing。本盘只回答当前支持方向，不使用提问盘
-> 生成的120年本命 Dasha、Moon ingress 或今日过运硬给日期。
+```bash
+python scripts/build_timing_overlay.py \
+  --datetime "<与 Phase 1 完全相同>" \
+  --lat <lat> --lon <lon> --tz "<IANA>" \
+  --matter-house <1-12> --mode general|return \
+  --verdict favorable|pending \
+  --out-dir "<当前 prashna_* 目录>"
+```
 
-*Prasna Marga* 的一年／一月 Prasna Dasa 属 `M` 来源，不因能纠正旧错误就自动并入
-K/P/B 默认层。未来模块上线必须同时具备来源范围、完整算法、例盘和边界测试。
+- 事项宫和 `--mode` 按 `timing-layer.md` §4 取；人的归来／到达题用 `return`。
+- 成写“约……”，悬写“如果能成，大约……”；不成不运行，判读单写明不给时间及原因。
+- 几个候选结果不同时并列，不平均、不折中。
+- 不使用提问盘生成的 120 年 Vimshottari、Chara Dasha 或过运；*Prasna Marga* 的
+  一年／一月 Prasna Dasa 不收。
+
+进入下一阶段条件：成／悬档已有 `timing_overlay.md`，或不成档已写明不给时间。
 
 ---
 
 ## Phase 6：输出
 
 写入 `prashna_judgment_<label>.md`，并在聊天中显示支持级、规则账本、结论和
-timing 状态。固定结构：
+时间。固定结构：
 
 ```markdown
 # Prashna 判读单：<问题>
@@ -229,7 +247,7 @@ timing 状态。固定结构：
 **更可能发生什么**：<可观察结果，不写术语>
 **主要阻力**：<现实含义，不写宫位或行星名称代替解释>
 **现在能做什么**：<可执行建议>
-**能不能给时间**：<可用/不可用及白话原因>
+**大概什么时候**：<成：约……；悬：如果能成，大约……；不成：不给时间及白话原因>
 
 ## 二、这张盘的范围
 **提问时刻／地点**：
@@ -242,8 +260,8 @@ timing 状态。固定结构：
 **阻力**：
 **建议**：
 
-## 四、Timing 状态
-当前标准层未启用生产级 Prashna timing。
+## 四、时间
+<成／悬：摘 `timing_overlay.md` 的主时间、最近的触发日和参考；不成：不给时间及原因>
 
 ## 五、适用规则账本
 | rule_id | 支持级 | 适用理由 | 原始证据 | 方向 | 权重 | 冲突 |
@@ -257,10 +275,21 @@ timing 状态。固定结构：
 
 语言要求：先说人话，再列证据；术语出现即翻译；不使用极端或宿命化措辞。判读单
 开头必须让不懂占星的用户直接看懂“更可能发生什么、主要阻力是什么、现在能做什么、
-能不能给时间”。“先说人话”一节禁止出现未经翻译的行星名、宫位号、`rule_id`、
+大概什么时候”。“先说人话”一节禁止出现未经翻译的行星名、宫位号、`rule_id`、
 Yoga 名称、`mixed`、`promise`、`cusp`、`sub-lord`、`Itthasala` 或生产状态码；
 这些只能放在白话结论之后的核对区。不能用“混合配置”“支持级 B”或“实验候选”
 代替事件结论，必须先说明它们在现实中意味着什么。
+
+情感类问题（复合、联系、分手后等）的安抚写在“先说人话”里，守六条：
+
+1. 只安抚一次，要具体，引用用户原话；不用“一切都是最好的安排”“时间会治愈一切”
+   “放下才能拥有”“你值得更好的”这类套话。
+2. 追问时不重复安抚，除非用户表达了新的情绪。
+3. 安抚不改结论。
+4. 安慰要有盘面依据：悬档只取卡点和最近的触发日；不成档说明这张盘答不了什么，
+   以及什么现实变化之后可以再问。
+5. 操控／打听类问题：一句话说明为什么不判，再给替代问法，不说教。
+6. 出现自伤或极端语句：先回应安全，不起盘。
 
 ---
 
@@ -277,7 +306,8 @@ Yoga 名称、`mixed`、`promise`、`cusp`、`sub-lord`、`Itthasala` 或生产�
 Uttama／Madhyama／Sama／Adhama 的 Kamboola 16 档、严格 Shunyamarga、
 Radda／Durapha 优先级及换座候选。它仍是实验候选，不能进入默认主结论。
 只有主星直接 Itthasala 才可显示原典“度差 × 12 日”比例候选；这不是天文保证，
-也不得进入标准层。全部出版例盘与边界测试完成前不得解除实验标签。
+也不得进入标准层。它和标准层时间副层来自不同体系，不互相校正，主答案以判读单
+§四 为准。全部出版例盘与边界测试完成前不得解除实验标签。
 `tajika_overlay.md` 同时承担人类可读副层判读：必须先说直接接触、过程修正、
 现实含义和 timing 状态，再显示十六 Yoga 明细；Yoga 名称第一次出现时必须紧跟
 白话含义，不能把十六项布尔表当作判读；“先说人话”一节不得出现 deeptamsha、
@@ -331,22 +361,24 @@ RP 交集与 Moon／Sun／Jupiter 过运 timing。婚姻重聚因原文存在多
 5. 用户明确问“整体／三层怎么看／为什么不同”时，进入跨栈比较：只读用户或当前
    对话明确关联的目录，分栏显示标准、Tajika、KP 的结论、一致点和冲突点，不投票；
 6. 同一问题和现实状态未变时沿用原盘；新对象、新目标、新行动或新事实改变结果语义
-   时才回 Phase 0。
+   时才回 Phase 0；只换问法不算新问题；
+7. 追问时不重复安抚，除非用户表达了新的情绪。
 
-进入完成条件：每条回答能回查对应栈文件，未跨目录偷读，未用追问补造禁用 timing，
+进入完成条件：每条回答能回查对应栈文件，未跨目录偷读，未给不成档补时间，
 也未把跨栈比较写成一个新的混合占星结论。
 
 ---
 
 ## 最终自检
 
-- [ ] 已完整读取五个默认资源？
+- [ ] 已完整读取六个默认资源？
 - [ ] 支持级为A或B，且只选一个主事项宫？
 - [ ] 默认产物由专用 formatter 生成？
 - [ ] 规则账本完整可见，且没有 `U/M/T/KP` 越界？
 - [ ] 未使用 Chara Karaka、SAV、完整分盘、本命 Dasha 或过运？
 - [ ] Moon 无接触未被写成空亡或全局负分？
-- [ ] 成败与 timing 状态分开？
+- [ ] 成败与时间副层分开，不成档没有给时间？
+- [ ] 情感类安抚只出现一次、有盘面依据、没有改结论？
 - [ ] 输入敏感性已处理？
 - [ ] 提问时刻是否保留秒级，且没有用处理时刻替代用户提问时刻？
 - [ ] 标准／Tajika 产物是否只写入当前 `prashna_*`，KP 是否只写入独立

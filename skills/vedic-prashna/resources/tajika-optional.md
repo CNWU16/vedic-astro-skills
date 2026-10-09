@@ -138,6 +138,8 @@ overlay 必须沿用标准盘的原始秒级时刻和实际地点，不能用开
 - 只属于 Tajika 副层；
 - 不进入 Parashari 标准层；
 - 无直接主星 Itthasala 时，timing 为 `unavailable`。
+- 与标准层时间副层（`timing-layer.md`）来自不同体系，不互相校正；主答案以
+  判读单 §四 为准。
 
 ---
 

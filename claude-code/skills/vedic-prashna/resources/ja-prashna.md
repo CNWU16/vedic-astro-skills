@@ -64,6 +64,7 @@ Use this order where the required artifact permits:
 5. `Moon の役割`
 6. `結論の範囲`
 
-If event timing is not authorized or not supported at production resolution, say
-so once in direct Japanese. Do not substitute a natal Dasha, Moon ingress, or a
-generic transit date.
+Render the standard timing overlay (`timing_overlay.md`) only for `成` or `悬`:
+use `目安として…` for `成` and `成立する場合、目安として…` for `悬`. For `不成`, give
+no timing and say so once in direct Japanese. Do not substitute a natal Dasha, a
+generic transit date, or a Tajika/KP date for it.

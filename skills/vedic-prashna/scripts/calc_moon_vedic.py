@@ -178,8 +178,8 @@ def format_moon_section(moon_data):
 
     lines.append("### 判读时消费入口\n")
     lines.append(
-        "详细语义映射见 `resources/moon-policy.md`。默认层不计算 Moon ingress，"
-        "也不由 Moon 当前事实生成事件时间窗。\n"
+        "详细语义映射见 `resources/moon-policy.md`。标准层不计算 Moon ingress；"
+        "Moon 入座触发日（M-XIV.85）只由时间副层 build_timing_overlay.py 计算。\n"
     )
     return "\n".join(lines)
 

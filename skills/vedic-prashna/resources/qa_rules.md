@@ -10,7 +10,7 @@
 追问必须仍围绕原盘的同一个可观察结果，包括：
 
 - 澄清术语、来源支持级、输入稳定性或某条证据；
-- 细化利好、阻力、现实条件和已授权 timing；
+- 细化利好、阻力、现实条件和时间副层；
 - 解释 Tajika Yoga 或 KP promise／gate；
 - 比较已经生成的标准、Tajika、KP 为什么一致或不同。
 
@@ -22,6 +22,12 @@
 - 从原事项跳到另一个独立事项。
 
 时间经过本身不是新问题门槛；不得使用 24 小时、3 个月等固定阈值。
+
+只换问法、不换对象和目标结果，不算新问题。同一段关系里问“会不会联系”“能不能
+复合”“我挽回能不能成”属于这种情况：沿用原盘结论作答，不换规则重判
+（见 `question-taxonomy.md` §2.5）。
+
+追问时不重复安抚，除非用户表达了新的情绪；安抚不改结论（见 `SKILL.md` Phase 6）。
 
 ---
 
@@ -44,7 +50,7 @@
 
 | 模式 | 允许读取 | 输出权限 |
 |---|---|---|
-| 标准追问 | 当前 `structured_prashna.md`、`prashna_judgment_*.md`、同目录标准 Q&A | 解释标准层来源账本、三档结论和禁用 timing |
+| 标准追问 | 当前 `structured_prashna.md`、`prashna_judgment_*.md`、`timing_overlay.md`、同目录标准 Q&A | 解释标准层来源账本、三档结论和时间副层 |
 | Tajika 追问 | 当前标准目录上述文件＋`tajika_overlay.md` | 解释接触过程；不得改标准三档 |
 | KP 追问 | 当前 `structured_kp.md/json`、`kp_judgment_*.md`、同目录 KP Q&A | 解释 KP promise、RP、gate、timing；不得读取标准目录 |
 | 跨栈比较 | 用户或当前对话明确关联的一个标准目录和一个 KP 目录 | 分栏解释三层、一致点、冲突点；不得投票或生成混合结论 |
@@ -117,7 +123,7 @@ python scripts/build_tajika_overlay.py \
 <来源支持级、三档结论、规则账本摘要>
 
 ## Tajika
-<直接接触、传递/援助/阻断、timing 状态>
+<直接接触、传递/援助/阻断、timing 状态；与标准层时间不互相校正>
 
 ## KP
 <独立 promise 状态、正反宫命中、gate、timing 状态>
@@ -125,7 +131,8 @@ python scripts/build_tajika_overlay.py \
 ## 一致与冲突
 - 一致点：<逐项列出>
 - 冲突点：<逐项列出>
-- 边界：三层不投票；标准层仍是标准结论，KP 保持独立。
+- 边界：三层不投票；标准层仍是标准结论，KP 保持独立。各栈时间来自不同体系，
+  不互相校正，主答案以标准判读单 §四 为准。
 ```
 
 跨栈比较只能在 Q&A 协调层读取明确关联的文件。默认只在聊天显示；用户要求保存时，
@@ -136,8 +143,10 @@ python scripts/build_tajika_overlay.py \
 
 ## 7. Timing 追问
 
-- 标准层未启用生产级 timing：直接说明不可用，不重起盘补日期；
-- Tajika 仅在主星直接 Itthasala 时显示 `度差 × 12 日` 原典比例候选；
+- 标准层：成／悬档读 `timing_overlay.md` 作答；不成档不给时间。成／悬档的盘当时
+  没跑时间副层的，用原盘时刻、地点补跑 `build_timing_overlay.py`，不重起盘；
+- Tajika 仅在主星直接 Itthasala 时显示 `度差 × 12 日` 原典比例候选。它和标准层
+  时间来自不同体系，不互相校正，主答案以判读单 §四 为准；
 - KP 只在正向 promise、逆行门清空、node 路径完整和 RP／period／transit 条件满足
   时显示候选；
 - 一个栈没有 timing 时，不得借另一个栈的日期冒充本栈答案。
@@ -178,5 +187,5 @@ python scripts/build_tajika_overlay.py \
 - [ ] 单栈追问是否只读允许文件？
 - [ ] 跨栈比较是否由用户明确要求并只读明确关联目录？
 - [ ] 是否分别标出标准、Tajika、KP 来源，不做投票？
-- [ ] 是否没有补造禁用 timing？
+- [ ] 是否没有给不成档补时间，也没有让不同栈的时间互相校正？
 - [ ] 是否未读取 `user_context.md` 或其他 skill 产物？

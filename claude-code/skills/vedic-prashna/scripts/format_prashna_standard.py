@@ -235,10 +235,10 @@ def format_standard_layer(chart):
         "Dainya／Khala Yoga 分类。\n"
     )
 
-    lines.append("### 默认择时边界\n")
+    lines.append("### 时间边界\n")
     lines.append(
-        "> 默认标准层不输出生产级事件时间窗。提问盘生成的120年 Vimshottari、"
-        "Chara Dasha、当前过运和 Moon ingress 均不作为 Prashna timing。"
-        "未来 timing 模块必须另有来源、题型范围、例盘和边界测试。\n"
+        "> 本文件不含时间。标准层定为成或悬后，时间副层另写 timing_overlay.md"
+        "（resources/timing-layer.md）；不成档不给时间。提问盘生成的120年 Vimshottari、"
+        "Chara Dasha、当前过运均不作为 Prashna 时间。\n"
     )
     return "\n".join(lines)

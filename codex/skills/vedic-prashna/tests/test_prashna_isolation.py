@@ -1,8 +1,8 @@
 """
 Prashna 隔离回归测：确保沙箱化硬约束不被打破。
-三条断言，任一红即禁止上线。每次 sync 前必跑。
+六条隔离断言 + 时间副层算例，任一红即禁止上线。每次 sync 前必跑。
 
-对应 SKILL.md §沙箱化硬约束 的四条自律与三条回归断言。
+对应 SKILL.md §隔离硬约束 与 resources/timing-layer.md。
 """
 import os
 import re
@@ -146,7 +146,9 @@ PRASHNA_SANDBOX_MODULES = [
     "calc_moon_vedic",
     "calc_optional_tajika",
     "calc_optional_kp",
+    "calc_timing",
     "build_prashna_data",
+    "build_timing_overlay",
     "vedic_prashna",   # 目录名换 py 合法标识符的可能拼法
 ]
 
@@ -190,6 +192,83 @@ def test_no_reverse_import_from_prashna() -> None:
     )
 
 
+# ---------------------------------------------------------------------------
+# 断言 5/6：时间副层与标准层、Tajika/KP 互不导入
+# ---------------------------------------------------------------------------
+def _imports(path: Path, modules) -> list:
+    if not path.exists():
+        return []
+    text = path.read_text(encoding="utf-8", errors="ignore")
+    return [
+        f"{path.name}: import '{mod}'"
+        for mod in modules
+        if re.search(
+            rf"^\s*(?:from\s+{re.escape(mod)}\b|import\s+{re.escape(mod)}\b)",
+            text, re.MULTILINE,
+        )
+    ]
+
+
+def test_standard_builder_no_timing_import() -> None:
+    offenders = []
+    for name in ("build_prashna_data.py", "format_prashna_standard.py",
+                 "calc_moon_vedic.py", "prashna_time.py"):
+        offenders += _imports(PRASHNA_ROOT / "scripts" / name,
+                              ("calc_timing", "build_timing_overlay"))
+    assert not offenders, (
+        "红灯：标准层脚本导入时间副层 —— 时间副层只在定档后单独运行，不得进入标准产物。\n"
+        "命中:\n  " + "\n  ".join(offenders)
+    )
+
+
+def test_timing_no_optional_stack_import() -> None:
+    offenders = []
+    for name in ("calc_timing.py", "build_timing_overlay.py"):
+        offenders += _imports(PRASHNA_ROOT / "scripts" / name,
+                              ("calc_optional_tajika", "calc_optional_kp",
+                               "build_tajika_overlay", "build_kp_horary"))
+    assert not offenders, (
+        "红灯：时间副层导入 Tajika/KP —— 时间副层来源只有 M/P，不得借用可选栈的时间。\n"
+        "命中:\n  " + "\n  ".join(offenders)
+    )
+
+
+# ---------------------------------------------------------------------------
+# 算例 7：时间副层对 Raman 注算例与 Moon 入座搜索
+# ---------------------------------------------------------------------------
+def test_timing_worked_examples() -> None:
+    scripts = str(PRASHNA_ROOT / "scripts")
+    if not (PRASHNA_ROOT / "scripts" / "calc_timing.py").exists():
+        return
+    if scripts not in sys.path:
+        sys.path.insert(0, scripts)
+    import calc_timing as ct
+
+    # M-XIV.82 Raman 注：上升 Navamsa 为 Leo，Sun 在第 5 个 Navamsa → 5 × 6 = 30 个月
+    t4 = ct.t4_navamsa_lord_period("Sun", 14.0)
+    assert (t4["navamsa_ordinal"], t4["value"], t4["unit"]) == (5, 30, "个月"), t4
+    assert ct.navamsa_ordinal(0.0) == 1 and ct.navamsa_ordinal(29.99) == 9
+
+    # M-XIV.85 Raman 注：7 宫主 Sun 在 6 宫(不可见半球)，含首尾 12 宫 → 12 个月
+    t2 = ct.t2_house_lord_count(7, "Sun", 6)
+    assert (t2["count"], t2["unit"]) == (12, "个月"), t2
+    assert ct.t2_house_lord_count(7, "Moon", 9)["unit"] == "天"
+
+    # P-V.5：Lagna 有星算 1；Rahu/Ketu 不计
+    assert ct.t1_return_days({"Rahu": 1, "Saturn": 3, "Sun": 5})["days"] == 36
+    assert ct.t1_return_days({"Moon": 1})["days"] == 12
+
+    # T3：匀速假 Moon(13.2°/日)，解析解对照；进入前 2 秒不在目标座
+    lon0, rate = 100.0, 13.2
+    lon_at = lambda jd: (lon0 + rate * jd) % 360.0  # noqa: E731
+    for target in (4, 3, 2):   # 下一座 / 当前座(重新进入) / 上一座
+        entry = ct.next_sign_entry(lon_at, 0.0, target)
+        expected = ((target * 30.0 - lon0) % 360.0 or 360.0) / rate
+        assert abs(entry - expected) < 2.0 / 86400.0, (target, entry, expected)
+        assert int(lon_at(entry) / 30.0) == target
+        assert int(lon_at(entry - 2.0 / 86400.0) / 30.0) != target
+
+
 def _run(name, fn):
     try:
         fn()
@@ -206,9 +285,12 @@ if __name__ == "__main__":
         _run("shared_rules_no_prashna_terms", test_shared_rules_no_prashna_terms),
         _run("prashna_products_in_isolated_dir", test_prashna_products_in_isolated_dir),
         _run("no_reverse_import_from_prashna", test_no_reverse_import_from_prashna),
+        _run("standard_builder_no_timing_import", test_standard_builder_no_timing_import),
+        _run("timing_no_optional_stack_import", test_timing_no_optional_stack_import),
+        _run("timing_worked_examples", test_timing_worked_examples),
     ]
     if all(results):
-        print("\n[GREEN] 四条隔离断言全绿。")
+        print("\n[GREEN] 六条隔离断言与时间副层算例全绿。")
         sys.exit(0)
     else:
         print("\n[RED] 隔离断言未全绿，禁止上线。")
