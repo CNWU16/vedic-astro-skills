@@ -260,7 +260,7 @@ def print_results(results, date_str, time_str, lat, lon, tz_offset=None):
 
 def save_results(results, date_str, time_str, lat, lon, filepath, dasha_ep=None, event_dates=None,
                  tz_offset=None):
-    """保存为Markdown表格（含两点法 Dasha——3c 段内定位的硬腿数据源，必须落盘）"""
+    """保存为Markdown表格（含两点法 Dasha——3c 段内定位的腿二数据源，必须落盘）"""
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(f"# 时间扫描结果\n\n")
         f.write(f"> 基准: {_base_label(date_str, time_str, tz_offset)}\n")
@@ -276,7 +276,7 @@ def save_results(results, date_str, time_str, lat, lon, filepath, dasha_ep=None,
                     f"{r['sign']} {r['deg_in_sign']:.1f}° | "
                     f"{r['d9']} | {r['d10']} | {marker} |\n")
 
-        # 两点法 Dasha 也落盘（3c 段内定位的硬腿数据源；此前只 print 到 stdout、读存盘文件的 agent 拿不到 → 会退化成纯结构匹配）
+        # 两点法 Dasha 也落盘（3c 段内定位的腿二数据源；此前只 print 到 stdout、读存盘文件的 agent 拿不到 → 会退化成纯结构匹配）
         f.write("\n## 两点法 Dasha（段首 / 段末；AD 日期=本地时区）\n")
         f.write("> 对每个事件日期在段首/段末两条时间线各查落哪个 MD/AD → 反推所需段内出生子窗 → 各事件子窗取覆盖峰值(众数区)。\n")
         f.write("> ⚠️ 若上表有【Moon跨Nak】标记 → 该段 Dasha 起始主星跳变、两点不连续，须在跨点切段后分别用两点法。\n\n")
@@ -368,7 +368,7 @@ def print_dasha_endpoints(dasha_ep, event_dates=None):
     if '_error' in dasha_ep:
         print("\n" + "=" * 60)
         print("⚠️⚠️⚠️ DASHA_UNAVAILABLE — 两点法 Dasha 不可用：" + dasha_ep['_error'])
-        print("→ ❌ 硬腿数据源缺失！禁在无两点法 Dasha 下进 3c 段内定位/定盘")
+        print("→ ❌ 腿二数据源缺失！禁在无两点法 Dasha 下进 3c 段内定位/定盘")
         print("   （否则退化成纯结构匹配=过拟合风险）；请修复 Dasha 依赖后重跑。")
         print("=" * 60)
         return
