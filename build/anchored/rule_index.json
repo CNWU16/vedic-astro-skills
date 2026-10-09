@@ -1,11 +1,11 @@
 {
- "source_commit": "56610d7558e1",
- "generated_at": "2026-10-09T18:22:09Z",
+ "source_commit": "ccf7e8c9e745",
+ "generated_at": "2026-10-09T19:02:23Z",
  "repo": "vedic-astrology-skills",
- "anchor_count": 305,
- "section_count": 121,
+ "anchor_count": 307,
+ "section_count": 122,
  "file_hashes": {
-  "SKILL.md": "6768d467638c",
+  "SKILL.md": "e39aa7906161",
   "resources/p1_p12.md": "602156a34eb4",
   "resources/yogas.md": "378a9521af0b",
   "resources/house_framework.md": "0db55f1c2f7a",
@@ -52,14 +52,14 @@
    "file": "SKILL.md",
    "level": "L2",
    "title": "三层 Context 梯度总览：",
-   "text": "> **三层 Context 梯度总览：**\n> - **Step 1-3（行星/分盘/宫位审计）**：纯盲审（本节规则）\n> - **Step 4（十大板块）**：可以用已确认事实佐证盘面信号，但禁止反推（见 Step 4 Context 规则）\n> - **QA 阶段**：必须读 user_context.md，伦理红线不可触碰（见 Q&A 模式 section）"
+   "text": "> **三层 Context 梯度总览：**\n> - **Step 1-3（行星/分盘/宫位审计）**：纯盲审（本节规则）\n> - **Step 4（十大板块）**：可以用已确认事实佐证盘面信号，但禁止反推（见 Step 4 Context 规则）；user_context.md 仍禁读\n> - **Step 4.5（措辞落点校订）**：板块写盘后读 user_context.md，只改措辞与落点，结论与数据一字不动（见 Step 4.5）\n> - **QA 阶段**：必须读 user_context.md，伦理红线不可触碰（见 Q&A 模式 section）"
   },
   {
-   "id": "A-SK-eb58f65c",
+   "id": "A-SK-0769b343",
    "file": "SKILL.md",
    "level": "L3",
-   "title": "1. **禁止读取user_context.md**：Step 1-3期间不得读取用户传记文件。",
-   "text": "1. **禁止读取user_context.md**：Step 1-3期间不得读取用户传记文件。\n   你的分析依据是structured_data.md中的行星位置、Dasha、SAV等纯数据。\n   禁止基于对话上下文中的任何用户背景信息调整分析结论。"
+   "title": "1. **禁止读取user_context.md**：Step 1-4 不得读取用户传记文件。唯一例外是 Step 4.5，只开在措辞面、不开在推导面。",
+   "text": "1. **禁止读取user_context.md**：Step 1-4 不得读取用户传记文件。唯一例外是 Step 4.5，只开在措辞面、不开在推导面。\n   你的分析依据是structured_data.md中的行星位置、Dasha、SAV等纯数据。\n   禁止基于对话上下文中的任何用户背景信息调整分析结论。"
   },
   {
    "id": "A-SK-d2104b5e",
@@ -748,6 +748,20 @@
    "text": "⚠️ 每板块必须实际引用上述文件中的具体结论，不要从structured_data重新推导。\n   p2-p4是花大量推导写出的成果，p5的价值在于综合它们，不是重复它们。\n```"
   },
   {
+   "id": "A-SK-3dbf322c",
+   "file": "SKILL.md",
+   "level": "L1",
+   "title": "Step 4.5: 措辞落点校订（读 user_context，只改措辞）",
+   "text": "## Step 4.5: 措辞落点校订（读 user_context，只改措辞）"
+  },
+  {
+   "id": "A-SK-dc7235b4",
+   "file": "SKILL.md",
+   "level": "L2",
+   "title": "【盘不会变】背景事实不是盘面证据：不新增星曜/宫位/Yoga/Dasha 判断，不推翻已写结论；",
+   "text": "```\n【盘不会变】背景事实不是盘面证据：不新增星曜/宫位/Yoga/Dasha 判断，不推翻已写结论；\n  ❌ 禁止把 UC 事实写成盘面结论（\"盘上显示你在做这一行\"），UC 事件也不当佐证\n  （佐证仍只限 Step 4 Context 规则准入的两类）。\n\n【能改】p5a_life、p5b_life 正文的措辞与落点。\n【锁定·一字不动】窗口起止、领域、配偶画像的主形态/次选/来源方向、Yoga 与 Dasha 判断、\n  全部数据表；p2~p4、appendix 不碰，UC 内容也不写进附录。\n\n1. 读 UC，在内部归出敏感标签（不落盘），格式\"类目:对象/简注\"。固定类目：丧亲、重病（本人/至亲）、\n   心理创伤、离异/分手、失业/破产、流产/不孕、家暴、成瘾、涉诉、自我伤害史。\n2. 伦理检查（每份可改文件过一遍）：\n   □ 丧亲 → 对已故的人禁用\"改善关系\"\"多沟通\"\"经营好这段关系\"，按\"已经失去\"写；\n     配偶画像写成关系模式与自身课题，不写\"会在哪里遇到/什么时候出现\"；主形态/次选/来源方向不删不换，只换语气\n   □ 创伤（家暴/出轨/破产/重病/流产/成瘾/涉诉等）→ 相关话题禁套模板\n   □ 自我伤害史 → 触及压力/绝望/寿命/死亡时措辞从严、留支持性出口；不手抄热线号码\n   □ 矛盾 → 要写的方向与某标签直接打架 → 换表达角度，不换结论\n3. 落点：把泛指的人生场景换成用户真实所处的场景，删掉用不上的假设，不改结论强弱。\n   结论与 UC 某件事真有关才落；同一件事全报告最多落 1 次；大运/小运只有当前段与下一段\n   可落到眼下处境；UC 薄就少落，落不上就按盘面写具体。\n4. 只对命中段落局部 Edit，不整份重写；改完回读，核对锁定项未变。\n\n⚠️ 禁止复述：标签本身（类目、对象、简注）不出现在报告任何文本里。\n   ❌ 禁止\"根据你的背景\"\"考虑到你经历过…\"一类点名事件或标签的显性复述。\n   ✅ 允许以不点名事件、不复述标签、不预测、不追问的方式承接\n      （如\"有些连接即使不再以原来的形式存在……\"）。\n   范围：只管敏感标签。UC 里的非敏感事实（职业/所在地/在读/家庭结构）按落点规则正常落，\n   但同样禁工序口吻（\"你提到\"\"据你所述\"\"根据你补充的\"）。\n   QA 阶段不适用：用户主动谈及时按 QA 规则正面回应。\n\n【铁律】盲审铁规对 UC 照旧生效：❌ 禁因\"离异\"把某星临时判凶，❌ 禁因经历艰难把基调往惨里调；\n  同盘不同 UC，结论与方向逐字同级。不因用户\"希望\"某事改结论（\"我想创业\"是关切，不是依据）。\n  与本段无关就不改，硬凑一处修订比不改更伤信任。\n```"
+  },
+  {
    "id": "A-SK-9d1a2ffe",
    "file": "SKILL.md",
    "level": "L1",
@@ -881,11 +895,11 @@
    "text": "## 关键原则"
   },
   {
-   "id": "A-SK-d8c32c7e",
+   "id": "A-SK-e2ff474f",
    "file": "SKILL.md",
    "level": "L3",
    "title": "1. **三层 Context 梯度**：Step 1-3（行星/分盘/宫位审计）纯盲审，禁读user_context.md、禁引用用户经历；Step 4（十大",
-   "text": "1. **三层 Context 梯度**：Step 1-3（行星/分盘/宫位审计）纯盲审，禁读user_context.md、禁引用用户经历；Step 4（十大板块）可以用已确认事实佐证盘面信号，但禁止从经历反推盘面含义；QA阶段必须读user_context.md，伦理红线不可触碰"
+   "text": "1. **三层 Context 梯度**：Step 1-3（行星/分盘/宫位审计）纯盲审，禁读user_context.md、禁引用用户经历；Step 4（十大板块）可以用已确认事实佐证盘面信号，但禁止从经历反推盘面含义，user_context.md 仍禁读；Step 4.5 只读 user_context.md 来改措辞落点、结论与数据一字不动；QA阶段必须读user_context.md，伦理红线不可触碰"
   },
   {
    "id": "A-SK-b29df521",
@@ -2181,8 +2195,8 @@
    "anchor": "A-SK-018e50a5",
    "file": "SKILL.md",
    "title": "⚠️ 盲审原则（Step 1-3 适用，优先级最高）",
-   "section_hash": "adfe96d6a08e",
-   "n_lines": 50
+   "section_hash": "a4ab8594612a",
+   "n_lines": 51
   },
   {
    "anchor": "A-SK-833d2d1b",
@@ -2472,6 +2486,13 @@
    "n_lines": 93
   },
   {
+   "anchor": "A-SK-3dbf322c",
+   "file": "SKILL.md",
+   "title": "Step 4.5: 措辞落点校订（读 user_context，只改措辞）",
+   "section_hash": "b48a46e077df",
+   "n_lines": 43
+  },
+  {
    "anchor": "A-SK-9d1a2ffe",
    "file": "SKILL.md",
    "title": "Step 5: 技术附录",
@@ -2503,7 +2524,7 @@
    "anchor": "A-SK-6a212e4e",
    "file": "SKILL.md",
    "title": "⚠️ QA 阶段 Context 规则（与分析阶段相反）",
-   "section_hash": "4993e212fecd",
+   "section_hash": "fbcbec90491a",
    "n_lines": 26
   },
   {
@@ -2517,7 +2538,7 @@
    "anchor": "A-SK-7851c05d",
    "file": "SKILL.md",
    "title": "关键原则",
-   "section_hash": "e4b8ca0afc07",
+   "section_hash": "f02ce7876cf0",
    "n_lines": 18
   },
   {
