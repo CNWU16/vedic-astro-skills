@@ -9,7 +9,7 @@
 >
 > 只要出生日期、时间、地点完整，`vedic-calculator` 生成的数据就是
 > `structured_data.md` 的 canonical source。PDF、截图和文本提取用于交叉验证，
-> 不覆盖行星位置、分盘、Dasha、SAV/BAV、宫主、尊贵度、相位、特殊点或过运。
+> 不覆盖行星位置、分盘、Dasha、SAV/BAV、宫主、尊贵度、Graha Drishti、特殊点或过运。
 >
 > **唯一例外是 Shadbala：**
 > - 始终先计算并保留calculator基准值；

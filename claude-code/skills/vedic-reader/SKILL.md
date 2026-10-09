@@ -81,7 +81,7 @@ description: "Import, extract, normalize, and validate Vedic/Jyotish chart data 
   │ Dasha时间线     │ calc engine         │ PDF文本层交叉验证   │
   │ 宫主表          │ calc engine         │ —                  │
   │ 尊贵度          │ calc engine         │ —                  │
-  │ 相位            │ calc engine         │ —                  │
+  │ Graha Drishti   │ calc engine         │ —                  │
   │ Shadbala ⚠️    │ PDF JHora文本层     │ calc作为基准        │
   │ Ishta/Kashta    │ PDF JHora文本层     │ calc作为基准        │
   └────────────────┴─────────────────────┴───────────────────┘
@@ -151,7 +151,7 @@ structured_data.md 随阶段分3次写入（每次≤200行）：
 阶段3（验前事）  : 生成验前事 → 等反馈 → 追加写入 → 完成
 ```
 
-Calc模式下不做任何计算！宫主表/尊贵度/相位/SAV映射/分盘/过运
+Calc模式下不做任何计算！宫主表/尊贵度/Graha Drishti/SAV映射/分盘/过运
 全部由 calc 已写入 structured_data.md，直接读取使用。
 
 ### Calc主模式（PDF/文本作为交叉验证）
@@ -348,7 +348,7 @@ for i, page in enumerate(doc):
 
 ```
 主数据范围：行星位置 + Nakshatra + Dasha + D9/D10/D4/D5 + SAV/BAV +
-           宫主表 + 尊贵度 + 相位 + Shadbala + 特殊点 + 过运
+           宫主表 + 尊贵度 + Graha Drishti + Shadbala + 特殊点 + 过运
 
 获取方式（按优先级）：
 
@@ -578,7 +578,7 @@ time_risk=LOW：有效精度<=±5分钟，或±15分钟+Lagna安全
 # ═══ 阶段2: 信号预扫与Yoga ═══
 # 范围: Step 4（信号预扫+Yoga）→ 第2次写入
 # 本阶段只做: 信号预扫+Yoga扫描（基于structured_data中的数据）
-# 本阶段不做: 宫主表/尊贵度/相位/Shadbala/Vargottama/燃烧计算
+# 本阶段不做: 宫主表/尊贵度/Graha Drishti/Shadbala/Vargottama/燃烧计算
 #   → 这些全部由 vedic-calculator 已写入 structured_data.md
 
 ### Step 4: 信号预扫与Yoga扫描
