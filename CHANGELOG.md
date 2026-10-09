@@ -16,6 +16,18 @@ All notable changes to this project will be documented in this file.
 - `vedic-core/resources/yogas.md` 五大贤者格局五条补中文正名：火星/水星/木星/金星/土星贤者格局（英文名照带）；
   `vedic-career` 的「五大伟人」统一为「五大贤者格局」。
 
+### core 新增 Step 4.5 措辞落点校订：报告写完后读 user_context，只改措辞（不改结论）
+
+**起因**：原规则只有 Step 1-3 禁读 user_context、Step 4 段内又写"仍禁读"，两处口径不一；且报告全程看不到用户背景，
+丧亲、离异等敏感经历会被模板化措辞直接撞上（如对已故的人写"多沟通"）。
+
+- core 分析期 user_context 禁读统一为 Step 1-4；新增 Step 4.5 为唯一例外：p5a/p5b 写盘后读 user_context，
+  只改这两份的措辞与落点，窗口、领域、配偶画像主形态、Yoga/Dasha 判断与数据表一字不动；无 user_context 则跳过。
+- 敏感经历按十个固定类目在内部归类（不落盘），过伦理检查四项（丧亲 / 创伤 / 自我伤害史 / 矛盾）；
+  标签本身不出现在报告里，禁"根据你的背景""你提到"一类复述与工序口吻。
+- 背景不当盘面证据：不新增任何星盘判断；同盘不同背景，结论逐字同级。
+- reader 的 user_context 权限表同步：core Step 4.5 只读不写。
+
 ### rectifier 证据分三类：静态事实升为结构硬腿，先剪枝再比 Dasha（方法学，影响校时裁决）
 
 **起因**：原主纲把证据二分为"硬腿 = 事件×Dasha / 软腿 = 特质×结构"，父母早年离世、兄弟姐妹、职位权责这类

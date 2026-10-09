@@ -1305,7 +1305,7 @@ R1反馈后，将偏差记入修正日志，然后根据命中率+时间来源�
   ✅ 正确：| 1 | 父亲经济压力大 | ✅命中 |
   ❌ 错误：| 1 | 父亲经济压力大 | ✅命中（初中家庭破产） |
 
-#### user_context.md（用户传记数据；reader/rectifier 建档维护，core/pro 仅 QA 阶段可读写——见下方权限分级）
+#### user_context.md（用户传记数据；reader/rectifier 建档维护，core/pro 仅措辞校订步可读、QA 阶段可读写——见下方权限分级）
 
 ```
 1. 职业状态
@@ -1317,7 +1317,7 @@ R1反馈后，将偏差记入修正日志，然后根据命中率+时间来源�
 
 **⚠️ user_context.md 读写权限（分级）：**
 - **vedic-reader / vedic-rectifier**：全程可读写（本文件的建档与维护责任方）
-- **vedic-core / vedic-core-pro**：分析阶段（core Step 1-4 / pro Step 0-6）**禁读禁写**（盲审隔离）；**QA 阶段**按 qa_rules.md **必读**，且可按「增量回写规则」append 用户 QA 中新补充的传记信息（盲审已解除、分析已完成，不冲突）
+- **vedic-core / vedic-core-pro**：分析阶段（core Step 1-4 / pro Step 0-6）**禁读禁写**（盲审隔离）；措辞落点校订（core Step 4.5 / pro Step 6.5）**只读不写**，只改报告措辞、不改结论；**QA 阶段**按 qa_rules.md **必读**，且可按「增量回写规则」append 用户 QA 中新补充的传记信息（盲审已解除、分析已完成，不冲突）
 - **vedic-career / vedic-love / vedic-synastry**：全程禁读禁写（盲审 / 隐私隔离）
 - 此文件是用户传记底稿（关切/经历/特质/事件），不是分析依据；不推翻任何盘面结论
 
