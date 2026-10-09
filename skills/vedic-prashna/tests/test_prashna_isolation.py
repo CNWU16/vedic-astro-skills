@@ -1,6 +1,6 @@
 """
 Prashna 隔离回归测：确保沙箱化硬约束不被打破。
-六条隔离断言 + 时间副层算例，任一红即禁止上线。每次 sync 前必跑。
+六条隔离断言 + 时间副层算例 + 标准层算例，任一红即禁止上线。每次 sync 前必跑。
 
 对应 SKILL.md §隔离硬约束 与 resources/timing-layer.md。
 """
@@ -269,6 +269,50 @@ def test_timing_worked_examples() -> None:
         assert int(lon_at(entry - 2.0 / 86400.0) / 30.0) != target
 
 
+# ---------------------------------------------------------------------------
+# 算例 8：标准层 Ayer 功能吉凶、tithi 与描述题查表（P-I.3 注两例、P-I.5 注、P-VI.4、P-I.7）
+# ---------------------------------------------------------------------------
+def test_standard_worked_examples() -> None:
+    scripts = str(PRASHNA_ROOT / "scripts")
+    if not (PRASHNA_ROOT / "scripts" / "format_prashna_standard.py").exists():
+        return
+    if scripts not in sys.path:
+        sys.path.insert(0, scripts)
+    import format_prashna_standard as fs
+
+    def chart(basic, waxing=True):
+        planets = {name: {"house": 1} for name in fs.CLASSICAL_PLANETS}
+        return {
+            "planets": planets,
+            "moon_phase": {"waxing": waxing},
+            "dignity": {name: {"basic": value} for name, value in basic.items()},
+        }
+
+    # 注例一：Jupiter 对 Capricorn 主 3、12 且落陷 → 凶；不落陷时回落自然吉
+    assert fs._ayer_role(chart({"Jupiter": "debilitated"}), "Jupiter", "Capricorn") == "凶(注例一)"
+    assert fs._ayer_role(chart({"Jupiter": "exalted"}), "Jupiter", "Capricorn") == "吉(回落)"
+    # 注例二：Mars 对 Leo 主 4、9，须强才吉；入旺从 Capricorn 照 Leo → 吉，友座不强 → 回落凶
+    assert fs._ayer_role(chart({"Mars": "exalted"}), "Mars", "Leo") == "吉(注例二)"
+    assert fs._ayer_role(chart({"Mars": "friend"}), "Mars", "Leo") == "凶(回落)"
+    # Saturn 入旺于 Libra：对 Libra 主 4、5 → 吉
+    assert fs._ayer_role(chart({"Saturn": "exalted"}), "Saturn", "Libra") == "吉(注例二)"
+    # 本宫主恒吉，凶星也一样；亏月回落为凶
+    assert fs._ayer_role(chart({"Saturn": "debilitated"}), "Saturn", "Aquarius") == "吉(宫主)"
+    assert fs._ayer_role(chart({"Moon": "neutral"}, waxing=False), "Moon", "Aries") == "凶(回落)"
+
+    # tithi 满月窗：白半月第 10 至黑半月第 5（108° ≤ 距离 < 240°）
+    for diff, expected in ((107.9, (9, False)), (108.0, (10, True)),
+                           (239.9, (20, True)), (240.0, (21, False))):
+        assert fs.tithi_facts(350.0, (350.0 + diff) % 360.0) == expected, diff
+
+    # P-VI.4 距离：前半距第 1 个 Navamsa，后半距中间第 5 个
+    assert fs._navamsa_number(0.0) == 1 and fs._navamsa_number(14.9) == 5
+    assert fs._navamsa_number(15.0) == 5 and fs._navamsa_number(29.99) == 9
+    # P-I.7：奇数座 1/4/7 Dhatu，偶数座 1/4/7 Jeeva
+    assert fs.OBJECT_KINDS_ODD[0].startswith("Dhatu")
+    assert fs.OBJECT_KINDS_EVEN[0].startswith("Jeeva")
+
+
 def _run(name, fn):
     try:
         fn()
@@ -288,9 +332,10 @@ if __name__ == "__main__":
         _run("standard_builder_no_timing_import", test_standard_builder_no_timing_import),
         _run("timing_no_optional_stack_import", test_timing_no_optional_stack_import),
         _run("timing_worked_examples", test_timing_worked_examples),
+        _run("standard_worked_examples", test_standard_worked_examples),
     ]
     if all(results):
-        print("\n[GREEN] 六条隔离断言与时间副层算例全绿。")
+        print("\n[GREEN] 六条隔离断言、时间副层算例与标准层算例全绿。")
         sys.exit(0)
     else:
         print("\n[RED] 隔离断言未全绿，禁止上线。")

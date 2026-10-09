@@ -33,6 +33,9 @@ Jaimini、Dasha、分盘或 SAV 工具自动迁入提问盘。
 
 时间副层不改三档；不成档不给时间，也不承诺精确到某天某时。
 
+描述题（失物在哪、什么方向多远、是谁拿的）、雨季天气、胎儿性别、父亲是否在外地
+只给原文查表结果，原文歧义两说并列，不出三档、不给时间。
+
 ---
 
 ## 每次执行必须读取
@@ -82,14 +85,16 @@ Jaimini、Dasha、分盘或 SAV 工具自动迁入提问盘。
 - Chara Karaka、DK、UL、AL；
 - SAV／BAV、Shadbala、Bhava Bala；
 - 完整 D9、D10、D4、D5 等本命分盘；
-- functional P1 身份、natal yoga prescan；
+- engine 的 functional P1 身份、natal yoga prescan（宫表的吉凶标签是 `P-I.3` 注的
+  Ayer 功能吉凶，从被占据／照射的星座起算，不是 P1）；
 - 120年 Vimshottari、Chara Dasha；
 - transit、Sade Sati、double transit；
 - Tajika orb／applying／separating；
 - KP cusp／sub-lord。
 
-只允许 rising Navamsa 这一项有限数据，因为 `P-I.4` 明确使用 rising Navamsa；
-禁止由此展开完整 D9 解读。
+只允许 rising Navamsa（序号、座主及座主标签）与 Lagna 所在 drekkana 两项有限数据，
+因为 `P-I.4`、`P-I.7`、`P-VI.1~2`、`P-VI.4`、`P-VII.13` 明确使用它们；禁止由此展开
+完整 D9、D3 解读。
 
 ---
 
@@ -112,11 +117,13 @@ Jaimini、Dasha、分盘或 SAV 工具自动迁入提问盘。
 5. 地点／时区未知时澄清，不用机器时区代替；
 6. A/B 二选一不得机械起两张同刻盘；
 7. 同一问题和现实状态未变化时沿用第一次清晰提问盘，不使用24小时／3个月阈值；
-8. 复合／联系类按 `question-taxonomy.md` §2.7 归到一行，求职／考试类按 §2.8；
+8. 复合／联系类按 `question-taxonomy.md` §2.7 归到一行，求职／考试类按 §2.8，
+   房屋、出行、返回、疾病、名誉、谈判、投资、亏损、开庭、失物找回等按 §2.12；
    操控／打听类不判，一句话说明并给替代问法；
+   描述题、天气按 §2.10／§2.11 查表；生死、寿命、读心、他人隐私按 §2.13 不判；
 9. 出现自伤或极端语句时先回应安全，不起盘（§2.9）。
 
-进入下一阶段条件：问题唯一、支持级为A或B、时间地点完整。
+进入下一阶段条件：问题唯一、支持级为A或B（或为查表题）、时间地点完整。
 
 ---
 
@@ -157,8 +164,12 @@ python scripts/build_prashna_data.py \
 4. 始终保留 Lagna 与 Lagna 主；
 5. Moon 只在专题规则明确需要时成为主输入；
 6. 不固定加入自然 Karaka、Moon 月宿主或 Chara Karaka；
-7. 复合、求职、考试、走失宠物按 `question-taxonomy.md` §2.7／§2.8 和
-   `house-karaka-map.md` 取 rule_id 与事项宫。
+7. 复合、求职、考试、走失宠物及 §2.12 各专项按 `question-taxonomy.md` §2.7／
+   §2.8／§2.12 和 `house-karaka-map.md` 取 rule_id 与事项宫；
+8. 吉星／凶星一律读 `structured_prashna.md` 宫表的 Ayer 功能吉凶标签
+   （`standard-layer.md` §2.1）；正文点名行星的规则按点名读，不换标签；
+9. 查表题（描述题、天气、胎儿性别、父亲下落）不建账本，跳到 Phase 6 按
+   `judgment-rubric.md` §10 输出。
 
 建立并在聊天和判读单中完整显示：
 
@@ -201,6 +212,7 @@ python scripts/build_prashna_data.py \
 - **不成**：至少两条独立适用主规则偏不利，其中至少一条来自 `P`，且无同级救援。
 
 单一行星、单一宫位、单一缺失或单一强弱因素不得全局否决。
+查表题不出三档。
 
 输入敏感只有在可能改变本题账本实际使用的 Lagna、rising Navamsa、事项宫或宫主
 结构时才能影响档次。未被本题规则消费的临界字段只报告，不改票。
@@ -224,7 +236,8 @@ python scripts/build_timing_overlay.py \
   --out-dir "<当前 prashna_* 目录>"
 ```
 
-- 事项宫和 `--mode` 按 `timing-layer.md` §4 取；人的归来／到达题用 `return`。
+- 事项宫和 `--mode` 按 `timing-layer.md` §4 取；人的归来／到达题用 `return`；
+  查表题不运行。
 - 成写“约……”，悬写“如果能成，大约……”；不成不运行，判读单写明不给时间及原因。
 - 几个候选结果不同时并列，不平均、不折中。
 - 不使用提问盘生成的 120 年 Vimshottari、Chara Dasha 或过运；*Prasna Marga* 的
@@ -272,6 +285,10 @@ python scripts/build_timing_overlay.py \
 ## 七、体系边界
 默认层不含 natal Dasha/Chara Karaka/SAV/完整分盘/Transit/Tajika/KP。
 ```
+
+查表题的判读单：“一、先说人话”用白话写查表结果，两说都写；“二、这张盘的范围”
+照常；“三”～“五”合并为一张查表（`judgment-rubric.md` §10）；不写三档和时间。
+天气条件不满足时写“原文无反面判据”，不写“不会下雨”。
 
 语言要求：先说人话，再列证据；术语出现即翻译；不使用极端或宿命化措辞。判读单
 开头必须让不懂占星的用户直接看懂“更可能发生什么、主要阻力是什么、现在能做什么、
@@ -377,6 +394,8 @@ RP 交集与 Moon／Sun／Jupiter 过运 timing。婚姻重聚因原文存在多
 - [ ] 规则账本完整可见，且没有 `U/M/T/KP` 越界？
 - [ ] 未使用 Chara Karaka、SAV、完整分盘、本命 Dasha 或过运？
 - [ ] Moon 无接触未被写成空亡或全局负分？
+- [ ] 吉星／凶星是否读宫表 Ayer 标签，点名行星的规则是否按点名？
+- [ ] 查表题是否只给查表结果、两说并列，没有出三档和时间？
 - [ ] 成败与时间副层分开，不成档没有给时间？
 - [ ] 情感类安抚只出现一次、有盘面依据、没有改结论？
 - [ ] 输入敏感性已处理？

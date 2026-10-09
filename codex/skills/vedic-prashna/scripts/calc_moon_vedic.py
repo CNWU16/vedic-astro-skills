@@ -32,6 +32,7 @@ from engine import (                                # noqa: E402
     get_house,
 )
 from prashna_time import calculate_prashna_chart, parse_local_datetime  # noqa: E402
+from format_prashna_standard import tithi_facts  # noqa: E402
 
 
 # Prashna Moon 判读用 SPECIAL_DRISHTI(承 engine.calc_graha_drishti 口径)
@@ -104,8 +105,13 @@ def compute(chart, dt_local, tz_str):
         'graha_drishti_planets': [h['planet'] for h in aspecting],
         'graha_drishti_details': aspecting,
     }
+    tithi, full_moon_window = tithi_facts(
+        planets['Sun']['longitude'], moon['longitude']
+    )
     moon_strength_factors = {
         'paksha': chart.get('moon_phase', {}),
+        'tithi': tithi,
+        'full_moon_window': full_moon_window,
         'dignity': chart.get('dignity', {}).get('Moon', {}),
         'house': moon_house,
     }
@@ -146,6 +152,14 @@ def format_moon_section(moon_data):
         f"月相: {phase_text} · Sun–Moon 距离 "
         f"{phase.get('sun_moon_diff', 'n/a')}°"
     )
+    tithi = strength.get('tithi')
+    if tithi is not None:
+        paksha_name = "白半月" if tithi <= 15 else "黑半月"
+        paksha_day = tithi if tithi <= 15 else tithi - 15
+        lines.append(
+            f"tithi: {tithi}（{paksha_name}第 {paksha_day}）· 满月窗(P-I.5 注，"
+            f"白半月第 10 至黑半月第 5): {'是' if strength.get('full_moon_window') else '否'}"
+        )
     lines.append(
         f"D1 尊贵度: basic={dignity.get('basic', 'n/a')} · "
         f"compound={dignity.get('compound', 'n/a')}"

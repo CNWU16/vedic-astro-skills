@@ -23,6 +23,15 @@
 
 问 "选哪个"（AB 二选一）
 └─ C级：不得在同一分钟机械起两张几乎相同的盘
+
+问 "在哪／什么方向／多远／丢的是什么／是谁拿的"（失物、失踪者）
+└─ 描述题：§2.10 查表，不出三档，不跑时间副层
+
+问 "会不会下雨"（雨季）
+└─ 天气题：§2.11 查表，不出三档，不跑时间副层
+
+问 "生死、寿命、对方在想什么、对方私生活"
+└─ C级：§2.13，不起盘
 ```
 
 AB 选择先让用户选一个最想执行的方案，改问“执行 A 能否达到 `<可观察结果>`”。
@@ -130,29 +139,154 @@ AB 选择先让用户选一个最想执行的方案，改问“执行 A 能否�
 | 问法 | 主规则 | 同向检查 | 支持级 | 事项宫 |
 |---|---|---|---|---:|
 | 能不能找到工作；能不能拿到 offer；面试能不能过；能不能升职 | `P-IV.3` + `P-II.1~2` | `P-I.3`（10 宫） | A | 10 |
-| 会不会被裁；能不能保住工作 | `P-II.1~2` | `P-I.3`（10 宫） | B | 10 |
-| 竞争性考试（按排名录取：考研、考公、选拔） | `P-III.1`（类比） | `P-I.4` | B | 1 |
+| 会不会被裁／调岗／换工作；能不能保住工作 | `P-I.2` Chyuti | `P-II.1` 动／固座 | A | 1 |
+| 竞争性考试（按排名录取：考研、考公、选拔） | `P-II.1~2` | `P-III.1` | B | 1 |
 | 达标性考试（过线即过：驾照、资格证） | `P-I.4` | — | A | 1 |
 | 面试表现如何；面试官怎么看我 | — | — | C | 改问“能不能拿到这个 offer” |
 
 执行要点：
 
-- `P-IV.3`：吉星落 10 宫和 7 宫赐位置；凶星落 12、11 宫不吉；Moon 在 Lagna 不利，
-  在 10 宫有利。`P-II.1~2`：固定座上升主得位，动座相反，变动座混合；吉星照 Lagna
-  与 Moon-lagna 吉。Ayer 在 II.1 注里把“landing a job”列为得位的一种。
-- `P-III.1` 原文是战事胜负；Ayer 注把它扩到“elections and such other competitive
-  efforts”。用于竞争性考试是类比，所以标 B级。
+- `P-IV.3`：吉星落 10 宫和 7 宫赐位置；凶星落 12、11 宫不吉。原文是“(Malefic) Moon
+  in lagna will not give favourable results, while in the tenth (even when malefic) it
+  will”：Moon 落 Lagna 只在亏月时记不利；落 10 宫不论盈亏都有利。`P-II.1~2`：固定座
+  上升主得位，动座相反，变动座混合；吉星照 Lagna 与 Moon-lagna 吉。Ayer 在 II.1 注里
+  把“landing a job”列为得位的一种。
+- 裁员／调岗／换工作走 `P-I.2` Chyuti（Ch.1 示范题“Is a change of job imminent? Will
+  I lose my job? Will I be transferred?”）。Ayer 注：Lagna 动座，且受本宫主或吉星占据／
+  照射、没有凶星占据／照射，则变动成立；固定座即使无凶星也不变；变动座看吉凶影响
+  孰多。问“会不会被裁／调走”时，变动成立＝会；问“能不能保住”时方向相反。同向只用
+  `P-II.1` 的动／固座；`P-II.2` 的“吉星照 Lagna 吉”在 Chyuti 里反而促成变动，不用。
+- 竞争性考试：Ch.2 示范题 1&2“Will I succeed in the competitive examination?”挂
+  `P-II.1~2`；`P-III.1` 原文是战事胜负，Ayer 注扩到“elections and such other
+  competitive efforts”，作同向检查。示范题只挂靠、正文未覆盖，所以标 B级。
+- `P-II.8`、`P-II.10` 的示范题也挂了考试，但正文是敌军动向，原文没写敌军来去如何
+  对应考试成败，已知未收。
 - 多环节考试（初试、复试、面试）：只问最近一个还没出结果的环节。
 - 面试卡点可以用白话说“卡在你这边”（Lagna）或“卡在职位那边”（10 宫），但必须
   对应规则账本里的具体条目；不从盘里读性格、口才等特质。
-- Ayer 在 I.3–5、III.1、III.3 等处的注里主张按 functional character 取吉凶，
-  不采纳；标准层按 `P-I.3` 用七曜自然吉凶（Ayer 在 I.3、I.4 注里也写明
-  Bhattotpala 取自然吉凶）。
+- 吉星／凶星一律读宫表的 Ayer 功能吉凶标签（`standard-layer.md` §2.1）。`P-III.1`
+  注明说“mention of planets by name is only symbolic; their functional character
+  should be taken”，所以 9 宫的 Mars／Saturn 与 Mercury／Jupiter／Venus 也按 9 宫行的
+  标签读，不按名字读。
 
 ### 2.9 情绪与安全
 
 问题里出现自伤或极端语句时，先回应安全，不起盘。安抚的写法见 `SKILL.md`
 Phase 6。
+
+### 2.10 描述题（失物、失踪者）
+
+**适用**：问东西或人在哪、什么方向、多远、丢的是什么、是谁拿的。“能不能找回、
+快不快”是成败题，走 §2.12 失物行。
+只给 `structured_prashna.md`“描述题与天气查表事实”一节的查表结果，不建规则账本、
+不出三档、不跑时间副层（`standard-layer.md` §5.1）。
+
+| 问法 | 规则 | 查表依据 |
+|---|---|---|
+| 是不是家里人拿的；还在屋里吗 | `P-VI.1` | 固定座、固定 Navamsa 或 vargottama 上升：亲属所拿、藏在屋内；Bhattotpala：否则外人拿走 |
+| 藏在屋里哪个部位 | `P-VI.2` | Lagna 所在 drekkana：门槛／中间部分／后院；只在 VI.1 读作“屋内”时用 |
+| 往哪个方向、多远 | `P-VI.4` | 角宫行星定方向，无则 Lagna 星座；距离按 rising Navamsa 序号，只报相对远近 |
+| 丢的是什么类东西 | `P-I.7`；`P-VII.13` | rising Navamsa 序号定 Dhatu／Moola／Jeeva；大小 |
+| 何时丢的、去向、放在什么地方、拿的人多大 | `P-VII.13` | 星座定时段、方向、藏放处；Lagna 主定年龄 |
+
+执行要点：
+
+- `P-VI.4` 恰有一颗角宫行星时，正文“by the planets occupying kendras”与注“Two or
+  more planets”读法不一，两说并列。距离原文单位是 yojana，注称按现代条件另定尺度，
+  所以只报相对读数。
+- `P-I.7` 注中 Mesha 举例（第二 Navamsa 为 Jeeva）与注表（2／5／8 为 Moola）矛盾，
+  以译文和注表为准。
+- `P-VII.13` 不收：颜色与窃贼外貌（注指向 Brihad Jataka／Saravali，本地无原文）；
+  种姓；“Relation by karaka”、Navamsa 强弱、“concerned planet”落陷燃烧（原文未给判据
+  或未指明是哪颗星）。
+- `P-I.6`（所想之物）、`P-VII.6~9`（所问何人）属读心，不收。
+- 同时问“能不能找回”时，成败部分另走失物题账本（§2.12 失物行），两部分
+  分开写。
+
+### 2.11 天气（雨季会不会下雨）
+
+**适用**：用户所在地正值雨季，问今天或近期会不会下雨。非雨季不适用；雨季与否由
+用户提供，不从盘里推。只给查表结果，不出三档，不跑时间副层。
+
+| 规则 | 有雨条件 |
+|---|---|
+| `P-VII.3` | Venus 与 Saturn 落 (a) Moon 起 7 宫（注：Venus 不可能落 Sun 起 7 宫），或 (b) Lagna 起 2／3／4／8 宫 |
+| `P-VII.4` | (a) 白半月，吉星落水象座的 3、2 宫或角宫；或 (b) Moon 落水象 Lagna |
+
+执行要点：
+
+- 原文只写有雨条件，没有反面判据。条件不满足时写“原文无反面判据”，不判“不下雨”。
+- 水象座两说并列：Horasara 取 Cancer、Capricorn、Scorpio、Pisces；Mantreswara 取
+  Cancer、Capricorn 后半、Pisces。
+- `P-VII.3` 只有一颗星满足条件时，正文“Venus and Saturn”是否要求两星同时满足未明，
+  两读并列。
+- `P-VII.4`(a) 的吉星读宫表标签。
+
+### 2.12 其他专项
+
+| 问法 | 主规则 | 同向检查 | 支持级 | 事项宫 |
+|---|---|---|---|---:|
+| 失物能不能找回、快不快 | `P-I.5` | `P-VI.3`、`P-V.1` | A | 11 |
+| 能不能买房／置产；住处问题能不能解决 | `P-I.2` Vriddhi | `P-II.1`（固定座得住处） | A | 4 |
+| 出行／出国能不能成 | `P-I.2` Pravasa | 问“能否早日出发”时加 `P-II.9` | A | 10 |
+| 在外的人或失踪者会不会回来 | `P-V.1`；失踪者寻得加 `P-I.5` | `P-V.2~3`、`P-III.5`、`P-I.2` Nivritti | A | 7 |
+| 病能不能好 | `P-IV.5` | `P-II.1~2`；`P-I.2` Nivritti 可选 | A | 1 |
+| 被诬陷／名誉能不能保住 | `P-I.2` Vriddhi | `P-I.2` Nivritti；`P-II.1` 注 | A | 4 |
+| 谈判／和解能不能达成 | `P-III.3~4` | `P-I.3`（7 宫） | A | 7 |
+| 该不该投资某标的；会不会亏 | `P-IV.2` | `P-I.3`（11 宫） | B | 11 |
+| 生意亏损能不能补回 | `P-V.1` | `P-I.3`（11 宫） | B | 11 |
+| 官司会不会很快开庭 | `P-II.11` | — | B | 4 |
+| 胎儿是男是女 | `P-VII.1` | — | A | 查表输出男／女 |
+| 父亲是否在外地 | `P-VII.12` | — | A | 查表输出在外／在本地 |
+
+执行要点：
+
+- 失物：`P-I.5` 满月落 Lagna 受 Jupiter 或 Venus 照（按点名），或强吉星落 11 宫，则
+  速得；满月按注取满月窗（白半月第 10 至黑半月第 5 tithi），读 Moon 节的
+  `full_moon_window`。`P-VI.3` 同向：满月或吉星占 Lagna、头升座上升受吉星照、强吉星
+  落 11 宫则速得，Bhattotpala：皆无则渺茫。头升座 Ayer 注列 Leo、Virgo、Libra、
+  Scorpio、Aquarius，没有 Gemini；Lagna 为 Gemini 时两说并列。`P-V.1` 吉星落 5／2／3
+  宫则失物复得。
+- `P-I.2` 四问的方向各不相同：Vriddhi 是 4 宫受本宫主或吉星占据／照射则兴；Pravasa
+  是 10 宫动座且受凶星照才成行，受本宫主或吉星照反而不成；Nivritti 是 7 宫动座且受
+  本宫主或吉星照则返回，受凶星照则否。不能互相套用。
+- 出行：`P-II.9` 按点名行星——动座上升且 Sun／Saturn／Mercury／Venus 之一占据则很快
+  出发，该星逆行则否。Ayer 注称日月无逆行、“should be kept out of reckoning in this
+  context”：Sun 只免逆行判断、还是整体不计入，两读并列。
+- 返回：`P-V.1` 行星落 5／2／3 宫则返回，Jupiter／Venus 落此则快；`P-V.2` 7 或 6 宫有
+  星、Jupiter 落角宫或 Mercury／Venus 落三方宫；`P-V.3` Moon 落 8 宫且角宫无凶星则平安
+  返回；`P-III.5` Jupiter 或 Venus 落 2／3 宫则很快到来。点名行星的按点名读。
+  方向距离走 §2.10 `P-VI.4`。“是否平安、是否还活着”不判（§2.13）。
+- 疾病：`P-IV.5` 吉星落 Lagna／7／8／5 宫且彼此相照，Moon 落 3／6／10／11 宫则康复；
+  Bhattotpala 注：反之不利，配置不全时看有利影响是否占优。`P-II.1` 注：固定座“cure is
+  doubtful”，动座“chances of recovery are good”，与求职方向相反。只答能否康复，不作
+  医疗诊断，不替代就医。
+- 名誉：依据 `P-I.2` 注的诽谤例——先看 Vriddhi（4 宫）定结果，再看 Nivritti（7 宫）
+  定对方能否得逞；`P-II.1` 注“honour and reputation … fixed signs ensure safety”同向。
+- 谈判／和解：`P-III.3` 注“all cases where settlement of scores is involved …
+  negotiations”，原文覆盖，标 A；复合仍按 §2.7 类比标 B。
+- 投资：`P-IV.2` 吉星落 3／5／11／7 宫得益、凶星则损，照射等同占据（注）；Ch.4 示范题
+  “Should I invest in this particular scrip or will it ruin me?”只挂靠，标 B。
+- 亏损补回：`P-V.1` 吉星落 5／2／3 宫则失物复得；Ch.5 示范题“I have incurred a loss in
+  my business; can I expect to make it good soon?”，标 B。
+- 开庭：`P-II.11` Sun 与 Moon 落 4 宫则不来，Mercury／Jupiter／Venus 落 4 宫则很快来，
+  按点名读；Ch.2 示范题“Will the suit against me come up for hearing soon?”，标 B。
+  “官司能不能赢”不在此行。
+- 胎儿性别：`P-VII.1` Saturn 落 Lagna 起奇数宫为男，否则为女；注：按 Varahamihira，
+  Lagna 本身不计入奇数宫。只用于已怀孕的提问，不作医学判断。`P-VII.5` 需要六分盘
+  varga，本批不收。
+- 父亲下落：`P-VII.12` Sun 带吉星落 8 宫且受吉星照则在外，否则在本地。注称其他
+  karaka 可同法处理，但原文未列 karaka 对应表，其他亲属本批不收。
+- 胎儿性别与父亲下落输出查表结果，不出三档，不跑时间副层。
+
+### 2.13 不判（C级）
+
+- 生死、寿命、“还活着吗”：Ch.2、Ch.5 示范题与 `P-V.4`、`P-VII.11` 有此类问法，标准层
+  不判。用一句话说明不判，必要时建议联系当事人或相关机构。
+- 读心与隐私：所想之物（`P-I.6`）、所问何人（`P-VII.6~9`）、他人私生活（`P-VII.10`）、
+  对方心理。
+- 继承（`P-IV.4`）、选举、某职位竞争大不大（`P-II.6`）、“我的困境能不能解决”：
+  本批未单列题型。困境类按 §2.3 改为一个可观察行动结果，走 `P-I.4`。
 
 ---
 
