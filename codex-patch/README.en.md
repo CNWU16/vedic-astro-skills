@@ -1,6 +1,6 @@
 # Codex Patch for Vedic Astro Skills
 
-> Codex Patch v1.0.0. This package is independent from the Vedic Skill Suite
+> Codex Patch v1.1.0. This package is independent from the Vedic Skill Suite
 > version, Blind QA protocol version, and analyst-editing protocol version.
 
 This is a Codex execution-compatibility layer, not a replacement for the Vedic
@@ -99,6 +99,16 @@ Pro does not require a separate patch. Both versions use this same user-context,
 rendering, routing, rectification, and language layer while continuing to follow
 their own selected `SKILL.md`.
 
+## Rectification evidence compatibility
+
+The patch follows the current `vedic-rectifier` three-category model:
+structural hard evidence, temporal hard evidence, and soft evidence. Structural
+elimination runs before Dasha comparison and only under the skill's three-gate
+rule. Soft traits, relationship quality, atmosphere, and other unmapped facts may
+support interpretation, but they cannot break a hard-evidence tie, eliminate or
+revive a candidate, or upgrade confidence. Candidate-level expert synthesis stays
+inside those rules and cannot turn a soft-only advantage into confirmation.
+
 ## Language behavior
 
 Client-facing language follows an explicit user request; otherwise it matches the
@@ -128,6 +138,12 @@ selected skill explicitly gives it an evidentiary role for the current phase.
 Outside an authorized calibration phase, lock the chart-derived judgment before
 using permitted context for ethics, wording, reality mapping, or practical advice.
 Never package a known fact as an independent prediction.
+
+Standard Core Step 4.5 and Pro Step 6.5 are narrow read-only wording passes after
+chart conclusions are locked. They may edit only the files named by the selected
+skill and may not change ratings, windows, domains, spouse-profile forms, Yoga,
+Dasha, tables, confidence, or upstream technical artifacts. Sensitive internal
+labels must not be repeated in the report.
 
 ## Updating
 

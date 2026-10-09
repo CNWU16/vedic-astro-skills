@@ -9,9 +9,16 @@ phase, or impose a round or item quota.
 
 - Complete the current layer's full skill-required matrix and settlement audit
   before asking anything.
-- State the unresolved candidate distinction and how at least one possible
-  answer could change ordering. If no answer path can change the result, do not
-  ask the question.
+- State the unresolved candidate distinction, classify the intended answer as
+  structural hard, temporal hard, or soft evidence under the selected skill,
+  and say how at least one possible answer could legally change ordering. If no
+  answer path can change the hard-evidence result, do not present the question
+  as a settlement question.
+- When hard evidence is tied, ask first for an external hard anchor or a new
+  skill-eligible hard item: an objectively checkable static fact covered by the
+  static-fact mapping table, or a dated event with candidate-specific Dasha
+  discrimination. A trait, relationship-quality, atmosphere, or self-image
+  question remains soft evidence and cannot break that tie.
 - Ask for a month or date only when the known range crosses a named
   candidate-specific Dasha or score distinction. Precision without information
   gain is not a valid reason to question the user.
@@ -37,18 +44,27 @@ Before submission, record outside the respondent-facing wording:
 - every candidate's `A/B/0` mapping;
 - the concrete chart structure supporting that mapping;
 - the lived distinction the question is intended to test;
+- its evidence category and the exact skill rule authorizing any hard-evidence
+  effect;
 - which candidates each answer separates and how it could affect settlement;
 - whether the axis is independent, correlated, exploratory, or already known.
 
 The answer map must be locked from chart structure before feedback. A known
 fact may supply context, but never fit the chart mapping to a known answer.
 
-## Recognizability first
+## Recognizability and evidentiary eligibility
 
-- The default form is concise `A/B/0` in ordinary language, testing one stable
-  and observable contrast. The respondent should usually know the answer on
-  first reading without reconstructing dates, averaging unlike situations,
-  inferring motives, or building a theory of the self.
+- Use concise `A/B/0` in ordinary language only when it is a useful form for the
+  eligible evidence being collected. The respondent should usually know the
+  answer on first reading without reconstructing dates, averaging unlike
+  situations, inferring motives, or building a theory of the self.
+- A/B trait questions are soft-evidence instruments. They may document
+  supporting fit or improve client explanation, but they are not a substitute
+  for the skill's external-hard-anchor path and must not be described as able
+  to confirm a layer that hard evidence leaves tied.
+- For structural hard evidence, ask the objective fact directly and apply only
+  the pre-registered static-fact rule. For temporal hard evidence, collect the
+  event and its real date precision without converting a year into a month.
 - Mutual exclusivity means two different dominant defaults, not that both
   behaviors can never occur. `0` is valid for both, neither, or context
   dependence and is never converted into candidate support.
@@ -87,6 +103,9 @@ fact may supply context, but never fit the chart mapping to a known answer.
 Reject an item from settlement when:
 
 - its mapping was fitted after answer leakage;
+- it is soft evidence offered as a way to break a hard-evidence tie;
+- it claims structural-hard status without an authorizing static-fact-table
+  row, pre-registration, and a candidate-varying field;
 - rival candidates explain both options equally;
 - one option is materially leading, deceptive, or idealized;
 - it merely repeats a known fact or earlier axis without new information;
@@ -106,9 +125,9 @@ narrowed, or retained only at the weaker evidentiary level it deserves.
   reality, withdraw it without forcing a choice. A failed instrument is
   zero-information, not evidence that the structure leg itself has failed.
 - A poor batch does not impose a permanent one-round limit. While the layer
-  remains unsettled, a better batch may use a genuinely different root axis or
-  more recognizable modality. Do not spend multiple rounds paraphrasing the
-  same failed distinction.
+  remains unsettled, a better batch may use a genuinely different,
+  skill-eligible hard axis or a more recognizable modality. Do not spend
+  multiple rounds paraphrasing the same failed soft distinction.
 - When replacing a prior batch, follow operator direction on supplement,
   supersede, or reset. Do not silently stack or erase prior evidence.
 - Stop questioning when the layer settles, no remaining question can change
@@ -118,10 +137,12 @@ narrowed, or retained only at the weaker evidentiary level it deserves.
 
 - After feedback, publish the locked mapping and apply each usable answer to
   every candidate, not only the apparent top pair.
-- Classify usable information as independent, correlated, exploratory/weak, or
-  invalid/zero-information according to its actual design and response quality.
-  These classes are descriptive, not a new point system.
-- State the structure-leg result, rerun full-candidate counterevidence, and
-  return to `vedic_rectifier_settlement.md`. Answers never rewrite the event
-  scores, and no questionnaire bypasses the current layer's skill calculations
-  or resolution limits.
+- Preserve both classifications: structural hard / temporal hard / soft, and
+  independent / correlated / exploratory / invalid. These are descriptive,
+  not a new point system.
+- Rerun full-candidate counterevidence and return to
+  `vedic_rectifier_settlement.md`. Soft answers remain supporting fit and do
+  not rewrite the hard result; structural-hard answers must pass the static-
+  fact rules; temporal answers update only the canonical event/Dasha rows.
+  No questionnaire bypasses the current layer's calculations, fixed decision
+  order, underdetermination rule, or resolution limits.

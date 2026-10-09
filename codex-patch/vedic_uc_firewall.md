@@ -136,15 +136,32 @@ Do not collapse these operations. In particular, `readable` never means
   skill-authorized calibration questions, UC may identify known facts, anchor
   a lived scenario, and expose an unrecorded discriminator. The answer mapping
   remains chart-derived; a known fact is not a new independent evidence row.
-- Standard `vedic-core` Steps 1-3, Pro Steps 0-5.5, and any other skill phase
-  that prohibits UC: treat both files and visible chat facts as prohibited
-  inference inputs.
+- Standard `vedic-core` Steps 1-4, Pro Steps 0-6, and any other skill phase
+  that prohibits `user_context.md`: treat both that file and visible chat facts
+  as prohibited inference inputs except for the narrower confirmed-fact sources
+  that the selected skill explicitly authorizes in Step 4 or Step 6.
 - Standard `vedic-core` Step 4 may use only the confirmed facts that its skill
   permits, and only after the chart-derived conclusion is locked. In
   `vedic-core-pro` Step 6, use only the factual material from
   `structured_data.md` that the Pro skill permits; `user_context.md` remains
   prohibited. In either lineage, corroboration may not change the locked
   chart-derived direction, evidentiary weight, or confidence.
+- Standard `vedic-core` Step 4.5 and `vedic-core-pro` Step 6.5 may read
+  `user_context.md` only for the skill-defined wording and real-life placement
+  pass after all chart judgments are locked. This is read-only access: do not
+  ask new questions or write UC. Do not change ratings, windows, domains,
+  spouse-portrait primary/secondary forms or source direction, Yoga or Dasha
+  judgments, tables, confidence, or upstream technical artifacts. Standard may
+  edit only `p5a_life.md` and `p5b_life.md`; Pro may edit only
+  `p5_prediction.md`, the cross-diagnostic prose/title in `p5c_topics.md`, and
+  `p6a_life.md` / `p6b_life.md` / `p6c_blueprint.md`, exactly as its skill
+  permits.
+- In that wording-only pass, keep the skill's sensitive-category labels
+  internal. Do not repeat the label, object, or note, do not use procedural
+  wording such as “based on your background,” and do not repackage a known UC
+  fact as a prediction or chart finding. Non-sensitive facts may refine the
+  real-life landing only where genuinely relevant and without changing the
+  conclusion's strength.
 - Normal consultation Q&A: read UC at the point required by the skill, but
   quarantine it while locking the chart-derived judgment, timing, or evaluation
   criteria. Then apply UC for ethics, wording, presentation order, concrete

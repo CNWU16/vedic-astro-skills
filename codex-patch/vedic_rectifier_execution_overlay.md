@@ -5,9 +5,10 @@ completely before rectification work. `SKILL.md` remains the canonical source
 for phase order, candidates, calculations, canonical scores and gates,
 precision, transition rules, filenames, and required visible work.
 
-The two policies explicitly marked below are standing operator directions.
-They change only the evidence-type hierarchy and the role of expert synthesis;
-they do not silently rewrite the skill file or its canonical calculations.
+The expert-synthesis policy explicitly marked below is a standing operator
+direction. The three evidence categories, structural-elimination gates, and
+candidate decision order come from the selected `SKILL.md` and remain
+canonical; this overlay must not replace them with an older two-leg model.
 
 ## Phase-routed references
 
@@ -25,25 +26,31 @@ If a phase reference is missing, report it once and continue with the selected
 skill, this compass, the global router, and the UC firewall. Do not invent the
 missing module's detailed procedure.
 
-## Standing operator policy: evidence-leg parity
+## Canonical evidence hierarchy: three categories
 
-- Treat `event × Dasha` and `trait/attribute × candidate structure` as two
-  evidentially equal legs. Do not call one hard, soft, primary, secondary,
-  auxiliary, or zero-weight merely because of its type.
-- Equality of type does not make every row equally strong. Judge the actual
-  evidence by factual reliability, date or response precision, candidate
-  discrimination, and independence. These are reasoning attributes, not a new
-  score or checklist gate.
-- Several independent, pre-mapped, genuinely discriminating structural axes
-  may settle a layer when event rows are common-scoring or otherwise
-  non-discriminating. Vague, Barnum-like, answer-fitted, correlated, or
-  non-discriminating structure claims do not gain authority from parity.
-- Keep the skill's canonical event matrix and totals visible and unchanged.
-  If the active parity result differs from the canonical raw-score leader,
-  publish both and identify the concrete evidence causing the divergence.
-- This policy applies at D1, D9, D10, D4/D5, and relevant boundary
-  comparisons. It never authorizes skipping a skill-required candidate,
-  matrix, calculation, endpoint method, phase, or resolution limit.
+- Classify by the nature of the fact, not the intake heading in which the user
+  supplied it.
+- **Structural hard evidence** is an objectively checkable static fact mapped
+  through the `vedic-rectifier` static-fact table against chart fields that
+  genuinely vary among candidates. Pre-register the mapping before reading the
+  answer, count only varying fields, and apply structural elimination only when
+  all three skill-defined elimination conditions are met.
+- **Temporal hard evidence** is a dated event mapped to the Dasha timeline with
+  the skill's endpoint, boundary, correlation, and date-precision rules.
+- **Soft evidence** is an evaluative trait, relationship quality, atmosphere,
+  self-image, profession-style description, or another item that the static-
+  fact table does not authorize as structural hard evidence. Keep it visible
+  as supporting fit, but never use it to break a hard-evidence tie, eliminate a
+  candidate, revive a structurally eliminated candidate, or upgrade confidence.
+- Structural and temporal hard evidence are both legitimate hard evidence;
+  neither is demoted merely because it is static or temporal. Their processing
+  order is still fixed: structural elimination first, then the skill's Dasha
+  and hard-score comparison. Expert synthesis may compare their quality but
+  cannot reorder or bypass that sequence.
+- At D1, D9, D10, D4/D5, and relevant boundaries, a hard-evidence tie that is
+  distinguishable only by soft evidence remains underdetermined. Give the
+  skill-required current best estimate and confidence label without turning a
+  soft-only advantage into confirmation.
 
 ## Standing operator policy: expert judgment is the settlement function
 
@@ -61,8 +68,10 @@ missing module's detailed procedure.
   checklist, quota, or hidden gate. Ground the judgment in concrete chart rows
   and structures; “overall feeling” and fluent narrative alone are not enough.
 - Expert synthesis determines the `current best estimate` and participates in
-  the active parity settlement. It is not a third evidence leg and cannot
-  bypass a required matrix, phase gate, precision rule, or calculation.
+  settlement only among candidates still eligible under the skill. It is not a
+  fourth evidence category and cannot override the three-category hierarchy,
+  structural elimination, hard-evidence tie rule, required matrix, decision
+  order, phase gate, precision rule, or calculation.
 
 ## Always-on execution discipline
 
@@ -95,7 +104,8 @@ missing module's detailed procedure.
 - Request a more precise month or date only when the known range crosses a
   candidate-specific Dasha assignment, boundary treatment, or canonical score
   difference. Greater precision by itself is not information gain.
-- Once the current layer is confirmed at its tested resolution, state that
+- Once the current layer is confirmed under the skill's hard-evidence and
+  transition rules at its tested resolution, state that
   plainly and follow the skill's next transition. Do not keep collecting proof
   or repeating disclaimers for an already-settled layer.
 - If no remaining answer can change ordering, deliver the best supported

@@ -178,7 +178,7 @@ Resolve paths against the active `CODEX_HOME`; paths below show the default.
 
 - **Rectification**: when `vedic-rectifier` is selected, read
   `~/.codex/vedic_rectifier_execution_overlay.md`. Treat its explicitly named
-  standing operator policies under operator control. The compact overlay
+  standing operator policy under operator control. The compact overlay
   routes its settlement, question-design, and interval-source references only
   when their phases apply. If the overlay is missing, report once and continue
   with the skill, this router, and the UC firewall.
@@ -189,7 +189,9 @@ Resolve paths against the active `CODEX_HOME`; paths below show the default.
   `~/.codex/vedic_consultative_integration_prompt.md`. This is post-core
   editing, not QA or a substitute for incomplete core phases.
 - **Core report readability**: whenever `vedic-core` or `vedic-core-pro`
-  drafts explanatory prose in a normal core artifact, read
+  drafts or performs the skill-defined wording-only revision of explanatory
+  prose in a normal core artifact, including standard Step 4.5 or Pro Step 6.5,
+  read
   `~/.codex/vedic_client_voice.md`. Apply its technical-core readability rules
   to prose around the skill-required audit data. Keep all tables, parameters,
   labels, counterevidence, filenames, stage rules, and technical precision;
