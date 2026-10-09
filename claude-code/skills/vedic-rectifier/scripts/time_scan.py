@@ -6,10 +6,15 @@ Vedic Rectifier — Time Scanner (swisseph版)
 确保 Lagna 度数和 D9/D10 边界完全一致。
 
 用法:
-  python time_scan.py --date 2000-01-01 --time 10:30 --lat 28.61 --lon 77.21 --tz 5.5
+  # 推荐：直接给本地出生时间，脚本按 --tz 自己换算 UTC（含跨零点的日期借位）
+  python time_scan.py --local-date 1995-05-06 --local-time 02:30 --lat 31.23 --lon 121.47 --tz 8
+  # 旧用法：调用方已换算好的 UTC
   python time_scan.py --date 2000-01-01 --time 10:30 --lat 28.61 --lon 77.21 --range 60 --tz 5.5
 
-注意: --time 参数为 UTC 时间。中国(UTC+8)需减8小时。
+注意: --date/--time 是 UTC。手算时本地时:分小于时区偏移（中国即 08:00 前）要借位，
+UTC 日期须退 1 天（例：本地 1995-05-06 02:30 UTC+8 → UTC 1995-05-05 18:30）。
+手算出错会让整张表的 Lagna/D9/D10 系统性偏移，所以优先用 --local-date/--local-time。
+表头同时打印 UTC 与换算回去的本地时间，供核对。
 
 依赖: pip install pyswisseph
 """
@@ -221,10 +226,26 @@ def scan(
     return results, dasha_endpoints
 
 
-def print_results(results, date_str, time_str, lat, lon):
+def local_to_utc(local_date, local_time, tz_offset):
+    """本地出生时间 → UTC（"YYYY-MM-DD", "HH:MM"）。用 timedelta 换算，跨零点自动借位改日期。"""
+    local_dt = datetime.strptime(f"{local_date} {local_time}", "%Y-%m-%d %H:%M")
+    utc_dt = local_dt - timedelta(hours=tz_offset)
+    return utc_dt.strftime("%Y-%m-%d"), utc_dt.strftime("%H:%M")
+
+
+def _base_label(date_str, time_str, tz_offset):
+    """表头基准：UTC 与换算回去的本地时间并列，调用方可肉眼核对日期有没有借错。"""
+    label = f"{date_str} {time_str} UTC"
+    if tz_offset is None:
+        return label
+    local_dt = datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M") + timedelta(hours=tz_offset)
+    return f"{label}（= 本地 {local_dt.strftime('%Y-%m-%d %H:%M')}，UTC{tz_offset:+g}）"
+
+
+def print_results(results, date_str, time_str, lat, lon, tz_offset=None):
     """格式化输出扫描结果"""
     print(f"# 时间扫描结果")
-    print(f"# 基准: {date_str} {time_str} UTC | 坐标: ({lat}, {lon})")
+    print(f"# 基准: {_base_label(date_str, time_str, tz_offset)} | 坐标: ({lat}, {lon})")
     print(f"# 引擎: swisseph + True Chitra Ayanamsa (与calc engine一致)")
     print(f"# 范围: {results[0]['delta']:+d} ~ {results[-1]['delta']:+d} 分钟")
     print()
@@ -237,11 +258,12 @@ def print_results(results, date_str, time_str, lat, lon):
         print(f"{r['delta']:+4d}min | {r['asc_deg']:8.2f}° | {r['sign']:>4}{r['sign_cn']} | {r['deg_in_sign']:6.2f}° | {r['d9']:>4} | {r['d10']:>4} |{marker_str}{is_base}")
 
 
-def save_results(results, date_str, time_str, lat, lon, filepath, dasha_ep=None, event_dates=None):
+def save_results(results, date_str, time_str, lat, lon, filepath, dasha_ep=None, event_dates=None,
+                 tz_offset=None):
     """保存为Markdown表格（含两点法 Dasha——3c 段内定位的硬腿数据源，必须落盘）"""
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(f"# 时间扫描结果\n\n")
-        f.write(f"> 基准: {date_str} {time_str} UTC\n")
+        f.write(f"> 基准: {_base_label(date_str, time_str, tz_offset)}\n")
         f.write(f"> 坐标: ({lat}, {lon})\n")
         f.write(f"> 引擎: swisseph + True Chitra Ayanamsa\n\n")
         f.write(f"| 偏移 | Lagna度数 | 星座 | D9 | D10 | 标记 |\n")
@@ -360,8 +382,10 @@ def print_dasha_endpoints(dasha_ep, event_dates=None):
 
 def main():
     parser = argparse.ArgumentParser(description='Vedic Rectifier Time Scanner (swisseph)')
-    parser.add_argument('--date', required=True, help='出生日期 YYYY-MM-DD')
-    parser.add_argument('--time', required=True, help='预估出生时间 HH:MM (UTC)')
+    parser.add_argument('--date', help='出生日期 YYYY-MM-DD (UTC)；与 --time 同传')
+    parser.add_argument('--time', help='预估出生时间 HH:MM (UTC)；与 --date 同传')
+    parser.add_argument('--local-date', help='本地出生日期 YYYY-MM-DD；与 --local-time 同传，脚本按 --tz 换算 UTC（推荐）')
+    parser.add_argument('--local-time', help='本地预估出生时间 HH:MM；与 --local-date 同传')
     parser.add_argument('--lat', required=True, type=float, help='出生地纬度')
     parser.add_argument('--lon', required=True, type=float, help='出生地经度')
     parser.add_argument('--range', type=int, default=30, help='扫描范围±分钟 (默认30)')
@@ -376,6 +400,19 @@ def main():
     parser.add_argument('--save', type=str, help='保存结果到文件路径')
 
     args = parser.parse_args()
+    has_utc = args.date is not None or args.time is not None
+    has_local = args.local_date is not None or args.local_time is not None
+    if has_utc == has_local:
+        parser.error('二选一：--local-date/--local-time（本地，推荐）或 --date/--time（UTC）')
+    if has_local:
+        if args.local_date is None or args.local_time is None:
+            parser.error('--local-date 与 --local-time 必须同时传入')
+        try:
+            args.date, args.time = local_to_utc(args.local_date, args.local_time, args.tz)
+        except ValueError as exc:
+            parser.error(f'本地时间格式不对：{exc}')
+    elif args.date is None or args.time is None:
+        parser.error('--date 与 --time 必须同时传入')
     if args.range < 1:
         parser.error('--range 必须至少为1分钟')
     for raw_event_date in args.event_date:
@@ -408,11 +445,12 @@ def main():
         endpoint_end=args.endpoint_end,
         include_pd=bool(args.event_date),
     )
-    print_results(results, args.date, args.time, args.lat, args.lon)
+    print_results(results, args.date, args.time, args.lat, args.lon, args.tz)
     print_dasha_endpoints(dasha_ep, args.event_date)
 
     if args.save:
-        save_results(results, args.date, args.time, args.lat, args.lon, args.save, dasha_ep, args.event_date)
+        save_results(results, args.date, args.time, args.lat, args.lon, args.save, dasha_ep, args.event_date,
+                     tz_offset=args.tz)
 
     # 输出变化点摘要
     print("\n## 关键变化点（Lagna/D9/D10换座 + Moon跨Nak）")

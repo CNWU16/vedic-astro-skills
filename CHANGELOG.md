@@ -6,6 +6,23 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased] - 2026-10-10
+
+### rectifier `time_scan.py`：本地时间入参 + 表头双时间（修 UTC 日期借位坑）⚠️ 影响校时结果
+
+**现象**：08:00 前出生（本地时:分 < 时区偏移）的盘，调用方手算 UTC 时只做钟面减法、没把日期退 1 天，
+整张扫描表 Lagna/D9/D10 系统性偏移。产品侧在金标准盘 GC-01 实证：本地 1995-05-06 02:30 UTC+8，
+误传 `--date 1995-05-06 --time 18:30`，offset=0 行 Lagna 差 1.39°、D10 由 Gemini 错成 Cancer。
+
+- `time_scan.py` 新增 `--local-date/--local-time`：脚本用 `timedelta` 按 `--tz` 自己换算 UTC（自动借位）；
+  与旧的 `--date/--time`（UTC）二选一，缺一半或两套同传直接报错。
+- 表头「基准」同时打印 UTC 与换算回去的本地时间，调用方可肉眼核对。
+- SKILL.md 两处调用模板改用本地时间入参；「出生时间需转为UTC」一节改为禁止手算并给出借位实例。
+- 回归：本地入参与正确手算 UTC 的扫描表逐行一致；旧的错误输入在表头显示为「本地 05-07」，可当场发现。
+- 两仓 shared 同步，`consistency_lint` 全绿。
+
+---
+
 ## [Unreleased] - 2026-09-04
 
 ### engine v0.9：D1 星历基准统一 + Vimsottari 年长漂移修复 ⚠️ 有数值变化
