@@ -161,8 +161,7 @@ AB 选择先让用户选一个最想执行的方案，改问“执行 A 能否�
   上升主得位，动座相反（注“he will not get the position”）；变动座混合，Ayer 注引
   Bhattotpala *Prasnagyana*：上升点在前半按固定座读，后半按动座读，离 15° 很近时算输入
   敏感。吉星照 Lagna 与 Moon-lagna 吉，凶星照则凶，吉凶同照为混合。Ayer 在 II.1 注里
-  把“landing a job”列为得位的一种。两条主规则一条有利、另一条混合时判“成（困难后成）”
-  （`judgment-rubric.md` §3）。
+  把“landing a job”列为得位的一种。
 - 裁员／调岗／换工作走 `P-I.2` Chyuti（Ch.1 示范题“Is a change of job imminent? Will
   I lose my job? Will I be transferred?”）。Ayer 注：Lagna 动座，且受本宫主或吉星占据／
   照射、没有凶星占据／照射，则变动成立；固定座即使无凶星也不变；变动座看吉凶影响
