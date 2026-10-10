@@ -32,7 +32,7 @@ Codex所需的全候选审计、反证、执行顺序和专家综合护栏。
 - `vedic_rectifier_settlement.md`：只在D1／D9／D10等候选结算时读取的差分审计、
   两腿结算、反证和专家综合。
 - `vedic_rectifier_question_design.md`：旧安装兼容指针；实际出题规则读取所选
-  `vedic-rectifier/resources/calibration_quiz.md`。
+  Skill 的 `resources/calibration_quiz.md`。
 - `vedic_rectifier_interval_guard.md`：只在精调区间涉及代表盘和两点法时读取的数据源护栏。
 - `vedic_blind_qa_prompt.md`：只在标准版或Pro版core本命QA的明确盲问，或操作者显式调用
   全量盲问协议时读取的完整盲问 SOP。
