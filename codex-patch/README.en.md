@@ -1,6 +1,6 @@
 # Codex Patch for Vedic Astro Skills
 
-> Codex Patch v1.1.0. This package is independent from the Vedic Skill Suite
+> Codex Patch v1.2.0. This package is independent from the Vedic Skill Suite
 > version, Blind QA protocol version, and analyst-editing protocol version.
 
 This is a Codex execution-compatibility layer, not a replacement for the Vedic
@@ -29,7 +29,8 @@ filenames, technical identifiers, evidence, and conclusions remain unchanged.
   natal report workflow.
 - `vedic_rectifier_execution_overlay.md` — rectification execution router.
 - `vedic_rectifier_settlement.md` — candidate settlement and counterevidence audit.
-- `vedic_rectifier_question_design.md` — discriminating question design.
+- `vedic_rectifier_question_design.md` — compatibility pointer to the selected
+  skill's canonical `resources/calibration_quiz.md`.
 - `vedic_rectifier_interval_guard.md` — interval and representative-chart guards.
 
 `PACKAGE_INTRO.md` explains the complete package positioning and boundaries. It is
@@ -101,13 +102,16 @@ their own selected `SKILL.md`.
 
 ## Rectification evidence compatibility
 
-The patch follows the current `vedic-rectifier` three-category model:
-structural hard evidence, temporal hard evidence, and soft evidence. Structural
-elimination runs before Dasha comparison and only under the skill's three-gate
-rule. Soft traits, relationship quality, atmosphere, and other unmapped facts may
-support interpretation, but they cannot break a hard-evidence tie, eliminate or
-revive a candidate, or upgrade confidence. Candidate-level expert synthesis stays
-inside those rules and cannot turn a soft-only advantage into confirmation.
+The patch follows the current `vedic-rectifier` two-leg, equal-weight model.
+Leg 1 tests concrete undated facts and traits against static chart fields that
+actually vary among candidates; mappings are pre-registered, shared sources are
+deduplicated, and elimination uses only the skill's three-gate rule. Leg 2 tests
+dated events against Dasha with the required precision, endpoints, boundaries,
+and PD-difference audit. Generic portraits and vague self-description do not
+score directly, but valid items produced through the skill's seven-step and
+five-check `resources/calibration_quiz.md` procedure score in Leg 1 exactly as
+the skill specifies. Expert synthesis cannot override the equal-leg total,
+fixed decision order, gap threshold, underdetermination path, or resolution.
 
 ## Language behavior
 

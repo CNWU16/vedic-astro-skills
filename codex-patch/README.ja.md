@@ -1,6 +1,6 @@
 # Vedic Astro Skills 用 Codex パッチ
 
-> Codex Patch v1.1.0。Vedic Skill Suite 本体、Blind QA プロトコル、
+> Codex Patch v1.2.0。Vedic Skill Suite 本体、Blind QA プロトコル、
 > 分析者編集プロトコルとは独立したバージョンで管理されます。
 
 このパッチは Codex 向けの実行互換レイヤーです。Vedic Skill の代替ではなく、
@@ -25,7 +25,8 @@ Standard/Pro レポートの混在、成果物ルーティング、顧客向け�
 - `vedic_consultative_integration_prompt.md` — 任意の分析者編集版レポート
 - `vedic_rectifier_execution_overlay.md` — 出生時刻修正の実行ルーター
 - `vedic_rectifier_settlement.md` — 候補時刻の決着と反対材料監査
-- `vedic_rectifier_question_design.md` — 候補を分ける質問の設計
+- `vedic_rectifier_question_design.md` — 選択中のSkillにある正規の
+  `resources/calibration_quiz.md` への互換ポインタ
 - `vedic_rectifier_interval_guard.md` — 探索区間と代表チャートの保護規則
 
 `PACKAGE_INTRO.md` はパッケージの位置づけを説明する文書で、実行ルールでは
@@ -94,12 +95,15 @@ Pro 専用パッチは不要です。Standard と Pro は同じ証拠境界、�
 
 ## 出生時刻修正の証拠区分
 
-現行の `vedic-rectifier` に合わせ、証拠は「構造ハード証拠」「時間ハード証拠」
-「ソフト証拠」の3種類に分けます。構造による候補除外は Dasha 比較より先に行い、
-Skill が定める3条件をすべて満たす場合だけ有効です。性格、関係の質、家庭の雰囲気、
-静的事実表にない事実は補助的なソフト証拠であり、ハード証拠の同点を破ること、
-候補を除外・復活させること、信頼度を上げることには使えません。専門家統合も
-この境界を越えて確認判定を作ることはできません。
+現行の `vedic-rectifier` に合わせ、二つの証拠レッグを同じ重みで扱います。
+レッグ1は日付のない具体的な事実・特性を、候補間で実際に変化する静的チャート
+項目に照合します。対応関係は事前登録し、同じ出所は重複計上せず、候補除外は
+Skillの3条件をすべて満たす場合だけ有効です。レッグ2は日付付き出来事をDashaに
+照合し、日付精度、区間両端、境界、PD差分監査を守ります。一般的な人物像や曖昧な
+自己評価は直接採点しませんが、Skill本体の `resources/calibration_quiz.md` にある
+7段階の出題と5項目の検査を通った有効な設問は、Skillの規定どおりレッグ1に加点
+されます。専門家統合は、等重み合計、固定された裁定順、点差基準、未確定経路、
+精度上限を越えることはできません。
 
 ## 日本語実行
 

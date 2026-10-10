@@ -8,6 +8,19 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-10-10
 
+### Codex Patch v1.2.0：对齐 rectifier 两腿等权与 Skill 内置出题真源
+
+- `vedic_rectifier_execution_overlay.md` 与 `vedic_rectifier_settlement.md` 改按现行
+  两腿等权模型执行：腿一为事实／特质 × 候选静态差异，腿二为带日期事件 × Dasha；
+  保留预登记、只计变化字段、同源去重、淘汰三门槛、两点法、固定裁决定序和欠定出口。
+- 出题规则不再在补丁中维护第二份；运行时直接读取所选
+  `vedic-rectifier/resources/calibration_quiz.md`。原
+  `vedic_rectifier_question_design.md` 保留为兼容指针，以覆盖旧安装中的过期正文。
+- 专家综合只用于全候选反证、合法结算说明和欠定时的低置信最佳估计，不得另造影子
+  分数、改写两腿合计、越过分差门槛或把欠定升级为确认。
+- 中、英、日安装说明与分享包介绍同步升级至 v1.2.0；即时盘本批更新由 Skill 本体
+  承载，Codex Patch 不复制 Prashna 方法规则。
+
 ### 即时盘副层边界：Tajika 不运行条件 + KP 不收时的出口
 
 **起因**：Tajika 副层只看问者星（Lagna lord）与唯一事项宫主的直接接触。查表题、不判题没有事项星；

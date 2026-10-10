@@ -1,126 +1,125 @@
 # Vedic Rectifier Execution Compass
 
 This compact overlay applies only when `vedic-rectifier` is selected. Read it
-completely before rectification work. `SKILL.md` remains the canonical source
-for phase order, candidates, calculations, canonical scores and gates,
-precision, transition rules, filenames, and required visible work.
+completely before rectification work. `SKILL.md` and its routed references
+remain canonical for phase order, evidence legs, candidates, calculations,
+scores, thresholds, precision, transition rules, filenames, and visible work.
 
 The expert-synthesis policy explicitly marked below is a standing operator
-direction. The three evidence categories, structural-elimination gates, and
-candidate decision order come from the selected `SKILL.md` and remain
-canonical; this overlay must not replace them with an older two-leg model.
+direction. It operates only inside the selected skill's current two-leg model
+and never substitutes a three-category or legacy hard/soft hierarchy.
 
 ## Phase-routed references
 
 Read a reference completely only when its trigger applies:
 
-- At Step 3c or any D1/D9/D10/D4/D5 candidate settlement, read
+- At Step 3c or any D1/D9/D10/D4/D5/relevant-boundary settlement, read
   `~/.codex/vedic_rectifier_settlement.md`.
-- Before constructing, replacing, or interpreting a supplementary calibration
-  questionnaire, read `~/.codex/vedic_rectifier_question_design.md`.
+- Before constructing, replacing, sending, or interpreting a calibration
+  questionnaire, read the selected `vedic-rectifier` skill's own
+  `resources/calibration_quiz.md` completely. That file is the canonical
+  question-design and scoring source.
 - When a D9/D10 or later fine-tuning candidate uses a representative chart,
   interval Dasha, or endpoint comparison, read
   `~/.codex/vedic_rectifier_interval_guard.md`.
 
-If a phase reference is missing, report it once and continue with the selected
-skill, this compass, the global router, and the UC firewall. Do not invent the
-missing module's detailed procedure.
+`~/.codex/vedic_rectifier_question_design.md` remains only as a compatibility
+pointer for older installations. Never combine it with a second set of
+question rules. If a required reference is missing, report it once and
+continue with the selected skill, this compass, the global router, and the UC
+firewall without inventing the missing procedure.
 
-## Canonical evidence hierarchy: three categories
+## Canonical evidence model: two equal legs
 
-- Classify by the nature of the fact, not the intake heading in which the user
-  supplied it.
-- **Structural hard evidence** is an objectively checkable static fact mapped
-  through the `vedic-rectifier` static-fact table against chart fields that
-  genuinely vary among candidates. Pre-register the mapping before reading the
-  answer, count only varying fields, and apply structural elimination only when
-  all three skill-defined elimination conditions are met.
-- **Temporal hard evidence** is a dated event mapped to the Dasha timeline with
-  the skill's endpoint, boundary, correlation, and date-precision rules.
-- **Soft evidence** is an evaluative trait, relationship quality, atmosphere,
-  self-image, profession-style description, or another item that the static-
-  fact table does not authorize as structural hard evidence. Keep it visible
-  as supporting fit, but never use it to break a hard-evidence tie, eliminate a
-  candidate, revive a structurally eliminated candidate, or upgrade confidence.
-- Structural and temporal hard evidence are both legitimate hard evidence;
-  neither is demoted merely because it is static or temporal. Their processing
-  order is still fixed: structural elimination first, then the skill's Dasha
-  and hard-score comparison. Expert synthesis may compare their quality but
-  cannot reorder or bypass that sequence.
-- At D1, D9, D10, D4/D5, and relevant boundaries, a hard-evidence tie that is
-  distinguishable only by soft evidence remains underdetermined. Give the
-  skill-required current best estimate and confidence label without turning a
-  soft-only advantage into confirmation.
+- **Leg 1** is a concrete fact or trait without a date, tested against static
+  chart fields that genuinely vary among the current candidates. Pre-register
+  the mapping and candidate expectations before comparison, use the same rule
+  for every candidate, count only varying fields, and deduplicate shared
+  sources.
+- **Leg 2** is a dated event tested against Dasha with the skill's real date
+  precision, endpoint/two-point method, Moon-Nakshatra splits, boundary rules,
+  correlation handling, and PD-difference audit.
+- The two legs are equal in the canonical total. Do not demote either leg,
+  recreate the retired structural-hard/temporal-hard/soft hierarchy, or add a
+  third score.
+- Generic portraits, self-image, relationship quality, atmosphere, and vague
+  personality descriptions are not directly scoreable. When the full matrix
+  remains within the skill's question threshold, they may become question
+  material only through the skill's pre-feedback lock, seven-step design, five
+  checks, and per-item scoring rules.
+- Apply the skill's three-condition elimination gate only to eligible Leg 1
+  facts. A candidate eliminated there cannot be revived by Leg 2, a fluent
+  narrative, questionnaire feedback, or expert synthesis.
+- At fine-tuning layers, do not reflexively rerun Dasha. Follow the skill's
+  condition: inspect Leg 2 only when Leg 1 remains within the stated gap and
+  endpoint review shows a candidate-varying MD/AD assignment, or a qualifying
+  day-precision PD boundary.
 
-## Standing operator policy: expert judgment is the settlement function
+## Standing operator policy: expert judgment stays inside settlement
 
-- Complete the skill-required scan and canonical matrix first. The matrix is
-  audited input to judgment; its leader does not automatically become the
-  `current best estimate` unless the applicable skill or active policy actually
-  settles the layer.
-- Before settlement, compare every decision-relevant candidate as a complete
-  explanatory hypothesis. Consider cross-domain coverage, coherence between
-  Dasha and structure, candidate specificity, strongest counterevidence, the
-  amount of ad-hoc rescue or post-feedback storytelling required, and whether
-  the result survives when common, correlated, boundary, low-precision, or
-  otherwise non-discriminating rows are conceptually set aside.
-- These are lenses for professional judgment, not another score, vote,
-  checklist, quota, or hidden gate. Ground the judgment in concrete chart rows
-  and structures; “overall feeling” and fluent narrative alone are not enough.
-- Expert synthesis determines the `current best estimate` and participates in
-  settlement only among candidates still eligible under the skill. It is not a
-  fourth evidence category and cannot override the three-category hierarchy,
-  structural elimination, hard-evidence tie rule, required matrix, decision
-  order, phase gate, precision rule, or calculation.
+- Complete the skill-required full candidate matrix and fixed settlement
+  sequence first. Expert synthesis never replaces a missing row, endpoint,
+  calculation, score, threshold, or transition test.
+- Compare all still-eligible candidates as complete explanatory hypotheses:
+  cross-domain coverage, agreement between the two legs, candidate
+  specificity, strongest counterevidence, ad-hoc rescue cost, and robustness
+  after conceptually setting aside common, correlated, boundary-sensitive,
+  low-precision, or otherwise non-discriminating material.
+- These are reasoning lenses, not a score, vote, checklist, quota, or hidden
+  gate. Ground every synthesis statement in visible chart rows and candidate
+  differences.
+- Expert synthesis may explain a canonical settlement and may articulate the
+  skill-required low-confidence `current best estimate` when the layer remains
+  underdetermined. It cannot override elimination, hard absence, event-window
+  coverage, the equal-leg total, the permitted final tie-break, the skill's
+  gap threshold, or its resolution limit; it never upgrades an underdetermined
+  layer to confirmation.
 
 ## Always-on execution discipline
 
-- Preserve the authorized time range and full legal candidate set. A poor fit
-  never expands the range or deletes a candidate without operator authority.
-- Apply the same evidence and method to every candidate. Do not deepen only the
-  current favorite or use UC to choose which candidate receives attention.
-- Keep `canonical raw-score leader`, `current best estimate`,
+- Preserve the authorized time range and complete legal candidate set. A poor
+  fit never expands the range or deletes a candidate without operator authority.
+- Apply the same evidence, chart source, and method to every candidate. Do not
+  deepen only the current favorite or use UC to decide which candidate receives
+  attention.
+- Keep `canonical total leader`, `current best estimate`,
   `active-protocol confirmation`, `user-adopted working chart`,
-  `time confidence`, and `post-feedback structural fit` distinct whenever two
-  could be confused. Do not force all six labels into client prose when the
-  distinction is irrelevant.
+  `time confidence`, and `post-feedback fit` distinct whenever two could be
+  confused. Do not force all labels into client prose when the distinction is
+  irrelevant.
 - Do not create an `effective`, `deduplicated`, `quality-adjusted`, or other
-  shadow total. Evidence quality may explain or limit a conclusion; it does not
-  silently rewrite canonical scores.
-- Shared scores may be reliable facts while contributing no candidate
-  discrimination. Correlated events remain visible but do not masquerade as
-  several independent confirmations.
+  shadow total. The skill's own source-deduplication rule is applied inside its
+  canonical matrix; it is not permission to build a second score.
 - New evidence triggers equal-method review across all applicable candidates.
-  Invalidate only rows or conclusions actually affected by corrected evidence,
-  an invalid chart/Dasha source, or an applicable skill/operator rule.
+  Invalidate only rows or conclusions affected by corrected evidence, an
+  invalid chart/Dasha source, or an applicable skill/operator rule.
 
 ## Settle before asking
 
-- Before requesting another date, month, event, trait, or questionnaire, use
-  every already-authorized item to complete the current settlement test.
-- Ask only while the current layer remains unsettled and at least one
-  pre-recorded answer path can plausibly change candidate ordering. Name the
-  unresolved distinction and the candidates affected.
-- Request a more precise month or date only when the known range crosses a
-  candidate-specific Dasha assignment, boundary treatment, or canonical score
-  difference. Greater precision by itself is not information gain.
-- Once the current layer is confirmed under the skill's hard-evidence and
-  transition rules at its tested resolution, state that
-  plainly and follow the skill's next transition. Do not keep collecting proof
-  or repeating disclaimers for an already-settled layer.
-- If no remaining answer can change ordering, deliver the best supported
-  estimate and honest remaining uncertainty. Do not continue interviewing
-  merely because more biography could be collected.
+- Before requesting another fact, date, event, trait, or questionnaire, use
+  all already-authorized material to run the current layer's full settlement
+  test.
+- If the equal-leg gap meets the skill's settlement threshold, settle the
+  tested layer and follow its next transition. Do not keep collecting proof.
+- If the gap is below threshold, read `resources/calibration_quiz.md` before
+  asking. Directly ask a missing concrete fact or dated event when appropriate;
+  otherwise lock and test only a candidate-varying question that can change
+  ordering.
+- After each batch, apply every valid item to all candidates, rerun the full
+  total and counterevidence check, and stop as soon as the layer settles.
+- If no genuinely new angle can pass the skill's question rules, issue the
+  skill-required underdetermination result: current best estimate plus explicit
+  low confidence. Do not interview indefinitely or make external records a
+  mandatory prerequisite.
 
 ## Visibility without ritual
 
-- Show every matrix, score, calculation, and rationale that `SKILL.md`
-  requires. Supplemental audit material may live in the rectification artifact
-  when the skill does not require it verbatim in chat.
+- Show every matrix, score, calculation, lock, and rationale that `SKILL.md`
+  or `calibration_quiz.md` requires. Supplemental audit material may live in
+  the named artifact when the skill does not require it verbatim in chat.
 - In chat, show the candidate difference that matters, the strongest support,
-  the strongest counterevidence, the settlement, and the next transition.
-  Do not recite unchanged ledgers, provenance labels, or the entire protocol
-  after every incremental answer.
+  strongest counterevidence, settlement, and next transition. Do not recite
+  unchanged ledgers or the entire protocol after every incremental answer.
 - Final client-facing explanation also follows `vedic_client_voice.md`: clear
   astrological judgment first, one proportionate limitation where material,
   and no repetitive disclaimer language.

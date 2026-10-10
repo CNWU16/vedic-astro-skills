@@ -179,9 +179,12 @@ Resolve paths against the active `CODEX_HOME`; paths below show the default.
 - **Rectification**: when `vedic-rectifier` is selected, read
   `~/.codex/vedic_rectifier_execution_overlay.md`. Treat its explicitly named
   standing operator policy under operator control. The compact overlay
-  routes its settlement, question-design, and interval-source references only
-  when their phases apply. If the overlay is missing, report once and continue
-  with the skill, this router, and the UC firewall.
+  routes its settlement and interval-source references only when their phases
+  apply, and routes questionnaire work to the selected skill's own
+  `resources/calibration_quiz.md`. The patch's legacy question-design filename
+  is only a compatibility pointer, not a second method source. If the overlay
+  is missing, report once and continue with the skill, this router, and the UC
+  firewall.
 - **Core analyst-edit mode**: activate only when the user explicitly invokes
   `印占咨询式整合模式`, requests a core analyst-edited complete report, or
   asks to use the consultative integration prompt. Verify that the complete
