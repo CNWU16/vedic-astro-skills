@@ -8,6 +8,19 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-10-10
 
+### 排盘环境补 tzdata（即时盘在 Windows 上起盘失败）
+
+**起因**：`vedic-prashna` 的 `prashna_time.py`、`calc_timing.py` 用标准库 `zoneinfo` 处理时区，KP 副层还要用它做
+带时区的时间加减（推大运起点、逐步搜过运）。macOS／Linux 自带系统时区库；Windows 没有，必须装 `tzdata` 包，
+否则 Phase 1 报 "No time zone found with key Asia/Shanghai"。原安装清单只有 `pytz`，漏了它。
+本命盘全程用 `pytz`，不受影响，不改。
+
+- `setup_env.py`：`REQUIRED_PACKAGES` 末尾加 `tzdata`（第 10 项，不改原编号）；`validate()` 加 `ZoneInfo('Asia/Shanghai')` 加载检查。
+- `check_env.py`：依赖检查加同一项。
+- `requirements.txt`：手动安装命令与依赖列表加 `tzdata`。
+- `SKILL.md`：依赖行与环境自检说明补 `tzdata`。
+- 已装好环境的用户重跑 `setup_env.py` 即可补上。
+
 ### 即时盘副层边界：Tajika 不运行条件 + KP 不收时的出口
 
 **起因**：Tajika 副层只看问者星（Lagna lord）与唯一事项宫主的直接接触。查表题、不判题没有事项星；

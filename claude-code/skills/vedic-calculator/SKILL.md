@@ -20,7 +20,7 @@ description: "Calculate a complete Vedic/Jyotish natal chart directly from birth
 ## 前置条件
 
 - Python 3.8 ~ 3.13（pysweph 为 C 扩展，**3.14 暂不支持**）
-- 依赖: pysweph, PyJHora==4.8.6, pytz
+- 依赖: pysweph, PyJHora==4.8.6, pytz, tzdata（时区规则库；Windows 跑 vedic-prashna 必需）
 
 > ⚠️ **不要直接 `pip install -r requirements.txt`！** PyJHora 未声明其运行时依赖，且 pip 包缺少 .se1 星历文件。
 > 请使用 `setup_env.py` 自动安装（见下方）。
@@ -57,7 +57,7 @@ description: "Calculate a complete Vedic/Jyotish natal chart directly from birth
 
 该脚本会自动检查：
   ✅ venv 位置和 Python 版本
-  ✅ 3个核心依赖（pysweph/PyJHora/pytz）
+  ✅ 3个核心依赖（pysweph/PyJHora/pytz）+ zoneinfo 时区库（Windows 靠 tzdata）
   ✅ swisseph 空壳检测
   ✅ 星历表文件
   ✅ 最小计算测试（SAV=337）

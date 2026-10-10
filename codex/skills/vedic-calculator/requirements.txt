@@ -7,9 +7,12 @@
 # 手动安装顺序（如果不用 setup_env.py）：
 #   pip install pysweph>=2.10.3.5 pytz>=2024.1 numpy geocoder geopy requests timezonefinder python-dateutil
 #   pip install PyJHora==4.8.6
+#   pip install tzdata
 #
 # Python 版本要求: 3.8 ~ 3.13（pysweph 为 C 扩展，暂无 3.14 预编译包）
 #
 pysweph>=2.10.3.5
 PyJHora==4.8.6
 pytz>=2024.1
+# 时区规则库：Windows 没有系统时区库，vedic-prashna 的 zoneinfo 靠它；macOS/Linux 装了无副作用
+tzdata

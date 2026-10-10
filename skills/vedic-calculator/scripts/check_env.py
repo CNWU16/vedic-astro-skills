@@ -104,6 +104,9 @@ def main():
         ("pytz",
          "import pytz",
          "import pytz; print(pytz.__version__)"),
+        ("zoneinfo 时区库（Windows 需 tzdata，vedic-prashna 用）",
+         "from zoneinfo import ZoneInfo; ZoneInfo('Asia/Shanghai')",
+         None),
     ]
     
     all_ok = True
