@@ -115,7 +115,7 @@ AB 选择先让用户选一个最想执行的方案，改问“执行 A 能否�
 | 对方会不会联系我／回复我 | `P-I.3`（7 宫） | — | B | 7 |
 | 我主动挽回能不能成 | `P-I.4` | — | A | 1 |
 | 已搬走的伴侣会不会回来同住 | `P-I.2`；Chapter II／V | — | A | 按专题角色 |
-| 能不能结婚 | `P-VII.1~2` | — | A | 7 |
+| 能不能结婚 | `P-VII.2` | `P-VII.1` | A | 7 |
 | 对方还爱不爱我；对方和现任会不会分手 | — | — | C | 不判 |
 | 有没有缘分；能不能长久 | 先澄清，改成上面某一行 | — | — | — |
 
@@ -123,12 +123,21 @@ AB 选择先让用户选一个最想执行的方案，改问“执行 A 能否�
 
 - `P-III.3~4` 原文是王者之间的和解；Ayer 注说它“can be used in all cases where
   settlement of scores is involved”。用于复合是类比，所以标 B级。
-- 人形星座（human signs）取 Gemini、Virgo、Libra、Aquarius，依据 III.3 的 Ayer 注；
-  IV.2 正文只列 Libra、Gemini、Aquarius，没有 Virgo。
+- 人形星座（human signs）：`P-III.3~4` 取 Gemini、Virgo、Libra、Aquarius，依据 III.3 的
+  Ayer 注；`P-IV.2` 按本偈正文只取 Libra、Gemini、Aquarius，不加 Virgo。各用各的清单。
 - III.3 的“凶星落变动座则冲突”属于和解规则本身，要用。`P-I.2`、`P-II.1~2` 的
   动座／固定座条件讲的是位置得失，不进复合主判。
 - III.4 吉凶星混合落 kendra 或人形 Lagna 时，Ayer 注是“will tend to continue the
-  tension”，落“悬”。
+  tension without resolving it, a preponderance of benefic influence leading to
+  prospective resolution”：按 `judgment-rubric.md` §4.1 数吉凶，吉占优记趋向和解
+  （困难后成），凶占优记偏不利，持平落“悬”。
+- 能不能结婚：`P-VII.2` (a) Moon 落 3／5／7／11／6 宫且受 Jupiter、Sun、Mercury 照，或
+  (b) 吉星落角宫／三方宫，则议婚能成。注：点名的是自然吉星，实指功能吉星；其余配置为否。
+  按宫表标签读：(a) 看 Moon 所在宫行的“七曜照射本宫”，有吉标签照即记满足（原文点名
+  三星，注只说改按功能取，未说须几颗，这是执行口径）；(b) 看 1／4／7／10／5／9 宫行的
+  “七曜占据”。“Sun”不是自然吉星，疑为 Venus 误印，无梵文无法核实，照录。同向
+  `P-VII.1`：Saturn 落 Lagna 起奇数宫（不计 Lagna）兼示得新娘，否则兼示得新郎，问娶
+  看前者、问嫁看后者；注列三问的次序（胎儿、新郎、新娘）与正文不一致，按正文。
 
 **操控／打听类不判**：打听对方行踪、新伴侣信息或隐私；问“怎么让他回来”“怎么让他
 离开现任”。用一句话说明为什么不判（这类问题要的是控制或窥探另一个人，卜卦不做），
@@ -149,12 +158,14 @@ AB 选择先让用户选一个最想执行的方案，改问“执行 A 能否�
 - `P-IV.3`：吉星落 10 宫和 7 宫赐位置；凶星落 12、11 宫不吉。原文是“(Malefic) Moon
   in lagna will not give favourable results, while in the tenth (even when malefic) it
   will”：Moon 落 Lagna 只在亏月时记不利；落 10 宫不论盈亏都有利。`P-II.1~2`：固定座
-  上升主得位，动座相反，变动座混合；吉星照 Lagna 与 Moon-lagna 吉。Ayer 在 II.1 注里
+  上升主得位，动座相反（注“he will not get the position”）；变动座混合，Ayer 注引
+  Bhattotpala *Prasnagyana*：上升点在前半按固定座读，后半按动座读，离 15° 很近时算输入
+  敏感。吉星照 Lagna 与 Moon-lagna 吉，凶星照则凶，吉凶同照为混合。Ayer 在 II.1 注里
   把“landing a job”列为得位的一种。
 - 裁员／调岗／换工作走 `P-I.2` Chyuti（Ch.1 示范题“Is a change of job imminent? Will
   I lose my job? Will I be transferred?”）。Ayer 注：Lagna 动座，且受本宫主或吉星占据／
   照射、没有凶星占据／照射，则变动成立；固定座即使无凶星也不变；变动座看吉凶影响
-  孰多。问“会不会被裁／调走”时，变动成立＝会；问“能不能保住”时方向相反。同向只用
+  孰多（按 `judgment-rubric.md` §4.1 第 1 条数）。问“会不会被裁／调走”时，变动成立＝会；问“能不能保住”时方向相反。同向只用
   `P-II.1` 的动／固座；`P-II.2` 的“吉星照 Lagna 吉”在 Chyuti 里反而促成变动，不用。
 - 竞争性考试：Ch.2 示范题 1&2“Will I succeed in the competitive examination?”挂
   `P-II.1~2`；`P-III.1` 原文是战事胜负，Ayer 注扩到“elections and such other
@@ -226,12 +237,12 @@ Phase 6。
 
 | 问法 | 主规则 | 同向检查 | 支持级 | 事项宫 |
 |---|---|---|---|---:|
-| 失物能不能找回、快不快 | `P-I.5` | `P-VI.3`、`P-V.1` | A | 11 |
-| 能不能买房／置产；住处问题能不能解决 | `P-I.2` Vriddhi | `P-II.1`（固定座得住处） | A | 4 |
-| 出行／出国能不能成 | `P-I.2` Pravasa | 问“能否早日出发”时加 `P-II.9` | A | 10 |
-| 在外的人或失踪者会不会回来 | `P-V.1`；失踪者寻得加 `P-I.5` | `P-V.2~3`、`P-III.5`、`P-I.2` Nivritti | A | 7 |
+| 失物能不能找回、快不快 | `P-I.5` | `P-VI.3`、`P-V.1`、`P-II.1~2` 动／固座 | A | 11 |
+| 能不能买房／置产；住处问题能不能解决 | `P-I.2` Vriddhi | `P-II.1~2` 动／固座 | A | 4 |
+| 出行／出国能不能成 | `P-I.2` Pravasa | `P-II.1~2` 动／固座；问“能否早日出发”时加 `P-II.9` | A | 10 |
+| 在外的人或失踪者会不会回来 | `P-V.1`；失踪者寻得加 `P-I.5` | `P-V.2~3`、`P-III.5`、`P-I.2` Nivritti 与 4 宫、`P-II.1~2` 动／固座 | A | 7 |
 | 病能不能好 | `P-IV.5` | `P-II.1~2`；`P-I.2` Nivritti 可选 | A | 1 |
-| 被诬陷／名誉能不能保住 | `P-I.2` Vriddhi | `P-I.2` Nivritti；`P-II.1` 注 | A | 4 |
+| 被诬陷／名誉能不能保住 | `P-I.2` Vriddhi | `P-I.2` Nivritti；`P-II.1~2` 动／固座；`P-IV.3` 2／5／1 宫 | A | 4 |
 | 谈判／和解能不能达成 | `P-III.3~4` | `P-I.3`（7 宫） | A | 7 |
 | 该不该投资某标的；会不会亏 | `P-IV.2` | `P-I.3`（11 宫） | B | 11 |
 | 生意亏损能不能补回 | `P-V.1` | `P-I.3`（11 宫） | B | 11 |
@@ -246,31 +257,50 @@ Phase 6。
   `full_moon_window`。`P-VI.3` 同向：满月或吉星占 Lagna、头升座上升受吉星照、强吉星
   落 11 宫则速得，Bhattotpala：皆无则渺茫。头升座 Ayer 注列 Leo、Virgo、Libra、
   Scorpio、Aquarius，没有 Gemini；Lagna 为 Gemini 时两说并列。`P-V.1` 吉星落 5／2／3
-  宫则失物复得。
-- `P-I.2` 四问的方向各不相同：Vriddhi 是 4 宫受本宫主或吉星占据／照射则兴；Pravasa
+  宫则失物复得。I.5、VI.3 的强吉星按 D1 `exalted`／`own_sign` 算（`standard-layer.md`
+  §2.1）。`P-II.1~2` 注：固定座“hidden from view, possibly misplaced inadvertently”，
+  没丢、一时找不到；动座“object lost is irrecoverable”；变动座前半按固定座、后半按动座。
+- `P-I.2` 四问的方向各不相同：Vriddhi 是 4 宫受本宫主或吉星占据／照射、且“unspoiled by
+  other planetary dispositions”则兴（4 宫同时有凶标签占据／照射时记混合，执行口径）；Pravasa
   是 10 宫动座且受凶星照才成行，受本宫主或吉星照反而不成；Nivritti 是 7 宫动座且受
   本宫主或吉星照则返回，受凶星照则否。不能互相套用。
+- 买房／置产：`P-I.2` Vriddhi 定结果。`P-II.1~2` 同向：固定座得住处（注“acquisition of a
+  dwelling place”），动座“he will not get the position or home desired”，变动座前半按固定座、
+  后半按动座。
 - 出行：`P-II.9` 按点名行星——动座上升且 Sun／Saturn／Mercury／Venus 之一占据则很快
   出发，该星逆行则否。Ayer 注称日月无逆行、“should be kept out of reckoning in this
-  context”：Sun 只免逆行判断、还是整体不计入，两读并列。
+  context”：Sun 只免逆行判断、还是整体不计入，两读并列。`P-II.1~2` 注：固定座“neither
+  departure nor arrival”，不成行；动座相反；变动座前半按固定座、后半按动座。
 - 返回：`P-V.1` 行星落 5／2／3 宫则返回，Jupiter／Venus 落此则快；`P-V.2` 7 或 6 宫有
   星、Jupiter 落角宫或 Mercury／Venus 落三方宫；`P-V.3` Moon 落 8 宫且角宫无凶星则平安
   返回；`P-III.5` Jupiter 或 Venus 落 2／3 宫则很快到来。点名行星的按点名读。
+  `P-V.3` 注：Moon 与角宫吉星都不可弱（“should not be weak”），D1 `debilitated` 算弱。
+  `P-I.2` 4 宫两说并列：正文“One returns from abroad, with a planet's occupation of the
+  fourth house”，有行星落 4 宫则回；注“the person from abroad has come home when the fourth
+  house contains its own lord or is aspected by it and not otherwise”，4 宫主占据或照 4 宫
+  才回。`P-II.1~2` 注：固定座“neither departure nor arrival”，不来；动座正文“相反”，注
+  “he has not arrived; he is moving”，在途、尚未到达，记有利（执行口径）；失踪者固定座注
+  “not gone abroad or far away, nor dead”，只取“没走远”，生死按 §2.13 不判。
   方向距离走 §2.10 `P-VI.4`。“是否平安、是否还活着”不判（§2.13）。
 - 疾病：`P-IV.5` 吉星落 Lagna／7／8／5 宫且彼此相照，Moon 落 3／6／10／11 宫则康复；
-  Bhattotpala 注：反之不利，配置不全时看有利影响是否占优。`P-II.1` 注：固定座“cure is
-  doubtful”，动座“chances of recovery are good”，与求职方向相反。只答能否康复，不作
-  医疗诊断，不替代就医。
+  Bhattotpala 只补“落这些宫的吉星（Moon 除外）须彼此相照”。Ayer 注：凶星落这些宫且 Moon
+  落别处则相反；配置不全时看有利影响是否占优（按 `judgment-rubric.md` §4.1 数，吉占优记
+  终可康复）。`P-II.1~2` 注：固定座“cure is doubtful”，动座“chances of recovery are good”，
+  与求职方向相反。只答能否康复，不作医疗诊断，不替代就医。
 - 名誉：依据 `P-I.2` 注的诽谤例——先看 Vriddhi（4 宫）定结果，再看 Nivritti（7 宫）
-  定对方能否得逞；`P-II.1` 注“honour and reputation … fixed signs ensure safety”同向。
+  定对方能否得逞；`P-II.1~2` 注同向：固定座“honour and reputation … fixed signs rising
+  ensure safety”，动座“humiliation is certain”，变动座前半按固定座、后半按动座。`P-IV.3`
+  吉星落 2／5／1 宫得名利（fame and wealth），作同向检查。
 - 谈判／和解：`P-III.3` 注“all cases where settlement of scores is involved …
   negotiations”，原文覆盖，标 A；复合仍按 §2.7 类比标 B。
 - 投资：`P-IV.2` 吉星落 3／5／11／7 宫得益、凶星则损，照射等同占据（注）；Ch.4 示范题
-  “Should I invest in this particular scrip or will it ruin me?”只挂靠，标 B。
+  “Should I invest in this particular scrip or will it ruin me?”只挂靠，标 B。吉星落人形座
+  亦吉，人形座按本偈正文取 Libra、Gemini、Aquarius，不加 Virgo（§2.7）。
 - 亏损补回：`P-V.1` 吉星落 5／2／3 宫则失物复得；Ch.5 示范题“I have incurred a loss in
   my business; can I expect to make it good soon?”，标 B。
-- 开庭：`P-II.11` Sun 与 Moon 落 4 宫则不来，Mercury／Jupiter／Venus 落 4 宫则很快来，
-  按点名读；Ch.2 示范题“Will the suit against me come up for hearing soon?”，标 B。
+- 开庭：`P-II.11` Sun 与 Moon 落 4 宫则不来，Mercury、Jupiter 与 Venus 落 4 宫则很快来，
+  按点名读。两处原文都是“and”，按字面读作同落；三星同落 4 宫少见，两组都不满足时本条
+  不出方向。Ch.2 示范题“Will the suit against me come up for hearing soon?”，标 B。
   “官司能不能赢”不在此行。
 - 胎儿性别：`P-VII.1` Saturn 落 Lagna 起奇数宫为男，否则为女；注：按 Varahamihira，
   Lagna 本身不计入奇数宫。只用于已怀孕的提问，不作医学判断。`P-VII.5` 需要六分盘

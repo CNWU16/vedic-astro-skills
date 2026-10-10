@@ -8,6 +8,30 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-10-10
 
+### 即时盘混合配置按原文占优定局；II.1~2、I.2、IV.5、VII.2 等逐偈对原文补漏
+
+**起因**：rubric 把 `P-I.4` 的“困难后成”归进“悬”，原文写明由占优定局的混合配置（I.4、III.4、IV.5 注）也一律落悬，
+判读单大量出“悬”。逐偈对 Ayer 原文复核时另查出若干漏收条件和出处错位。脚本、engine、数据契约不改。
+
+- **占优数法**（`judgment-rubric.md` 新增 §4.1，执行口径）：只用于原文写明占优定局的 `P-I.4`、`P-III.4`、`P-IV.5` 注。
+  数所看宫在宫表“七曜占据”“七曜照射本宫”两列的吉凶标签（F1 宫主记吉，盈月未定与 Rahu／Ketu 不计）：吉多记
+  “有利（困难后成）”按成判；凶多记偏不利，判不成仍须 §5 两条独立不利，凑不齐判悬；持平判悬。Chyuti 变动座按同法数，
+  是事件方向，问“保住”时反向。原文没给占优的规则（`P-II.2` 吉凶同照、`P-I.3`）混合照旧。
+  `standard-layer.md` §5、SKILL Phase 4、rubric §2／§3／§4／§5／§11 同步；`ja-prashna.md` 加“困難を経て成立する方向”。
+- **`P-II.1~2`**：补正文“凶星照则凶”与吉凶同照为混合；变动座按注引 Bhattotpala *Prasnagyana* 分前后半（前半按固定座、
+  后半按动座，近 15° 算输入敏感）。Ayer 注逐题型的例句（住处、出行、失物、失踪者、疾病、名誉）作动／固座同向检查，
+  写进 `question-taxonomy.md` §2.12 各题；照射子句仍只用于求职、考试、疾病。
+- **`P-I.2`**：Vriddhi 补“unspoiled by other planetary dispositions”；返回题补 4 宫两说（正文“有行星落 4 宫”，
+  注“4 宫主占据或照 4 宫”），并列。
+- **`P-IV.5`**：原写“Bhattotpala 注：反之不利”，出处错位——Bhattotpala 只补吉星彼此相照，“相反”“占优”是 Ayer 注。改正并接占优数法。
+- **婚姻**：主规则改为 `P-VII.2`（Moon 落 3／5／7／11／6 宫受 Jupiter、Sun、Mercury 照，或吉星落角宫／三方宫），
+  `P-VII.1` 作同向；“Sun”疑为 Venus 误印，无梵文无法核实，照录。
+- **其他原文条件**：`P-II.11` 两处原文都是“and”，按字面同落；`P-IV.2` 人形座按本偈正文三座（不加 Virgo），
+  `P-III.3~4` 按 III.3 注四座；`P-IV.1`、`P-IV.5` 补“配置相反则结果相反”；`P-IV.3` 补吉星落 2／5／1 宫得名利，作名誉同向；
+  `P-III.4` 补“吉凶混落则僵持，吉占优趋向解决”；`P-V.3` 注“不可弱”按 D1 `debilitated`；I.5、VI.3 的“强吉星”按
+  `exalted`／`own_sign`；Laghu Jataka（8、12 宫无吉）不收。
+- `house-karaka-map.md` A／B 级行同步（买房、出行、返回、失物、婚姻、求职、投资、开庭）。
+
 ### 排盘环境补 tzdata（即时盘在 Windows 上起盘失败）
 
 **起因**：`vedic-prashna` 的 `prashna_time.py`、`calc_timing.py` 用标准库 `zoneinfo` 处理时区，KP 副层还要用它做

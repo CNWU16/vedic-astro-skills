@@ -15,6 +15,7 @@ calculation, evidence ledger, judgment authority, or follow-up boundaries in
 - Translate `成/悬/不成` semantically, not mechanically. Prefer
   `成立・実現の方向`, `保留・未決着`, or `現時点では不成立の方向`, followed by
   one sentence explaining what that means for the user's observable question.
+  Render `成（困难后成）` as `困難を経て成立する方向` and name where the resistance lies.
 - Do not use divinatory theatrics, fear language, or absolute guarantees.
 
 ## Stable terminology
