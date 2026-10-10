@@ -161,7 +161,8 @@ AB 选择先让用户选一个最想执行的方案，改问“执行 A 能否�
   上升主得位，动座相反（注“he will not get the position”）；变动座混合，Ayer 注引
   Bhattotpala *Prasnagyana*：上升点在前半按固定座读，后半按动座读，离 15° 很近时算输入
   敏感。吉星照 Lagna 与 Moon-lagna 吉，凶星照则凶，吉凶同照为混合。Ayer 在 II.1 注里
-  把“landing a job”列为得位的一种。
+  把“landing a job”列为得位的一种。两条主规则一条有利、另一条混合时判“成（困难后成）”
+  （`judgment-rubric.md` §3）。
 - 裁员／调岗／换工作走 `P-I.2` Chyuti（Ch.1 示范题“Is a change of job imminent? Will
   I lose my job? Will I be transferred?”）。Ayer 注：Lagna 动座，且受本宫主或吉星占据／
   照射、没有凶星占据／照射，则变动成立；固定座即使无凶星也不变；变动座看吉凶影响
@@ -241,7 +242,7 @@ Phase 6。
 | 能不能买房／置产；住处问题能不能解决 | `P-I.2` Vriddhi | `P-II.1~2` 动／固座 | A | 4 |
 | 出行／出国能不能成 | `P-I.2` Pravasa | `P-II.1~2` 动／固座；问“能否早日出发”时加 `P-II.9` | A | 10 |
 | 在外的人或失踪者会不会回来 | `P-V.1`；失踪者寻得加 `P-I.5` | `P-V.2~3`、`P-III.5`、`P-I.2` Nivritti 与 4 宫、`P-II.1~2` 动／固座 | A | 7 |
-| 病能不能好 | `P-IV.5` | `P-II.1~2`；`P-I.2` Nivritti 可选 | A | 1 |
+| 病能不能好（含代他人问） | `P-IV.5` | `P-II.1~2` 动／固座 | A | 1 |
 | 被诬陷／名誉能不能保住 | `P-I.2` Vriddhi | `P-I.2` Nivritti；`P-II.1~2` 动／固座；`P-IV.3` 2／5／1 宫 | A | 4 |
 | 谈判／和解能不能达成 | `P-III.3~4` | `P-I.3`（7 宫） | A | 7 |
 | 该不该投资某标的；会不会亏 | `P-IV.2` | `P-I.3`（11 宫） | B | 11 |
@@ -286,7 +287,10 @@ Phase 6。
   Bhattotpala 只补“落这些宫的吉星（Moon 除外）须彼此相照”。Ayer 注：凶星落这些宫且 Moon
   落别处则相反；配置不全时看有利影响是否占优（按 `judgment-rubric.md` §4.1 数，吉占优记
   终可康复）。`P-II.1~2` 注：固定座“cure is doubtful”，动座“chances of recovery are good”，
-  与求职方向相反。只答能否康复，不作医疗诊断，不替代就医。
+  与求职方向相反。“彼此相照”按标准层“派生结构事实”的“七曜互视”行判（执行口径）：同宫
+  不算互照，只有一颗吉星不算满足；正反配置任一完整成立、且不混对方成分时直接定方向，
+  其余都按 §4.1 数。代他人问病同样读 1 宫：Ch.4 示范题 5“My brother is seriously ill;
+  will he recover completely?”挂本偈。只答能否康复，不作医疗诊断，不替代就医。
 - 名誉：依据 `P-I.2` 注的诽谤例——先看 Vriddhi（4 宫）定结果，再看 Nivritti（7 宫）
   定对方能否得逞；`P-II.1~2` 注同向：固定座“honour and reputation … fixed signs rising
   ensure safety”，动座“humiliation is certain”，变动座前半按固定座、后半按动座。`P-IV.3`

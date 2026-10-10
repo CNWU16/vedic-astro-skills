@@ -6,6 +6,32 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased] - 2026-10-11
+
+### 即时盘“不成”按题目规则计数；求职两条主规则合判；疾病同向限动／固座
+
+**起因**：用新口径复跑同一天起的 5 张盘，面试题全部落悬。逐日核两年数据（Lahiri、正午）：约 46% 的日子 Moon 所在星座
+受凶星照，这些日子求职题的 `P-II.1~2` 最多是混合；旧 rubric 要求两条主规则都有利，这些日子求职题出不了“成”。Moon 约
+2.25 天才换一座，这是全天共有的因素，不该单凭它把求职题压在悬。同时查出 §5“不成”按字面只数主规则，单主规则题型
+（疾病、竞争性考试）永远凑不齐；疾病行同向写法与执行要点不一致。脚本、engine、数据契约不改。
+
+- **求职两条主规则合判**（`judgment-rubric.md` §3 第 1 条，执行口径）：`P-IV.3` 与 `P-II.1~2` 一条有利、另一条混合的，
+  判“成（困难后成）”，并说出阻力在哪；另一条不利的不判成。rubric §4、SKILL Phase 4、`standard-layer.md` §5、
+  `question-taxonomy.md` §2.8 同步。竞争性考试只有 `P-II.1~2` 一条主规则，Moon 受凶照的日子仍最多判悬，已知未改。
+- **不成计数**（rubric §5 第 1 条）：“两条相互独立的主规则”改为“两条相互独立的题目规则”，题目规则指 taxonomy 表中本题
+  “主规则”“同向检查”两列；`P-I.3` 除外，它是 §3 第 2 条、§5 第 3 条的一般规则，计入会重复计票。SKILL Phase 4、
+  契约 §5、rubric §11 同步。
+- **疾病**：同向检查写明只取 `P-II.1~2` 动／固座（taxonomy 表、事项宫表）。删去“`P-I.2` Nivritti 可选”：Ayer 在 I.2 注
+  只泛称 Nivritti 宫“for the fulfilment of almost all desirable events it is examined”，没给病题读法，同向检查列现计入 §5，
+  “可选”无判据。`P-IV.5`“彼此相照”按标准层“七曜互视”行判，同宫不算互照，只有一颗吉星不算满足；正反配置任一完整成立
+  且不混对方成分才直接定方向，其余按 §4.1 数（执行口径）。代他人问病同样读 1 宫（Ch.4 示范题 5“My brother is seriously
+  ill; will he recover completely?”挂本偈）。
+- **其他**：核证矩阵 `P-II.1~2` 行补“竞争性考试的主规则”；`standard-layer.md` §2.1 写明 `P-II.2` 只读第 1 宫行与 Moon
+  所在宫行的“七曜照射本宫”列，同宫不算照（原文“Benefic aspects to the lagna and the Moon-lagna”）。
+- 订正 2026-10-10 条目：照射子句只用于求职、考试，疾病只用动／固座。
+
+---
+
 ## [Unreleased] - 2026-10-10
 
 ### 即时盘混合配置按原文占优定局；II.1~2、I.2、IV.5、VII.2 等逐偈对原文补漏
@@ -20,7 +46,7 @@ All notable changes to this project will be documented in this file.
   `standard-layer.md` §5、SKILL Phase 4、rubric §2／§3／§4／§5／§11 同步；`ja-prashna.md` 加“困難を経て成立する方向”。
 - **`P-II.1~2`**：补正文“凶星照则凶”与吉凶同照为混合；变动座按注引 Bhattotpala *Prasnagyana* 分前后半（前半按固定座、
   后半按动座，近 15° 算输入敏感）。Ayer 注逐题型的例句（住处、出行、失物、失踪者、疾病、名誉）作动／固座同向检查，
-  写进 `question-taxonomy.md` §2.12 各题；照射子句仍只用于求职、考试、疾病。
+  写进 `question-taxonomy.md` §2.12 各题；照射子句仍只用于求职、考试。
 - **`P-I.2`**：Vriddhi 补“unspoiled by other planetary dispositions”；返回题补 4 宫两说（正文“有行星落 4 宫”，
   注“4 宫主占据或照 4 宫”），并列。
 - **`P-IV.5`**：原写“Bhattotpala 注：反之不利”，出处错位——Bhattotpala 只补吉星彼此相照，“相反”“占优”是 Ayer 注。改正并接占优数法。

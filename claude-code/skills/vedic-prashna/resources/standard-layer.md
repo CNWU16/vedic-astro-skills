@@ -58,7 +58,7 @@
 | 提问盘生成的 120 年 Vimshottari／Chara Dasha | 与 `K/M` 边界冲突 | — | 禁入 |
 | *Prasna Marga* 一年／一月 Prasna Dasa | `M-VI.39,65~67` | Kerala | 不自动进入 K/P/B 主层 |
 | 宫数／Navamsa 数换算应事时间 | `M-XIV.81~82,85`、`P-V.5` | 时间副层 | 只在 `timing-layer.md`；不改三档 |
-| 固定座上升得位（Sthana labha），动座相反，变动座混合（注引 Bhattotpala *Prasnagyana*：上升点在变动座前半按固定座读，后半按动座读）；吉星照 Lagna 与 Moon-lagna 吉，凶星照则凶，吉凶同照为混合 | `P-II.1~2` 及注 | 位置得失；Ayer 注扩展到求职、住处、出行、失物、失踪者、疾病、名誉 | 求职题主规则（见 `question-taxonomy.md` §2.8）；其余题型只取动／固座作同向检查（§2.12）；变动座上升点近 15° 时前后半归属算输入敏感 |
+| 固定座上升得位（Sthana labha），动座相反，变动座混合（注引 Bhattotpala *Prasnagyana*：上升点在变动座前半按固定座读，后半按动座读）；吉星照 Lagna 与 Moon-lagna 吉，凶星照则凶，吉凶同照为混合 | `P-II.1~2` 及注 | 位置得失；Ayer 注扩展到求职、住处、出行、失物、失踪者、疾病、名誉 | 求职、竞争性考试的主规则（见 `question-taxonomy.md` §2.8）；其余题型只取动／固座作同向检查（§2.12）；变动座上升点近 15° 时前后半归属算输入敏感 |
 | 吉星落 10／7 宫赐位置（position），落 2／5／1 宫得名利（fame and wealth）；凶星落 12／11 宫不吉；(Malefic) Moon 在 Lagna 不利，在 10 宫“even when malefic”有利 | `P-IV.3` | 位置；名利 | 求职题主规则；Lagna 条款只在亏月成立，10 宫条款不论盈亏；2／5／1 宫条款作名誉题同向检查 |
 | 吉星落 10／1／7 宫则胜；Mars／Saturn 落 9 宫败，Mercury／Jupiter／Venus 落 9 宫胜 | `P-III.1` | 战事胜负；Ayer 注扩展到选举等 competitive efforts | 竞争性考试同向检查，B级（主规则 `P-II.1~2`） |
 | 人形星座（III.3 注：Gemini、Virgo、Libra、Aquarius）上升且有吉星、吉星落 12／11 宫、吉星落 kendra 或人形 Lagna 受吉星照则和解；凶星落变动座则冲突，凶星同样落位受凶星照则相反；吉凶混落则僵持，吉占优趋向解决（III.4 注） | `P-III.3~4` 及注 | 王者和解；Ayer 注扩展到 settlement of scores／negotiations | 谈判／和解A级；复合类比B级（见 `question-taxonomy.md` §2.7） |
@@ -113,7 +113,8 @@ Ayer 在 I.3 注中主张按 functional character 取吉凶，并给出 Rule 1�
   （原文只在 I.5、VI.3 明确满月为吉，由这两条规则自读满月窗）。Rahu／Ketu 不贴标签。
 - 标签由 formatter 写进宫表“七曜占据”“七曜照射本宫”两列，判读只查表，不手推。
   “吉星照 Lagna”看第 1 宫行；“吉星照 Moon-lagna”看 Moon 所在宫行；`P-II.2` 的凶星照与吉凶同照
-  也看这两行。
+  也看这两行。`P-II.2` 只读这两行的“七曜照射本宫”列，同宫不算照（原文“Benefic aspects to the lagna
+  and the Moon-lagna”）。
 - 有注要求按功能取的偈走标签：I.3、I.4、I.5 的“strong benefic in 11th”、II.3、
   III.1、III.3、VII.2。
 - 正文点名行星且 Ayer 无注的偈按点名判，不换标签：I.5 的满月受 Jupiter／Venus 照、
@@ -212,10 +213,11 @@ B级输出必须标“通用古典规则判读”；这是来源覆盖等级，�
 
 - **成**：适用的题目主规则与一般规则共同偏有利，没有同级强反证；原文写明混合时由占优定局的
   规则（`P-I.4`、`P-III.4`、`P-IV.5` 注），吉占优也记有利，结论标“困难后成”（数法见
-  `judgment-rubric.md` §4.1）；
+  `judgment-rubric.md` §4.1）；求职题两条主规则一条有利、另一条混合的，也判成，标“困难后成”
+  （`judgment-rubric.md` §3）；
 - **悬**：规则混合且原文没给占优定局或吉凶持平、只有B级通用规则且方向不集中，或输入边界敏感；
   须写明类型（混合配置／来源级不足／输入敏感）；
-- **不成**：至少两条相互独立的适用主规则偏不利，且没有同级救援；
+- **不成**：至少两条相互独立的题目规则（主规则或同向检查，`P-I.3` 除外）偏不利，且没有同级救援；
 - 单一 Moon、单一宫位、单一尊贵度或单一缺失不能独立判“不成”。
 
 成败档次与时间副层分开：时间只在成／悬档给出，不因时间远近改档（见 `timing-layer.md`）。
