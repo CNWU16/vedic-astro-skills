@@ -1,6 +1,6 @@
 """
 Prashna 隔离回归测：确保沙箱化硬约束不被打破。
-六条隔离断言 + 时间副层算例 + 标准层算例，任一红即禁止上线。每次 sync 前必跑。
+七条隔离断言 + 时间副层算例 + 标准层算例，任一红即禁止上线。每次 sync 前必跑。
 
 对应 SKILL.md §隔离硬约束 与 resources/timing-layer.md。
 """
@@ -193,7 +193,7 @@ def test_no_reverse_import_from_prashna() -> None:
 
 
 # ---------------------------------------------------------------------------
-# 断言 5/6：时间副层与标准层、Tajika/KP 互不导入
+# 断言 5/6/7：时间副层、标准层、Tajika、KP 互不导入
 # ---------------------------------------------------------------------------
 def _imports(path: Path, modules) -> list:
     if not path.exists():
@@ -217,6 +217,27 @@ def test_standard_builder_no_timing_import() -> None:
                               ("calc_timing", "build_timing_overlay"))
     assert not offenders, (
         "红灯：标准层脚本导入时间副层 —— 时间副层只在定档后单独运行，不得进入标准产物。\n"
+        "命中:\n  " + "\n  ".join(offenders)
+    )
+
+
+def test_standard_builder_no_optional_stack_import() -> None:
+    offenders = []
+    for name in ("build_prashna_data.py", "format_prashna_standard.py",
+                 "calc_moon_vedic.py", "prashna_time.py"):
+        offenders += _imports(PRASHNA_ROOT / "scripts" / name,
+                              ("calc_optional_tajika", "calc_optional_kp",
+                               "build_tajika_overlay", "build_kp_horary"))
+    for name in ("calc_optional_tajika.py", "build_tajika_overlay.py"):
+        offenders += _imports(PRASHNA_ROOT / "scripts" / name,
+                              ("calc_optional_kp", "build_kp_horary"))
+    for name in ("calc_optional_kp.py", "build_kp_horary.py"):
+        offenders += _imports(PRASHNA_ROOT / "scripts" / name,
+                              ("calc_optional_tajika", "build_tajika_overlay",
+                               "format_prashna_standard", "calc_moon_vedic"))
+    assert not offenders, (
+        "红灯：标准层导入 Tajika/KP，或 Tajika 与 KP 互相导入 —— 可选栈只能单独运行，"
+        "KP 不得借用标准层的格式化或 Moon 段。\n"
         "命中:\n  " + "\n  ".join(offenders)
     )
 
@@ -331,11 +352,13 @@ if __name__ == "__main__":
         _run("no_reverse_import_from_prashna", test_no_reverse_import_from_prashna),
         _run("standard_builder_no_timing_import", test_standard_builder_no_timing_import),
         _run("timing_no_optional_stack_import", test_timing_no_optional_stack_import),
+        _run("standard_builder_no_optional_stack_import",
+             test_standard_builder_no_optional_stack_import),
         _run("timing_worked_examples", test_timing_worked_examples),
         _run("standard_worked_examples", test_standard_worked_examples),
     ]
     if all(results):
-        print("\n[GREEN] 六条隔离断言、时间副层算例与标准层算例全绿。")
+        print("\n[GREEN] 七条隔离断言、时间副层算例与标准层算例全绿。")
         sys.exit(0)
     else:
         print("\n[RED] 隔离断言未全绿，禁止上线。")

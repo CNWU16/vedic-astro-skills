@@ -317,7 +317,9 @@ Yoga 名称、`mixed`、`promise`、`cusp`、`sub-lord`、`Itthasala` 或生产�
 
 先完成标准层 Phase 2，取得 Lagna lord 和唯一事项宫主，再运行独立
 `scripts/build_tajika_overlay.py`。不得在标准 builder 上增加
-`--enable-tajika`。
+`--enable-tajika`。查表题、不判题，以及问者星与事项星为同一颗（事项宫为 1 宫
+或与 Lagna 同一座主）时不运行，按 `tajika-optional.md` 用一句白话说明，不拿
+Karaka 或其他宫主顶替。
 
 当前实现按 *Tajika Nilakanthi* 2.3–59 输出十六 Yoga 分类，并保留
 Uttama／Madhyama／Sama／Adhama 的 Kamboola 16 档、严格 Shunyamarga、
@@ -339,6 +341,8 @@ Horary 必须由用户给出 `1–249` 数字；不得从时刻、文字或随�
 关系题必须先确认可观察结果范围：现有 `love-materialization` 只回答是否建立
 明确、双方确认并持续推进的恋爱关系。仅恢复联系、互动回暖、恢复暧昧或秘密心意
 不在该公式范围内，必须在起盘前失败关闭；不得擅自把低门槛问题改写成“关系落实”。
+题型不收或范围失败关闭时，按 `kp-optional.md`“不收时的出口”回答：说明原因，
+给出改用标准层或换成已收问法两个选项，不替用户切换。
 
 KP 与 Tajika 在计算、文件和结论权限上互斥；用户可以显式要求分别查看两套结果，
 但不得在任一栈内读取另一栈或拼票。只有 Q&A 的跨栈比较模式可以并列解释已经生成

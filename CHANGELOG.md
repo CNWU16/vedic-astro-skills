@@ -8,6 +8,22 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-10-10
 
+### 即时盘副层边界：Tajika 不运行条件 + KP 不收时的出口
+
+**起因**：Tajika 副层只看问者星（Lagna lord）与唯一事项宫主的直接接触。查表题、不判题没有事项星；
+事项宫为 1 宫（主动挽回、裁员／保工作、病能否好、考试）或与 Lagna 同一座主时，两颗是同一颗，脚本直接拒绝，
+旧文本没说这时怎么回答，容易拿 Karaka 或别的宫主顶替。KP 只收两类题型，其他题型在脚本入口被拒，用户看不到白话说明。
+算法不改。
+
+- **Tajika 不运行条件**（`tajika-optional.md`）：上述三种情况不运行、不生成 `tajika_overlay.md`，用一句白话说明
+  副层不适用及原因，主答案以标准层为准，不拿 Karaka 或其他宫主顶替。原典对主星相同的处理未核，失败关闭。
+  SKILL Tajika 段、`qa_rules.md`「后加 Tajika」同步。
+- **KP 不收时的出口**（`kp-optional.md` 新增节）：题型不在已收表或 outcome scope 失败关闭时不起 KP 盘，固定回答三点——
+  暂不收及原因（当前来源没有对应公式，不表示事情不会发生）、可改用标准层（复合／联系走 §2.7）、或换成 KP 已收的两类问法；
+  只给选项，不替用户切换，不把问题改写成已收题型。SKILL KP 段、`qa_rules.md` §5 第 4 步同步。
+- **隔离断言 7**（`tests/test_prashna_isolation.py`）：标准层（builder、formatter、Moon、时间工具）不导入 Tajika／KP；
+  Tajika 与 KP 互不导入；KP 不借用标准层的格式化与 Moon 段。
+
 ### 即时盘示范题修复：吉凶改按 Ayer 功能口径；Ayer 示范题题型补齐；描述题与天气查表（取代下方即时盘条目的"吉凶口径""裁员""竞争性考试"三处）
 
 **起因**：逐题对照 *Shatpanchasika*（Ayer 译本）各章示范题后发现三类问题：吉凶口径与 Ayer 注相反

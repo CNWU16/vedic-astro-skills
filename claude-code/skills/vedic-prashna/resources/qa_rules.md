@@ -90,6 +90,8 @@ python scripts/build_tajika_overlay.py \
 ```
 
 不得重跑或覆盖 `structured_prashna.md`，也不存在 `--enable-tajika`。
+查表题、不判题，以及问者星与事项星为同一颗时不运行，按 `tajika-optional.md`
+用一句白话说明，不拿 Karaka 或其他宫主顶替。
 
 ---
 
@@ -106,7 +108,8 @@ python scripts/build_tajika_overlay.py \
 1. 用户亲自给出 1–249；
 2. 记录开始判断 KP 问题的秒级时刻和实际地点；
 3. 让用户确认同一个可观察结果对应的 outcome scope；
-4. 只有 outcome scope 与已支持 topic 完全一致时才起盘；
+4. 只有 outcome scope 与已支持 topic 完全一致时才起盘；不一致时按
+   `kp-optional.md`“不收时的出口”回答，不起盘；
 5. 写入独立 `kp_horary_*` 目录。
 
 这不允许 KP 回写或改判标准结论。
