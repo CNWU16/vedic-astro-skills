@@ -17,7 +17,7 @@
 | `K` | KN Rao 本人直接表述或本人署名案例 | 可进入，但不得扩大原文适用范围 |
 | `P` | *Shatpanchasika* 原文／可定位译文 | 可进入；专题规则只用于对应题型 |
 | `B` | Bhavan／Journal of Astrology 实例 | 可作兼容性与用法证据，不冒充 KN Rao 原话 |
-| `M` | *Prasna Marga*／Kerala 系（Raman 译注） | 有条件进入：逐偈核过原文并记 `M-章.偈`；只用 §4 白名单数据；专题条只用于对应题型；不收寿命、死亡、贞洁、子女夭折、相貌等 C 级内容。征兆、触碰部位、Arudha、Gulika、Thrisphuta、Yama Sukra、仪式补救不收。时间模块见 `timing-layer.md` |
+| `M` | *Prasna Marga*／Kerala 系（Raman 译注） | 有条件进入：逐偈核过原文并记 `M-章.偈`；只用 §4 白名单数据；专题条只用于对应题型；不收寿命、死亡、贞洁、子女夭折、相貌等 C 级内容。征兆、触碰部位、Arudha、Gulika、Thrisphuta、Yama Sukra、仪式补救不收。宫义、星义（XIV.3–14、20–21、31–32）只作判读单叙述，不计分（`judgment-writing.md`）。时间模块见 `timing-layer.md` |
 | `T` | Tajika | 仅 Tajika 沙箱 |
 | `KP` | Krishnamurti Paddhati | 仅 KP 独立栈 |
 | `E` | 工程／产品规则 | 可作输入、隔离和置信度门控，不冒充古典教义 |
@@ -62,7 +62,7 @@
 | 固定座上升得位（Sthana labha），动座相反，变动座混合（注引 Bhattotpala *Prasnagyana*：上升点在变动座前半按固定座读，后半按动座读）；吉星照 Lagna 与 Moon-lagna 吉，凶星照则凶，吉凶同照为混合 | `P-II.1~2` 及注 | 位置得失；Ayer 注扩展到求职、住处、出行、失物、失踪者、疾病、名誉 | 求职、竞争性考试的主规则（见 `question-taxonomy.md` §2.8）；其余题型只取动／固座作辅助规则（§2.12）；变动座上升点近 15° 时前后半归属算输入敏感 |
 | 吉星落 10／7 宫赐位置（position），落 2／5／1 宫得名利（fame and wealth）；凶星落 12／11 宫不吉；(Malefic) Moon 在 Lagna 不利，在 10 宫“even when malefic”有利 | `P-IV.3` | 位置；名利 | 求职题主规则；Lagna 条款只在亏月成立，10 宫条款不论盈亏；2／5／1 宫条款作名誉题辅助规则，求职题用来讲待遇与满意度（不计分） |
 | 吉星落 10／1／7 宫则胜；Mars／Saturn 落 9 宫败，Mercury／Jupiter／Venus 落 9 宫胜 | `P-III.1` | 战事胜负；Ayer 注扩展到选举等 competitive efforts | 竞争性考试辅助规则，B级（主规则 `P-II.1~2`） |
-| 人形星座（III.3 注：Gemini、Virgo、Libra、Aquarius）上升且有吉星、吉星落 12／11 宫、吉星落 kendra 或人形 Lagna 受吉星照则和解；凶星落变动座则冲突，凶星同样落位受凶星照则相反；吉凶混落则僵持，吉占优趋向解决（III.4 注） | `P-III.3~4` 及注 | 王者和解；Ayer 注扩展到 settlement of scores／negotiations | 谈判／和解A级；复合类比B级（见 `question-taxonomy.md` §2.7） |
+| 人形星座（III.3 注：Gemini、Virgo、Libra、Aquarius）上升且有吉星、吉星落 12／11 宫、吉星落 kendra 或人形 Lagna 受吉星照则和解；凶星落变动座则冲突，凶星同样落位受凶星照则相反；吉凶混落则僵持，吉占优趋向解决（III.4 注） | `P-III.3~4` 及注 | 王者和解；Ayer 注扩展到 settlement of scores／negotiations | 谈判／和解A级；复合、对方会不会联系类比B级（见 `question-taxonomy.md` §2.7） |
 | 吉凶按功能取：F1 本宫主对本宫恒吉；F2 同管本宫起 3、12 宫且落陷为凶；F3 同管本宫起角宫与三方宫且强（exalted／own_sign）为吉；其余回落 Bhattotpala 自然吉凶 | `P-I.3` 注 Rule 1/2 及两例；Bhattotpala 见同注 | 全部 `P` 规则中的“吉星／凶星” | 采纳；正文点名行星且 Ayer 无注的偈按点名，不换标签（见 §2.1） |
 | D1 尊贵度、受克和燃烧事实 | `P-I.3` 及注释 | 行星承事能力；F2／F3 的落陷与强 | 次级，不单项定档 |
 | Chyuti 看 Lagna：动座且受本宫主或吉星占据／照射、无凶星则变动成立，固定座不变，变动座看吉凶多寡；Vriddhi 看 4 宫：受本宫主或吉星占据／照射且未受其他配置破坏（“unspoiled by other planetary dispositions”）则兴；Pravasa 看 10 宫：动座且受凶星照则成行，受本宫主或吉星照则否；Nivritti 看 7 宫：动座且受本宫主或吉星照则返回，受凶星照则否；在外者返回另看 4 宫，正文“with a planet's occupation of the fourth house”，注“contains its own lord or is aspected by it and not otherwise”，两说并列 | `P-I.2` 及注 | 换工作／裁员／调岗、房屋、出行、返回；注例扩展到诽谤 | 对应题型主规则，A级 |
@@ -96,7 +96,7 @@
 | 24小时／3个月重复起盘阈值 | `U/E` | — | 删除数字阈值 |
 | 时间地点粗略时检查 Lagna／Navamsa 边界敏感性 | `E` | 全部 | 输入稳定性门控 |
 | 吉凶混合时按占优断：“If the influences are mixed, then prediction must be made according to the predominating factor”；Raman 判婚事例盘按多数（XVII.19 注“the majority of factors”）、按正负条数（XVII.32 注“minus points”） | `M-XIV.98`；`M-XVII` 注 | 全部题型的账本合判 | 采纳为合判原则；数法是执行口径（`judgment-rubric.md` §3.2） |
-| Ayer 第 4 偈示范题挂“I am thinking of going abroad; will I succeed?” | `P-I.4` 示范题 | 出国、签证、留学、调动能否办成 | 出行“能否办成”主规则 |
+| Ayer 第 4 偈示范题挂“I am thinking of going abroad; will I succeed?”“I want to buy a property; will I succeed?” | `P-I.4` 示范题 | 出国、签证、留学、调动能否办成；买房 | 出行“能否办成”主规则；买房辅助规则 |
 | 动座上升有吉星占据利行人，凶星占据则害；固定座上升有凶星占据，行人亦平安 | `P-II.5` 及注 | 示范题：路上顺不顺 | 出行“路上顺不顺”主规则；条件都不满足时本条不出方向 |
 | 7 宫有吉星为好 | `M-XVII.5` | 婚姻；表白／确立关系类比 | 婚恋题辅助规则 |
 | 受克的 Moon 落 Lagna 起偶数宫且亏月提问则不成；Moon 落 8 宫有阻 | `M-XVII.15` | 同上 | 婚恋题辅助规则；“受克”按 Moon 所在宫行有凶标签占据或照射（执行口径）；同偈 Arudha 起算不收 |
@@ -106,6 +106,9 @@
 | 表白、确立关系等现代恋爱题 | `P-I.4`（一般所谋之事）+ `M-XVII.5／15／16／17` 类比 | 现代恋爱 | B级；婚姻专题只用于 `question-taxonomy.md` §2.7 明列的类比行 |
 | 寿命、贞洁、子女夭折、相貌、征兆、Yama Sukra | `M-XVII.18–26、33–37` 等 | — | 不收（C 级或不在数据契约） |
 | 吉凶落宫换算应事时间 | `M-XIV.83,86,88` | 时间 | 不收：83 只讲忧患、多颗凶星取哪颗未写；86 Raman 自认“One has only to guess”；88 线索多而无排序 |
+| 十二宫在即时盘里所管之事；宫的外名／内名（宫与本宫主相连时读内名）；上升＝提问人 | `M-XIV.3–14`、`M-XIV.20–21`、`M-XIV.24` | 判读单叙述 | 只作叙述，不计分（`judgment-writing.md` §2.1） |
+| 七曜所主（Karaka）：Sun 父亲与精神、Moon 母亲与心意、Mars 手足地产勇气、Mercury 言语学识、Jupiter 智力子女智慧健康、Venus 车乘妻室感官之乐、Saturn 忧劳病苦仆从；Karaka 有力则所主显，无力则徒有其名，Saturn 相反 | `M-XIV.31–32` | 判读单叙述 | 只作叙述，不计分，不构成闭环；叙述不提死亡（`judgment-writing.md` §2.2） |
+| 宫位受损二十一条（6／8／12 宫主连接、宫主落 6／8／12、Papakartari 等） | `M-XIV.28–30` | — | 不收：Raman 注“not advisable to apply these combinations literally”；与 Ayer I.3 注“6／8／12 宫主入本宫反而减凶”相冲 |
 
 ### 2.1 吉凶口径（Ayer 功能吉凶）
 
@@ -267,7 +270,7 @@ B级照常计分，不得把 B 自动记持平。自然 Karaka 只能作有来�
 - G. N. Saxena, [“Case Study of a Prediction – Missing Persons”](https://www.journalofastrology.com/article.php?article_id=153)：
   Bhavan 实例；含 Tajika，不可整体搬入标准层。
 - [*Prasna Marga*, B. V. Raman 译本](https://archive.org/details/PrasnaMargaBVR)：
-  VI.39、65–67；VIII.63–65；XIV.25、81–83、85–86、88、98；XVII.5、8–9、11–19、31 及注；Appendix IV。
+  VI.39、65–67；VIII.63–65；XIV.3–14、20–21、24–25、28–32、81–83、85–86、88、90、98；XVII.5、8–9、11–19、31 及注；Appendix IV。
 - *Shatpanchasika*, V. A. K. Ayer 译本（*Indian Horary*）：I.2–5、I.7、II.1–2、II.5、II.9、
   II.11、III.1、III.3–5、IV.1–5、V.1–3、V.5、VI.1–4、VII.1–4、VII.12–13，
   各章示范题及译者注（I.3 注 Rule 1/2 及两例为功能吉凶依据）。
