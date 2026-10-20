@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""build_timing_overlay.py — Prashna 时间副层(标准层定档为成/悬后运行)
+"""build_timing_overlay.py — Prashna 时间副层(标准层内部档为偏成/持平后运行)
 
-在已有 prashna_* 目录写 timing_overlay.md，不改 structured_prashna.md 和三档结论。
+在已有 prashna_* 目录写 timing_overlay.md，不改 structured_prashna.md 和内部三档。
 算法、题型事项宫与边界见 resources/timing-layer.md，纯函数在 calc_timing.py。
 
 隔离：标准 builder 不导入本脚本；本脚本不导入 Tajika/KP。
@@ -64,7 +64,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--verdict", required=True, choices=("favorable", "pending"),
-        help="标准层结论档：favorable=成，pending=悬；不成档不运行本脚本",
+        help="标准层内部档：favorable=偏成，pending=持平；偏不成档不运行本脚本",
     )
     parser.add_argument("--out-dir", required=True)
     args = parser.parse_args()

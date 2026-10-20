@@ -230,12 +230,15 @@ percentage or infer the real-world relationship type from the chart.
 <summary><strong>🔮 vedic-prashna: separate question-time chart</strong></summary>
 
 Prashna accepts one concrete, observable question and casts a chart for the exact asking time and
-place. The default standard layer is rooted in *Shatpanchasika* and compatibility-screened against
-KN Rao/Bharatiya Vidya Bhavan practice. It shows an auditable rule ledger and reaches one of three
-directions: supported, unresolved, or unsupported at present.
+place. The default standard layer is rooted in *Shatpanchasika*, compatibility-screened against
+KN Rao/Bharatiya Vidya Bhavan practice, and conditionally admits rules from *Prasna Marga* of the
+same lineage. Each applicable rule is scored and the reading follows whichever side predominates.
+The report first tells the story in plain language (current situation, driving forces, obstacles,
+signs of a turn, rough timing, what to do now) and keeps the auditable rule ledger after it.
 
-The current standard layer does not claim production-grade event dates and does not treat a Moon
-without contact as an automatic denial. Tajika contact analysis and KP 1-249 are off-by-default,
+When the direction leans toward progress or is evenly balanced, a timing layer gives an approximate
+window from classical sources. A Moon without contact is never treated as an automatic denial.
+Tajika contact analysis and KP 1-249 are off-by-default,
 file-isolated optional stacks that never vote with the standard judgment. Both remain explicitly
 experimental candidates until their published-example and boundary suites are complete.
 

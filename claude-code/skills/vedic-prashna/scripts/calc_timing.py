@@ -32,7 +32,7 @@ PERIOD_UNITS = {
     "Saturn": (1, "年", "Sama"),
 }
 
-VERDICT_PREFIX = {"favorable": "约", "pending": "如果能成，大约"}
+VERDICT_PREFIX = {"favorable": "约", "pending": "如果推进顺利，大约"}
 
 _J2000 = 2451545.0
 _J2000_UTC = datetime(2000, 1, 1, 12, tzinfo=timezone.utc)
@@ -155,7 +155,7 @@ def format_timing_section(data: dict) -> str:
 
     lines = ["# 时间副层（timing overlay）\n"]
     lines.append(f"> 提问时刻：{data['judgment_time']}（{data['judgment_timezone']}）")
-    lines.append(f"> 标准层结论档：{'成' if data['verdict'] == 'favorable' else '悬'}"
+    lines.append(f"> 标准层内部档：{'偏成' if data['verdict'] == 'favorable' else '持平'}"
                  "；本文件不改该结论\n")
 
     lines.append("## 先说人话\n")
@@ -200,7 +200,7 @@ def format_timing_section(data: dict) -> str:
     lines.append("")
 
     lines.append("## 边界\n")
-    lines.append("- 只在标准层结论为成或悬时运行；不成档不给时间。")
+    lines.append("- 只在标准层内部档为偏成或持平时运行；偏不成档不给时间。")
     lines.append("- T2 的天/月分法是 Raman 注的假设（原文只说可见半球快、不可见半球慢）。")
     lines.append("- T4 只作参考，不与主时间折中。")
     lines.append(

@@ -3,7 +3,7 @@
 
 The implementation follows Tajika Nilakanthi, Samjnatantra,
 Sodasayogadhyaya 2.3-59.  It remains isolated from the Parashari standard
-layer: no result produced here can alter the standard ``成/悬/不成`` verdict.
+layer: no result produced here can alter the standard-layer internal tiers ``偏成/持平/偏不成``.
 """
 from __future__ import annotations
 
@@ -1115,7 +1115,7 @@ def format_tajika_section(data: dict) -> str:
                 else "无额外过程修正"
             )
         ),
-        "- 判读权限：只解释接触过程，不产生或改写标准层“成／悬／不成”。",
+        "- 判读权限：只解释接触过程，不产生或改写标准层内部三档（偏成／持平／偏不成）。",
         "",
         "## 主星对",
         "",
@@ -1244,7 +1244,7 @@ def format_tajika_section(data: dict) -> str:
     lines.extend(
         [
             "- Rahu/Ketu 不参与本副层。",
-            "- 本文件不产生“成／悬／不成”结论。",
+            "- 本文件不产生标准层内部三档（偏成／持平／偏不成）。",
             f"- 生产状态：{data['production_status']}。",
         ]
     )

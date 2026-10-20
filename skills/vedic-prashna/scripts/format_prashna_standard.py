@@ -213,7 +213,7 @@ def _descriptive_facts(chart, d9_lagna):
 
     lines.append("### 描述题与天气查表事实\n")
     lines.append(
-        "> 只在 `question-taxonomy.md` §2.10 描述题、§2.11 天气题消费；描述输出不进成／悬／不成三档。"
+        "> 只在 `question-taxonomy.md` §2.10 描述题、§2.11 天气题消费；描述输出不进内部三档。"
         "原文歧义处两说并列，不择一。\n"
     )
 
@@ -509,8 +509,8 @@ def format_standard_layer(chart):
 
     lines.append("### 时间边界\n")
     lines.append(
-        "> 本文件不含时间。标准层定为成或悬后，时间副层另写 timing_overlay.md"
-        "（resources/timing-layer.md）；不成档不给时间。提问盘生成的120年 Vimshottari、"
+        "> 本文件不含时间。标准层定为偏成或持平后，时间副层另写 timing_overlay.md"
+        "（resources/timing-layer.md）；偏不成档不给时间。提问盘生成的120年 Vimshottari、"
         "Chara Dasha、当前过运均不作为 Prashna 时间。\n"
     )
     return "\n".join(lines)

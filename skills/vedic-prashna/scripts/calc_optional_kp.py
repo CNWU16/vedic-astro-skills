@@ -1961,7 +1961,7 @@ def format_kp_judgment(data: dict) -> str:
         f"- {timing_boundary}",
         (
             "- 本判读单只解释 KP 1–249 结果。它不读取或修改 "
-            "structured_prashna.md，也不把 KP 状态换算为标准层的“成／悬／不成”。"
+            "structured_prashna.md，也不把 KP 状态换算为标准层内部三档（偏成／持平／偏不成）。"
         ),
         f"- 研究验证状态：{data['production_status']}。",
     ]

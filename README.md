@@ -224,10 +224,12 @@ friendship、family 四种专属框架。
 <summary><strong>🔮 vedic-prashna：独立提问时刻盘</strong></summary>
 
 Prashna 只回答一个可观察结果明确的问题，使用问题正式形成时的准确时间和地点起盘。
-默认标准层以 *Shatpanchasika* 为主文本，并通过 KN Rao/Bharatiya Vidya Bhavan
-实践兼容性筛选，以可显示的规则账本给出“成／悬／不成”判断。
+默认标准层以 *Shatpanchasika* 为主文本，经 KN Rao/Bharatiya Vidya Bhavan 实践兼容性
+筛选，并有条件收入同一系的 *Prasna Marga*。适用规则逐条计分、按吉凶占优合判；判读单
+先用人话讲事情怎么走（现状、推动的力量、阻力、转机、大概时间、现在能做什么），可核对的
+规则账本放在后面。
 
-当前标准层不提供生产级事件日期，也不会把 Moon 无接触自动写成“不成”。Tajika
+倾向偏向推进或两边相当时，时间副层按原典给一个大致时间；不会把 Moon 无接触自动当成否定。Tajika
 接触层和 KP 1–249 是默认关闭、文件和结论权限均隔离的可选栈；它们不会与标准层
 拼票。Tajika 与 KP 在出版例盘和边界测试闭合前继续明确标为实验候选。
 

@@ -14,7 +14,7 @@ prashna_<yyyymmdd_HHMMSS>_<label>/ 独立目录。
 默认标准层:
   - 仅输出 resources/standard-layer.md 的字段白名单。
   - 不输出本命 Dasha、Chara Karaka、SAV/BAV、分盘、Yoga 或过运。
-  - 不计算时间；成/悬档的时间副层由独立 build_timing_overlay.py 写 timing_overlay.md
+  - 不计算时间；偏成/持平档的时间副层由独立 build_timing_overlay.py 写 timing_overlay.md
     (resources/timing-layer.md)，本脚本不导入它。
 
 用法:
@@ -105,7 +105,7 @@ def build_prashna_header(
         )
     lines.append("Node模式: Mean Node")
     lines.append("默认标准层: Shatpanchasika-rooted + KN Rao/Bhavan compatibility")
-    lines.append("时间副层: 成/悬档另由 build_timing_overlay.py 写 timing_overlay.md")
+    lines.append("时间副层: 偏成/持平档另由 build_timing_overlay.py 写 timing_overlay.md")
     lines.append("```\n")
 
     lines.append("## 提问信息\n")
