@@ -1,172 +1,159 @@
 # Rectifier Candidate Settlement and Expert Synthesis
 
 Read this module at Step 3c and whenever a D1, D9, D10, D4/D5, or relevant
-boundary candidate set is being settled. It preserves the selected skill's
-three evidence categories, structural-elimination gates, fixed candidate
-decision order, canonical calculations, and visible requirements. The expert-
-synthesis layer improves judgment inside those boundaries; it does not replace
-them.
+boundary candidate set is being settled. It preserves the selected skill's two
+equal evidence legs, pre-registration rules, elimination gates, fixed decision
+order, numeric threshold, calculations, and visible requirements. Expert
+synthesis improves counterevidence review and explanation inside those
+boundaries; it never replaces them.
 
 ## Settlement sequence
 
-Complete these analytical operations in order. They are a reasoning sequence,
-not a requirement to create a new client-facing section for every operation.
+Complete these operations in order. They are a reasoning sequence, not a
+requirement to create a separate client-facing section for every item.
 
-1. Complete the skill-required full candidate-by-evidence matrix and preserve
-   its original rows, scores, and totals.
-2. Classify every item as structural hard evidence, temporal hard evidence, or
-   soft evidence by its nature rather than its intake heading.
-3. Pre-register and test structural hard evidence, then apply the skill's
-   three-condition structural-elimination gate before comparing Dasha results.
-4. Complete the temporal hard-evidence audit and the skill's fixed hard-
-   evidence decision order.
-5. Audit which hard rows genuinely distinguish candidates, then search the
-   full candidate set for the strongest counterevidence.
-6. Perform candidate-level expert synthesis only among candidates that remain
-   eligible and apply the skill's transition, underdetermination, and
-   resolution rules.
-7. Report soft evidence separately as supporting fit. It never breaks a hard-
-   evidence tie or upgrades an underdetermined layer to confirmation.
+1. List the fields that actually vary among every current candidate at the
+   active layer.
+2. Complete Leg 1: pre-register the mapping and each candidate's expectation,
+   compare all eligible facts and traits, deduplicate common sources, and apply
+   the skill's three-condition elimination gate.
+3. Complete Leg 2: audit every dated event against Dasha using the required
+   source, real date precision, endpoint method, boundaries, and correlation
+   rules. At a fine-tuning layer, run this leg only under the skill's stated
+   candidate-varying Dasha condition.
+4. Preserve the canonical matrix and combine the two legs at equal weight.
+   Apply the skill's fixed order: Leg 1 elimination, skill-defined hard absence,
+   event-window coverage, equal-leg total, then the permitted final tie-break.
+5. If the canonical gap meets the skill threshold, settle the tested layer. If
+   it does not, read the skill's `resources/calibration_quiz.md`, run its full
+   pre-feedback design and scoring procedure, and then recompute all candidates.
+6. If the gap still does not settle and no new valid question angle remains,
+   issue the skill-required underdetermination result: current best estimate
+   with explicit low confidence.
+7. Search the complete candidate set for the strongest counterevidence and use
+   expert synthesis only to explain the valid settlement or the constrained
+   best estimate.
 
-## Three-category evidence audit
+## Leg 1 audit: facts and traits against static differences
 
-### Structural hard evidence
+- An item may score when it is concrete enough to answer, mapped before
+  comparison to a chart field that varies among candidates, and applied by the
+  same rule to every candidate.
+- `event_house_map.md` provides common examples, not a closed universe. For a
+  fact outside its example table, use that file's core mapping, pre-register
+  the house/lord/karaka/divisional rule and candidate expectations, then compare.
+- Count only candidate-varying fields. A reliable fact can remain useful
+  context while contributing zero discrimination when all candidates share its
+  relevant chart structure.
+- Deduplicate items derived from the same chart fields or one real-world
+  process. Keep them visible when useful, but do not manufacture independent
+  confirmations.
+- Generic portraits, self-image, relationship quality, atmosphere, and vague
+  personality descriptions are not directly scoreable. They may be used as
+  raw material only after the skill's questionnaire procedure produces a
+  locked, recognizable, candidate-varying, valid item.
+- Eliminate a candidate only when every skill-defined condition is met: the
+  fact is objectively checkable and user-confirmed, the mapping row permits
+  elimination, and all required indicators point against that candidate.
+  Missing any condition allows only the skill-defined score effect.
+- A Leg 1 elimination is final for that settlement pass. Leg 2, questionnaire
+  feedback, fluent narrative, and expert synthesis cannot revive it. If every
+  candidate is eliminated, recheck the fact, mapping, and calculations instead
+  of choosing the least-bad candidate.
 
-- Use only objectively checkable static facts authorized by the
-  `vedic-rectifier` static-fact mapping table.
-- Before comparing the fact with the user's answer, record the candidate-
-  varying field, the table rule, and each candidate's expected
-  support/contradiction/neutral result. Do not add or swap a rule after seeing
-  the answer.
-- A fact contributes only where the mapped house, lord, karaka, or divisional
-  field genuinely varies among candidates.
-- Eliminate a candidate only when all skill-defined elimination conditions are
-  met: the fact is objectively checkable and user-confirmed, the mapping row is
-  marked eliminative, and all required indicators point against that candidate.
-  Missing any condition permits a score effect only, not elimination.
-- A structurally eliminated candidate cannot be revived by Dasha fit, soft
-  evidence, fluent narrative, or expert synthesis. If all candidates are
-  eliminated, recheck the fact, mapping, and calculations instead of choosing
-  the least-bad candidate.
+## Leg 2 audit: dated events against Dasha
 
-### Temporal hard evidence
+- Keep every dated event in the canonical event/Dasha matrix and preserve the
+  user's real precision. Never invent a month from a year-only memory.
+- Use the skill's local-time conversion, candidate-interval endpoints,
+  Moon-Nakshatra splits, boundary treatment, and event-window method. A
+  midpoint, original time, or favorite-candidate point is not a substitute.
+- Shared Dasha matches may be reliable but have no candidate discrimination.
+  Related stages of one real-world transition remain visible without becoming
+  several independent confirmations.
+- PD is a post-MD/AD candidate-difference audit for qualifying date precision.
+  It does not rewrite the canonical MD/AD score or independently locate a
+  birth minute.
+- In D9/D10/D4/D5 and other fine-tuning layers, default to the divisional
+  structure comparison. Inspect Dasha only when the skill's Leg 1 gap and
+  candidate-varying MD/AD or qualifying PD condition are both met.
 
-- Keep every dated event in the skill's canonical event/Dasha matrix. Respect
-  the reported date precision; do not invent a month from a year-only memory.
-- Use the required endpoint method, Moon-Nakshatra splits, boundary treatment,
-  local-time conversion, and PD-difference audit. A representative midpoint is
-  not a valid substitute.
-- Shared scores may be reliable facts while contributing no candidate
-  discrimination. Correlated stages of one real-world process remain visible
-  but do not masquerade as independent confirmations.
-- PD remains a post-MD/AD difference audit and cannot independently locate a
-  birth minute or rewrite the canonical MD/AD score.
+## Canonical total and candidate-difference audit
 
-### Soft evidence
+- Preserve all original Leg 1 rows, Leg 2 rows, scores, and totals. Never build
+  an `effective`, `quality-adjusted`, `independent`, or other shadow score.
+- Record the exact proof for every elimination and hard-absence decision.
+- Identify rows shared by all candidates, rows affected by date precision or a
+  boundary, rows belonging to one correlated process, and genuine flips in
+  lordship, placement, drishti, divisional structure, Dasha, or another
+  skill-authorized field.
+- Apply the selected skill's decision order exactly. Expert synthesis cannot
+  move a later consideration ahead of an earlier canonical gate.
+- The skill's numeric gap is binding. Meeting it settles the tested layer when
+  all earlier gates are satisfied; missing it routes to the skill's
+  questionnaire or underdetermination path, not to an invented threshold.
 
-- Treat relationship quality, family atmosphere, personality, self-image,
-  profession style, spouse portrait, and facts not authorized by the static-
-  fact table as soft evidence even when the user states them confidently.
-- Apply the same chart-derived mapping to every candidate and reject Barnum-
-  like, answer-fitted, correlated, or non-discriminating descriptions.
-- Keep usable soft evidence visible as supporting fit and for client
-  explanation. It may corroborate a hard-evidence winner, but it cannot break a
-  hard-evidence tie, eliminate or revive a candidate, alter the hard total, or
-  raise confidence.
+## Questionnaire handoff
 
-## Candidate-difference audit
-
-- After the canonical matrix, identify:
-  - structural eliminations and the exact three-gate proof for each;
-  - hard rows shared by all remaining candidates;
-  - differences driven only by vague dates or Dasha boundaries;
-  - rows belonging to one correlated transition or handoff cluster;
-  - genuine candidate flips in Dasha, lordship, placement, drishti, divisional
-    structure, or another skill-authorized factor;
-  - the exact hard evidence producing the leader-versus-runner-up difference.
-- Do not build an `effective`, `deduplicated`, `quality-adjusted`, or other
-  shadow total. The difference audit explains the canonical result and informs
-  expert judgment without silently changing skill scores.
-- Apply the skill's candidate decision order exactly: structural elimination,
-  skill-defined hard absence, event-window coverage, hard-evidence total, then
-  the permitted final tie-break. Expert synthesis cannot move a later item
-  ahead of an earlier one.
+- Do not duplicate question-design rules here. Before any questionnaire work,
+  read `resources/calibration_quiz.md` from the selected installed
+  `vedic-rectifier` skill completely.
+- Preserve that resource's required order: full matrix first, real candidate
+  differences, opposing predictions, suitable question type, `A/B/0`, five
+  checks, pre-feedback lock in `rectification_quiz.md`, then submission.
+- A directly missing concrete fact may be asked directly and scored through
+  Leg 1 pre-registration. A dated event updates Leg 2 at its real precision.
+  A valid locked questionnaire item is scored exactly as the skill specifies.
+- Apply feedback to every candidate and return to the full settlement sequence.
+  `0`, missing, unanswerable, withdrawn, or invalid items provide no support.
 
 ## Full-candidate counterevidence
 
-- Search all current candidates, including any candidate that must be retained
-  for the skill's mandatory recheck. Apply new evidence with the same method to
-  each.
-- For every plausible candidate, identify its strongest support and strongest
-  contradiction. Ask what would have to be explained away for it to win.
-- When new feedback favors one candidate, rerun the applicable full matrix.
-  Change a canonical row only when its input, classification, mapping, source,
-  or method is actually invalid.
-- Do not rescue conflict after feedback by relabeling soft evidence as hard,
-  inventing a static-fact mapping, or rewriting contrary rows into agreement.
+- For every still-relevant candidate, identify its strongest support, strongest
+  contradiction, and what would have to be explained away for it to win.
+- Apply every new item with the same method across the full candidate set,
+  including candidates retained for a mandatory recheck.
+- Change a canonical row only when its input, mapping, source, classification,
+  or method is invalid. Do not rescue a preferred candidate by fitting a rule
+  after feedback or rephrasing contrary evidence into agreement.
 
 ## Candidate-level expert synthesis
 
-After the canonical hard-evidence decision sequence, compare every still-
-eligible candidate as a complete explanatory hypothesis.
+After the canonical sequence, compare each still-eligible candidate as a
+complete explanatory hypothesis:
 
-For each candidate, judge:
+- coverage across independent life domains;
+- agreement between Leg 1 and Leg 2;
+- candidate specificity rather than broadly available fit;
+- survival under its strongest counterevidence;
+- amount of special pleading, answer fitting, or post-feedback storytelling;
+- whether the claim precision matches the chart and date resolution.
 
-- whether it explains independent life domains rather than one attractive
-  cluster;
-- whether structural and temporal hard evidence reinforce the same mechanism;
-- whether its strongest signals are candidate-specific or broadly available;
-- whether it survives its strongest counterevidence;
-- how much special pleading, answer fitting, or post-feedback storytelling it
-  needs;
-- whether claim precision matches the actual chart and date resolution.
-
-These are lenses for professional judgment, not another score, vote, checklist,
-quota, or hidden gate. Expert synthesis may explain the canonical result and
-select a skill-permitted current best estimate; it may not override a
-structural elimination, promote a soft-only leader, bypass the fixed decision
-order, or manufacture confirmation where the skill requires underdetermination.
-
-## Settlement outcomes
-
-- When structural and temporal hard evidence converge, and the skill's gates
-  are met, confirm only the tested layer.
-- When one hard category discriminates and the other is genuinely neutral,
-  follow the skill's hard-evidence score and transition rules; neutrality is
-  not contrary evidence.
-- When the two hard categories conflict, preserve the conflict, apply the
-  skill's decision order, and state the strongest surviving counterevidence.
-- When the hard-evidence difference is within the skill's underdetermination
-  threshold and only soft evidence distinguishes candidates, mark the layer
-  `underdetermined`. Request an external hard anchor first, then additional
-  decision-changing hard evidence if useful. If none is available, still give
-  the skill-required current best estimate with explicit low or limited
-  confidence; do not block delivery and do not call it confirmed.
-- Confirmation applies only to the tested resolution. D1 confirmation fixes
-  the Lagna sign; D9/D10 and later layers control finer time resolution under
-  the skill.
+These are lenses for professional judgment, not another score, checklist,
+vote, quota, or gate. Expert synthesis explains why the canonical settlement
+is robust. When the skill requires an underdetermined best estimate, it may
+articulate the best-supported surviving candidate, but it must retain the
+explicit low-confidence label and cannot call the layer confirmed.
 
 ## Incremental evidence and reopening
 
-- Before asking for more information, run the settlement above using all
+- Before asking for more information, run the full settlement using all
   existing evidence. Stop intake as soon as the layer settles.
-- Another question or evidence round is allowed only while the layer remains
-  unsettled and it tests a named, skill-eligible, decision-changing
-  distinction. There is no invented round quota.
+- Another batch is allowed only while the layer remains below threshold and a
+  genuinely new candidate difference can pass the skill's question rules.
 - On later evidence, show the new rows across all candidates, updated canonical
-  totals, the material difference audit, and the reopening decision. Do not
-  reprint unchanged history unless the skill or operator requests it.
+  totals, material counterevidence, and reopening decision. Do not reprint
+  unchanged history unless the skill or operator requests it.
 - Reopen a confirmed lower layer only when its canonical result changes, a
   skill restart trigger applies, or a prior source, endpoint, calculation,
-  classification, mapping, or scored input is invalidated.
+  mapping, or scored input is invalidated.
 
 ## Conclusion provenance
 
-- Keep canonical hard-score leader, current best estimate, active confirmation,
+- Keep canonical total leader, current best estimate, active confirmation,
   user-adopted working chart, time confidence, and post-feedback fit distinct
-  when more than one label matters.
-- A working choice is not independent confirmation. Feedback may update fit but
-  cannot retroactively increase the confidence of a pre-feedback prediction.
-- Once a layer is validly confirmed, say so without repetitive qualification.
-  Refining it at D9 or D10 does not reopen it unless valid new evidence triggers
-  the skill's recheck or restart rule.
+  whenever more than one label matters.
+- A working choice is not independent confirmation. Feedback may update fit
+  but cannot retroactively increase the confidence of a pre-feedback claim.
+- Confirmation applies only to the tested resolution. D1 confirmation fixes
+  the Lagna sign; D9/D10 and later layers govern finer time resolution.
