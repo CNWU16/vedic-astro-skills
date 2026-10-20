@@ -6,6 +6,29 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased] - 2026-10-20
+
+### rectifier `time_scan.py`：`--tz` 改填时区名，夏令时与本命盘同口径换算 ⚠️ 不再接受数字偏移
+
+**起因**：`--tz` 原为固定数字（SKILL 示例写"中国=8"），不按夏令时换算。中国 1986-1991 年夏季实际是 UTC+9，
+按钟表时间传 8，扫描中心会比本命盘晚 1 小时。实测上海 1988-07-15 10:00：`--tz 8` 得 Virgo 151.67°，本命盘 engine
+（Asia/Shanghai）是 Leo 138.73°，默认 ±30 分钟的扫描范围覆盖不到真实时间。已有一例实盘首扫因此重扫。本命排盘 engine
+和即时盘脚本一直按时区名换算，不受影响，未改。
+
+- `--tz` 改为填 IANA 时区名，和排本命盘用的同一个；用户声明标准时，就填排盘时用的同一个固定时区（如 `Etc/GMT-8`）。
+  换算用 pytz `localize(is_dst=None)`，和 engine `_localize_strict` 同口径：落在夏令时切换的跳过／重复时段直接报错。
+  传数字偏移（`8`、`5.5` 等）直接报错，并提示改填时区名。
+- 两点法 Dasha 的段首、段末各按当时的实际偏移换回本地时间。
+- 表头「基准」加时区名、实际偏移和夏令时标记。
+- SKILL.md：两处调用模板和 `--tz` 说明改为时区名；读结果新增 Lagna 核对：扫描表里对应 structured_data 出生时间的那一行，
+  Lagna 须与 structured_data 一致，不一致即停。
+- 回归：上海夏令时、上海跨零点、纽约夏季、新德里、`Etc/GMT-8` 五例，`+0min` 行 Lagna 均与 engine 一致；三个非夏令时
+  例与旧版数字入参的输出逐行相同（含两点 Dasha），既有扫描结果不受影响；切换时段和数字入参均按预期报错。
+- 脚本新增依赖 `pytz`（calculator 三个核心依赖之一，随环境自检安装）。
+- 两仓 shared 同步，`consistency_lint` 全绿。
+
+---
+
 ## [Unreleased] - 2026-10-11
 
 ### 即时盘“不成”按题目规则计数；疾病同向限动／固座

@@ -6,20 +6,23 @@ Vedic Rectifier — Time Scanner (swisseph版)
 确保 Lagna 度数和 D9/D10 边界完全一致。
 
 用法:
-  # 推荐：直接给本地出生时间，脚本按 --tz 自己换算 UTC（含跨零点的日期借位）
-  python time_scan.py --local-date 1995-05-06 --local-time 02:30 --lat 31.23 --lon 121.47 --tz 8
+  # 推荐：直接给本地出生时间，脚本按 --tz 时区自己换算 UTC（含夏令时与跨零点的日期借位）
+  python time_scan.py --local-date 1995-05-06 --local-time 02:30 --lat 31.23 --lon 121.47 --tz Asia/Shanghai
   # 旧用法：调用方已换算好的 UTC
-  python time_scan.py --date 2000-01-01 --time 10:30 --lat 28.61 --lon 77.21 --range 60 --tz 5.5
+  python time_scan.py --date 2000-01-01 --time 10:30 --lat 28.61 --lon 77.21 --range 60 --tz Asia/Kolkata
 
+--tz 填 IANA 时区名，与排本命盘用的同一个（用户声明标准时则同样填固定时区，如 Etc/GMT-8）。
+不接受数字偏移：固定数字不按夏令时换算（中国 1986-1991 夏季实际是 UTC+9），会让整表偏 1 小时。
 注意: --date/--time 是 UTC。手算时本地时:分小于时区偏移（中国即 08:00 前）要借位，
 UTC 日期须退 1 天（例：本地 1995-05-06 02:30 UTC+8 → UTC 1995-05-05 18:30）。
 手算出错会让整张表的 Lagna/D9/D10 系统性偏移，所以优先用 --local-date/--local-time。
-表头同时打印 UTC 与换算回去的本地时间，供核对。
+表头同时打印 UTC 与换算回去的本地时间（含时区、实际偏移、是否夏令时），供核对。
 
-依赖: pip install pyswisseph
+依赖: pip install pyswisseph pytz
 """
 
 import swisseph as swe
+import pytz
 import argparse
 import calendar
 import sys
@@ -29,7 +32,7 @@ from datetime import datetime, timedelta
 # === 与 engine.py 一致的配置 ===
 swe.set_sid_mode(swe.SIDM_TRUE_CITRA)
 # 行星位置 flags，与 engine.PLANET_FLAGS / PyJHora drik.PLANET_FLAGS 同值(66386)。
-# 此处内联而非 import engine，是为保住本文件"只依赖 pyswisseph"的独立可跑性；
+# 此处内联而非 import engine，是为保住本文件"只依赖 pyswisseph + pytz"的独立可跑性；
 # 改 engine 那个常量时必须同步改这里（Moon 的 Nakshatra 边界判定依赖同一基准）。
 PLANET_FLAGS = (swe.FLG_SWIEPH | swe.FLG_SIDEREAL | swe.FLG_SPEED
                 | swe.FLG_TRUEPOS | swe.FLG_NONUT | swe.FLG_NOGDEFL)
@@ -134,7 +137,7 @@ def scan(
     lat,
     lon,
     range_min=30,
-    tz_offset=0.0,
+    tz_name='UTC',
     endpoint_start=None,
     endpoint_end=None,
     include_pd=False,
@@ -147,8 +150,9 @@ def scan(
         time_str: "HH:MM" (UTC)
         lat, lon: 出生地纬度/经度
         range_min: 扫描范围（±分钟）
-        tz_offset: 出生地时区偏移(小时,如中国=8)——两点法 Dasha 的 AD 边界日期须用本地时区表示，
-                   才能和用户按本地日期报的事件对齐（UTC 表示会差最多1天=边界事件误判）
+        tz_name: 出生地 IANA 时区名(与排本命盘同一个,如 Asia/Shanghai)——两点法 Dasha 的 AD 边界日期
+                 须按该时区当时的实际偏移(含夏令时)用本地时间表示，才能和用户按本地日期报的事件对齐
+                 （UTC 表示会差最多1天=边界事件误判）
         endpoint_start/end: 只为一个已锁定候选段生成两端Dasha。不传时用全局扫描两端。
         include_pd: 有可靠月/日事件需要PD差异审计时才开启。粗扫默认只算MD/AD。
 
@@ -201,7 +205,7 @@ def scan(
 
     # 两点法：段首/段末各算一次 Vimsottari Dasha。
     # 粗扫只需 MD/AD；有可靠月/日事件时才补 PD，避免候选分钟×729的嵌套读取。
-    # 时间口径铁律：UTC → 本地(UTC+tz) 再传，tz_offset 照传 → AD 边界日期用本地时区，与用户本地事件对齐
+    # 时间口径铁律：UTC → 该时区当时的本地时间(含夏令时) 再传，实际偏移照传 → AD 边界日期用本地时区，与用户本地事件对齐
     dasha_endpoints = {}
     if _HAS_DASHA:
         first_offset = -range_min if endpoint_start is None else endpoint_start
@@ -212,7 +216,8 @@ def scan(
         ]
         for label, dmin in labels_and_offsets:
             utc_dt = base_utc + timedelta(minutes=dmin)
-            local_dt = utc_dt + timedelta(hours=tz_offset)
+            local_dt = utc_to_local(utc_dt, tz_name)
+            tz_offset = local_dt.utcoffset().total_seconds() / 3600.0
             try:
                 dasha_endpoints[label] = calculate_dasha_fixed(
                     local_dt.year, local_dt.month, local_dt.day,
@@ -226,26 +231,42 @@ def scan(
     return results, dasha_endpoints
 
 
-def local_to_utc(local_date, local_time, tz_offset):
-    """本地出生时间 → UTC（"YYYY-MM-DD", "HH:MM"）。用 timedelta 换算，跨零点自动借位改日期。"""
-    local_dt = datetime.strptime(f"{local_date} {local_time}", "%Y-%m-%d %H:%M")
-    utc_dt = local_dt - timedelta(hours=tz_offset)
+def local_to_utc(local_date, local_time, tz_name):
+    """本地出生时间 → UTC（"YYYY-MM-DD", "HH:MM"）。按时区当时的实际偏移（含夏令时）换算，跨零点自动借位改日期。
+    落在夏令时切换的跳过/重复时段时报错，不静默猜——与 engine._localize_strict 同口径。"""
+    naive = datetime.strptime(f"{local_date} {local_time}", "%Y-%m-%d %H:%M")
+    try:
+        local_dt = pytz.timezone(tz_name).localize(naive, is_dst=None)
+    except pytz.exceptions.AmbiguousTimeError:
+        raise ValueError(f"{naive} 落在夏令时结束的重复时段（钟表回拨，该时刻出现过两次），"
+                         "请先确认出生记录用的是夏令时还是标准时间")
+    except pytz.exceptions.NonExistentTimeError:
+        raise ValueError(f"{naive} 落在夏令时开始的跳过时段（钟表拨快，该时刻不存在），"
+                         "出生记录可能用的是标准时间，请先核实")
+    utc_dt = local_dt.astimezone(pytz.utc)
     return utc_dt.strftime("%Y-%m-%d"), utc_dt.strftime("%H:%M")
 
 
-def _base_label(date_str, time_str, tz_offset):
-    """表头基准：UTC 与换算回去的本地时间并列，调用方可肉眼核对日期有没有借错。"""
+def utc_to_local(utc_dt, tz_name):
+    """naive UTC → 该时区当时的本地时间（aware，含夏令时）。"""
+    return pytz.utc.localize(utc_dt).astimezone(pytz.timezone(tz_name))
+
+
+def _base_label(date_str, time_str, tz_name):
+    """表头基准：UTC 与换算回去的本地时间并列，调用方可肉眼核对日期有没有借错、夏令时有没有算上。"""
     label = f"{date_str} {time_str} UTC"
-    if tz_offset is None:
+    if tz_name is None:
         return label
-    local_dt = datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M") + timedelta(hours=tz_offset)
-    return f"{label}（= 本地 {local_dt.strftime('%Y-%m-%d %H:%M')}，UTC{tz_offset:+g}）"
+    local_dt = utc_to_local(datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M"), tz_name)
+    offset = local_dt.utcoffset().total_seconds() / 3600.0
+    dst = "，夏令时" if local_dt.dst() else ""
+    return f"{label}（= 本地 {local_dt.strftime('%Y-%m-%d %H:%M')}，{tz_name} UTC{offset:+g}{dst}）"
 
 
-def print_results(results, date_str, time_str, lat, lon, tz_offset=None):
+def print_results(results, date_str, time_str, lat, lon, tz_name=None):
     """格式化输出扫描结果"""
     print(f"# 时间扫描结果")
-    print(f"# 基准: {_base_label(date_str, time_str, tz_offset)} | 坐标: ({lat}, {lon})")
+    print(f"# 基准: {_base_label(date_str, time_str, tz_name)} | 坐标: ({lat}, {lon})")
     print(f"# 引擎: swisseph + True Chitra Ayanamsa (与calc engine一致)")
     print(f"# 范围: {results[0]['delta']:+d} ~ {results[-1]['delta']:+d} 分钟")
     print()
@@ -259,11 +280,11 @@ def print_results(results, date_str, time_str, lat, lon, tz_offset=None):
 
 
 def save_results(results, date_str, time_str, lat, lon, filepath, dasha_ep=None, event_dates=None,
-                 tz_offset=None):
+                 tz_name=None):
     """保存为Markdown表格（含两点法 Dasha——3c 段内定位的腿二数据源，必须落盘）"""
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(f"# 时间扫描结果\n\n")
-        f.write(f"> 基准: {_base_label(date_str, time_str, tz_offset)}\n")
+        f.write(f"> 基准: {_base_label(date_str, time_str, tz_name)}\n")
         f.write(f"> 坐标: ({lat}, {lon})\n")
         f.write(f"> 引擎: swisseph + True Chitra Ayanamsa\n\n")
         f.write(f"| 偏移 | Lagna度数 | 星座 | D9 | D10 | 标记 |\n")
@@ -384,13 +405,14 @@ def main():
     parser = argparse.ArgumentParser(description='Vedic Rectifier Time Scanner (swisseph)')
     parser.add_argument('--date', help='出生日期 YYYY-MM-DD (UTC)；与 --time 同传')
     parser.add_argument('--time', help='预估出生时间 HH:MM (UTC)；与 --date 同传')
-    parser.add_argument('--local-date', help='本地出生日期 YYYY-MM-DD；与 --local-time 同传，脚本按 --tz 换算 UTC（推荐）')
+    parser.add_argument('--local-date', help='本地出生日期 YYYY-MM-DD；与 --local-time 同传，脚本按 --tz 时区换算 UTC（推荐）')
     parser.add_argument('--local-time', help='本地预估出生时间 HH:MM；与 --local-date 同传')
     parser.add_argument('--lat', required=True, type=float, help='出生地纬度')
     parser.add_argument('--lon', required=True, type=float, help='出生地经度')
     parser.add_argument('--range', type=int, default=30, help='扫描范围±分钟 (默认30)')
-    parser.add_argument('--tz', type=float, required=True,
-                        help='出生地时区偏移(小时,中国=8)——两点法Dasha的AD日期本地对齐用')
+    parser.add_argument('--tz', required=True,
+                        help='出生地 IANA 时区名，与排本命盘用的同一个（如 Asia/Shanghai、Asia/Kolkata；'
+                             '用户声明标准时则填同一个固定时区如 Etc/GMT-8）。不接受数字偏移')
     parser.add_argument('--event-date', action='append', default=[],
                         help='事件日期 YYYY-MM-DD 或 YYYY-MM；可重复。只做两点MD/AD/PD差异审计，不定位出生分钟')
     parser.add_argument('--endpoint-start', type=int,
@@ -400,6 +422,11 @@ def main():
     parser.add_argument('--save', type=str, help='保存结果到文件路径')
 
     args = parser.parse_args()
+    try:
+        pytz.timezone(args.tz)
+    except pytz.exceptions.UnknownTimeZoneError:
+        parser.error(f'--tz 必须是 IANA 时区名，与排本命盘用的同一个（如 Asia/Shanghai），收到 {args.tz!r}。'
+                     '不接受数字偏移：固定数字不按夏令时换算，夏令时期出生会整表偏 1 小时')
     has_utc = args.date is not None or args.time is not None
     has_local = args.local_date is not None or args.local_time is not None
     if has_utc == has_local:
@@ -410,7 +437,7 @@ def main():
         try:
             args.date, args.time = local_to_utc(args.local_date, args.local_time, args.tz)
         except ValueError as exc:
-            parser.error(f'本地时间格式不对：{exc}')
+            parser.error(f'本地时间无法换算：{exc}')
     elif args.date is None or args.time is None:
         parser.error('--date 与 --time 必须同时传入')
     if args.range < 1:
@@ -450,7 +477,7 @@ def main():
 
     if args.save:
         save_results(results, args.date, args.time, args.lat, args.lon, args.save, dasha_ep, args.event_date,
-                     tz_offset=args.tz)
+                     tz_name=args.tz)
 
     # 输出变化点摘要
     print("\n## 关键变化点（Lagna/D9/D10换座 + Moon跨Nak）")
