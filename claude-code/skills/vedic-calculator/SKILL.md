@@ -377,7 +377,7 @@ chart = {
     'd4':  {'Lagna': ('Libra', 6),   'Sun': ('Leo', 4), ...},
     'd5':  {'Lagna': ('Pisces', 11), 'Sun': ('Scorpio', 7), ...},
     'vargottama': {'Sun': False, 'Moon': False, 'Rahu': True, ...},
-    'divisional_charts': {'D2': ..., 'D3': ..., ...},  # 额外分盘
+    'divisional_charts': {'D2': ..., 'D3': ..., ...},  # 额外分盘；D2 为 Uma Shambhu Hora（同 JHora "D-2 (US)"），非传统 Sun/Moon Hora
 
     # 预分析
     'karakas': {'7k': [...], '8k': [...], 'dk_7k': 'Saturn', 'dk_8k': 'Rahu', 'dk_note': '7K(主)=Saturn, 8K(参考)=Rahu'},

@@ -185,7 +185,7 @@ D9  ★  必须对宫              婚姻/灵魂        公式校验(100%) 16/16
 D10 ★  必须对宫              事业/成就         calc engine   11/11*
 D4  ★  必须对宫              财产/资产/舒适    calc engine   9/9*
 D5  ★  必须同宫(⚠️!)        权力/创造力       calc engine   13/13
-D2  ○  必须同宫(Cn或Le)      财富(Hora)       calc/截屏     -
+D2  ○  必须同宫†             财富(Hora)       calc/截屏     40/40(calc)
 D3  ○  必须对宫              兄弟/勇气        calc/截屏     -
 D7  ○  必须对宫              子女             calc/截屏     -
 D12 ○  必须对宫              父母             calc/截屏     -
@@ -193,6 +193,8 @@ D30 ○  待验证                困苦/业障        calc/截屏     -
 D60 ○  待验证                前世业力         calc/截屏     -
 
 * D10/D4的"实测验证"排除了AI视觉读错的异常样本
+† D2 按 JHora 打印的 "D-2 (US)"（Uma Shambhu Hora，与 calculator 同口径）：Ra-Ke 同宫，但可落任一星座。
+  只有传统 Sun／Moon Hora 才只落 Cn 或 Le；截屏上的 D2 口径不明时不做本项校验。
 ```
 
 **⚠️ D5同宫规则特别说明**：

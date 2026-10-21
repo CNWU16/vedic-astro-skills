@@ -8,6 +8,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-10-21
 
+### D2 口径文档订正（reader 校验表、calculator 数据契约）
+
+- calculator engine 的 `divisional_charts["D2"]` 是 Uma Shambhu Hora（PyJHora `chart_method=1`），与桌面 JHora 打印的
+  “D-2 (US)”同口径，不是传统 Sun／Moon Hora。reader `validation_rules.md` 校验12 原写“D2 必须同宫(Cn或Le)”，只对传统
+  Hora 成立；改为“必须同宫”并加脚注（实测 calculator 40/40 Ra-Ke 同宫、可落任一星座；截屏 D2 口径不明时不校验）。
+- calculator SKILL 数据契约注明 D2 口径。engine 输出不变；`structured_data.md` 不写 D2，本命各 skill 不消费。
+
 ### 即时盘 I.4“落吉 varga”改读六分盘多数
 
 **起因**：`P-I.4` 成事条件(1)是“吉星占 Lagna 或 Lagna 落吉星的 varga”，Ayer 注写明 varga 指六分盘（Lagna、Hora、
