@@ -62,6 +62,18 @@ LORD_AGES = {
 # P-VII.4 注：水象座两说并列，不择一。
 WATERY_HORASARA = {"Cancer", "Capricorn", "Scorpio", "Pisces"}
 
+# P-I.4 注的六分盘（Lagna、Hora、Drekkana、Navamsa、Dwadasamsa、Trimsamsa）。
+# Hora 取传统 Sun／Moon Hora（奇数座前半 Leo、后半 Cancer，偶数座反之）；共享 engine
+# 的 D2 是 PyJHora PVR parivritti Hora，不是这一口径，不读。其余四分盘按 Parashara
+# 公式算，并与 engine 分盘的 Lagna 逐一核对，不一致整表 unavailable。
+# 公式核对样例：M-XVIII.148 注 Virgo 30° → Mercury、Sun、Venus、Mercury、Sun、Mars。
+SHADVARGA_NAMES = {
+    "D1": "Lagna 本座", "D2": "Hora（传统 Sun／Moon）", "D3": "Drekkana",
+    "D9": "Navamsa", "D12": "Dwadasamsa", "D30": "Trimsamsa",
+}
+TRIMSAMSA_ODD = ((5, "Aries"), (10, "Aquarius"), (18, "Sagittarius"), (25, "Gemini"), (30, "Libra"))
+TRIMSAMSA_EVEN = ((5, "Taurus"), (12, "Virgo"), (20, "Pisces"), (25, "Capricorn"), (30, "Scorpio"))
+
 
 def _modality(sign):
     if sign in MOVABLE_SIGNS:
@@ -180,6 +192,101 @@ def _labelled(chart, names, sign):
 
 def _navamsa_number(degree):
     return min(int(degree // (30 / 9)), 8) + 1
+
+
+def _shadvarga_signs(sign, degree):
+    """Lagna 落在 sign 的 degree 度时，六分盘各自的星座。"""
+    si = SIGNS.index(sign)
+    odd = si % 2 == 0
+    trimsamsa = TRIMSAMSA_ODD if odd else TRIMSAMSA_EVEN
+    return {
+        "D1": sign,
+        "D2": "Leo" if (degree < 15) == odd else "Cancer",
+        "D3": SIGNS[(si + 4 * min(int(degree // 10), 2)) % 12],
+        "D9": SIGNS[(si + (0, 8, 4)[si % 3] + _navamsa_number(degree) - 1) % 12],
+        "D12": SIGNS[(si + min(int(degree // 2.5), 11)) % 12],
+        "D30": next(s for bound, s in trimsamsa if degree < bound),
+    }
+
+
+def _shadvarga_cuts(sign):
+    """六分盘各自在本座内的分界度数（不含 0° 与 30°）。"""
+    trimsamsa = TRIMSAMSA_ODD if SIGNS.index(sign) % 2 == 0 else TRIMSAMSA_EVEN
+    return {
+        "D1": [],
+        "D2": [15.0],
+        "D3": [10.0, 20.0],
+        "D9": [k * 30 / 9 for k in range(1, 9)],
+        "D12": [k * 2.5 for k in range(1, 12)],
+        "D30": [float(bound) for bound, _ in trimsamsa[:-1]],
+    }
+
+
+def _shadvarga_majority(chart, sign, degree):
+    """座主对 Lagna 星座的功能吉凶计数：(吉, 凶, 多数)；“盈月未定”不计。"""
+    roles = [_ayer_role(chart, SIGN_LORDS[s], sign) for s in _shadvarga_signs(sign, degree).values()]
+    good = sum(role.startswith("吉") for role in roles)
+    bad = sum(role.startswith("凶") for role in roles)
+    return good, bad, "多吉" if good > bad else "多凶" if bad > good else "相等"
+
+
+def _shadvarga_critical(chart, sign, degree):
+    """Lagna 在本座内前后移动多少度，六分盘多数会变；本座内都不变时返回 None。"""
+    base = _shadvarga_majority(chart, sign, degree)[2]
+    cuts = sorted({c for values in _shadvarga_cuts(sign).values() for c in values})
+    found = []
+    for c in (c for c in cuts if c > degree):
+        if _shadvarga_majority(chart, sign, c + 1e-9)[2] != base:
+            found.append(c - degree)
+            break
+    for c in (c for c in reversed(cuts) if c <= degree):
+        if _shadvarga_majority(chart, sign, c - 1e-9)[2] != base:
+            found.append(degree - c)
+            break
+    return min(found) if found else None
+
+
+def _shadvarga_lines(chart):
+    lagna = chart["lagna"]
+    sign, degree = lagna["sign"], lagna["degree"]
+    signs = _shadvarga_signs(sign, degree)
+    lines = ["### Lagna 六分盘座主（`P-I.4` 注）\n"]
+    engine_charts = chart.get("divisional_charts", {})
+    mismatched = [
+        key for key in ("D3", "D9", "D12", "D30")
+        if engine_charts.get(key, {}).get("Lagna", {}).get("sign") != signs[key]
+    ]
+    if mismatched:
+        lines.append(
+            f"- 六分盘 unavailable：{'、'.join(mismatched)} 与 engine 分盘不一致，不得手推补造；"
+            "`P-I.4` 本盘不读 varga 一项，在输入栏写明。"
+        )
+        lines.append("")
+        return lines
+    lines.append("| 分盘 | 星座 | 座主 | 座主对 Lagna 星座的功能吉凶 | 距本分盘座内分界 |")
+    lines.append("|---|---|---|---|---|")
+    for key, cuts in _shadvarga_cuts(sign).items():
+        lord = SIGN_LORDS[signs[key]]
+        edge = f"{min(abs(degree - c) for c in cuts):.3f}°" if cuts else "见“Lagna 距 sign 边界”"
+        lines.append(
+            f"| {SHADVARGA_NAMES[key]} | {signs[key]} | {lord} | "
+            f"{_ayer_role(chart, lord, sign)} | {edge} |"
+        )
+    good, bad, majority = _shadvarga_majority(chart, sign, degree)
+    critical = _shadvarga_critical(chart, sign, degree)
+    critical_text = (
+        f"{critical:.3f}°" if critical is not None else "本座内不变（只看 Lagna 距 sign 边界）"
+    )
+    lines.append("")
+    lines.append(f"- 合计：吉 {good}、凶 {bad}、不计 {6 - good - bad} → **{majority}**")
+    lines.append(f"- 六分盘多数临界距离：{critical_text}（Lagna 前移或后移这么多，多数结论会变）")
+    lines.append(
+        "- 用途边界：只供 `P-I.4` “falls in a benefic's varga”：多吉＝落吉 varga，"
+        "多凶＝落凶 varga，相等不计（数法见 `judgment-rubric.md` §4.1）；"
+        "禁止由此展开 D2、D3、D9、D12、D30 解读。"
+    )
+    lines.append("")
+    return lines
 
 
 def tithi_facts(sun_longitude, moon_longitude):
@@ -378,20 +485,16 @@ def format_standard_layer(chart):
         "仅作输入敏感性事实 |"
     )
     if d9_lagna:
-        d9_lord = SIGN_LORDS[d9_lagna["sign"]]
         lines.append(
             f"| rising Navamsa | {d9_lagna['sign']} {d9_lagna['degree']:.4f}°"
             f"（本座第 {_navamsa_number(lagna['degree'])} 个 Navamsa） | "
-            "仅用于 P-I.4、P-I.7、P-VI.1、P-VI.4、P-VII.13；禁止展开完整 D9 人生解读 |"
-        )
-        lines.append(
-            f"| rising Navamsa 座主 | {d9_lord} "
-            f"{_ayer_role(chart, d9_lord, lagna['sign'])} | "
-            "对 Lagna 星座的功能吉凶标签，P-I.4 “falls in a benefic's varga” 用 |"
+            "仅用于 P-I.7、P-VI.1、P-VI.4、P-VII.13；座主吉凶见下表六分盘；"
+            "禁止展开完整 D9 人生解读 |"
         )
     else:
         lines.append("| rising Navamsa | unavailable | 不得手推补造 |")
     lines.append("")
+    lines.extend(_shadvarga_lines(chart))
 
     lines.append("### D1 七曜\n")
     lines.append(

@@ -333,6 +333,23 @@ def test_standard_worked_examples() -> None:
     assert fs.OBJECT_KINDS_ODD[0].startswith("Dhatu")
     assert fs.OBJECT_KINDS_EVEN[0].startswith("Jeeva")
 
+    # P-I.4 注六分盘：M-XVIII.148 注 Virgo 30° → Mercury、Sun、Venus、Mercury、Sun、Mars
+    signs = fs._shadvarga_signs("Virgo", 29.99)
+    lords = [fs.SIGN_LORDS[signs[k]] for k in ("D1", "D2", "D3", "D9", "D12", "D30")]
+    assert lords == ["Mercury", "Sun", "Venus", "Mercury", "Sun", "Mars"], signs
+    # 传统 Hora：奇数座前半 Sun（Leo），偶数座前半 Moon（Cancer）
+    assert fs._shadvarga_signs("Aries", 3.0)["D2"] == "Leo"
+    assert fs._shadvarga_signs("Taurus", 3.0)["D2"] == "Cancer"
+    # 多数临界距离：两侧在临界距离以内多数不变，越过一侧即变
+    ch = chart({})
+    base = fs._shadvarga_majority(ch, "Aries", 0.5)[2]
+    crit = fs._shadvarga_critical(ch, "Aries", 0.5)
+    assert crit is not None and crit > 0
+    inside = [fs._shadvarga_majority(ch, "Aries", x)[2] for x in (0.5 + crit - 1e-6, max(0.0, 0.5 - crit + 1e-6))]
+    outside = [fs._shadvarga_majority(ch, "Aries", x)[2] for x in (0.5 + crit + 1e-6, 0.5 - crit - 1e-6) if 0 <= x < 30]
+    assert inside == [base, base], (base, crit, inside)
+    assert any(v != base for v in outside), (base, crit, outside)
+
 
 def _run(name, fn):
     try:

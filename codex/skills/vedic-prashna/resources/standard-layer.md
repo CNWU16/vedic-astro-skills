@@ -41,7 +41,8 @@
 | 以具体问题产生时刻和地点起盘 | `P/K/B` | 全部 | 核心 |
 | Lagna／Lagna 主表示求问者和事情的当前状态 | `P-I.2~4/B` | 全部 | 核心 |
 | 事项宫被其宫主或吉星占据／照射则增强，受凶星伤害则减损 | `P-I.3` | 全部宫位 | 核心；吉凶按 §2.1 |
-| 一般所谋之事可检查 Lagna、rising Navamsa、头升／背升及吉凶扶压 | `P-I.4` | 一般事业成败 | 条件适用 |
+| 一般所谋之事可检查 Lagna、Lagna 所落 varga、头升／背升及吉凶扶压 | `P-I.4` | 一般事业成败 | 条件适用 |
+| “falls in a benefic's varga” 的 varga 指六分盘：Lagna、Hora、Drekkana、Navamsa、Dwadasamsa、Trimsamsa（注）；六个座主按 §2.1 功能吉凶计数，吉多算落吉 varga，凶多算反之，相等不计。数法出处：*Prasna Marga* 两偈用同类条件“has a number of benefic vargas”（`M-VIII.29` 说 Lagna，`M-XXIV.45` 说 ascendant，都与“吉星占 Lagna”并列），`M-VIII.29` 注“whether the Lagna has more benefic vargas or malefic ones”；`M-XVIII.148` 注按座主逐个数 varga。Hora 取传统 Sun／Moon Hora（`M-XVIII.148` 注 Virgo 30° 算例为证） | `P-I.4` 注；数法 `M-VIII.29` 注、`M-XXIV.45`、`M-XVIII.148` 注 | 一般事业成败 | 采纳（执行口径）；VIII.29 注称该偈 Lagna 指 Arudha，Arudha 不收，只借其数法；PM 注的七分盘多 Saptamsa，按 Ayer 注取六；数据见 §4 第 2 项 |
 | 混合配置表示困难后成：(1)(2) 一合一不合、吉凶星同占头升 Lagna、Pisces 上升；由吉的影响是否占优定局（“preponderance of benefic influence will decide the issue”），不能由单一弱点判死 | `P-I.4` 及注 | 一般事业成败 | 核心；占优数法见 `judgment-rubric.md` §4.1 |
 | Lagna、Sun、Moon 动／静星座“snapshot” | `K` | KN Rao 的有限快照法 | 只作有限辅证；本人明说并非总有效 |
 | 1宫代表一方、7宫代表另一方 | `B-article-99` | 双方／谈判案例 | B级题型可用 |
@@ -54,7 +55,7 @@
 | Moon 下次进入事项宫主所在星座作为触发日 | `M-XIV.85` | 时间副层 | 只在 `timing-layer.md`，不进规则账本 |
 | Chara Karaka、DK、UL、AL 用于默认 Prashna | `U` | — | 禁入 |
 | SAV／BAV 用于默认 Prashna | `U` | — | 禁入 |
-| D9 只读取 rising Navamsa；完整 D9 人生解读 | `P-I.4`／`U` | 一般所谋之事／其余 | 只保留 rising Navamsa |
+| 分盘只读取 Lagna 六分盘座主与 rising Navamsa；完整 D2／D3／D9／D12／D30 人生解读 | `P-I.4`、`P-I.7`、`P-VI.1~2`、`P-VI.4`、`P-VII.13`／`U` | 一般所谋之事、描述题／其余 | 只保留这两项 |
 | D10／D4／D5 等本命分盘 | `U` | — | 禁入 |
 | 提问盘生成的 120 年 Vimshottari／Chara Dasha | 与 `K/M` 边界冲突 | — | 禁入 |
 | *Prasna Marga* 一年／一月 Prasna Dasa | `M-VI.39,65~67` | Kerala | 不收：答的是未来一年哪段顺逆，不是事件日期；需 Thrisphuta、Gulika；VI.67 三套 Dasa 由占星师择一，无确定选法 |
@@ -83,7 +84,7 @@
 | Saturn 落 Lagna 起奇数宫（不计 Lagna）为男，否则为女；同偈：前者兼示得新娘，后者兼示得新郎 | `P-VII.1` 及注 | 胎儿性别；婚姻 | 胎儿性别 A级；婚姻题辅助规则（注：本偈也回答“eligible groom／bride”），按正文次序（注列三问的次序为胎儿、新郎、新娘，与正文不一致） |
 | Moon 落 3／5／7／11／6 宫且受 Jupiter、Sun、Mercury 照，或吉星落角宫／三方宫，则议婚能成；注：点名的是自然吉星，实指功能吉星，其余配置为否 | `P-VII.2` 及注 | 能否成婚 | 婚姻题主规则，A级；走标签（§2.1）；“Sun”不是自然吉星，疑为 Venus 误印，无梵文无法核实，照录 |
 | 雨季 Venus 与 Saturn 落 Moon 起 7 宫或 Lagna 起 2／3／4／8 宫；白半月吉星落水象座的 3／2／角宫，或 Moon 落水象 Lagna，则有雨 | `P-VII.3~4` 及注 | 雨季天气 | 天气查表；原文无反面判据，不判“不下雨”；水象座两说并列 |
-| Lagna 落阳性 varga 受强阳性星照为男等 | `P-VII.5` 及注 | 胎儿性别 | 本批不收：需六分盘 varga，Hora 分盘口径与精度未核 |
+| Lagna 落阳性 varga 受强阳性星照为男等 | `P-VII.5` 及注 | 胎儿性别 | 不收（创始人 2026-10-10 定）；六分盘座主表只供 `P-I.4` |
 | Sun 带吉星落 8 宫受吉星照则父亲在外，否则在本地 | `P-VII.12` 及注 | 父亲下落；注称其他 karaka 同理 | 父亲 A级；其他亲属 B级 |
 | Navamsa 定物、drekkana 定贼、星座定时间方向位置、Lagna 主定年龄 | `P-VII.13` 及注 | 失物描述 | 描述题查表；种姓、颜色、窃贼外貌、Navamsa 强弱不收 |
 | I.6、VII.6~9 读所想之物／所问之人；VII.10 私生活；VII.11、V.4 生死安危 | `P` | 读心、隐私、生死 | 不收（C级） |
@@ -175,8 +176,10 @@ B级照常计分，不得把 B 自动记持平。自然 Karaka 只能作有来�
 `structured_prashna.md` 默认主层只允许：
 
 1. D1 Lagna、Lagna 度数、星座性质和边界距离；
-2. rising Navamsa 的星座、本座第几个 Navamsa、座主及座主对 Lagna 星座的功能吉凶
-   标签，不输出完整 D9；
+2. rising Navamsa 的星座与本座第几个 Navamsa，不输出完整 D9；Lagna 六分盘座主表
+   （`P-I.4` 注：Lagna、传统 Sun／Moon Hora、Drekkana、Navamsa、Dwadasamsa、Trimsamsa 各一
+   行：星座、座主、座主对 Lagna 星座的功能吉凶、距本分盘座内分界），附吉凶合计、多数与
+   多数临界距离；不输出任何分盘的其余行星；
 3. D1 七曜位置；Rahu／Ketu 只列位置事实；
 4. 12宫、宫主、宫主落宫、宫内行星；
 5. 七曜的整宫 Graha Drishti；宫表中七曜占据与照射附 §2.1 的功能吉凶标签；

@@ -98,9 +98,10 @@ Jaimini、Dasha、分盘或 SAV 工具自动迁入提问盘。
 - Tajika orb／applying／separating；
 - KP cusp／sub-lord。
 
-只允许 rising Navamsa（序号、座主及座主标签）与 Lagna 所在 drekkana 两项有限数据，
-因为 `P-I.4`、`P-I.7`、`P-VI.1~2`、`P-VI.4`、`P-VII.13` 明确使用它们；禁止由此展开
-完整 D9、D3 解读。
+只允许 rising Navamsa（星座与序号）、Lagna 所在 drekkana、Lagna 六分盘座主表三项有限数据，
+因为 `P-I.4`（注：Lagna、Hora、Drekkana、Navamsa、Dwadasamsa、Trimsamsa 六分盘）、
+`P-I.7`、`P-VI.1~2`、`P-VI.4`、`P-VII.13` 明确使用它们；禁止由此展开完整 D2、D3、D9、
+D12、D30 解读。
 
 ---
 
@@ -151,12 +152,13 @@ python scripts/build_prashna_data.py \
 
 - Lagna 距 sign 边界；
 - Lagna 距 Navamsa 边界；
+- 六分盘多数临界距离（本题账本用 `P-I.4` 时）；
 - 时间／地点是否只是近似。
 
-若输入误差可能改变 Lagna 或 rising Navamsa，标记 `输入敏感` 并取得更准确输入；
+若输入误差可能改变 Lagna、六分盘多数或 rising Navamsa，标记 `输入敏感` 并取得更准确输入；
 不能声称城市中心近似必然不影响结论。输入敏感性只影响实际消费该字段的规则；
-若本题账本不使用 rising Navamsa，须分别写“该字段敏感”和“主结论所用 D1 结构
-是否稳定”，不得把两者合成一个模糊置信度。
+若本题账本不使用该字段（六分盘多数只供 `P-I.4`，rising Navamsa 只供描述题与时间副层），须分别写
+“该字段敏感”和“主结论所用 D1 结构是否稳定”，不得把两者合成一个模糊置信度。
 
 进入下一阶段条件：产物存在、默认白名单无越权字段、敏感性已处理或明确降置信度。
 
@@ -224,7 +226,7 @@ python scripts/build_prashna_data.py \
 单一行星、单一宫位、单一缺失或单一强弱因素不是规则，不计分，不能单独决定倾向。
 三档只写判读单核对区。查表题不出三档。
 
-输入敏感只有在可能改变本题账本实际使用的 Lagna、rising Navamsa、事项宫或宫主
+输入敏感只有在可能改变本题账本实际使用的 Lagna、六分盘多数、事项宫或宫主
 结构时才能影响档次。未被本题规则消费的临界字段只报告，不改票。
 
 成败档次与时间副层分开：时间远近不改档，给不出精确日期也不因此改记持平。

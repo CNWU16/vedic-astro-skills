@@ -47,7 +47,7 @@
 
 | 问题范围 | 主入口 | 来源范围 | 注意 |
 |---|---|---|---|
-| 一般“所谋之事能否成功” | Lagna／rising Navamsa | `P-I.4` | 只回答清楚的单项行动 |
+| 一般“所谋之事能否成功” | Lagna／Lagna 六分盘座主 | `P-I.4` | 只回答清楚的单项行动 |
 | 会否被裁／调岗／换工作；能否保住工作 | 1：Lagna 动／固座及其占据、照射 | `P-I.2` Chyuti；`P-II.1` | 问“保住”时方向相反；不用 `P-II.2`（见 `question-taxonomy.md` §2.8） |
 | 买房／置产；名誉能否保住 | 4 | `P-I.2` Vriddhi；`P-II.1~2` 动／固座辅助；买房加 `P-I.4`（示范题）；名誉加 Nivritti、`P-IV.3` 2／5／1 宫 | 见 `question-taxonomy.md` §2.12；Vriddhi 与 4 宫 `P-I.3` 同源只计一次 |
 | 出国、签证、留学、调动能否办成 | 1 | `P-I.4`（Ayer 第 4 偈示范题） | 见 `question-taxonomy.md` §2.12 出行三行 |
@@ -60,7 +60,7 @@
 | 病能否好（含代他人问） | 1 | `P-IV.5`；`P-II.1~2` 动／固座辅助 | 只答能否康复，不作医疗诊断，不替代就医；代他人问同样读 1 宫（`question-taxonomy.md` §2.12） |
 | 婚姻是否发生 | Moon 落宫与受照、角宫／三方宫吉星；Saturn 奇偶宫；7 宫 | `P-VII.2`；`P-VII.1` 辅助；`M-XVII.5／15／16／17` | 婚姻专题只用于 `question-taxonomy.md` §2.7 明列的类比行 |
 | 找工作、offer、面试能否通过、升职 | 10 宫吉凶占据、Lagna 动静、吉凶星照 Lagna 与 Moon-lagna | `P-IV.3`；`P-II.1`、`P-II.2` 两条 | Moon 落 Lagna 只在亏月记不利；见 `question-taxonomy.md` §2.8；不输出 D10、AmK |
-| 主动挽回、达标性考试（作为一般所谋之事） | Lagna／rising Navamsa | `P-I.4` | 见 `question-taxonomy.md` §2.7／§2.8 |
+| 主动挽回、达标性考试（作为一般所谋之事） | Lagna／Lagna 六分盘座主 | `P-I.4` | 见 `question-taxonomy.md` §2.7／§2.8 |
 | 怀孕后胎儿性别 | 查表：Saturn 落 Lagna 起奇数宫 | `P-VII.1` | 只出男／女查表结果；不扩展为现代医学判断；不提供医疗替代 |
 | 父亲是否在外地 | 查表：Sun 带吉星落 8 宫且受吉星照 | `P-VII.12` | 只出查表结果；其他亲属无 karaka 表，不收 |
 

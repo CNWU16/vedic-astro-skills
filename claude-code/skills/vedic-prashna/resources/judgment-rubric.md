@@ -89,12 +89,13 @@ B级题照常计分，并标：
 以下任一情况记持平，并写明类型：
 
 - `吉凶相当`：合计为 0；
-- `输入敏感`：时间／地点误差可能改变本题账本实际消费的 Lagna、rising Navamsa 或主事项宫
+- `输入敏感`：时间／地点误差可能改变本题账本实际消费的 Lagna、六分盘多数（`P-I.4`）或主事项宫
   结构；此时不论合计如何都记持平，并给出“若输入更准”的两种走向。
 
 持平不是“目前不明朗”：判读单必须写出两边各是什么、该看哪个信号。
 
-若 rising Navamsa 临界但本题账本没有使用 `P-I.4`，只在输入栏报告该字段敏感；
+若六分盘多数临界但本题账本没有使用 `P-I.4`，或 rising Navamsa 临界（它只供描述题与时间副层），
+只在输入栏报告该字段敏感；
 同时检查 D1 Lagna、事项宫和宫主结构是否稳定。不得仅凭未消费字段记持平。
 
 ### 4.1 占优数法（执行口径，不是原文）
@@ -103,7 +104,7 @@ B级题照常计分，并标：
 
 | 规则 | 原文 | 所看宫 | 吉占优时 |
 |---|---|---|---|
-| `P-I.4` | 注“succeeds with difficulty … preponderance of benefic influence will decide the issue”；(1)(2) 一合一不合、吉凶星同占头升 Lagna、Pisces 上升都属此类 | 第 1 宫行；rising Navamsa 座主标签另记一条 | 能成 |
+| `P-I.4` | 注“succeeds with difficulty … preponderance of benefic influence will decide the issue”；(1)(2) 一合一不合、吉凶星同占头升 Lagna、Pisces 上升都属此类 | 第 1 宫行；六分盘合计另记一条（多吉记吉、多凶记凶、相等不计） | 能成 |
 | `P-III.4` | 注“mixed placements will tend to continue the tension …, a preponderance of benefic influence leading to prospective resolution” | 1／4／7／10 宫行 | 趋向和解 |
 | `P-IV.5` | 注“a preponderance of favourable influence should be looked for eventual recovery” | Lagna／7／8／5 宫行；Moon 落 3／6／10／11 宫记一条吉，落别处记一条凶（注“the Moon otherwise placed will lead to a contrary result”） | 终可康复 |
 
@@ -114,6 +115,10 @@ Ayer 没给数法，执行按下面数：
 2. 吉多：该规则记有利（+1，困难后成）；
 3. 凶多：该规则记不利（−1）；
 4. 持平：该规则记混合（0）。
+
+`P-I.4` 的六分盘按 `structured_prashna.md`“Lagna 六分盘座主”表的合计算一条，不把六个座主逐个
+加进第 1 条：六分盘只是条件(1)里与“吉星占 Lagna”并列的一项（`standard-layer.md` 核证矩阵），
+逐个计会让它压过 Lagna 宫的实际占据和照射。
 
 `P-I.2` Chyuti 变动座的“吉凶影响孰多”（`question-taxonomy.md` §2.8）也按第 1 条数：吉多＝
 变动成立，凶多＝不变。这是事件方向，不是有利／不利，问“保住”时反向。

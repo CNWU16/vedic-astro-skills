@@ -8,6 +8,26 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-10-21
 
+### 即时盘 I.4“落吉 varga”改读六分盘多数
+
+**起因**：`P-I.4` 成事条件(1)是“吉星占 Lagna 或 Lagna 落吉星的 varga”，Ayer 注写明 varga 指六分盘（Lagna、Hora、
+Drekkana、Navamsa、Dwadasamsa、Trimsamsa），此前只看了 rising Navamsa 座主一项（10-10 记为另开一批）。
+
+- **数法**（执行口径，`standard-layer.md` 核证矩阵）：六个座主按 Ayer 功能吉凶计数，吉多算落吉 varga，凶多算反之，
+  相等不计；在 `judgment-rubric.md` §4.1 作一条，不把六个座主逐个计入。出处：*Prasna Marga* VIII.29、XXIV.45 用同类
+  条件“has a number of benefic vargas”，VIII.29 注“more benefic vargas or malefic ones”，XVIII.148 注按座主逐个数
+  varga。VIII.29 注称该偈 Lagna 指 Arudha，Arudha 不收，只借数法；PM 注是七分盘，按 Ayer 注取六。
+- **Hora 取传统 Sun／Moon Hora**：共享 engine 的 D2 是 PyJHora PVR parivritti Hora，不是这一口径，不读；formatter
+  按公式算六分盘星座，D3／D9／D12／D30 与 engine 逐一核对，不一致整表 unavailable。公式与 *Prasna Marga* XVIII.148
+  注 Virgo 30° 算例逐项一致（已入 `tests/test_prashna_isolation.py`）。
+- **数据契约**：`structured_prashna.md` 新增“Lagna 六分盘座主（`P-I.4` 注）”表（每分盘星座、座主、吉凶、距座内分界，
+  附合计、多数与多数临界距离）；删去“rising Navamsa 座主”行（座主吉凶并入新表），rising Navamsa 只供描述题与
+  时间副层。Phase 1 输入敏感性加“六分盘多数临界距离”，只在账本用 `P-I.4` 时影响档次。
+- **基础率**（8.5 万盘）：达标考试／挽回、出国办成 43/12/45 → 46/17/37，表白 40/25/35 → 44/25/31，买房 35/28/38 →
+  40/26/35；Lagna 挪 ±0.25° 翻档 5.3% → 6.2%。14 个高频问法仍为 12 个达标。逐个计六座主的口径（偏不成 33、翻档 8.2%）
+  未采用。
+- 写作指引 §2.4 补六分盘白话，只在账本用 `P-I.4` 时讲。
+
 ### 即时盘判读单 v3：照着盘讲故事；联系题收和解偈、买房补 I.4
 
 **起因**：v2 判读单读起来像照提纲填空，“什么都没分析就给出了结论”。7 月版看起来专业，靠的多是后来按原文删掉的
