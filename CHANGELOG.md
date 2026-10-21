@@ -8,6 +8,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-10-21
 
+### 即时盘追问跟上判读单 v3
+
+- `qa_rules.md` §4 标准追问：口吻与含义来源同判读单（`judgment-writing.md` §1 口吻、§2 六类来源；篇幅按追问需要），
+  补讲的盘面细节只挂在账本条目或背景事实旁、不许加码；**追问不改档**，发现原账本读错按 §2 纠错口径回 Phase 4 重做并
+  说明是纠错，不在回答里直接改口。§1、§3 措辞随 v3（推力／阻力／转机、内部档不对用户说档名）；自检加一条。
+- `SKILL.md` Phase 7 加第 8 条，指向上述规则。
+
 ### D2 口径文档订正（reader 校验表、calculator 数据契约）
 
 - calculator engine 的 `divisional_charts["D2"]` 是 Uma Shambhu Hora（PyJHora `chart_method=1`），与桌面 JHora 打印的
