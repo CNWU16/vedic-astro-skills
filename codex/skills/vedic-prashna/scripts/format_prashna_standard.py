@@ -64,7 +64,7 @@ WATERY_HORASARA = {"Cancer", "Capricorn", "Scorpio", "Pisces"}
 
 # P-I.4 注的六分盘（Lagna、Hora、Drekkana、Navamsa、Dwadasamsa、Trimsamsa）。
 # Hora 取传统 Sun／Moon Hora（奇数座前半 Leo、后半 Cancer，偶数座反之）；共享 engine
-# 的 D2 是 PyJHora PVR parivritti Hora，不是这一口径，不读。其余四分盘按 Parashara
+# 的 D2 是 Uma Shambhu Hora（同 JHora "D-2 (US)"，PyJHora 注释亦称 PVR parivritti），不是这一口径，不读。其余四分盘按 Parashara
 # 公式算，并与 engine 分盘的 Lagna 逐一核对，不一致整表 unavailable。
 # 公式核对样例：M-XVIII.148 注 Virgo 30° → Mercury、Sun、Venus、Mercury、Sun、Mars。
 SHADVARGA_NAMES = {
@@ -252,13 +252,24 @@ def _shadvarga_lines(chart):
     signs = _shadvarga_signs(sign, degree)
     lines = ["### Lagna 六分盘座主（`P-I.4` 注）\n"]
     engine_charts = chart.get("divisional_charts", {})
-    mismatched = [
-        key for key in ("D3", "D9", "D12", "D30")
-        if engine_charts.get(key, {}).get("Lagna", {}).get("sign") != signs[key]
-    ]
-    if mismatched:
+    problems = []
+    for key in ("D3", "D9", "D12", "D30"):
+        entry = engine_charts.get(key)
+        if not entry:
+            problems.append(f"{key} 缺失（engine 未给出该分盘）")
+        elif "error" in entry:
+            problems.append(f"{key} 出错（{entry['error']}）")
+        elif "Lagna" not in entry:
+            problems.append(f"{key} 缺失 Lagna 行")
+        elif entry["Lagna"]["sign"] != signs[key]:
+            edge = min(abs(degree - c) for c in _shadvarga_cuts(sign)[key] + [0.0, 30.0])
+            problems.append(
+                f"{key} 不一致（engine {entry['Lagna']['sign']}／公式 {signs[key]}；"
+                f"Lagna {sign} {degree:.4f}°，距本分盘分界 {edge:.4f}°）"
+            )
+    if problems:
         lines.append(
-            f"- 六分盘 unavailable：{'、'.join(mismatched)} 与 engine 分盘不一致，不得手推补造；"
+            f"- 六分盘 unavailable：{'；'.join(problems)}。凡与 engine 分盘不一致，不得手推补造；"
             "`P-I.4` 本盘不读 varga 一项，在输入栏写明。"
         )
         lines.append("")

@@ -66,16 +66,19 @@ NAKSHATRAS = ['Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra',
 def calc_sidereal_asc(jd, lat, lon):
     """
     计算恒星(sidereal)上升点度数。
-    与 engine.py calc_lagna() 使用相同的 swe.houses_ex() 调用。
-    
+    与 engine.py calc_lagna() 同一公式：视位置回归 Lagna − 与行星同口径的岁差
+    （TRUEPOS|NONUT，与桌面 JHora 一致）。显式计算，不依赖 *_pyjhora.py 的 houses_ex 补丁
+    是否已在本进程装上。
+
     参数:
         jd: Julian Day (UT)
         lat: 纬度
         lon: 经度
     返回: 恒星Lagna绝对度数 (0-360)
     """
-    cusps, ascmc = swe.houses_ex(jd, lat, lon, b'W', swe.FLG_SIDEREAL)
-    return ascmc[0]
+    ascmc = swe.houses_ex(jd, lat, lon, b'W', 0)[1]
+    ayanamsa = swe.get_ayanamsa_ex_ut(jd, swe.FLG_TRUEPOS | swe.FLG_NONUT)[1]
+    return (ascmc[0] - ayanamsa) % 360
 
 
 def deg_to_sign(deg):
@@ -131,6 +134,26 @@ def calc_d10(asc_deg):
     return SIGNS[d10_sign], SIGNS_CN[d10_sign]
 
 
+def _state(jd, lat, lon):
+    """某一时刻的 Lagna 星座、D9、D10 与 Moon 月宿序号（换座二分用，与扫描表同一套计算）。"""
+    asc_deg = calc_sidereal_asc(jd, lat, lon)
+    moon_lon = swe.calc_ut(jd, swe.MOON, PLANET_FLAGS)[0][0]
+    return {'sign': deg_to_sign(asc_deg)[0], 'd9': calc_d9(asc_deg)[0], 'd10': calc_d10(asc_deg)[0],
+            'nak': int(moon_lon / (360.0 / 27)) % 27}
+
+
+def _switch_jd(jd_lo, jd_hi, key, lat, lon):
+    """[jd_lo, jd_hi] 内 key 发生变化的时刻：二分 24 次（1 分钟 / 2^24 ≈ 4 微秒）。"""
+    lo_val = _state(jd_lo, lat, lon)[key]
+    for _ in range(24):
+        mid = (jd_lo + jd_hi) / 2.0
+        if _state(mid, lat, lon)[key] == lo_val:
+            jd_lo = mid
+        else:
+            jd_hi = mid
+    return jd_hi
+
+
 def scan(
     date_str,
     time_str,
@@ -147,7 +170,7 @@ def scan(
 
     参数:
         date_str: "YYYY-MM-DD"
-        time_str: "HH:MM" (UTC)
+        time_str: "HH:MM" 或 "HH:MM:SS" (UTC)
         lat, lon: 出生地纬度/经度
         range_min: 扫描范围（±分钟）
         tz_name: 出生地 IANA 时区名(与排本命盘同一个,如 Asia/Shanghai)——两点法 Dasha 的 AD 边界日期
@@ -160,11 +183,17 @@ def scan(
     """
     parts = date_str.split('-')
     year, month, day = int(parts[0]), int(parts[1]), int(parts[2])
-    h, m = map(int, time_str.split(':'))
+    hms = [int(x) for x in time_str.split(':')]
+    h, m, s = hms[0], hms[1], (hms[2] if len(hms) > 2 else 0)
 
-    ut_hour = h + m / 60.0
+    ut_hour = h + m / 60.0 + s / 3600.0
     base_jd = swe.julday(year, month, day, ut_hour)
-    base_utc = datetime(year, month, day, h, m)
+    base_utc = datetime(year, month, day, h, m, s)
+
+    def _local_clock(jd):
+        """某 jd 的本地钟表时间（含秒），换座时刻按此报。"""
+        utc = base_utc + timedelta(days=jd - base_jd)
+        return utc_to_local(utc.replace(microsecond=0), tz_name).strftime('%H:%M:%S')
 
     results = []
     prev_sign = None
@@ -185,14 +214,16 @@ def scan(
         moon_nak = NAKSHATRAS[nak_idx]
 
         markers = []
+        # 换座发生在上一分钟与本分钟之间：二分求到秒，按本地钟表时间报（候选可相差几十秒）
         if prev_sign and sign != prev_sign:
-            markers.append(f"★ LAGNA换座→{sign_cn}")
+            markers.append(f"★ LAGNA换座→{sign_cn} @{_local_clock(_switch_jd(jd - 1 / 1440.0, jd, 'sign', lat, lon))}")
         if prev_d9 and d9 != prev_d9:
-            markers.append(f"◆ D9换座→{d9_cn}")
+            markers.append(f"◆ D9换座→{d9_cn} @{_local_clock(_switch_jd(jd - 1 / 1440.0, jd, 'd9', lat, lon))}")
         if prev_d10 and d10 != prev_d10:
-            markers.append(f"◇ D10换座→{d10_cn}")
+            markers.append(f"◇ D10换座→{d10_cn} @{_local_clock(_switch_jd(jd - 1 / 1440.0, jd, 'd10', lat, lon))}")
         if prev_nak is not None and nak_idx != prev_nak:
-            markers.append(f"⚠️Moon跨Nak→{moon_nak}【段内Dasha起始主星跳变，必须在此切段分别求交】")
+            markers.append(f"⚠️Moon跨Nak→{moon_nak} @{_local_clock(_switch_jd(jd - 1 / 1440.0, jd, 'nak', lat, lon))}"
+                           "【段内Dasha起始主星跳变，必须在此切段分别求交】")
 
         results.append({
             'delta': delta, 'asc_deg': asc_deg, 'sign': sign, 'sign_cn': sign_cn,
@@ -222,7 +253,7 @@ def scan(
                 dasha_endpoints[label] = calculate_dasha_fixed(
                     local_dt.year, local_dt.month, local_dt.day,
                     local_dt.hour, local_dt.minute, lat, lon, tz_offset,
-                    include_pd=include_pd)
+                    include_pd=include_pd, second=local_dt.second)
             except Exception as e:
                 dasha_endpoints[label] = [{'error': str(e)}]
     else:
@@ -232,9 +263,10 @@ def scan(
 
 
 def local_to_utc(local_date, local_time, tz_name):
-    """本地出生时间 → UTC（"YYYY-MM-DD", "HH:MM"）。按时区当时的实际偏移（含夏令时）换算，跨零点自动借位改日期。
+    """本地出生时间 → UTC（"YYYY-MM-DD", "HH:MM[:SS]"）。按时区当时的实际偏移（含夏令时）换算，跨零点自动借位改日期。
     落在夏令时切换的跳过/重复时段时报错，不静默猜——与 engine._localize_strict 同口径。"""
-    naive = datetime.strptime(f"{local_date} {local_time}", "%Y-%m-%d %H:%M")
+    fmt = "%Y-%m-%d %H:%M:%S" if local_time.count(':') == 2 else "%Y-%m-%d %H:%M"
+    naive = datetime.strptime(f"{local_date} {local_time}", fmt)
     try:
         local_dt = pytz.timezone(tz_name).localize(naive, is_dst=None)
     except pytz.exceptions.AmbiguousTimeError:
@@ -244,7 +276,7 @@ def local_to_utc(local_date, local_time, tz_name):
         raise ValueError(f"{naive} 落在夏令时开始的跳过时段（钟表拨快，该时刻不存在），"
                          "出生记录可能用的是标准时间，请先核实")
     utc_dt = local_dt.astimezone(pytz.utc)
-    return utc_dt.strftime("%Y-%m-%d"), utc_dt.strftime("%H:%M")
+    return utc_dt.strftime("%Y-%m-%d"), utc_dt.strftime("%H:%M:%S" if naive.second else "%H:%M")
 
 
 def utc_to_local(utc_dt, tz_name):
@@ -257,17 +289,20 @@ def _base_label(date_str, time_str, tz_name):
     label = f"{date_str} {time_str} UTC"
     if tz_name is None:
         return label
-    local_dt = utc_to_local(datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M"), tz_name)
+    fmt = "%Y-%m-%d %H:%M:%S" if time_str.count(':') == 2 else "%Y-%m-%d %H:%M"
+    local_dt = utc_to_local(datetime.strptime(f"{date_str} {time_str}", fmt), tz_name)
     offset = local_dt.utcoffset().total_seconds() / 3600.0
     dst = "，夏令时" if local_dt.dst() else ""
-    return f"{label}（= 本地 {local_dt.strftime('%Y-%m-%d %H:%M')}，{tz_name} UTC{offset:+g}{dst}）"
+    clock = '%Y-%m-%d %H:%M:%S' if time_str.count(':') == 2 else '%Y-%m-%d %H:%M'
+    return f"{label}（= 本地 {local_dt.strftime(clock)}，{tz_name} UTC{offset:+g}{dst}）"
 
 
 def print_results(results, date_str, time_str, lat, lon, tz_name=None):
     """格式化输出扫描结果"""
     print(f"# 时间扫描结果")
     print(f"# 基准: {_base_label(date_str, time_str, tz_name)} | 坐标: ({lat}, {lon})")
-    print(f"# 引擎: swisseph + True Chitra Ayanamsa (与calc engine一致)")
+    print(f"# 引擎: swisseph + True Chitra Ayanamsa；Lagna 与 calc engine v1.0 同一基准（=桌面 JHora）")
+    print(f"# 换座标记后的 @HH:MM:SS 为二分求得的本地换座时刻（秒级）")
     print(f"# 范围: {results[0]['delta']:+d} ~ {results[-1]['delta']:+d} 分钟")
     print()
     print(f"{'偏移':>6} | {'Lagna度数':>10} | {'星座':>6} | {'座内度数':>8} | {'D9':>4} | {'D10':>4} | 标记")
@@ -404,9 +439,9 @@ def print_dasha_endpoints(dasha_ep, event_dates=None):
 def main():
     parser = argparse.ArgumentParser(description='Vedic Rectifier Time Scanner (swisseph)')
     parser.add_argument('--date', help='出生日期 YYYY-MM-DD (UTC)；与 --time 同传')
-    parser.add_argument('--time', help='预估出生时间 HH:MM (UTC)；与 --date 同传')
+    parser.add_argument('--time', help='预估出生时间 HH:MM 或 HH:MM:SS (UTC)；与 --date 同传')
     parser.add_argument('--local-date', help='本地出生日期 YYYY-MM-DD；与 --local-time 同传，脚本按 --tz 时区换算 UTC（推荐）')
-    parser.add_argument('--local-time', help='本地预估出生时间 HH:MM；与 --local-date 同传')
+    parser.add_argument('--local-time', help='本地预估出生时间 HH:MM 或 HH:MM:SS；与 --local-date 同传')
     parser.add_argument('--lat', required=True, type=float, help='出生地纬度')
     parser.add_argument('--lon', required=True, type=float, help='出生地经度')
     parser.add_argument('--range', type=int, default=30, help='扫描范围±分钟 (默认30)')

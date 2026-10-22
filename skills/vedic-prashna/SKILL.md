@@ -71,7 +71,8 @@ Jaimini、Dasha、分盘或 SAV 工具自动迁入提问盘。
 2. 默认输出必须由 `scripts/format_prashna_standard.py` 生成；禁止调用共享本命
    `formatter.py` 后再删段。
 3. 不修改 core/love/career/synastry/rectifier 等其他 skill。
-4. 标准产物只写入 `prashna_<yyyymmdd_HHMMSS>_<label>/`，文件名
+4. 标准产物只写入 `prashna_<yyyymmdd_HHMMSS>_<label>/`（同名目录已有盘时 builder 另开
+   `_2`、`_3`……，不覆盖旧盘；后续产物写进 builder 实际打印的那个目录），文件名
    `structured_prashna.md` 和 `prashna_judgment_<label>.md`。时间副层只在该目录
    增加 `timing_overlay.md`；显式 Tajika overlay 只在该目录增加
    `tajika_overlay.md`。KP 只写入独立 `kp_horary_<yyyymmdd_HHMMSS>_<label>/`，文件名 `structured_kp.md`、

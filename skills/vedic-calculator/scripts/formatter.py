@@ -35,6 +35,10 @@ def format_structured_data(chart, transit_data, meta, user_info):
     lines.append(f"验证轨道: 轨道1-标准")
     lines.append(f"读盘方式: vedic-calculator直接计算")
     lines.append(f"Ayanamsa: True Chitrapaksha（Lahiri系,差<1′） ({chart['ayanamsa']:.4f}°)")
+    if chart.get('calc_meta'):
+        cm = chart['calc_meta']
+        lines.append(f"计算溯源: engine {cm['engine_version']}｜计算瞬间 UTC {cm['instant_utc']}"
+                     f"｜实际岁差 {cm['ayanamsa']:.6f}°（行星与 Lagna 同口径）")
     if chart.get('dst_info'):
         di = chart['dst_info']
         if di['is_dst']:
@@ -589,13 +593,18 @@ def format_structured_data(chart, transit_data, meta, user_info):
     except (KeyError, TypeError):
         karaka_ok = '❌'
 
-    # D9 交叉：engine 走"元素起点表 + navamsa 序号"，此处走"9×星座序号"等价式
+    # D9 交叉：engine 走"元素起点表 + navamsa 序号"，此处走"9×星座序号"等价式。
+    # Lagna 也查：D1 Lagna 由 engine 自算、D9 Lagna 由 PyJHora 算，两边基准若不一致（v1.0 前即如此），
+    # 分界附近会一个说 Virgo 一个说 Libra，只查行星发现不了。
     d9 = chart.get('d9', {})
     d9_ok = '✅'
-    for p in P9:
-        if p not in P or p not in d9:
+    _d9_lons = {p: P[p]['longitude'] for p in P9 if p in P}
+    if chart.get('lagna'):
+        _d9_lons['Lagna'] = chart['lagna']['longitude']
+    for p in P9 + ['Lagna']:
+        if p not in _d9_lons or p not in d9:
             d9_ok = '❌'; break
-        _lon = P[p]['longitude']
+        _lon = _d9_lons[p]
         if d9[p][1] != (9 * int(_lon / 30) + int((_lon % 30) / (30/9))) % 12:
             d9_ok = '❌'; break
 

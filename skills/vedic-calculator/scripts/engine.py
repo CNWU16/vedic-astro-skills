@@ -1,8 +1,17 @@
 """
-vedic-calculator v0.9 - PyJHora 精确计算引擎
+vedic-calculator v1.0 - PyJHora 精确计算引擎
 基于 pysweph 天文核心 + PyJHora 精确算法（含 9 项 Shadbala bug 修正）
 输出完整的 structured_data 所需数据
 
+v1.0: ① 秒级瞬间：calculate_full_chart/to_jd 收 second（可带小数），整张盘只本地化一次，
+      JD 与各 PyJHora 包装的时区偏移、时间都从它派生（此前包装各自用整分重建，秒级调用方只能
+      下游补算，即时盘因此混用两个瞬间）。整分调用方输出逐字节不变（24 盘基线实测）。
+      ② Lagna 基准＝视位置回归 Lagna − 与行星同口径的岁差，与桌面 JHora 一致（客户 JHora 打印盘
+      实证差 0.004″）；PyJHora 分盘经 houses_ex 补丁统一到同一基准；chart["ayanamsa"] 报实际值。
+      ⚠️ 本版有数值变化：Lagna 平均 ±14″（最大 ±39″），分界附近的盘分盘 Lagna 可能换座。
+      ③ 极圈盘 Dig Bala 走 Placidus 无解时按 Swiss Ephemeris 文档改用 Porphyry（此前整盘报错）。
+      ④ 当前大运标记按出生偏移比较带时区的 as_of（此前用机器本地时钟）；删除 calc_transits
+      （本机时间当 UT，无消费者）；新增 calc_meta 溯源（引擎版本、UTC 瞬间、实际岁差）。
 v0.9: D1 星历 flags 统一到 PyJHora 的 66386（真位置/无章动/无引力偏折），此前 engine 自算
       D1 用 65792（视位置），同一张盘的 D1 表与 SAV/D9/Dasha 分属两套基准，实测差 0~60″；
       Vimsottari year_duration 在 L1 前显式对齐（原先 L1 用平均恒星年或上一张盘的残留值，
@@ -194,21 +203,55 @@ def _localize_strict(tz, dt):
             "出生记录可能用的是标准时间——请核实后换算，或用 rectifier 校准。")
 
 
-def to_jd(year, month, day, hour, minute, tz_str):
+def local_instant(year, month, day, hour, minute, tz_str, second=0, fold=None):
+    """出生／提问时刻的唯一本地化：返回带时区的本地 datetime。
+
+    second 可带小数（微秒）。整张盘只在这里本地化一次，JD 与各子模块的时区偏移都从它派生，
+    不再各自用整分重建（DST 交界处整分重建会给出另一个偏移）。
+    fold：只给已知瞬间用（如带时区的“当下”）——夏令时回拨的重复时段按 fold 消歧
+    （0＝第一次，1＝第二次）。手填的歧义时刻不传 fold，照旧明确报错。
+    """
     tz = pytz.timezone(tz_str)
-    local_dt = _localize_strict(tz, datetime(year, month, day, hour, minute))
+    whole = int(second)
+    micro = int(round((second - whole) * 1_000_000))
+    if micro == 1_000_000:
+        whole, micro = whole + 1, 0
+    naive = datetime(year, month, day, hour, minute) + timedelta(seconds=whole, microseconds=micro)
+    if fold is not None:
+        try:
+            return tz.localize(naive, is_dst=None)
+        except pytz.exceptions.AmbiguousTimeError:
+            return tz.localize(naive, is_dst=(fold == 0))
+        except pytz.exceptions.NonExistentTimeError:
+            pass
+    return _localize_strict(tz, naive)
+
+
+def instant_to_jd(local_dt):
+    """带时区的 datetime → UT 儒略日（含秒与微秒）。"""
     utc_dt = local_dt.astimezone(pytz.utc)
-    ut_hour = utc_dt.hour + utc_dt.minute/60.0 + utc_dt.second/3600.0
+    ut_hour = (utc_dt.hour + utc_dt.minute / 60.0 + utc_dt.second / 3600.0
+               + utc_dt.microsecond / 3_600_000_000.0)
     return swe.julday(utc_dt.year, utc_dt.month, utc_dt.day, ut_hour)
+
+
+def to_jd(year, month, day, hour, minute, tz_str, second=0):
+    return instant_to_jd(local_instant(year, month, day, hour, minute, tz_str, second))
 
 # 行星位置 flags：与 PyJHora 的 drik.PLANET_FLAGS 逐位一致（实测 66386）。
 # 此前 engine 自算 D1 用 FLG_SIDEREAL|FLG_SPEED(65792)，即视位置(apparent)；
 # 而 SAV/D9/Dasha 等走 PyJHora 的部分用真位置(TRUEPOS)+不含章动/引力偏折，
 # 同一张盘的 D1 表与其余分盘因此分属两套基准，实测差 0~60″。
 # 统一到 PyJHora 一侧：该侧是当年逐项对照桌面 JHora 验证过的那一半。
-# houses_ex 只识别 FLG_SIDEREAL，其余位对 Lagna 无效，故 calc_lagna 保持原样即等价。
 PLANET_FLAGS = (swe.FLG_SWIEPH | swe.FLG_SIDEREAL | swe.FLG_SPEED
                 | swe.FLG_TRUEPOS | swe.FLG_NONUT | swe.FLG_NOGDEFL)
+
+ENGINE_VERSION = "v1.0"
+
+
+def ayanamsa_value(jd):
+    """行星与 Lagna 实际使用的岁差（与 PLANET_FLAGS 同口径；桌面 JHora 打印的就是这个值）。"""
+    return swe.get_ayanamsa_ex_ut(jd, PLANET_FLAGS)[1]
 
 
 def _deg_min(degree):
@@ -243,10 +286,16 @@ def calc_planet(jd, planet_id):
     }
 
 def calc_lagna(jd, lat, lon):
+    """Lagna = 视位置回归 Lagna − 与行星同口径的岁差（ayanamsa_value）。
+
+    与桌面 JHora 一致（2026-10-23，客户 JHora 打印盘 2004-09-12 11:15:27 上海：差 0.004″）。
+    旧口径 houses_ex(FLG_SIDEREAL) 内部用的岁差不含 TRUEPOS、含章动，True Chitra 下与行星
+    口径差 ±39″；PyJHora 的 FLG_TRUEPOS 口径差 ±19″。PyJHora 分盘经 *_pyjhora.py 的
+    houses_ex 补丁统一到这里的同一基准。
+    """
     _ensure_swe_state()
-    flags = swe.FLG_SIDEREAL
-    cusps, ascmc = swe.houses_ex(jd, lat, lon, b'W', flags)
-    asc_lon = ascmc[0]
+    ascmc = swe.houses_ex(jd, lat, lon, b'W', 0)[1]
+    asc_lon = (ascmc[0] - ayanamsa_value(jd)) % 360
     sign_idx = int(asc_lon / 30)
     degree = asc_lon % 30
     return {
@@ -596,73 +645,15 @@ def calc_special_points(lagna, planets):
         'UL': {'sign': ul_sign, 'sign_idx': ul_idx, 'house': ul_house},
     }
 
-def calc_transits(lagna_sign_idx, moon_sign_idx):
-    """Calculate current transit positions for slow planets.
-    Used by core-pro for Sade Sati, BAV transit calibration, double transit.
-    """
-    now = datetime.now()
-    jd_now = swe.julday(now.year, now.month, now.day, now.hour + now.minute/60)
-    _ensure_swe_state()
-    flags = PLANET_FLAGS
-
-    transits = {}
-    # Slow planets: Saturn, Jupiter, Rahu, Ketu
-    slow_planets = {'Saturn': swe.SATURN, 'Jupiter': swe.JUPITER}
-    for name, pid in slow_planets.items():
-        result = swe.calc_ut(jd_now, pid, flags)
-        lon = result[0][0]
-        sign_idx = int(lon / 30)
-        house = get_house(sign_idx, lagna_sign_idx)
-        transits[name] = {'sign': SIGNS[sign_idx], 'sign_idx': sign_idx, 'house': house}
-    
-    # Rahu (Mean Node)
-    result = swe.calc_ut(jd_now, swe.MEAN_NODE, flags)
-    rahu_lon = result[0][0]
-    rahu_idx = int(rahu_lon / 30)
-    transits['Rahu'] = {'sign': SIGNS[rahu_idx], 'sign_idx': rahu_idx, 
-                        'house': get_house(rahu_idx, lagna_sign_idx)}
-    ketu_idx = (rahu_idx + 6) % 12
-    transits['Ketu'] = {'sign': SIGNS[ketu_idx], 'sign_idx': ketu_idx,
-                        'house': get_house(ketu_idx, lagna_sign_idx)}
-    
-    # Sade Sati check
-    saturn_idx = transits['Saturn']['sign_idx']
-    sade_sati = 'inactive'
-    if saturn_idx == (moon_sign_idx - 1) % 12:
-        sade_sati = 'phase1_rising'
-    elif saturn_idx == moon_sign_idx:
-        sade_sati = 'phase2_peak'
-    elif saturn_idx == (moon_sign_idx + 1) % 12:
-        sade_sati = 'phase3_fading'
-    transits['sade_sati'] = sade_sati
-    
-    # Double transit (Saturn-Jupiter intersection)
-    sat_houses = {transits['Saturn']['house']}
-    # Saturn aspects: 3rd, 7th, 10th
-    sat_h = transits['Saturn']['house']
-    for asp in [3, 7, 10]:
-        sat_houses.add(((sat_h - 1 + asp - 1) % 12) + 1)
-    
-    jup_houses = {transits['Jupiter']['house']}
-    # Jupiter aspects: 5th, 7th, 9th
-    jup_h = transits['Jupiter']['house']
-    for asp in [5, 7, 9]:
-        jup_houses.add(((jup_h - 1 + asp - 1) % 12) + 1)
-    
-    double_transit = sorted(sat_houses & jup_houses)
-    transits['double_transit_houses'] = double_transit
-    transits['timestamp'] = now.strftime('%Y-%m-%d')
-    
-    return transits
-
 # === 出生时刻边界审计 ===
 
 def calc_divisional_boundary_audit(year, month, day, hour, minute, lat, lon,
-                                    tz_str="Asia/Kolkata", uncertainty_minutes=1):
+                                    tz_str="Asia/Kolkata", uncertainty_minutes=1, second=0):
     """逐分钟扫描报时不确定区间内的 D1 与主要分盘 Lagna。
 
     “直接计算成功”只证明给定时刻的数学结果可复现；如果同一报时允许的分钟区间
     跨过分盘 Lagna 换座点，分盘宫位、分盘宫主和所有下游解释必须按条件分支处理。
+    以精确出生时刻（含秒）为中心，前后各取整分钟偏移。
     """
     if _div_pyjhora is None:
         return {
@@ -675,22 +666,21 @@ def calc_divisional_boundary_audit(year, month, day, hour, minute, lat, lon,
     except (TypeError, ValueError):
         span = 1
 
-    base_local = datetime(year, month, day, hour, minute)
+    base_local = local_instant(year, month, day, hour, minute, tz_str, second).replace(tzinfo=None)
     factors = (4, 5, 9, 10)
     samples = []
 
     for offset in range(-span, span + 1):
         local_dt = base_local + timedelta(minutes=offset)
-        tz = pytz.timezone(tz_str)
-        localized = _localize_strict(tz, local_dt)
+        localized = _localize_strict(pytz.timezone(tz_str), local_dt)
         tz_offset = localized.utcoffset().total_seconds() / 3600.0
-        jd = to_jd(local_dt.year, local_dt.month, local_dt.day,
-                   local_dt.hour, local_dt.minute, tz_str)
+        sec = local_dt.second + local_dt.microsecond / 1_000_000
+        jd = instant_to_jd(localized)
         d1_lagna = calc_lagna(jd, lat, lon)['sign']
         charts = _div_pyjhora(
             local_dt.year, local_dt.month, local_dt.day,
             local_dt.hour, local_dt.minute, lat, lon, tz_offset,
-            chart_factors=factors,
+            chart_factors=factors, second=sec,
         )
         row = {'offset_minutes': offset, 'D1': d1_lagna}
         for factor in factors:
@@ -740,11 +730,20 @@ def calc_divisional_boundary_audit(year, month, day, hour, minute, lat, lon,
 # === 主计算函数 ===
 
 def calculate_full_chart(year, month, day, hour, minute, lat, lon,
-                         tz_str="Asia/Kolkata", uncertainty_minutes=1):
-    """计算完整星盘数据"""
+                         tz_str="Asia/Kolkata", uncertainty_minutes=1, second=0, as_of=None,
+                         fold=None):
+    """计算完整星盘数据。
+
+    second：秒（可带小数），默认 0，整分调用方结果不变。整张盘只有一个计算瞬间：
+    本地化一次，JD 与各 PyJHora 包装的时区偏移、时间都从它派生。
+    as_of：判“当前大运／小运”用的带时区时刻，默认当下 UTC。
+    fold：见 local_instant，只给已知瞬间用。
+    """
     _ensure_swe_state()
-    jd = to_jd(year, month, day, hour, minute, tz_str)
-    ayanamsa = swe.get_ayanamsa_ut(jd)
+    _instant = local_instant(year, month, day, hour, minute, tz_str, second, fold=fold)
+    jd = instant_to_jd(_instant)
+    _tz_offset = _instant.utcoffset().total_seconds() / 3600.0
+    ayanamsa = ayanamsa_value(jd)
     
     # 1. Lagna
     lagna = calc_lagna(jd, lat, lon)
@@ -785,10 +784,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
     }
     
     # 4. SAV/BAV (PyJHora — no fallback)
-    tz = pytz.timezone(tz_str)
-    _tz_dt = _localize_strict(tz, datetime(year, month, day, hour, minute))
-    _tz_offset = _tz_dt.utcoffset().total_seconds() / 3600.0
-    ashtak = _av_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset)
+    ashtak = _av_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset, second=second)
     
     # Map SAV to houses
     sav_by_house = {}
@@ -800,7 +796,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
     # 5. Divisional charts (PyJHora: 15 charts)
     if _div_pyjhora is not None:
         divisional_charts = _div_pyjhora(
-            year, month, day, hour, minute, lat, lon, _tz_offset
+            year, month, day, hour, minute, lat, lon, _tz_offset, second=second
         )
     else:
         divisional_charts = {}
@@ -819,7 +815,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
 
     divisional_boundary_audit = calc_divisional_boundary_audit(
         year, month, day, hour, minute, lat, lon, tz_str,
-        uncertainty_minutes=uncertainty_minutes,
+        uncertainty_minutes=uncertainty_minutes, second=second,
     )
     
     # Vargottama check
@@ -988,11 +984,12 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
     yoga_prescan = calc_yoga_prescan(lagna['sign_idx'], planets, house_lords, graha_drishti, mutual_drishti, parivartana)  # 全11格局结构预扫（禁自推/越宫）
 
     # 11. Vimsottari Dasha MD/AD/PD (PyJHora — no fallback)
-    dashas = _dasha_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset)
-    
+    dashas = _dasha_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset,
+                            second=second, as_of=as_of)
+
     # 12. Shadbala (PyJHora + 9 bug fixes — no fallback)
     shadbala_data = _shadbala_pyjhora(
-        year, month, day, hour, minute, lat, lon, _tz_offset
+        year, month, day, hour, minute, lat, lon, _tz_offset, second=second
     )
     
     # 13. Moon phase
@@ -1007,9 +1004,9 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
     # 15. Special Points (AL, UL)
     special_points = calc_special_points(lagna, planets)
     
-    # 16. Transit positions (current slow planet positions)
-    transits = calc_transits(lagna['sign_idx'], planets['Moon']['sign_idx'])
-    
+    # 16. 过运：engine 不再给（旧 calc_transits 把本机墙上时间当 UT，且 skill 内无消费者）；
+    #     过运一律走 transit.py。
+
     # 17. Bhava Bala, Special Lagnas, Vargeeya Bala (via PyJHora)
     bhava_bala = None
     special_lagnas = None
@@ -1017,27 +1014,20 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
     pushkara = None
     if any([_bhava_bala_pyjhora, _special_lagnas_pyjhora, _vargeeya_bala_pyjhora]):
         try:
-            tz = pytz.timezone(tz_str)
-            _tz_dt = _localize_strict(tz, datetime(year, month, day, hour, minute))
-            _tz_offset = _tz_dt.utcoffset().total_seconds() / 3600.0
+            _extra = (year, month, day, hour, minute, lat, lon, _tz_offset)
             if _bhava_bala_pyjhora:
-                bhava_bala = _bhava_bala_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset)
+                bhava_bala = _bhava_bala_pyjhora(*_extra, second=second)
             if _special_lagnas_pyjhora:
-                special_lagnas = _special_lagnas_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset)
+                special_lagnas = _special_lagnas_pyjhora(*_extra, second=second)
             if _vargeeya_bala_pyjhora:
-                vargeeya_bala = _vargeeya_bala_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset)
+                vargeeya_bala = _vargeeya_bala_pyjhora(*_extra, second=second)
             if _pushkara_pyjhora:
-                pushkara = _pushkara_pyjhora(year, month, day, hour, minute, lat, lon, _tz_offset)
+                pushkara = _pushkara_pyjhora(*_extra, second=second)
         except Exception:
             pass
-    
+
     # DST 透明标注：出生时刻是否处于当地夏令时（pytz 默认把报时当墙上钟时间处理）
-    try:
-        _tzd = pytz.timezone(tz_str)
-        _dtd = _localize_strict(_tzd, datetime(year, month, day, hour, minute))
-        dst_info = {'is_dst': bool(_dtd.dst()), 'utc_offset': str(_dtd.utcoffset())}
-    except Exception:
-        dst_info = None
+    dst_info = {'is_dst': bool(_instant.dst()), 'utc_offset': str(_instant.utcoffset())}
 
     # Chara Dasha (K.N. Rao) — engine 真值输入（JHora 双盘金标准 24/24 验证）
     chara_dasha = None
@@ -1076,13 +1066,18 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
         'moon_phase': {'waxing': is_waxing, 'sun_moon_diff': round(moon_sun_diff, 1)},
         'digbala': digbala,
         'special_points': special_points,
-        'transits': transits,
         'bhava_bala': bhava_bala,
         'special_lagnas': special_lagnas,
         'vargeeya_bala': vargeeya_bala,
         'pushkara': pushkara,
         'chara_dasha': chara_dasha,
         'dst_info': dst_info,
+        # 溯源：以后改了 engine，看这三项就知道旧产物是哪一版、哪个瞬间、用什么岁差算的
+        'calc_meta': {
+            'engine_version': ENGINE_VERSION,
+            'instant_utc': _instant.astimezone(pytz.utc).strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+            'ayanamsa': ayanamsa,
+        },
     }
 
 

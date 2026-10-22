@@ -351,6 +351,66 @@ def test_standard_worked_examples() -> None:
     assert any(v != base for v in outside), (base, crit, outside)
 
 
+# ---------------------------------------------------------------------------
+# 算例 9：秒级整盘一个瞬间（2026-10-22 外部报告的原始失败盘）
+#   旧版先用整分起 engine、再按秒补算一部分字段，D3/D12/D30 留在整分 → 六分盘表被隐藏
+#   （随机秒数下约 5%）。期望值为 Parashara 手算，不取被测公式。
+# ---------------------------------------------------------------------------
+def test_exact_second_chart() -> None:
+    calc = SKILLS_ROOT / "vedic-calculator" / "scripts"
+    scripts = PRASHNA_ROOT / "scripts"
+    if not (calc / "engine.py").exists() or not (scripts / "prashna_time.py").exists():
+        return
+    for p in (str(calc), str(scripts)):
+        if p not in sys.path:
+            sys.path.insert(0, p)
+    import io
+    import contextlib
+    from datetime import datetime, timedelta
+    from zoneinfo import ZoneInfo
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            import engine
+            import prashna_time as pt
+            import format_prashna_standard as fs
+    except ImportError as e:
+        raise AssertionError(f"依赖缺失（用 vedic-calculator 的 venv 跑）：{e}")
+
+    zone, lat, lon = ZoneInfo("Asia/Shanghai"), 22.555, 113.883
+
+    def chart(dt):
+        with contextlib.redirect_stdout(io.StringIO()):
+            return pt.calculate_prashna_chart(dt, lat, lon, "Asia/Shanghai")
+
+    c = chart(datetime(2026, 10, 21, 14, 0, 50, tzinfo=zone))
+    # Capricorn 20.02°（偶数、土象）：D3 第 3 段＝第 9 座 Virgo；D9 自 Capricorn 起第 7 段＝Cancer；
+    # D12 第 9 段＝Virgo；D30 偶数座 20–25° 属 Saturn＝Capricorn
+    got = tuple(c["divisional_charts"][k]["Lagna"]["sign"] for k in ("D3", "D9", "D12", "D30"))
+    assert got == ("Virgo", "Cancer", "Virgo", "Capricorn"), got
+    meta = c.get("calc_meta") or {}
+    assert meta.get("instant_utc") == "2026-10-21T06:00:50.000000Z", meta
+    text = "\n".join(fs._shadvarga_lines(c))
+    assert "unavailable" not in text and "合计" in text, text
+
+    # 20° 分界两侧各 0.2 s：表都显示（公式与 engine 分盘同一瞬间、同一 Lagna 基准）
+    lo = datetime(2026, 10, 21, 14, 0, 0, tzinfo=zone)
+    hi = datetime(2026, 10, 21, 14, 1, 30, tzinfo=zone)
+
+    def degree(t):
+        return engine.calc_lagna(pt.local_datetime_to_jd(t, "Asia/Shanghai"), lat, lon)["degree"]
+
+    assert degree(lo) < 20.0 < degree(hi)
+    for _ in range(30):
+        mid = lo + (hi - lo) / 2
+        if degree(mid) < 20.0:
+            lo = mid
+        else:
+            hi = mid
+    for t in (hi - timedelta(seconds=0.2), hi + timedelta(seconds=0.2)):
+        text = "\n".join(fs._shadvarga_lines(chart(t)))
+        assert "unavailable" not in text, (t, text)
+
+
 def _run(name, fn):
     try:
         fn()
@@ -373,9 +433,10 @@ if __name__ == "__main__":
              test_standard_builder_no_optional_stack_import),
         _run("timing_worked_examples", test_timing_worked_examples),
         _run("standard_worked_examples", test_standard_worked_examples),
+        _run("exact_second_chart", test_exact_second_chart),
     ]
     if all(results):
-        print("\n[GREEN] 七条隔离断言、时间副层算例与标准层算例全绿。")
+        print("\n[GREEN] 七条隔离断言、时间副层算例、标准层算例与秒级整盘算例全绿。")
         sys.exit(0)
     else:
         print("\n[RED] 隔离断言未全绿，禁止上线。")

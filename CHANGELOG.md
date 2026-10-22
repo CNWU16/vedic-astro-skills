@@ -6,6 +6,37 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased] - 2026-10-23
+
+### ⚠️ calculator engine v1.0：秒级计算瞬间、Lagna 基准与桌面 JHora 一致
+
+**起因**：外部用户跑即时盘时发现六分盘表被整表隐藏，并附根因报告；codex 复核。复核后确认两个共享层根因，
+另有若干相邻时间缺陷，一并修复。
+
+- **秒级瞬间**：`calculate_full_chart`、`to_jd` 新增 `second`（可带小数，默认 0）；整张盘只本地化一次，JD 与
+  各 PyJHora 包装（SAV、15 分盘、Dasha、Shadbala、Bhava Bala、特殊上升点、Vargeeya、Pushkara、边界审计）的
+  时区偏移和时间都从它派生。此前包装各自用“时＋分/60”重建，秒级调用方只能下游补算。整分输入 24 盘基线
+  **逐字节零变化**。
+- **即时盘**：提问时刻整个传给 engine，删掉自己的选择性补算（此前 D3/D12/D30 留在整分，随机秒数下约 5% 的盘
+  六分盘表被隐藏——这是 10-21 六分盘批的交叉校验暴露出来的）。原始失败盘 2026-10-21 14:00:50 深圳宝安
+  恢复为 Virgo／Cancer／Virgo／Capricorn。同名目录不再覆盖（另开 `_2`、`_3`）；六分盘隐藏时逐分盘写明
+  缺失／出错／不一致及分界距离；已带时区的“当下”在夏令时回拨时按 fold 消歧。
+- **Lagna 基准**：Lagna＝视位置回归 Lagna − 与行星同口径的岁差（TRUEPOS|NONUT）。客户 JHora 桌面打印盘
+  （2004-09-12 11:15:27 上海）实证：Lagna 差 0.004″、岁差 0.002″、七曜 ≤0.006″。旧 engine 差 +26″、
+  PyJHora 差 +9″（1950–2030：engine 平均 15.6″、最大 38.7″）。PyJHora 分盘经 5 处 `houses_ex` 补丁统一到
+  同一基准；rectifier `time_scan` 同一公式；`chart["ayanamsa"]` 报实际值（＝桌面打印值）。
+  ⚠️ 分界附近的旧盘会变：24 盘基线里离散字段（星座、宫位、宫主）零变化，只有 Lagna 与分盘 Lagna 度数微移；
+  粗估 D9 Lagna 约 0.1%、D60 约 0.6% 的盘换座。旧报告不召回，新产物带 engine v1.0。
+- **极圈盘**：Dig Bala 走 Placidus 在极圈内无解，此前整盘报错；按 Swiss Ephemeris 文档改用 Porphyry。
+- **当前大运标记**：按出生偏移比较带时区的 `as_of`（默认当下 UTC），不再用机器本地时钟。
+- **删除** `engine.calc_transits`（把本机时间当 UT，无消费者）与 chart 的 `transits` 键；过运一律走 `transit.py`。
+- **溯源**：chart 新增 `calc_meta`（engine 版本、UTC 计算瞬间、实际岁差），`structured_data.md` 与
+  `structured_prashna.md` 头部各打印一行。
+- **rectifier**：`--local-time` 可带秒；换座标记后给出二分求得的秒级本地换座时刻。
+- 本命 formatter 的 D9 自检加查 Lagna。D2 称谓统一为 Uma Shambhu Hora。
+- **测试**：新增 `vedic-calculator/tests/test_engine_precision.py`（10 项，含桌面金标准盘）；即时盘测试加
+  “秒级整盘”算例（旧代码上报 Taurus／Cancer／Leo／Pisces 失败，新代码通过）。
+
 ## [Unreleased] - 2026-10-21
 
 ### 即时盘追问跟上判读单 v3

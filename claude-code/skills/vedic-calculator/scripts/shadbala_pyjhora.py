@@ -14,7 +14,7 @@ shadbala_pyjhora.py v4 - 逐项修正版
 """
 
 
-def calculate_shadbala_fixed(year, month, day, hour, minute, lat, lon, tz_offset):
+def calculate_shadbala_fixed(year, month, day, hour, minute, lat, lon, tz_offset, second=0):
     import sys
     import os
     import datetime
@@ -50,14 +50,36 @@ def calculate_shadbala_fixed(year, month, day, hour, minute, lat, lon, tz_offset
         orig_he = swe.houses_ex
         if not hasattr(orig_he, '_patched'):
             def patch_he(*a, **kw):
-                # PyJHora drik.ascendant() 不传 hsys → pyswisseph 默认落到 Placidus，
-                # 而 Placidus 在极圈内(|lat|>66°33')无解，houses_ex 直接报错、整张盘算不出。
-                # 补 b'W'(整宫制，与 engine.calc_lagna 同口径)：asc 值与宫制无关
-                # (实测 W/E/O/C/B 返回同一 asc)，中低纬度 A/B 逐字节零变化。
+                # (1) PyJHora drik.ascendant() 不传 hsys → pyswisseph 默认落到 Placidus，极圈内(|lat|>66°33')
+                #     无解。补 b'W'(整宫制)：asc 值与宫制无关(实测 W/E/O/C/B 返回同一 asc)。
+                # (2) 显式传 Placidus/Koch 的调用(Shadbala Dig Bala 的 bhaava_madhya)在极圈内同样无解：
+                #     按 Swiss Ephemeris 文档的做法改用 Porphyry(swe_houses 遇此情形自己也改算 Porphyry 并报 ERR)。
+                # (3) 恒星盘请求统一到 engine.calc_lagna 的 Lagna 基准(=桌面 JHora，2026-10-23 客户 JHora
+                #     打印盘实证差 0.004″)：视位置回归宫位 − 与行星同口径的岁差(TRUEPOS|NONUT)。
+                #     PyJHora 自带的 FLG_TRUEPOS 只改 houses_ex 内部岁差，与行星口径差约 9″。
+                #     ARMC 与占位元素不减岁差，按与 FLG_SIDEREAL 原生结果比对识别后原样保留。
                 if len(a) < 4 and 'hsys' not in kw:
                     a = a + (b'W',)
-                r = orig_he(*a, **kw)
-                return (r[0], r[1]) if len(r) == 3 else r
+                jd, lat, lon = a[0], a[1], a[2]
+                hsys = a[3] if len(a) > 3 else kw.get('hsys', b'W')
+                flags = a[4] if len(a) > 4 else kw.get('flags', 0)
+                def _he(hs, fl):
+                    try:
+                        r = orig_he(jd, lat, lon, hs, fl)
+                    except swe.Error:
+                        if hs not in (b'P', b'K'):
+                            raise
+                        r = orig_he(jd, lat, lon, b'O', fl)
+                    return r[0], r[1]
+                if not flags & swe.FLG_SIDEREAL:
+                    return _he(hsys, flags)
+                trop_c, trop_a = _he(hsys, 0)
+                sid_c, sid_a = _he(hsys, swe.FLG_SIDEREAL)
+                ay = swe.get_ayanamsa_ex_ut(jd, swe.FLG_TRUEPOS | swe.FLG_NONUT)[1]
+                def _fix(trop, sid):
+                    return tuple((t - ay) % 360 if abs((t - s + 180) % 360 - 180) > 1 else t
+                                 for t, s in zip(trop, sid))
+                return _fix(trop_c, sid_c), _fix(trop_a, sid_a)
             patch_he._patched = True
             swe.houses_ex = patch_he
 
@@ -70,7 +92,7 @@ def calculate_shadbala_fixed(year, month, day, hour, minute, lat, lon, tz_offset
     const._DEFAULT_AYANAMSA_MODE = 'TRUE_CITRA'
     const._use_true_nodes_for_rahu_ketu = False
 
-    local_hour = hour + minute / 60.0
+    local_hour = hour + minute / 60.0 + second / 3600.0
     jd = swe.julday(year, month, day, local_hour)
     place = Place('birth_place', lat, lon, tz_offset)
 
