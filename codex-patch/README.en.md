@@ -1,6 +1,6 @@
 # Codex Patch for Vedic Astro Skills
 
-> Codex Patch v1.2.0. This package is independent from the Vedic Skill Suite
+> Codex Patch v1.3.0. This package is independent from the Vedic Skill Suite
 > version, Blind QA protocol version, and analyst-editing protocol version.
 
 This is a Codex execution-compatibility layer, not a replacement for the Vedic
@@ -102,16 +102,19 @@ their own selected `SKILL.md`.
 
 ## Rectification evidence compatibility
 
-The patch follows the current `vedic-rectifier` two-leg, equal-weight model.
-Leg 1 tests concrete undated facts and traits against static chart fields that
-actually vary among candidates; mappings are pre-registered, shared sources are
-deduplicated, and elimination uses only the skill's three-gate rule. Leg 2 tests
-dated events against Dasha with the required precision, endpoints, boundaries,
-and PD-difference audit. Generic portraits and vague self-description do not
-score directly, but valid items produced through the skill's seven-step and
-five-check `resources/calibration_quiz.md` procedure score in Leg 1 exactly as
-the skill specifies. Expert synthesis cannot override the equal-leg total,
-fixed decision order, gap threshold, underdetermination path, or resolution.
+The patch follows the current `vedic-rectifier` judgment-first model. Dated
+events against Dasha and facts, traits, or experiences against chart structures
+that actually vary among candidates enter one full-candidate mapping table.
+Items explained by the same structure are grouped, and the displayed reference
+score is an audit aid rather than a gate. Settlement uses the skill's main-line
+judgment, one runner-up advocacy pass, confidence level, and decisive or most
+discriminating evidence. Only a user-confirmed objective fact or dated event
+that one candidate strongly predicts and another predicts in the opposite
+direction can decide a pair by itself. Low-confidence layers use the skill's
+seven-step, three-check `resources/calibration_quiz.md` procedure for at most
+two rounds, then return every valid answer to the full mapping table. The patch
+does not restore the retired equal-leg total, numeric gap, elimination gate, or
+question scoring model.
 
 ## Language behavior
 

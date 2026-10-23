@@ -130,9 +130,10 @@ Do not collapse these operations. In particular, `readable` never means
   date are already known, show them only as a `known-fact cross-check` and do
   not count them as an independent R1 hit.
 - Rectification: use UC only as explicit calibration evidence in the manner
-  allowed by `vedic-rectifier`. Apply the same scoring method to every
-  candidate and keep calibration evidence separate from sample-out
-  validation; do not use unscored biography as an interpretive hint. In
+  allowed by `vedic-rectifier`. Apply the same mapping and judgment method to
+  every candidate and keep calibration evidence separate from sample-out
+  validation; do not use biography that has not entered the mapping table as
+  an interpretive hint. In
   skill-authorized calibration questions, UC may identify known facts, anchor
   a lived scenario, and expose an unrecorded discriminator. The answer mapping
   remains chart-derived; a known fact is not a new independent evidence row.
