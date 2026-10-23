@@ -11,10 +11,10 @@ resources/calibration_quiz.md
 
 Before constructing, replacing, sending, or interpreting a calibration
 questionnaire, read that file completely and follow it exactly. In particular,
-preserve its entry threshold, real candidate-difference scan, opposing
-predictions, question-type selection, `A/B/0` format, five checks,
-pre-feedback `rectification_quiz.md` lock, feedback handling, and canonical
-Leg 1 scoring.
+preserve its entry condition, real candidate-difference scan, opposing
+predictions, question-type selection, `A/B/0` or match/no-match format, three
+checks with notes, pre-feedback `rectification_quiz.md` lock, and returning
+answers to the mapping table for re-judgment.
 
 Do not combine the current skill with the retired three-category hard/soft
 question rules from an older patch. This compatibility file adds no evidence

@@ -10,7 +10,7 @@ representative chart or evaluates events across a candidate interval.
      or a representative point.
 - A representative chart may describe a divisional structure that is constant
   within the interval. Its Dasha never automatically represents the interval.
-- Event scoring across an interval must use the endpoint, boundary, and
+- Event evaluation across an interval must use the endpoint, boundary, and
   Moon-Nakshatra handling required by `vedic-rectifier`. Never substitute a
   midpoint, original time, or another single-point Dasha for that method.
 - Candidates identical on the divisional structure being tested must not be
