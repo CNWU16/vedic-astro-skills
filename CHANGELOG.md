@@ -15,6 +15,10 @@ All notable changes to this project will be documented in this file.
   “计算未完成”警告行（禁止凭通识补）。数值零变化（24 盘基线只多 `calc_errors` 键）。
 - `check_env.py` 星历检查改查 engine 与 PyJHora 实际使用的两个目录（此前去 swisseph 安装目录找 `.se1`，每次误报“未找到”）；
   只出警告、不判失败。
+- **KP 栈岁差复核**：行星与宫头都是“回归经度 − 同一个 Krishnamurti 岁差”，同一坐标框架，**没有** engine 旧版那种
+  行星与 Lagna 两套基准的问题，不改。KP 岁差是否含章动属 KP 自身约定（行星与宫头整体平移 ≤约 17″），无 KP 软件参照，不动。
+- **KP 极圈盘**：判盘地 |纬度| ≥ 90° − 黄赤交角时 Placidus 无定义，此前抛原始报错；现 `build_kp_horary.py` 以
+  “[KP 不收]”退出并说明原因，`kp-optional.md`「不收时的出口」同步。
 
 ### ⚠️ calculator engine v1.0：秒级计算瞬间、Lagna 基准与桌面 JHora 一致
 

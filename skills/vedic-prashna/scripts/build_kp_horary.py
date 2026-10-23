@@ -68,14 +68,18 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    data = compute(
-        args.dt,
-        args.lat,
-        args.lon,
-        args.tz,
-        args.number,
-        args.topic,
-    )
+    try:
+        data = compute(
+            args.dt,
+            args.lat,
+            args.lon,
+            args.tz,
+            args.number,
+            args.topic,
+        )
+    except ValueError as exc:
+        # 如极圈内 Placidus 无解：按 kp-optional.md「不收时的出口」回答，不起盘
+        raise SystemExit(f"[KP 不收] {exc}")
     data["question"] = args.question
     out_dir = (
         Path(args.out_parent).expanduser().resolve()

@@ -1331,6 +1331,13 @@ def compute(
     nirayana_asc = number_record["start_lon"]
     tropical_asc = (nirayana_asc + kp_ayanamsa) % 360.0
     obliquity = swe.calc_ut(jd, swe.ECL_NUT)[0][0]
+    # KP Readers 规定 Placidus 宫制；Placidus 在极圈内（|纬度| ≥ 90° − 黄赤交角）没有定义。
+    # 不换宫制顶替（那就不是 KP 了），明确不收。
+    if abs(latitude) >= 90.0 - obliquity:
+        raise ValueError(
+            f"判盘地纬度 {latitude:.4f}° 在极圈内（|纬度| ≥ {90.0 - obliquity:.2f}°），"
+            "KP 所用的 Placidus 宫制在此没有定义，KP 不收；可改用标准层"
+        )
     armc = _solve_armc_for_asc(tropical_asc, latitude, obliquity)
     tropical_cusps = swe.houses_armc(armc, latitude, obliquity, b"P")[0]
     cusp_longitudes = [
