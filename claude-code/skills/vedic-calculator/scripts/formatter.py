@@ -39,6 +39,9 @@ def format_structured_data(chart, transit_data, meta, user_info):
         cm = chart['calc_meta']
         lines.append(f"计算溯源: engine {cm['engine_version']}｜计算瞬间 UTC {cm['instant_utc']}"
                      f"｜实际岁差 {cm['ayanamsa']:.6f}°（行星与 Lagna 同口径）")
+    if chart.get('calc_errors'):
+        failed = '；'.join(f"{k}（{v}）" for k, v in chart['calc_errors'].items())
+        lines.append(f"计算未完成: ⚠️ {failed}——对应内容缺失，禁止凭通识心算补上")
     if chart.get('dst_info'):
         di = chart['dst_info']
         if di['is_dst']:

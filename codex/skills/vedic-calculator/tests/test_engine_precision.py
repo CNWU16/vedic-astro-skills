@@ -172,13 +172,37 @@ def test_calc_meta():
     assert meta["instant_utc"] == "2026-10-21T06:00:50.250000Z", meta
     assert meta["ayanamsa"] == c["ayanamsa"] == engine.ayanamsa_value(engine.to_jd(2026, 10, 21, 14, 0, "Asia/Shanghai", 50.25))
     assert "transits" not in c
+    assert c["calc_errors"] == {}, c["calc_errors"]
+
+
+def test_failures_are_reported_not_swallowed():
+    """附加项或 Chara Dasha 抛错：不连带跳过其余项，原因进 calc_errors，formatter 打警告行。"""
+    def boom(*a, **kw):
+        raise RuntimeError("模拟失败")
+    saved = (engine._bhava_bala_pyjhora, engine._chara_dasha)
+    engine._bhava_bala_pyjhora, engine._chara_dasha = boom, boom
+    try:
+        c = _chart(1990, 8, 15, 10, 30, 39.9042, 116.4074, "Asia/Shanghai")
+    finally:
+        engine._bhava_bala_pyjhora, engine._chara_dasha = saved
+    assert c["bhava_bala"] == {"error": "RuntimeError: 模拟失败"}, c["bhava_bala"]
+    assert c["special_lagnas"] and "error" not in c["special_lagnas"]      # 后面的项照算
+    assert c["vargeeya_bala"] and c["pushkara"] and "error" not in c["pushkara"]
+    assert c["chara_dasha"] is None
+    assert set(c["calc_errors"]) == {"bhava_bala", "chara_dasha"}, c["calc_errors"]
+    with contextlib.redirect_stdout(io.StringIO()):
+        from formatter import format_structured_data
+        md = format_structured_data(c, None, {"dob": "1990-08-15", "time": "10:30", "place": "北京",
+                                              "lat": 39.9042, "lon": 116.4074}, {"gender": "女"})
+    assert "计算未完成" in md and "chara_dasha" in md and "Chara Dasha 时间线" not in md
 
 
 TESTS = [test_desktop_gold_chart, test_second_default_is_minute_path, test_jd_seconds_and_dst,
          test_dst_nonexistent_and_ambiguous, test_lagna_basis_consistent_with_pyjhora_vargas,
          test_houses_patch_keeps_armc_and_matches_engine, test_rectifier_scan_uses_same_lagna,
          test_polar_chart_computes,
-         test_current_dasha_independent_of_machine_clock, test_calc_meta]
+         test_current_dasha_independent_of_machine_clock, test_calc_meta,
+         test_failures_are_reported_not_swallowed]
 
 if __name__ == "__main__":
     failed = 0

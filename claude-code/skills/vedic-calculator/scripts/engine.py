@@ -1,8 +1,11 @@
 """
-vedic-calculator v1.0 - PyJHora 精确计算引擎
+vedic-calculator v1.0.1 - PyJHora 精确计算引擎
 基于 pysweph 天文核心 + PyJHora 精确算法（含 9 项 Shadbala bug 修正）
 输出完整的 structured_data 所需数据
 
+v1.0.1: 附加项（Bhava Bala、特殊上升点、Vargeeya、Pushkara）各自捕获异常，一项出错不再连带跳过其余；
+      出错项记 {'error': ...}，Chara Dasha 出错仍为 None；原因统一进新增的 calc_errors（此前两处
+      except Exception: pass 静默留空）。数值零变化（24 盘基线只多 calc_errors 键）。
 v1.0: ① 秒级瞬间：calculate_full_chart/to_jd 收 second（可带小数），整张盘只本地化一次，
       JD 与各 PyJHora 包装的时区偏移、时间都从它派生（此前包装各自用整分重建，秒级调用方只能
       下游补算，即时盘因此混用两个瞬间）。整分调用方输出逐字节不变（24 盘基线实测）。
@@ -246,7 +249,7 @@ def to_jd(year, month, day, hour, minute, tz_str, second=0):
 PLANET_FLAGS = (swe.FLG_SWIEPH | swe.FLG_SIDEREAL | swe.FLG_SPEED
                 | swe.FLG_TRUEPOS | swe.FLG_NONUT | swe.FLG_NOGDEFL)
 
-ENGINE_VERSION = "v1.0"
+ENGINE_VERSION = "v1.0.1"
 
 
 def ayanamsa_value(jd):
@@ -1007,37 +1010,40 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
     # 16. 过运：engine 不再给（旧 calc_transits 把本机墙上时间当 UT，且 skill 内无消费者）；
     #     过运一律走 transit.py。
 
-    # 17. Bhava Bala, Special Lagnas, Vargeeya Bala (via PyJHora)
-    bhava_bala = None
-    special_lagnas = None
-    vargeeya_bala = None
-    pushkara = None
-    if any([_bhava_bala_pyjhora, _special_lagnas_pyjhora, _vargeeya_bala_pyjhora]):
+    # 17. Bhava Bala, Special Lagnas, Vargeeya Bala, Pushkara (via PyJHora)
+    #     各项单独捕获：一项出错不再连带跳过后面几项；出错项记成 {'error': ...}（与包装函数自己的
+    #     出错约定一致），原因同时进 calc_errors，不再静默留空。
+    calc_errors = {}
+    _extra = (year, month, day, hour, minute, lat, lon, _tz_offset)
+    _extra_results = {}
+    for _name, _fn in (('bhava_bala', _bhava_bala_pyjhora), ('special_lagnas', _special_lagnas_pyjhora),
+                       ('vargeeya_bala', _vargeeya_bala_pyjhora), ('pushkara', _pushkara_pyjhora)):
+        if _fn is None:
+            _extra_results[_name] = None
+            continue
         try:
-            _extra = (year, month, day, hour, minute, lat, lon, _tz_offset)
-            if _bhava_bala_pyjhora:
-                bhava_bala = _bhava_bala_pyjhora(*_extra, second=second)
-            if _special_lagnas_pyjhora:
-                special_lagnas = _special_lagnas_pyjhora(*_extra, second=second)
-            if _vargeeya_bala_pyjhora:
-                vargeeya_bala = _vargeeya_bala_pyjhora(*_extra, second=second)
-            if _pushkara_pyjhora:
-                pushkara = _pushkara_pyjhora(*_extra, second=second)
-        except Exception:
-            pass
+            _extra_results[_name] = _fn(*_extra, second=second)
+        except Exception as e:
+            _extra_results[_name] = {'error': f'{type(e).__name__}: {e}'}
+            calc_errors[_name] = _extra_results[_name]['error']
+    bhava_bala = _extra_results['bhava_bala']
+    special_lagnas = _extra_results['special_lagnas']
+    vargeeya_bala = _extra_results['vargeeya_bala']
+    pushkara = _extra_results['pushkara']
 
     # DST 透明标注：出生时刻是否处于当地夏令时（pytz 默认把报时当墙上钟时间处理）
     dst_info = {'is_dst': bool(_instant.dst()), 'utc_offset': str(_instant.utcoffset())}
 
     # Chara Dasha (K.N. Rao) — engine 真值输入（JHora 双盘金标准 24/24 验证）
+    #     出错时 chara_dasha 仍为 None（formatter 据此不出该节），原因进 calc_errors。
     chara_dasha = None
     if _chara_dasha:
         try:
             _sign_idx = {s: i for i, s in enumerate(SIGNS)}
             _psigns = {p: _sign_idx[planets[p]['sign']] for p in planets}
             chara_dasha = _chara_dasha(_sign_idx[lagna['sign']], _psigns, jd)
-        except Exception:
-            pass
+        except Exception as e:
+            calc_errors['chara_dasha'] = f'{type(e).__name__}: {e}'
 
     return {
         'ayanamsa': ayanamsa,
@@ -1072,6 +1078,8 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
         'pushkara': pushkara,
         'chara_dasha': chara_dasha,
         'dst_info': dst_info,
+        # 没算出来的附加项及原因（空字典＝全部算出）
+        'calc_errors': calc_errors,
         # 溯源：以后改了 engine，看这三项就知道旧产物是哪一版、哪个瞬间、用什么岁差算的
         'calc_meta': {
             'engine_version': ENGINE_VERSION,

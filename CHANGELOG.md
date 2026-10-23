@@ -8,6 +8,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] - 2026-10-23
 
+### calculator engine v1.0.1：计算失败不再静默；环境检查星历误报
+
+- 附加项（Bhava Bala、特殊上升点、Vargeeya、Pushkara）各自捕获异常：此前共用一个 `try … except: pass`，一项出错后面几项全跳过且不留痕。
+  现在出错项记 `{'error': …}`，Chara Dasha 出错仍为空；原因统一进新增的 `calc_errors`，`structured_data.md` 头部打印
+  “计算未完成”警告行（禁止凭通识补）。数值零变化（24 盘基线只多 `calc_errors` 键）。
+- `check_env.py` 星历检查改查 engine 与 PyJHora 实际使用的两个目录（此前去 swisseph 安装目录找 `.se1`，每次误报“未找到”）；
+  只出警告、不判失败。
+
 ### ⚠️ calculator engine v1.0：秒级计算瞬间、Lagna 基准与桌面 JHora 一致
 
 **起因**：外部用户跑即时盘时发现六分盘表被整表隐藏，并附根因报告；codex 复核。复核后确认两个共享层根因，

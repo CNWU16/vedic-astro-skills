@@ -295,7 +295,8 @@ structured_data.md 生成后，向用户输出：
 chart = {
     # 基础天文
     'ayanamsa': 23.8982,           # float, True Chitra ayanamsa 度数（约23.9°，与Lahiri差<1′）；行星与 Lagna 实际使用的值，＝桌面 JHora 打印值
-    'calc_meta': {'engine_version': 'v1.0', 'instant_utc': '1990-08-15T02:30:00.000000Z', 'ayanamsa': 23.8982},  # 溯源
+    'calc_meta': {'engine_version': 'v1.0.1', 'instant_utc': '1990-08-15T02:30:00.000000Z', 'ayanamsa': 23.8982},  # 溯源
+    'calc_errors': {},             # 没算出来的附加项及原因，如 {'chara_dasha': 'RuntimeError: …'}；非空时 structured_data 头部有警告行
     'lagna': {
         'sign': 'Cancer',          # str, 英文星座名
         'sign_idx': 3,             # int, 0-indexed (Aries=0)

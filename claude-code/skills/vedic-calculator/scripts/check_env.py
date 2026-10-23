@@ -8,7 +8,7 @@ vedic-calculator 环境诊断脚本
 3. 跑一个最小计算验证 SAV=337
 4. 输出明确的 ✅/❌ 结果和修复指令
 """
-import os, sys, subprocess, glob
+import os, sys, subprocess
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 SKILL_DIR = os.path.dirname(SCRIPT_DIR)
@@ -124,22 +124,26 @@ def main():
             print(f"  ❌ swisseph 是空壳 (version=0.0.0)! 需要重装 pysweph")
             all_ok = False
     
-    # 5. 星历表文件检查
+    # 5. 星历表文件检查：查 engine 与 PyJHora 实际 set_ephe_path 的两个目录。
+    #    旧版去 swisseph 的安装目录找 *.se1——那里本来就没有，于是每次都误报“未找到”。
+    #    只出警告、不判失败：缺星历时 engine 仍能算（退回 Moshier 近似），不该卡住安装。
     print(f"\n── 星历表 (Ephemeris) ──")
-    ephe_dirs = [
-        os.path.join(SKILL_DIR, "venv", "Lib", "site-packages", "swisseph"),  # 常见位置
-        os.path.join(SKILL_DIR, "venv", "share", "swisseph", "ephe"),
-    ]
-    # 也用 swisseph 自己报告的路径
-    ok, ephe_path = run_python(python_exe, 
-        "import swisseph as swe; import os; p=os.path.dirname(swe.__file__); print(p)")
-    if ok:
-        se1_files = glob.glob(os.path.join(ephe_path, "*.se1"))
-        if se1_files:
-            print(f"  ✅ 找到 {len(se1_files)} 个星历文件: {ephe_path}")
+    need = ("seas_18.se1", "semo_18.se1", "sepl_18.se1")
+    ok, out = run_python(python_exe,
+        "import jhora, os; print(os.path.join(os.path.dirname(jhora.__file__), 'data', 'ephe'))")
+    jhora_ephe = out.splitlines()[-1].strip() if ok and out else None
+    for label, ephe_dir in (("engine", os.path.join(SCRIPT_DIR, "ephe")), ("PyJHora", jhora_ephe)):
+        if not ephe_dir:
+            print(f"  ⚠️  {label} 星历目录无法定位")
+            continue
+        missing = [n for n in need if not os.path.isfile(os.path.join(ephe_dir, n))]
+        if not missing:
+            print(f"  ✅ {label} 星历齐全（{len(need)} 个 .se1）: {ephe_dir}")
+        elif all(os.path.isfile(os.path.join(ephe_dir, n + ".txt")) for n in missing):
+            print(f"  ⚠️  {label} 只有 .se1.txt（发布平台兼容名）: {ephe_dir}——运行 setup_env.py 会复制为 .se1")
         else:
-            # pysweph 内置了，可能不需要外部se1
-            print(f"  ⚠️  未找到外部.se1文件 (pysweph可能内置)")
+            print(f"  ⚠️  {label} 缺 {'、'.join(missing)}: {ephe_dir}——会退回 Moshier 近似"
+                  "（与 Swiss 星历差约 0.5″），运行 setup_env.py 补齐")
     
     # 6. 最小计算测试
     if all_ok:
