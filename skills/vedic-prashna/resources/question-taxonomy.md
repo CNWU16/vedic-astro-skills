@@ -97,6 +97,12 @@ AB 选择先让用户选一个最想执行的方案，改问“执行 A 能否�
 也不换一条规则重判出第二个结论。对方已经联系、已经复合或已经明确拒绝，才算现实
 状态的实质变化。
 
+**分类更正（唯一例外）**：若首次判读把问题归错了题型（例如"对方会不会主动约我见面"被归进
+"合作、另一方会否配合"），追问时可在**同一张盘**上按正确题型重建一次账本，核对区标明"分类更正"
+及原因。这是纠正门控错误，不是第二个结论；同一问题只允许更正一次。
+问题后来补充的限定语（如"必须由对方发起"）不算分类错误，按 `judgment-rubric.md` §2.3 检验限定语，
+不重建账本。
+
 ### 2.6 时间未定（“我以后能不能……”）
 
 **触发**：完全无时间锚点。
@@ -115,6 +121,7 @@ AB 选择先让用户选一个最想执行的方案，改问“执行 A 能否�
 | 能不能复合／和好／复婚 | `P-III.3~4`（类比） | `P-I.3`（7 宫） | B | 7 |
 | 喜欢的人能不能在一起；表白能不能成；能不能确立关系 | `P-I.4` | `P-I.3`（7 宫）；`M-XVII.5／15／16／17`（类比） | B | 7 |
 | 对方会不会联系我／回复我 | `P-III.3~4`（类比） | `P-I.3`（7 宫） | B | 7 |
+| 能不能见面、约会；对方会不会来、会不会主动约我 | `P-I.4`（一般所谋之事） | `P-I.3`（7 宫）；恋爱语境加 `M-XVII.5／15／16／17`（类比） | B | 7 |
 | 我主动挽回能不能成 | `P-I.4` | — | A | 1 |
 | 已搬走的伴侣会不会回来同住 | `P-I.2`；Chapter II／V | — | A | 按专题角色 |
 | 能不能结婚 | `P-VII.2` | `P-VII.1`；`P-I.3`（7 宫）；`M-XVII.5／15／16／17` | A | 7 |
@@ -144,6 +151,11 @@ AB 选择先让用户选一个最想执行的方案，改问“执行 A 能否�
 - 表白／确立关系：没有专属偈，按一般所谋之事走 `P-I.4`，再按 *Prasna Marga* 第十七章婚姻
   卜问类比加四偈，标 B 级。PM 原文是议婚语境，Lagna 读女方、7 宫读男方（XVII.8–9）；这里
   沿用 Lagna＝提问人、7 宫＝对方。
+- 见面、约会、对方会不会来或主动约：属"某个人会不会做一件具体的事"。没有专属偈，按一般所谋之事走
+  `P-I.4`，事项宫取行动者的宫（`house-meanings.md` 第 3 节：对方 7、上级 10、母亲 4……），加该宫 `P-I.3`；
+  B 级。问题里的"主动""私下""在家"等是限定语，按 `judgment-rubric.md` §2.3 检验，不另立题型。
+  Ch.2 到达诸偈（敌军来不来，`P-II.6~8`、`P-II.11`、`P-II.13`，*Prasna Marga* XXIV.68 注明可用于人会不会来）
+  尚未逐偈审定，暂不进账本。
 - 对方会不会联系：没有示范题。断联、冷战后恢复联系是双方关系的缓和，按 III.3 注“all cases where
   settlement of scores is involved”类比收 `P-III.3~4`，与复合同标 B 级（10-21 创始人定）。
 
@@ -156,7 +168,7 @@ AB 选择先让用户选一个最想执行的方案，改问“执行 A 能否�
 | 问法 | 主规则 | 辅助规则 | 支持级 | 事项宫 |
 |---|---|---|---|---:|
 | 能不能找到工作；能不能拿到（满意的）offer；面试能不能过；能不能升职 | `P-IV.3`；`P-II.1`（星座类型）；`P-II.2`（照射） | `P-I.3`（10 宫） | A | 10 |
-| 会不会被裁／调岗／换工作；能不能保住工作 | `P-I.2` Chyuti | `P-II.1` 动／固座 | A | 1 |
+| 会不会被裁／调岗／换工作；能不能保住工作 | `P-I.2` Chyuti | `P-II.1` 动／固座（Chyuti 读的正是 Lagna 的占据与照射，与 1 宫 `P-I.3` 同源，不另计） | A | 1 |
 | 竞争性考试（按排名录取：考研、考公、选拔） | `P-II.1~2` | `P-III.1` | B | 1 |
 | 达标性考试（过线即过：驾照、资格证） | `P-I.4` | — | A | 1 |
 | 面试表现如何；面试官怎么看我 | — | — | C | 改问“能不能拿到这个 offer” |
@@ -254,7 +266,7 @@ Phase 6。
 | 出国、签证、留学、调动能不能办成 | `P-I.4` | `P-I.3`（1 宫） | A | 1 |
 | 路上顺不顺 | `P-II.5` | — | A | 1 |
 | 会不会离开、搬走；能否早日出发 | `P-I.2` Pravasa | `P-II.1~2` 动／固座；问“能否早日出发”时加 `P-II.9`（不收 10 宫 `P-I.3`，反向同源） | A | 10 |
-| 在外的人或失踪者会不会回来 | `P-V.1`；失踪者寻得加 `P-I.5` | `P-V.2~3`、`P-III.5`、`P-I.2` Nivritti 与 4 宫、`P-II.1~2` 动／固座 | A | 7 |
+| 在外的人或失踪者会不会回来 | `P-V.1`；失踪者寻得快不快另看 `P-I.5`（不计分，同失物） | `P-V.2~3`、`P-III.5`、`P-I.2` Nivritti 与 4 宫、`P-II.1~2` 动／固座 | A | 7 |
 | 病能不能好（含代他人问） | `P-IV.5` | `P-II.1~2` 动／固座 | A | 1 |
 | 被诬陷／名誉能不能保住 | `P-I.2` Vriddhi | `P-I.2` Nivritti；`P-II.1~2` 动／固座；`P-IV.3` 2／5／1 宫 | A | 4 |
 | 谈判／和解能不能达成 | `P-III.3~4` | `P-I.3`（7 宫） | A | 7 |
@@ -271,7 +283,7 @@ Phase 6。
   `full_moon_window`。I.5 只答快不快，不计分：原文只说“quickly recovered”，不满足推不出
   找不回。`P-VI.3` 是能否找回的主规则：满月或吉星占 Lagna、头升座上升受吉星照、强吉星
   落 11 宫则速得，Bhattotpala：皆无则渺茫（“chances of recovery are remote”）。头升座 Ayer 注列 Leo、Virgo、Libra、
-  Scorpio、Aquarius，没有 Gemini；Lagna 为 Gemini 时两说并列。`P-V.1` 吉星落 5／2／3
+  Scorpio、Aquarius，没有 Gemini；Lagna 为 Gemini 时两说并列（计分见 rubric §2.4）。`P-V.1` 吉星落 5／2／3
   宫则失物复得。I.5、VI.3 的强吉星按 D1 `exalted`／`own_sign` 算（`standard-layer.md`
   §2.1）。`P-II.1~2` 注：固定座“hidden from view, possibly misplaced inadvertently”，
   没丢、一时找不到；动座“object lost is irrecoverable”；变动座前半按固定座、后半按动座。
@@ -291,13 +303,13 @@ Phase 6。
   条件都不满足时本条不出方向。现代人问“能不能出国”多半是问办不办得成，先按此澄清。
 - 出行（会不会离开）：`P-II.9` 按点名行星——动座上升且 Sun／Saturn／Mercury／Venus 之一占据则很快
   出发，该星逆行则否。Ayer 注称日月无逆行、“should be kept out of reckoning in this
-  context”：Sun 只免逆行判断、还是整体不计入，两读并列。`P-II.1~2` 注：固定座“neither
+  context”：Sun 只免逆行判断、还是整体不计入，两读并列（计分见 rubric §2.4）。`P-II.1~2` 注：固定座“neither
   departure nor arrival”，不成行；动座相反；变动座前半按固定座、后半按动座。
 - 返回：`P-V.1` 行星落 5／2／3 宫则返回，Jupiter／Venus 落此则快；`P-V.2` 7 或 6 宫有
   星、Jupiter 落角宫或 Mercury／Venus 落三方宫；`P-V.3` Moon 落 8 宫且角宫无凶星则平安
   返回；`P-III.5` Jupiter 或 Venus 落 2／3 宫则很快到来。点名行星的按点名读。
   `P-V.3` 注：Moon 与角宫吉星都不可弱（“should not be weak”），D1 `debilitated` 算弱。
-  `P-I.2` 4 宫两说并列：正文“One returns from abroad, with a planet's occupation of the
+  `P-I.2` 4 宫两说并列（计分见 rubric §2.4；`P-V.2` 的且／或同样按两说算）：正文“One returns from abroad, with a planet's occupation of the
   fourth house”，有行星落 4 宫则回；注“the person from abroad has come home when the fourth
   house contains its own lord or is aspected by it and not otherwise”，4 宫主占据或照 4 宫
   才回。`P-II.1~2` 注：固定座“neither departure nor arrival”，不来；动座正文“相反”，注

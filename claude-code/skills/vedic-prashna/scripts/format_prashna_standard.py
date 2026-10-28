@@ -26,6 +26,15 @@ SIGN_LORDS = {
 KENDRA_FROM = {4, 7, 10}
 TRIKONA_FROM = {5, 9}
 STRONG_BASIC = {"exalted", "own_sign"}
+# 能力层（M-XIV.39–40 Raman 注：强＝本座、入旺、友座，友指天然友；弱＝落陷；凶位＝6／8／12）。
+# 天然友谊按 BPHS Naisargika 表，与 engine 同表。
+NATURAL_FRIENDS = {
+    "Sun": {"Moon", "Mars", "Jupiter"}, "Moon": {"Sun", "Mercury"},
+    "Mars": {"Sun", "Moon", "Jupiter"}, "Mercury": {"Sun", "Venus"},
+    "Jupiter": {"Sun", "Moon", "Mars"}, "Venus": {"Mercury", "Saturn"},
+    "Saturn": {"Mercury", "Venus"},
+}
+DUSTHANA = {6, 8, 12}
 
 # 描述题查表（P-VI.4、P-VII.13 注），只给查表事实，不生成结论。
 PLANET_DIRECTIONS = {
@@ -188,6 +197,117 @@ def _ayer_role(chart, planet, sign):
 
 def _labelled(chart, names, sign):
     return ", ".join(f"{name} {_ayer_role(chart, name, sign)}" for name in names)
+
+
+def _lord_ability(chart, house):
+    """能力层事实：宫主的折损项、救应与结论。不进账本合计，只供否决与叙述。
+
+    折损项（M-XIV.39–40；M-XIV.30 只取作用于宫主自身的几项，不取 6／8／12 宫主连接）：
+    落陷、落 6／8／12 宫、燃烧、逆行、受凶星占照而无吉星。
+    救应：吉星同宫或照射；宫主入旺、本座或落天然友座。
+    结论：三项及以上，或两项而无救应 → 严重受损；一到两项 → 能力打折；无折损项时有力或正常。
+    """
+    planet = chart["house_lords"][house]["lord"]
+    data = chart["planets"][planet]
+    where, sign = data["house"], data["sign"]
+    basic = chart.get("dignity", {}).get(planet, {}).get("basic")
+    others = [name for name in _occupants(chart, where, CLASSICAL_PLANETS) if name != planet]
+    others += [name for name in _classical_aspecting_house(chart, where) if name != planet]
+    roles = [_ayer_role(chart, name, sign) for name in others]
+    malefic = any(role.startswith("凶") for role in roles)
+    benefic = any(role.startswith("吉") for role in roles)
+    factors = []
+    if basic == "debilitated":
+        factors.append("落陷")
+    if where in DUSTHANA:
+        factors.append(f"落{where}宫")
+    if planet in chart.get("combustion", {}):
+        factors.append("燃烧")
+    if data.get("retrograde"):
+        factors.append("逆行")
+    if malefic and not benefic:
+        factors.append("受凶星占照、无吉星")
+    strong = basic in STRONG_BASIC or SIGN_LORDS[sign] in NATURAL_FRIENDS[planet]
+    rescue = []
+    if benefic:
+        rescue.append("吉星占照")
+    if strong:
+        rescue.append("入旺" if basic == "exalted" else "本座" if basic == "own_sign" else "天然友座")
+    if len(factors) >= 3 or (len(factors) == 2 and not rescue):
+        verdict = "严重受损"
+    elif factors:
+        verdict = "能力打折"
+    else:
+        verdict = "有力" if strong else "正常"
+    return planet, factors, rescue, verdict
+
+
+def _lord_links(chart, house):
+    """意愿层事实：宫主同宫、照射之星（及其从 Lagna 起所管宫），与 Lagna 主的连接。"""
+    lagna_sign = chart["lagna"]["sign"]
+    planets = chart["planets"]
+    planet = chart["house_lords"][house]["lord"]
+    where = planets[planet]["house"]
+
+    def with_rule(names):
+        return ", ".join(
+            f"{name}（管{'、'.join(map(str, sorted(_houses_ruled_from(name, lagna_sign)))) or '—'}）"
+            if name in CLASSICAL_PLANETS else name
+            for name in names
+        ) or "—"
+
+    joined = [n for n in _occupants(chart, where, CLASSICAL_PLANETS + NODES) if n != planet]
+    aspecting = [n for n in _classical_aspecting_house(chart, where) if n != planet]
+    first_lord = chart["house_lords"][1]["lord"]
+    if planet == first_lord:
+        link = "即 Lagna 主"
+    else:
+        first_where = planets[first_lord]["house"]
+        kinds = []
+        if first_where == where:
+            kinds.append("同宫")
+        lord_sees = where in chart["graha_drishti"].get(first_lord, {}).get("aspected_houses", [])
+        sees_lord = first_where in chart["graha_drishti"].get(planet, {}).get("aspected_houses", [])
+        if lord_sees and sees_lord:
+            kinds.append("互照")
+        if (SIGN_LORDS[planets[planet]["sign"]] == first_lord
+                and SIGN_LORDS[planets[first_lord]["sign"]] == planet):
+            kinds.append("互换")
+        link = "、".join(kinds) or "无"
+    return planet, with_rule(joined), with_rule(aspecting), link
+
+
+def _lord_lines(chart):
+    lines = ["### 宫主能力与连接（能力层、意愿层输入）\n"]
+    lines.append(
+        "> 能力层：按 M-XIV.39–40 与 M-XIV.30（只取作用于宫主自身的几项）列折损项与救应。"
+        "燃烧、逆行只算折损，不单独算无力；只有多项叠加且无救应才记“严重受损”。"
+        "本表不进账本合计，“严重受损”只用于 `judgment-rubric.md` 能力层否决。\n"
+    )
+    lines.append("| 宫 | 宫主 | 宫主落宫（星座） | D1尊贵度 | 折损项 | 救应 | 能力 |")
+    lines.append("|---:|---|---|---|---|---|---|")
+    dignity = chart.get("dignity", {})
+    for house in range(1, 13):
+        planet, factors, rescue, verdict = _lord_ability(chart, house)
+        data = chart["planets"][planet]
+        lines.append(
+            f"| {house} | {planet} | {data['house']}（{data['sign']}） | "
+            f"{dignity.get(planet, {}).get('basic', '—')} | {'、'.join(factors) or '—'} | "
+            f"{'、'.join(rescue) or '—'} | {verdict} |"
+        )
+    lines.append("")
+    lines.append(
+        "> 意愿层：按 M-XIV.33／47／48 取象、M-XIV.43 看与 Lagna 主的连接。这里只列事实："
+        "同宫与照射之星各管哪几宫（从 Lagna 起）、与 Lagna 主是否同宫、互照、互换。"
+        "象义怎么读见 `judgment-writing.md`；本表不进账本合计。\n"
+    )
+    lines.append("| 宫 | 宫主 | 同宫之星（所管宫） | 照射宫主之星（所管宫） | 与 Lagna 主 |")
+    lines.append("|---:|---|---|---|---|")
+    for house in range(1, 13):
+        planet, joined, aspecting, link = _lord_links(chart, house)
+        lines.append(f"| {house} | {planet} | {joined} | {aspecting} | {link} |")
+    lines.append("")
+    return lines
 
 
 def _navamsa_number(degree):
@@ -619,6 +739,7 @@ def format_standard_layer(chart):
         "Dainya／Khala Yoga 分类。\n"
     )
 
+    lines.extend(_lord_lines(chart))
     lines.extend(_descriptive_facts(chart, d9_lagna))
 
     lines.append("### 时间边界\n")

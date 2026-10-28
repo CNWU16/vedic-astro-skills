@@ -350,6 +350,35 @@ def test_standard_worked_examples() -> None:
     assert inside == [base, base], (base, crit, inside)
     assert any(v != base for v in outside), (base, crit, outside)
 
+    # 能力层与意愿层事实（2026-10-28 杭州私下见面盘的结构，Pisces 上升）。期望值手算：
+    # 7 宫主 Mercury 落 8 宫 Libra、逆行，同宫 Venus 是 Libra 宫主（吉）且 Libra 为天然友座 → 两项、有救应 → 能力打折；
+    # 3 宫主 Venus 本座但落 8 宫、燃烧、逆行、同宫 Sun 与照射的 Mars 皆凶且无吉 → 四项 → 严重受损。
+    order = fs.SIGNS[11:] + fs.SIGNS[:11]
+    lords = {h: {"sign": order[h - 1], "lord": fs.SIGN_LORDS[order[h - 1]]} for h in range(1, 13)}
+    where = {"Sun": (8, "Libra"), "Moon": (3, "Taurus"), "Mars": (5, "Cancer"),
+             "Mercury": (8, "Libra"), "Jupiter": (5, "Cancer"), "Venus": (8, "Libra"),
+             "Saturn": (1, "Pisces"), "Rahu": (12, "Aquarius"), "Ketu": (6, "Leo")}
+    retro = {"Mercury", "Venus", "Saturn"}
+    sight = {"Sun": [2], "Moon": [9], "Mars": [8, 11, 12], "Mercury": [2],
+             "Jupiter": [9, 11, 1], "Venus": [2], "Saturn": [3, 7, 10]}
+    pisces = {
+        "lagna": {"sign": "Pisces"},
+        "house_lords": lords,
+        "planets": {n: {"house": h, "sign": s, "retrograde": n in retro} for n, (h, s) in where.items()},
+        "dignity": {n: {"basic": b} for n, b in {
+            "Sun": "debilitated", "Moon": "exalted", "Mars": "debilitated", "Mercury": "neutral",
+            "Jupiter": "exalted", "Venus": "own_sign", "Saturn": "enemy"}.items()},
+        "combustion": {"Venus": {"distance": 7.0}},
+        "graha_drishti": {n: {"from_house": where[n][0], "aspected_houses": hs} for n, hs in sight.items()},
+        "moon_phase": {"waxing": False},
+    }
+    planet, factors, rescue, verdict = fs._lord_ability(pisces, 7)
+    assert (planet, verdict) == ("Mercury", "能力打折"), (factors, rescue, verdict)
+    assert factors == ["落8宫", "逆行"] and "天然友座" in rescue and "吉星占照" in rescue, (factors, rescue)
+    assert fs._lord_ability(pisces, 3)[3] == "严重受损"
+    assert fs._lord_links(pisces, 7)[3] == "无"
+    assert fs._lord_links(pisces, 2)[3] == "同宫"  # Mars 与 Lagna 主 Jupiter 同落 5 宫
+
 
 # ---------------------------------------------------------------------------
 # 算例 9：秒级整盘一个瞬间（2026-10-22 外部报告的原始失败盘）
