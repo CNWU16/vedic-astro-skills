@@ -19,7 +19,7 @@ calculation, evidence ledger, judgment authority, or follow-up boundaries in
   `成立する／しない`, `必ず`, `絶対`, `見込みなし` in the headline, subtitle, or body.
   In the audit section translate the tiers as `成立寄り`, `拮抗`, `不成立寄り`, with
   strength `順調／抵抗あり` and `明確／転機あり`. When a favourable direction came from
-  rubric §4.1 preponderance, describe it as `困難を経て進む方向` and name where the
+  rubric §3 preponderance, describe it as `困難を経て進む方向` and name where the
   resistance lies.
 - Do not use divinatory theatrics, fear language, or absolute guarantees.
 

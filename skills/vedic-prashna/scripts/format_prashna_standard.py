@@ -583,7 +583,7 @@ def _descriptive_facts(chart, d9_lagna):
 
     lines.append("### 描述题与天气查表事实\n")
     lines.append(
-        "> 只在 `question-taxonomy.md` §2.10 描述题、§2.11 天气题消费；描述输出不进内部三档。"
+        "> 只在 `matter-rules.md` 第 5 节查表题（描述题、天气）消费；描述输出不进内部三档。"
         "原文歧义处两说并列，不择一。\n"
     )
 

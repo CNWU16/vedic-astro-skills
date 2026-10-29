@@ -118,7 +118,7 @@ def build_prashna_header(
     lines.append(f"具体问题: {question}")
     lines.append(f"问题短标签: {label}")
     lines.append("求问者背景: [Prashna 分析阶段禁读盘主背景，此处留空]")
-    lines.append("占卜类别: [由判读时依据 question 映射，见 resources/house-karaka-map.md]")
+    lines.append("占卜类别: [判读时拆题并写取象单，见 resources/question-decomposition.md 与 matter-rules.md]")
     lines.append("```\n")
     return "\n".join(lines)
 

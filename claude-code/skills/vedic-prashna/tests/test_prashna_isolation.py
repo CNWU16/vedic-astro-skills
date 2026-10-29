@@ -456,6 +456,82 @@ def test_exact_second_chart() -> None:
         assert "unavailable" not in text, (t, text)
 
 
+# ---------------------------------------------------------------------------
+# 算例 10：判定脚本（2026-10-29 重建：模型取象、脚本计数）
+#   10-28 杭州私下见面原盘。期望值逐条手核：账本见 HANDOFF 20.5；D2 连接（Jupiter 与 Mercury 互为
+#   4／10 宫）记有利；D4 语境检验：XVII.17 读 8 宫，8 宫被"私下"点到，不入账；D3 按需：Mercury
+#   "落8宫"是应象、不算折损。三项都关时账本必须复现冻结版（prashna-20261029）。
+#   档只按所给时刻定（10-29 创始人定：时间地点由提问人负责）；前后 60 秒的变化只记"输入提示"。
+# ---------------------------------------------------------------------------
+def test_judge_worked_example() -> None:
+    calc = SKILLS_ROOT / "vedic-calculator" / "scripts"
+    scripts = PRASHNA_ROOT / "scripts"
+    if not (scripts / "prashna_rules.py").exists():
+        raise AssertionError("缺 prashna_rules.py")
+    for p in (str(calc), str(scripts)):
+        if p not in sys.path:
+            sys.path.insert(0, p)
+    import io
+    import contextlib
+    from datetime import datetime, timedelta
+    from zoneinfo import ZoneInfo
+    with contextlib.redirect_stdout(io.StringIO()):
+        import prashna_time as pt
+        import prashna_rules as pr
+
+    dt = datetime(2026, 10, 28, 15, 24, 0, 696168, tzinfo=ZoneInfo("Asia/Shanghai"))
+    def chart(x):
+        with contextlib.redirect_stdout(io.StringIO()):
+            return pt.calculate_prashna_chart(x, 30.27, 120.15, "Asia/Shanghai")
+    base = chart(dt)
+    variants = [("−60 秒", chart(dt - timedelta(seconds=60))), ("+60 秒", chart(dt + timedelta(seconds=60)))]
+    plan = pr.Plan.from_dict({
+        "matter": "见面", "matter_house": 7, "context": "恋爱", "actor": 7,
+        "keywords": [{"word": "私下", "houses": [8, 12, 4], "polarity": "相合", "source": "M-XIV.20"},
+                     {"word": "对方主动", "houses": [9], "planets": ["Mars"], "polarity": "相合", "source": "M-XIV.5"}],
+        "qualifiers": ["私下", "主动"], "location": "city"})
+    v = pr.judge(base, plan, variants=variants)
+    got = [(e["rule_id"], e["direction"], bool(e["excluded"])) for e in v["ledger"]]
+    assert got == [("P-I.4", "mixed", False), ("P-I.3", "unf", False), ("M-XVII.5", "none", False),
+                   ("M-XVII.15", "none", False), ("M-XVII.16", "fav", False), ("M-XVII.17", "unf", True),
+                   ("P-IV.1", "mixed", False), ("M-XIV.43", "fav", False)], got
+    assert v["sum"] == 1 and (v["tier"], v["strength"]) == ("偏成", "有阻力"), (v["sum"], v["tier"], v["strength"])
+    assert v["branches"] == [] and v["sensitive"][0]["rules"] == ["P-I.4"], v["sensitive"]
+    assert v["chain"]["verdict"] == "偏会"
+    assert [(q["name"], q["result"]) for q in v["qualifiers"]] == [("私下", "成立"), ("主动", "成立")], v["qualifiers"]
+    ab = v["ability"]
+    assert (ab["planet"], ab["factors"], ab["verdict"]) == ("Mercury", ["逆行"], "能力打折"), ab
+    assert ab["dropped"] == ["落8宫（措辞点到的宫，应象）"], ab["dropped"]
+
+    # 三项拍板全关＝冻结版账本：合计 −1（HANDOFF 19.5）；档按所给时刻为偏不成·有转机，
+    # −60 秒 P-I.4 转有利、合计 0（持平·吉凶相当）：只记输入提示，不改档
+    off = pr.judge(base, plan, pr.Options(d2_link=False, d3_need=False, d4_context=False), variants)
+    assert off["sum"] == -1 and (off["tier"], off["strength"]) == ("偏不成", "有转机"), (off["sum"], off["tier"])
+    assert off["sensitive"][0]["tier"] == "持平·吉凶相当", off["sensitive"]
+    assert off["ability"]["factors"] == ["落8宫", "逆行"], off["ability"]
+
+    # 测试用户例："对方会公开我们的关系吗"，7 宫主飞 8 宫、8 宫主坐 8 宫 → 取隐藏之意，"公开"不成立。
+    # 显隐第 2 步落入优先于连接（M-XIV.47）：Mercury 落 8 宫即定私密，不因它与 10 宫主互为 4／10 宫而打平落到半球
+    pub = pr.Plan.from_dict({"matter": "通用", "matter_house": 7, "context": "恋爱", "qualifiers": ["公开"],
+                             "keywords": [{"word": "公开", "houses": [10], "polarity": "相合", "source": "M-XIV.12"}]})
+    pv = pr.judge(base, pub)
+    q = pv["qualifiers"][0]
+    assert (q["name"], q["result"]) == ("公开", "不成立") and "指标星 Mercury 落 8 宫 → 私下" in q["basis"], q
+    # D13：必要条件不成立，按这个条件不能，不给时间；私下见面盘条件都成立，照常给
+    assert pv["condition_failed"] == ["公开"] and pv["timing"] == "none", (pv["condition_failed"], pv["timing"])
+    assert v["condition_failed"] == [] and v["timing"] == "general", (v["condition_failed"], v["timing"])
+
+    # 取象单校验：关键词要写出处；限定语"主动"要给行动者
+    for bad in ({"matter": "见面", "matter_house": 7, "keywords": [{"word": "私下", "houses": [8], "polarity": "相合"}]},
+                {"matter": "见面", "matter_house": 7, "qualifiers": ["主动"]},
+                {"matter": "不存在的题型"}):
+        try:
+            pr.Plan.from_dict(bad)
+        except ValueError:
+            continue
+        raise AssertionError(f"取象单应被拒：{bad}")
+
+
 def _run(name, fn):
     try:
         fn()
@@ -479,9 +555,10 @@ if __name__ == "__main__":
         _run("timing_worked_examples", test_timing_worked_examples),
         _run("standard_worked_examples", test_standard_worked_examples),
         _run("exact_second_chart", test_exact_second_chart),
+        _run("judge_worked_example", test_judge_worked_example),
     ]
     if all(results):
-        print("\n[GREEN] 七条隔离断言、时间副层算例、标准层算例与秒级整盘算例全绿。")
+        print("\n[GREEN] 七条隔离断言、时间副层算例、标准层算例、秒级整盘算例与判定算例全绿。")
         sys.exit(0)
     else:
         print("\n[RED] 隔离断言未全绿，禁止上线。")
