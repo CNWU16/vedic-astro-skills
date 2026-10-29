@@ -63,7 +63,7 @@
 | 固定座上升得位（Sthana labha），动座相反，变动座混合（注引 Bhattotpala *Prasnagyana*：上升点在变动座前半按固定座读，后半按动座读）；吉星照 Lagna 与 Moon-lagna 吉，凶星照则凶，吉凶同照为混合 | `P-II.1~2` 及注 | 位置得失；Ayer 注扩展到求职、住处、出行、失物、失踪者、疾病、名誉 | 求职、竞争性考试的主规则（见 `question-taxonomy.md` §2.8）；其余题型只取动／固座作辅助规则（§2.12）；变动座上升点近 15° 时前后半归属算输入敏感 |
 | 吉星落 10／7 宫赐位置（position），落 2／5／1 宫得名利（fame and wealth）；凶星落 12／11 宫不吉；(Malefic) Moon 在 Lagna 不利，在 10 宫“even when malefic”有利 | `P-IV.3` | 位置；名利 | 求职题主规则；Lagna 条款只在亏月成立，10 宫条款不论盈亏；2／5／1 宫条款作名誉题辅助规则，求职题用来讲待遇与满意度（不计分） |
 | 吉星落 10／1／7 宫则胜；Mars／Saturn 落 9 宫败，Mercury／Jupiter／Venus 落 9 宫胜 | `P-III.1` | 战事胜负；Ayer 注扩展到选举等 competitive efforts | 竞争性考试辅助规则，B级（主规则 `P-II.1~2`） |
-| 人形星座（III.3 注：Gemini、Virgo、Libra、Aquarius）上升且有吉星、吉星落 12／11 宫、吉星落 kendra 或人形 Lagna 受吉星照则和解；凶星落变动座则冲突，凶星同样落位受凶星照则相反；吉凶混落则僵持，吉占优趋向解决（III.4 注） | `P-III.3~4` 及注 | 王者和解；Ayer 注扩展到 settlement of scores／negotiations | 谈判／和解A级；复合、对方会不会联系类比B级（见 `question-taxonomy.md` §2.7） |
+| 人形星座（III.3 注：Gemini、Virgo、Libra、Aquarius）上升且有吉星、吉星落 12／11 宫、吉星落 kendra 或人形 Lagna 受吉星照则和解；凶星落变动座则冲突，凶星同样落位受凶星照则相反；吉凶混落则僵持，吉占优趋向解决（III.4 注） | `P-III.3~4` 及注 | 王者和解；Ayer 注扩展到 settlement of scores／negotiations | 谈判／和解A级；复合、恢复联系类比B级（见 `question-taxonomy.md` §2.7） |
 | 吉凶按功能取：F1 本宫主对本宫恒吉；F2 同管本宫起 3、12 宫且落陷为凶；F3 同管本宫起角宫与三方宫且强（exalted／own_sign）为吉；其余回落 Bhattotpala 自然吉凶 | `P-I.3` 注 Rule 1/2 及两例；Bhattotpala 见同注 | 全部 `P` 规则中的“吉星／凶星” | 采纳；正文点名行星且 Ayer 无注的偈按点名，不换标签（见 §2.1） |
 | D1 尊贵度、受克和燃烧事实 | `P-I.3` 及注释 | 行星承事能力；F2／F3 的落陷与强 | 次级，不单项定档 |
 | Chyuti 看 Lagna：动座且受本宫主或吉星占据／照射、无凶星则变动成立，固定座不变，变动座看吉凶多寡；Vriddhi 看 4 宫：受本宫主或吉星占据／照射且未受其他配置破坏（“unspoiled by other planetary dispositions”）则兴；Pravasa 看 10 宫：动座且受凶星照则成行，受本宫主或吉星照则否；Nivritti 看 7 宫：动座且受本宫主或吉星照则返回，受凶星照则否；在外者返回另看 4 宫，正文“with a planet's occupation of the fourth house”，注“contains its own lord or is aspected by it and not otherwise”，两说并列 | `P-I.2` 及注 | 换工作／裁员／调岗、房屋、出行、返回；注例扩展到诽谤 | 对应题型主规则，A级 |
@@ -160,8 +160,8 @@ Ayer 在 I.3 注中主张按 functional character 取吉凶，并给出 Rule 1�
 
 ### A级：有题目专属 `P` 规则
 
-只有在 `question-taxonomy.md` 能定位到具体章／节／sloka 时使用专题规则。专题
-证据优先于一般规则，但不得外推到别的题型。
+只有在 `question-taxonomy.md` 能定位到具体章／节／sloka 时使用专题规则。有专题规则时先查专题规则
+并入账，与通用规则同账等权、按占优断（`judgment-rubric.md` §3.2）；专题规则不单独否决，也不外推到别的题型。
 
 ### B级：只有一般宫／宫主规则或 Bhavan 实例
 
