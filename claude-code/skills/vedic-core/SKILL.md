@@ -271,7 +271,7 @@ description: "Run the standard full Vedic/Jyotish natal analysis from a verified
 ### 数据来源
 从structured_data.md读取（不重新计算）：
 - Shadbala排名和强弱标注
-- 行星尊贵度（复合尊贵度：旺/入庙/至友/友方/中性/敌方/死敌/陷，直接从structured_data读取，禁止自行重算）
+- 行星尊贵度（复合尊贵度：旺/根本三角(moolatrikona)/入庙/至友/友方/中性/敌方/死敌/陷，直接从structured_data读取，禁止自行重算；功能身份表的「MT宫」只用来定 P1 主身份，不表示该星落在根本三角度数段）
 - Graha Drishti（吠陀行星相位·宫位照射；西占 orb 相位表已废弃删除）
 - 宫主表
 - SAV/BAV数据

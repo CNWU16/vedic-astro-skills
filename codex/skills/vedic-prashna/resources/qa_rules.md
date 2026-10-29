@@ -137,7 +137,7 @@ python scripts/build_tajika_overlay.py \
 ```
 
 不得重跑或覆盖 `structured_prashna.md`，也不存在 `--enable-tajika`。
-查表题、不判题，以及问者星与事项星为同一颗时不运行，按 `tajika-optional.md`
+查表题、不判题、描述型，以及问者星与事项星为同一颗时不运行，按 `tajika-optional.md`
 用一句白话说明，不拿 Karaka 或其他宫主顶替。
 
 ---

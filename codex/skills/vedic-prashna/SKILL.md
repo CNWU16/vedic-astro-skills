@@ -74,6 +74,9 @@ SAV 工具迁入提问盘。
 - Tajika orb／applying／separating；
 - KP cusp／sub-lord。
 
+本命专用的尊贵度修正不进即时盘：落陷解除（NBRY）、逆行尊贵度反转、落陷 Vargottama 三分类、Pushkara 补丁。即时盘的落陷、逆行只按能力层的
+折损与救应读（`M-XIV.39–40` Raman 注，`judgment-rubric.md` §5），根本三角归本座。
+
 只允许 rising Navamsa（星座与序号）、Lagna 所在 drekkana、Lagna 六分盘座主表三项有限数据，因为 `P-I.4`（注：Lagna、Hora、Drekkana、Navamsa、
 Dwadasamsa、Trimsamsa 六分盘）、`P-I.7`、`P-VI.1~2`、`P-VI.4`、`P-VII.13` 明确使用它们；禁止由此展开完整 D2、D3、D9、D12、D30 解读。
 
@@ -83,7 +86,7 @@ Dwadasamsa、Trimsamsa 六分盘）、`P-I.7`、`P-VI.1~2`、`P-VI.4`、`P-VII.1
 
 | 输入 | 规则 |
 |---|---|
-| 具体问题 | 一个可观察结果；一句多问先拆、先选一个（`question-decomposition.md` 第 8 节） |
+| 具体问题 | 一个可观察结果，或一个描述对象（相处、局面）；一句多问先拆、先选一个（`question-decomposition.md` 第 8 节） |
 | 提问时刻 | 用户说"现在"或直接发问时，取用户这条消息到达的时刻（提问地时区，保留秒和小数秒）；不在处理数分钟后另取整分钟。用户给了显式时刻就用它 |
 | 提问地点 | 城市或经纬度；必须能确定 IANA 时区。只给城市名时查 `locations.md`；地点、时区未知时澄清，不用机器时区代替 |
 
@@ -92,7 +95,7 @@ Dwadasamsa、Trimsamsa 六分盘）、`P-I.7`、`P-VI.1~2`、`P-VI.4`、`P-VII.1
 门控：模糊、假设、已发生、A／B 二选一按 `question-decomposition.md` 第 8 节澄清；不判与操控、打听类按 `matter-rules.md` 第 6 节一句话说明并给替代问法；
 同一问题和现实状态未变化时沿用第一次清晰提问盘（`qa_rules.md` §1），不使用 24 小时、3 个月阈值；出现自伤或极端语句时先回应安全，不起盘。
 
-进入下一阶段条件：问题可拆出一个可观察结果，时间地点完整。
+进入下一阶段条件：问题可拆出一个可观察结果或描述对象，时间地点完整。
 
 ---
 
@@ -117,7 +120,7 @@ python scripts/build_prashna_data.py \
 1. 拆出行动者、动作、对象、结果、限定语；判型（事件型、行动型、描述型），定每个子问题的出口；
 2. 别人的动作以那个人的宫为命宫转宫（对方主动＝本盘 9 宫，不是本盘 3 宫）；
 3. 逐句抓关键词，查 `house-meanings.md` 关键词库，记下宫与星、相合还是相反、出处；
-4. "事情成不成"查 `matter-rules.md` 登记表取 `matter`；表外取 `通用`，按宫义选事项宫并写明出处；查表题跳到 Phase 5 按 `matter-rules.md`
+4. "事情成不成"查 `matter-rules.md` 登记表取 `matter`；表外取 `通用`，按宫义选事项宫并写明出处；描述型取 `描述`（只出事实、不定档）；查表题跳到 Phase 5 按 `matter-rules.md`
    第 5 节输出；
 5. 写取象单 `prashna_plan.json` 到当前 `prashna_*` 目录。
 
@@ -135,7 +138,7 @@ python scripts/judge_prashna_standard.py \
   --out-dir "<当前 prashna_* 目录>"
 ```
 
-读 `prashna_verdict.md`：成事账（每条规则、方向、计分、合计）、内部档与强度、能力层、限定语、行动链、输入提示。判读按它写，**不手算、不改档**。
+读 `prashna_verdict.md`：成事账（每条规则、方向、计分、合计）、内部档与强度、能力层、限定语、行动链、输入提示。判读按它写，**不手算、不改档**。描述型只有事实表，没有档。
 写的时候发现取象错了（关键词、事项宫、行动者），改取象单重跑；发现规则本身读错，按 `qa_rules.md` §4 纠错。
 
 进入下一阶段条件：`prashna_verdict.md` 存在，与取象单一致。
@@ -167,6 +170,7 @@ python scripts/build_timing_overlay.py \
 标题与简述各用一句分别答"会不会动"和"事情成不成"。
 
 查表题的判读单：标题、简述、正文用白话写查表结果，两说都写；核对区只留"这张盘的范围"和一张查表；不写三档和时间。
+描述型的判读单：讲局面与相处的样子，约 1,500 字，不写成败与时间；核对区引用事实表（`judgment-writing.md` 第 7 节）。
 
 ---
 
@@ -184,7 +188,7 @@ python scripts/build_timing_overlay.py \
 
 先完成标准层 Phase 2，取得 Lagna lord 和唯一事项宫主，再运行独立
 `scripts/build_tajika_overlay.py`。不得在标准 builder 上增加
-`--enable-tajika`。查表题、不判题，以及问者星与事项星为同一颗（事项宫为 1 宫
+`--enable-tajika`。查表题、不判题、描述型，以及问者星与事项星为同一颗（事项宫为 1 宫
 或与 Lagna 同一座主）时不运行，按 `tajika-optional.md` 用一句白话说明，不拿
 Karaka 或其他宫主顶替。
 

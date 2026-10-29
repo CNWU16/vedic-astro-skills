@@ -249,7 +249,7 @@ def to_jd(year, month, day, hour, minute, tz_str, second=0):
 PLANET_FLAGS = (swe.FLG_SWIEPH | swe.FLG_SIDEREAL | swe.FLG_SPEED
                 | swe.FLG_TRUEPOS | swe.FLG_NONUT | swe.FLG_NOGDEFL)
 
-ENGINE_VERSION = "v1.0.1"
+ENGINE_VERSION = "v1.0.2"
 
 
 def ayanamsa_value(jd):
@@ -839,6 +839,11 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
     OWN_SIGNS = {'Sun':['Leo'],'Moon':['Cancer'],'Mars':['Aries','Scorpio'],
                  'Mercury':['Gemini','Virgo'],'Jupiter':['Sagittarius','Pisces'],
                  'Venus':['Taurus','Libra'],'Saturn':['Capricorn','Aquarius']}
+    # 根本三角（Moolatrikona）按度数：与六力 shadbala_pyjhora 同一张表（PyJHora const.moola_trikona_range_of_planets）。
+    # 入旺先判，所以 Moon、Mercury 的 MT 段（在各自入旺座内）实际不会出现；与产品侧 89ca935f 同位置、同表（2026-10-30）。
+    MOOLATRIKONA_RANGE = {'Sun': ('Leo', 0, 20), 'Moon': ('Taurus', 3, 30), 'Mars': ('Aries', 0, 12),
+                          'Mercury': ('Virgo', 15, 20), 'Jupiter': ('Sagittarius', 0, 10),
+                          'Venus': ('Libra', 0, 15), 'Saturn': ('Aquarius', 0, 20)}
     
     # Step 2: 自然关系表 (Naisargika Maitri) - BPHS标准
     NATURAL_REL = {
@@ -887,6 +892,9 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
             compound = 'exalted'
         elif DEBILITATION.get(name) == sign:
             compound = 'debilitated'
+        elif (MOOLATRIKONA_RANGE[name][0] == sign
+              and MOOLATRIKONA_RANGE[name][1] <= p['degree'] <= MOOLATRIKONA_RANGE[name][2]):
+            compound = 'moolatrikona'
         elif sign in OWN_SIGNS.get(name, []):
             compound = 'own_sign'
         else:

@@ -53,6 +53,8 @@ def render(v, plan, dt):
             f"{k['word']} → {'、'.join(map(str, k.get('houses', ()))) or '—'} 宫"
             f"{'；' + '、'.join(k.get('planets', ())) if k.get('planets') else ''}（{k['polarity']}，{k['source']}）"
             for k in plan.keywords) + (f"；所需征象星 {'、'.join(plan.needed_planets)}" if plan.needed_planets else "") + "\n")
+    if v["matter"] == "描述":
+        return "\n".join(L + render_describe(v))
     L.append("| rule_id | 支持级 | 适用理由 | 原始证据 | 方向 | 计分 |")
     L.append("|---|---|---|---|---|---:|")
     for e in v["ledger"]:
@@ -82,6 +84,32 @@ def render(v, plan, dt):
     return "\n".join(L)
 
 
+def render_describe(v):
+    """描述型：指标星能力与连接、影响者逐颗事实、关键词落点、M-XIV.117；不建账、不定档、不给时间。"""
+    d, ab = v["describe"], v["ability"]
+    L = ["**描述型**：不建成事账、不定档、不给时间；判读单讲局面与相处的样子，不预言结果（`judgment-writing.md` 第 4 节）。\n",
+         f"**指标星**：{ab['planet']}（{ab['house']} 宫主），折损项 {'、'.join(ab['factors']) or '无'}，"
+         f"救应 {'、'.join(ab['rescue']) or '无'} → {ab['verdict']}；与 Lagna 主 {d['link']}\n",
+         "| 位置 | 方式 | 行星 | 从 Lagna 所管 | 吉凶标签 | D1 尊贵度 | 燃烧／逆行 | 措辞点到 |",
+         "|---|---|---|---|---|---|---|---|"]
+    for r in d["influences"]:
+        cr = "、".join(x for x, on in (("燃烧", r["combust"]), ("逆行", r["retro"])) if on) or "—"
+        L.append(f"| {r['at']} | {r['how']} | {r['planet']} | {'、'.join(map(str, r['rules'])) or '—'} | {r['label']} | "
+                 f"{r['dignity']} | {cr} | {'；'.join(r['hits'])} |")
+    if not d["influences"]:
+        L.append("| — | — | 无同宫、照射之星 | — | — | — | — | — |")
+    for k in d["keywords"]:
+        L.append(f"\n**关键词落点·{k['word']}**：{k['result']}（{k['basis']}）")
+    m = d["M-XIV.117"]
+    L.append(f"\n**`M-XIV.117`**（Moon 或 Venus 与凶星同落 7、4 宫，与女性起争执；问相处时读）：{m['result']}（{m['basis']}）\n")
+    if v["chain"]:
+        c = v["chain"]
+        L.append(f"**行动链**：行动者 {c['actor']} 宫；① 起意 {'；'.join(c['start']) or '—'}；② 行动 {c['move'] or '—'}；"
+                 f"③ 指向你 {'；'.join(c['point']) or '—'}；④ 严重受损 {'、'.join(c['weak']) or '—'} → {c['verdict']}\n")
+    L.append("**时间副层**：不运行（描述型）\n")
+    return L
+
+
 def main():
     ap = argparse.ArgumentParser(description="Prashna 标准层判定")
     ap.add_argument("--datetime", required=True)
@@ -100,6 +128,9 @@ def main():
     v = judge(base, plan, variants=variants)
     (out / "prashna_verdict.json").write_text(json.dumps(v, ensure_ascii=False, indent=1), encoding="utf-8")
     (out / "prashna_verdict.md").write_text(render(v, plan, dt), encoding="utf-8")
+    if v["matter"] == "描述":
+        print(f"[OK] 描述型：不定档，只出事实\n     {out / 'prashna_verdict.md'}")
+        return
     print(f"[OK] 判定：{v['tier']}·{v['strength']}（合计 {v['sum']:+d}）"
           + (f"；行动链 {v['chain']['verdict']}" if v["chain"] else "")
           + f"\n     {out / 'prashna_verdict.md'}")

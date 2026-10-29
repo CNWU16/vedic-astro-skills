@@ -25,8 +25,9 @@ SIGN_LORDS = {
 }
 KENDRA_FROM = {4, 7, 10}
 TRIKONA_FROM = {5, 9}
-STRONG_BASIC = {"exalted", "own_sign"}
+STRONG_BASIC = {"exalted", "own_sign", "moolatrikona"}
 # 能力层（M-XIV.39–40 Raman 注：强＝本座、入旺、友座，友指天然友；弱＝落陷；凶位＝6／8／12）。
+# engine 的 moolatrikona（根本三角）是本座里的一段度数，这里归"本座"，不另立一档。
 # 天然友谊按 BPHS Naisargika 表，与 engine 同表。
 NATURAL_FRIENDS = {
     "Sun": {"Moon", "Mars", "Jupiter"}, "Moon": {"Sun", "Mercury"},
@@ -35,6 +36,8 @@ NATURAL_FRIENDS = {
     "Saturn": {"Mercury", "Venus"},
 }
 DUSTHANA = {6, 8, 12}
+# M-XIV.40 Raman 注：吉位＝角宫、三方宫、11 宫（从 Lagna 起，与凶位同一参照）。
+GOOD_PLACES = {1, 4, 5, 7, 9, 10, 11}
 
 # 描述题查表（P-VI.4、P-VII.13 注），只给查表事实，不生成结论。
 PLANET_DIRECTIONS = {
@@ -68,6 +71,8 @@ LORD_AGES = {
     "Venus": "至 23 岁的年轻人", "Jupiter": "中年", "Sun": "年长",
     "Saturn": "老年",
 }
+# P-VII.12 注"other karakas too can be handled in an identical manner"；人与 karaka 依 M-XIV.31（house-meanings 第 3 节）。
+RELATIVE_KARAKAS = {"Sun": "父亲", "Moon": "母亲", "Mars": "手足", "Jupiter": "子女", "Venus": "妻子", "Saturn": "仆从、下属"}
 # P-VII.4 注：水象座两说并列，不择一。
 WATERY_HORASARA = {"Cancer", "Capricorn", "Scorpio", "Pisces"}
 
@@ -181,7 +186,7 @@ def _ayer_role(chart, planet, sign):
     """Ayer P-I.3 注的功能吉凶：planet 对它占据或照射的星座 sign 吉还是凶。
 
     F1 本宫主恒吉；F2 主 3、12 宫且落陷为凶（注例一 Jupiter/Capricorn）；
-    F3 主角宫兼三方宫且强（exalted／own_sign）为吉（注例二 Mars/Leo）；
+    F3 主角宫兼三方宫且强（exalted／own_sign／moolatrikona）为吉（注例二 Mars/Leo）；
     其余回落 Bhattotpala 自然吉凶。
     """
     ruled = _houses_ruled_from(planet, sign)
@@ -205,7 +210,8 @@ def _lord_ability(chart, house):
     折损项（M-XIV.39–40；M-XIV.30 只取作用于宫主自身的几项，不取 6／8／12 宫主连接）：
     落陷、落 6／8／12 宫、燃烧、逆行、受凶星占照而无吉星。宫主坐本宫不算落 6／8／12 宫
     （M-XIV.42：宫主落本宫起算的吉位，该宫之事圆满；坐本宫＝本宫起算第 1 宫）。
-    救应：吉星同宫或照射；宫主入旺、本座或落天然友座。
+    救应：吉星同宫或照射；宫主入旺、本座或落天然友座（落陷星不算）；落陷而落吉位（M-XIV.40"弱而落吉位，多少能得"，
+    落陷一项照记，只作救应）。
     结论：三项及以上，或两项而无救应 → 严重受损；一到两项 → 能力打折；无折损项时有力或正常。
     """
     planet = chart["house_lords"][house]["lord"]
@@ -230,12 +236,15 @@ def _lord_ability(chart, house):
     if malefic and not benefic:
         # 写出是哪几颗凶星：所问动作需要的征象星不计此项（judgment-rubric §2.1 按需减项）
         factors.append(f"受凶星占照（{'、'.join(malefics)}）、无吉星")
-    strong = basic in STRONG_BASIC or SIGN_LORDS[sign] in NATURAL_FRIENDS[planet]
+    # 落陷星不因落天然友座算强（Raman 注"弱＝落陷"；Mars 巨蟹、Venus 处女不再既弱又强，10-30 D18）
+    strong = basic in STRONG_BASIC or (basic != "debilitated" and SIGN_LORDS[sign] in NATURAL_FRIENDS[planet])
     rescue = []
     if benefic:
         rescue.append("吉星占照")
     if strong:
-        rescue.append("入旺" if basic == "exalted" else "本座" if basic == "own_sign" else "天然友座")
+        rescue.append("入旺" if basic == "exalted" else "本座" if basic in {"own_sign", "moolatrikona"} else "天然友座")
+    if basic == "debilitated" and where in GOOD_PLACES:
+        rescue.append(f"弱而落吉位（{where}宫）")
     if len(factors) >= 3 or (len(factors) == 2 and not rescue):
         verdict = "严重受损"
     elif factors:
@@ -574,7 +583,7 @@ def _yes(flag):
 
 
 def _descriptive_facts(chart, d9_lagna):
-    """描述题（P-VI.1～4、P-VII.13、P-I.7）与天气题（P-VII.3～4）的查表事实。"""
+    """描述题（P-VI.1～4、P-VII.13、P-I.7）、亲属下落（P-VII.12）与天气题（P-VII.3～4）的查表事实。"""
     lagna = chart["lagna"]
     planets = chart["planets"]
     sign = lagna["sign"]
@@ -583,7 +592,7 @@ def _descriptive_facts(chart, d9_lagna):
 
     lines.append("### 描述题与天气查表事实\n")
     lines.append(
-        "> 只在 `matter-rules.md` 第 5 节查表题（描述题、天气）消费；描述输出不进内部三档。"
+        "> 只在 `matter-rules.md` 第 5 节查表题（描述题、亲属下落、天气）消费；描述输出不进内部三档。"
         "原文歧义处两说并列，不择一。\n"
     )
 
@@ -668,6 +677,22 @@ def _descriptive_facts(chart, d9_lagna):
     lines.append(
         f"- 拿走者或失踪者年龄（按 Lagna 主 {lagna_lord}）：{LORD_AGES[lagna_lord]}"
     )
+    lines.append("")
+
+    lines.append("**P-VII.12 亲属是否在外地（karaka 带吉星落 8 宫且受吉星照则在外，否则在本地）**\n")
+    eighth = chart["house_lords"][8]["sign"]
+    with_b = [n for n in _occupants(chart, 8, CLASSICAL_PLANETS) if _ayer_role(chart, n, eighth).startswith("吉")]
+    asp_b = [n for n in _classical_aspecting_house(chart, 8) if _ayer_role(chart, n, eighth).startswith("吉")]
+    for name, who in RELATIVE_KARAKAS.items():
+        if planets[name]["house"] != 8:
+            lines.append(f"- {who}（{name}）：落 {planets[name]['house']} 宫，不在 8 宫 → 在本地")
+            continue
+        comp = [n for n in with_b if n != name]
+        seen = [n for n in asp_b if n != name]
+        lines.append(
+            f"- {who}（{name}）：落 8 宫；同宫吉星 {'、'.join(comp) or '无'}；"
+            f"照 8 宫吉星 {'、'.join(seen) or '无'} → {'在外地' if comp and seen else '在本地'}"
+        )
     lines.append("")
 
     lines.append("**P-VII.3～4 天气（雨季前提由用户提供）**\n")
@@ -806,7 +831,7 @@ def format_standard_layer(chart):
     )
     lines.append(
         "> 吉凶标签按 Ayer P-I.3 注的功能口径，相对本宫星座计算：吉(宫主)＝本宫主；"
-        "凶(注例一)＝主 3、12 宫且落陷；吉(注例二)＝主角宫兼三方宫且 exalted／own_sign；"
+        "凶(注例一)＝主 3、12 宫且落陷；吉(注例二)＝主角宫兼三方宫且 exalted／own_sign／moolatrikona；"
         "其余为“(回落)”，即 Bhattotpala 自然吉凶。\n"
     )
     lines.append(

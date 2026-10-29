@@ -521,9 +521,32 @@ def test_judge_worked_example() -> None:
     assert pv["condition_failed"] == ["公开"] and pv["timing"] == "none", (pv["condition_failed"], pv["timing"])
     assert v["condition_failed"] == [] and v["timing"] == "general", (v["condition_failed"], v["timing"])
 
-    # 取象单校验：关键词要写出处；限定语"主动"要给行动者
+    # 根本三角归本座（10-30 engine v1.0.2）：Venus 天秤 0–15° 为 moolatrikona，8 宫主坐本宫的救应仍是"本座"
+    import format_prashna_standard as F
+    assert base["dignity"]["Venus"]["basic"] == "moolatrikona", base["dignity"]["Venus"]
+    assert F._lord_ability(base, 8)[2] == ["本座"], F._lord_ability(base, 8)
+    # M-XIV.40 弱而落吉位：2 宫主 Mars 落陷落 5 宫记救应、落陷照记；6 宫主 Sun 落陷落 8 宫不记。
+    # D18：Mars 落陷巨蟹（Moon 天然友）不再记"天然友座"
+    mars = F._lord_ability(base, 2)
+    assert mars[1] == ["落陷"] and mars[2] == ["吉星占照", "弱而落吉位（5宫）"], mars
+    assert not any(r.startswith("弱而落吉位") for r in F._lord_ability(base, 6)[2])
+
+    # 描述型（D15）："我们相处会不会吵"：只出事实，不建账、不定档、不给时间
+    desc = pr.Plan.from_dict({"matter": "描述", "matter_house": 7, "context": "恋爱",
+                              "keywords": [{"word": "争吵", "houses": [6], "planets": ["Mars"], "polarity": "相合",
+                                            "source": "M-XIV.117；6 宫争斗"}]})
+    dv = pr.judge(base, desc, variants=variants)
+    assert dv["ledger"] == [] and (dv["tier"], dv["timing"], dv["sensitive"]) == ("描述", "none", []), dv
+    inf = [(r["at"], r["how"], r["planet"], r["hits"]) for r in dv["describe"]["influences"]]
+    assert inf == [("7 宫", "照射", "Saturn", ["没点到"]), ("指标星 Mercury 所在 8 宫", "同宫", "Sun", ["争吵（相合）"]),
+                   ("指标星 Mercury 所在 8 宫", "同宫", "Venus", ["没点到"]),
+                   ("指标星 Mercury 所在 8 宫", "照射", "Mars", ["争吵（相合）"])], inf
+    assert dv["describe"]["M-XIV.117"]["result"] == "不成立", dv["describe"]["M-XIV.117"]
+
+    # 取象单校验：关键词要写出处；限定语"主动"要给行动者；描述型不收限定语
     for bad in ({"matter": "见面", "matter_house": 7, "keywords": [{"word": "私下", "houses": [8], "polarity": "相合"}]},
                 {"matter": "见面", "matter_house": 7, "qualifiers": ["主动"]},
+                {"matter": "描述", "matter_house": 7, "qualifiers": ["私下"]},
                 {"matter": "不存在的题型"}):
         try:
             pr.Plan.from_dict(bad)

@@ -469,6 +469,7 @@ MATTERS = {
     "财富": Matter(None, "B", ("PI3",)),  # 2 或 11，按问题动词，由取象单给
     "子女行动": Matter(5, "B", ("PI3",)),
     "通用": Matter(None, "B", ("PI3",)),  # 题型表外：模型按宫义与关键词选事项宫并写明出处（D8）
+    "描述": Matter(None, "B", (), timing="none"),  # 描述型（D15）：相处、氛围、局面；出事实不建账、不定档
 }
 LOVE_EXTRA = ("X5*", "X15*", "X16*", "X17*")
 ANALOGY = {"III34*", "X5*", "X15*", "X16*", "X17*"}  # 类比偈：过语境检验（D4）
@@ -523,6 +524,8 @@ class Plan:
                 raise ValueError(f"关键词 {k.get('word')} 未写出处")
         if self.matter == "结婚" and self.asker not in ("男", "女"):
             raise ValueError("结婚题须给 asker（男／女）")
+        if self.matter == "描述" and self.qualifiers:
+            raise ValueError("描述型不检验限定语：带条件的问法拆出事件型子问题另走成事账")
         if "主动" in self.qualifiers and not self.actor:
             raise ValueError("限定语'主动'须给行动者宫 actor")
         if self.location not in ("city", "exact"):
@@ -826,6 +829,64 @@ def _core(chart, plan, opts):
     return entries, ab, tier, strength, total, branches
 
 
+# ---------------------------------------------------------------------------
+# 描述型（D15；question-decomposition 第 2 节）：只出事实，不建账本、不定档、不给时间
+# ---------------------------------------------------------------------------
+def influences(chart, plan, h):
+    """事项宫与指标星所在宫的同宫、照射之星，逐颗列影响者三问要的事实（house-meanings 第 7 节）：
+    所管的宫、对该星座的吉凶标签、D1 尊贵度、燃烧逆行，以及措辞点没点到（关键词的星或宫）。"""
+    f = Facts(chart)
+    lord = f.lord(h)
+    places = [(h, f"{h} 宫")]
+    if f.house[lord] != h:
+        places.append((f.house[lord], f"指标星 {lord} 所在 {f.house[lord]} 宫"))
+    rows = []
+    for x, at in places:
+        for how, names in (("同宫", F._occupants(chart, x, P7 + F.NODES)), ("照射", F._classical_aspecting_house(chart, x))):
+            for n in names:
+                if n == lord:
+                    continue
+                rules = sorted(F._houses_ruled_from(n, f.lsign)) if n in P7 else []
+                hits = [f"{k['word']}（{k['polarity']}）" for k in plan.keywords
+                        if n in k.get("planets", ()) or set(rules) & set(k.get("houses", ()))]
+                rows.append({"at": at, "how": how, "planet": n, "rules": rules,
+                             "label": F._ayer_role(chart, n, f.sign(x)) if n in P7 else "不贴标签",
+                             "dignity": f.basic.get(n, "—"), "combust": n in chart.get("combustion", {}),
+                             "retro": n in P7 and bool(chart["planets"][n].get("retrograde")),
+                             "hits": hits or ["没点到"]})
+    return rows
+
+
+def quarrel_117(chart):
+    """M-XIV.117：Moon 或 Venus 与凶星同落 7 宫或 4 宫，与女性起争执。凶星按该宫星座的吉凶标签。"""
+    f = Facts(chart)
+    hits = []
+    for x in (4, 7):
+        occ = dict(f.occ(x))
+        bad = [n for n, k in occ.items() if k == "M" and n not in ("Moon", "Venus")]
+        who = [n for n in ("Moon", "Venus") if n in occ]
+        if who and bad:
+            hits.append(f"{'、'.join(who)} 与 {'、'.join(bad)} 同落 {x} 宫")
+    return ("成立", "；".join(hits)) if hits else ("不成立", "4、7 宫无 Moon／Venus 与凶星同落")
+
+
+def describe(chart, plan):
+    h = plan.house_of_matter()
+    f = Facts(chart)
+    l1, lm = f.lord(1), f.lord(h)
+    link = "即 Lagna 主" if l1 == lm else "、".join(F._relation(chart, l1, lm)) or "无"
+    return {
+        "matter": "描述", "matter_house": h, "level": "B", "ledger": [], "sum": 0,
+        "tier": "描述", "strength": "不定档", "branches": [], "sensitive": [],
+        "ability": ability(chart, h, plan), "chain": action_chain(chart, plan.actor) if plan.actor else None,
+        "qualifiers": [], "condition_failed": [], "timing": "none",
+        "describe": {"link": f"{l1}–{lm}：{link}", "influences": influences(chart, plan, h),
+                     "keywords": [dict(zip(("word", "result", "basis"), (k["word"], *keyword_qualifier(chart, h, k))))
+                                  for k in plan.keywords],
+                     "M-XIV.117": dict(zip(("result", "basis"), quarrel_117(chart)))},
+    }
+
+
 def _signature(entries, ab):
     return [(e.rule_id, e.direction, e.alt, bool(e.excluded)) for e in entries], ab["verdict"] == "严重受损"
 
@@ -834,6 +895,8 @@ def judge(chart, plan, opts=Options(), variants=()):
     """一张盘的判定，档只按用户给的提问时刻与地点定（创始人 2026-10-29：时间地点由提问人负责）。
     variants：前后窗口两端的 (标签, chart)，只用来记录本题账本或否决是否随之改变（核对区"输入提示"），
     不改档，也不进给用户看的部分（10-29 创始人与测试用户定：用户看不懂、徒增烦恼）。"""
+    if plan.matter == "描述":
+        return describe(chart, plan)
     entries, ab, tier, strength, total, branches = _core(chart, plan, opts)
     base = _signature(entries, ab)
     sensitive = []
