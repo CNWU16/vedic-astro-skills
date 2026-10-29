@@ -376,8 +376,20 @@ def test_standard_worked_examples() -> None:
     assert (planet, verdict) == ("Mercury", "能力打折"), (factors, rescue, verdict)
     assert factors == ["落8宫", "逆行"] and "天然友座" in rescue and "吉星占照" in rescue, (factors, rescue)
     assert fs._lord_ability(pisces, 3)[3] == "严重受损"
-    assert fs._lord_links(pisces, 7)[3] == "无"
+    # Lagna 主 Jupiter 被 Mars 同宫：能力表写出凶星名，供按需减项（rubric §2.1）
+    assert fs._lord_ability(pisces, 1)[1] == ["受凶星占照（Mars）、无吉星"]
+    # M-XIV.43：Jupiter（5 宫）与 Mercury（8 宫）互为 4／10 宫 → 已连上
+    assert fs._lord_links(pisces, 7)[3] == "互为4/10宫"
     assert fs._lord_links(pisces, 2)[3] == "同宫"  # Mars 与 Lagna 主 Jupiter 同落 5 宫
+    assert fs._relation(pisces, "Mars", "Mercury") == ["Mars 照 Mercury", "互为4/10宫"]
+    # 行动链（对方 7 宫）：起意宫主＝7 起第 3 宫＝9 宫主 Mars，照 Mercury；行动宫主＝4 宫主 Mercury 即本星；
+    # 指向：Mercury 与 Jupiter 互为 4／10 宫，另经 Mars 串联 → 偏会
+    start, move, point, weak, verdict = fs._action_chain(pisces, 7)
+    assert fs._derived(7, 3) == 9 and fs._derived(7, 10) == 4 and fs._derived(7, 11) == 5
+    assert start == ["起意宫主 Mars–Mercury：Mars 照 Mercury、互为4/10宫", "Mars–Mercury：Mars 照 Mercury"], start
+    assert move == "即行动者宫主 Mercury" and not weak and verdict == "偏会", (move, weak, verdict)
+    assert point == ["Mercury–Jupiter：互为4/10宫", "Mars–Jupiter：同宫",
+                     "经 Mars 串联（Mars–Jupiter：同宫；Mars–Mercury：Mars 照 Mercury）"], point
 
 
 # ---------------------------------------------------------------------------

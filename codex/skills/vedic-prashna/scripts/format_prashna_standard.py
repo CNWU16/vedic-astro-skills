@@ -214,7 +214,8 @@ def _lord_ability(chart, house):
     others = [name for name in _occupants(chart, where, CLASSICAL_PLANETS) if name != planet]
     others += [name for name in _classical_aspecting_house(chart, where) if name != planet]
     roles = [_ayer_role(chart, name, sign) for name in others]
-    malefic = any(role.startswith("凶") for role in roles)
+    malefics = [name for name, role in zip(others, roles) if role.startswith("凶")]
+    malefic = bool(malefics)
     benefic = any(role.startswith("吉") for role in roles)
     factors = []
     if basic == "debilitated":
@@ -226,7 +227,8 @@ def _lord_ability(chart, house):
     if data.get("retrograde"):
         factors.append("逆行")
     if malefic and not benefic:
-        factors.append("受凶星占照、无吉星")
+        # 写出是哪几颗凶星：所问动作需要的征象星不计此项（judgment-rubric §2.1 按需减项）
+        factors.append(f"受凶星占照（{'、'.join(malefics)}）、无吉星")
     strong = basic in STRONG_BASIC or SIGN_LORDS[sign] in NATURAL_FRIENDS[planet]
     rescue = []
     if benefic:
@@ -262,19 +264,146 @@ def _lord_links(chart, house):
     if planet == first_lord:
         link = "即 Lagna 主"
     else:
-        first_where = planets[first_lord]["house"]
-        kinds = []
-        if first_where == where:
-            kinds.append("同宫")
-        lord_sees = where in chart["graha_drishti"].get(first_lord, {}).get("aspected_houses", [])
-        sees_lord = first_where in chart["graha_drishti"].get(planet, {}).get("aspected_houses", [])
-        if lord_sees and sees_lord:
-            kinds.append("互照")
-        if (SIGN_LORDS[planets[planet]["sign"]] == first_lord
-                and SIGN_LORDS[planets[first_lord]["sign"]] == planet):
-            kinds.append("互换")
-        link = "、".join(kinds) or "无"
+        link = "、".join(_relation(chart, first_lord, planet)) or "无"
     return planet, with_rule(joined), with_rule(aspecting), link
+
+
+def _sees(chart, a, b):
+    """a 的 Graha Drishti 落在 b 所在的宫。"""
+    where = chart["planets"][b]["house"]
+    return where in chart["graha_drishti"].get(a, {}).get("aspected_houses", [])
+
+
+def _relation(chart, a, b):
+    """M-XIV.43 的连接：同宫；照射（单向即可，写明谁照谁）；互换；互为 4／10 宫（角宫关系）。"""
+    if a == b:
+        return ["同一颗星"]
+    planets = chart["planets"]
+    kinds = []
+    if planets[a]["house"] == planets[b]["house"]:
+        kinds.append("同宫")
+    ab, ba = _sees(chart, a, b), _sees(chart, b, a)
+    if ab and ba:
+        kinds.append("互照")
+    elif ab or ba:
+        kinds.append(f"{a} 照 {b}" if ab else f"{b} 照 {a}")
+    if SIGN_LORDS[planets[a]["sign"]] == b and SIGN_LORDS[planets[b]["sign"]] == a:
+        kinds.append("互换")
+    if (planets[b]["house"] - planets[a]["house"]) % 12 in (3, 9):
+        kinds.append("互为4/10宫")
+    return kinds
+
+
+def _touches(chart, karaka, planet):
+    """征象星串联（执行口径，B 级）：征象星与 planet 同宫，或由征象星照射 planet。"""
+    if karaka == planet:
+        return "即本星"
+    if chart["planets"][karaka]["house"] == chart["planets"][planet]["house"]:
+        return "同宫"
+    return f"{karaka} 照 {planet}" if _sees(chart, karaka, planet) else ""
+
+
+def _derived(actor, n):
+    """以 actor 宫为命宫的第 n 宫（M-XVII.8–9：对方从 7 宫读；M-XIV.116 注：从 7 宫起算）。"""
+    return (actor + n - 2) % 12 + 1
+
+
+def _action_chain(chart, actor):
+    """行动链（judgment-rubric §2.5，执行口径）：只回答"行动者会不会动"，不进账本合计。
+
+    ① 起意：行动者起第 3 宫主与行动者宫主相连，或 Mars 触及行动者宫主（M-XIV.5、31、43）；
+    ② 行动：行动者起第 10 宫主与行动者宫主相连或同星（M-XIV.12）；
+    ③ 指向你：行动者宫主、起意宫主、行动宫主之一与 Lagna 主相连，或经 Mars 串联（M-XIV.43）；
+    ④ 能力：行动者宫主或起意宫主严重受损（M-XIV.39）。
+    Mercury、Venus、Sun 只有第七宫照射，它们串得起的两端必已直连，所以③只需另查 Mars。
+    """
+    lord = lambda house: chart["house_lords"][house]["lord"]
+    rel = lambda a, b: "、".join(_relation(chart, a, b))
+    first, doer = lord(1), lord(actor)
+    starter, mover = lord(_derived(actor, 3)), lord(_derived(actor, 10))
+    pair = lambda a, b: f"即行动者宫主 {b}" if a == b else (f"{a}–{b}：{rel(a, b)}" if rel(a, b) else "")
+    start = [f"起意宫主 {pair(starter, doer)}"] if pair(starter, doer) else []
+    if doer == "Mars":
+        start.append("行动者宫主即 Mars")
+    elif _touches(chart, "Mars", doer):
+        start.append(f"Mars–{doer}：{_touches(chart, 'Mars', doer)}")
+    move = pair(mover, doer)
+    point = [f"{p} 即 Lagna 主" if p == first else f"{p}–{first}：{rel(p, first)}"
+             for p in dict.fromkeys((doer, starter, mover)) if rel(p, first)]
+    to_first, to_doer = _touches(chart, "Mars", first), _touches(chart, "Mars", doer)
+    if to_first and to_doer and "Mars" not in (first, doer) and doer != first:
+        point.append(f"经 Mars 串联（Mars–{first}：{to_first}；Mars–{doer}：{to_doer}）")
+    weak = [f"{h}宫主" for h in dict.fromkeys((actor, _derived(actor, 3)))
+            if _lord_ability(chart, h)[3] == "严重受损"]
+    if not start:
+        verdict = "盘面未见主动"
+    elif not point:
+        verdict = "有起意未指向你"
+    elif weak:
+        verdict = "有心无力"
+    else:
+        verdict = "偏会" if move else "偏会·停在念头或言语"
+    return start, move, point, weak, verdict
+
+
+ACTION_KARAKAS = [("Mars", "勇气"), ("Mercury", "言语、学识"), ("Venus", "情意"),
+                  ("Sun", "君主、官方"), ("Jupiter", "智力")]
+
+
+def _chain_lines(chart):
+    lagna_sign = chart["lagna"]["sign"]
+    lord = lambda house: chart["house_lords"][house]["lord"]
+    lines = ["### 行动者视角（转宫）与行动链（行动型问题输入）\n"]
+    lines.append(
+        "> 以行动者所在的宫为命宫取第 n 宫（M-XVII.8–9、M-XIV.116 注）：起第 2 宫言语、第 3 宫起意、"
+        "第 7 宫情意的对象、第 10 宫行动、第 11 宫落实。本盘该宫原来的宫义照常存在。"
+        "行动链只回答“行动者会不会动”，不进账本合计（`judgment-rubric.md` §2.5）。\n"
+    )
+    lines.append("| 行动者 | 言语（起第2宫） | 起意（起第3宫） | 情意对象（起第7宫） | 行动（起第10宫） | 落实（起第11宫） |")
+    lines.append("|---|---|---|---|---|---|")
+    cell = lambda h: f"{h}宫（{lord(h)}·{_lord_ability(chart, h)[3]}）"
+    for actor in range(2, 13):
+        lines.append(
+            f"| {actor}宫（{lord(actor)}） | "
+            + " | ".join(cell(_derived(actor, n)) for n in (2, 3, 7, 10, 11)) + " |"
+        )
+    lines.append("")
+    lines.append("| 行动者 | ① 起意 | ② 行动 | ③ 指向你（Lagna 主） | ④ 严重受损 | 行动链 |")
+    lines.append("|---|---|---|---|---|---|")
+    for actor in range(2, 13):
+        start, move, point, weak, verdict = _action_chain(chart, actor)
+        lines.append(
+            f"| {actor}宫 | {'；'.join(start) or '—'} | {move or '—'} | "
+            f"{'；'.join(point) or '—'} | {'、'.join(weak) or '—'} | {verdict} |"
+        )
+    lines.append("")
+    lines.append(
+        "> 征象星串联（执行口径，B 级）：征象星与两端都同宫或由它照射，算连上，写“经某星串联”。"
+        "只认所问动作的征象星（`question-decomposition.md` 投射表）。Mercury、Venus、Sun 只有第七宫照射，"
+        "它们串得起的两端必已直连；串联在这里说明“靠什么连上”。\n"
+    )
+    lines.append("| 征象星（象义） | 触及的宫主（同宫或由它照射） | 与 Lagna 主一起串起的宫 |")
+    lines.append("|---|---|---|")
+    first = lord(1)
+    for karaka, meaning in ACTION_KARAKAS:
+        touched = []
+        for planet in dict.fromkeys(lord(h) for h in range(1, 13)):
+            how = _touches(chart, karaka, planet)
+            if how and how != "即本星":
+                houses = "、".join(map(str, sorted(_houses_ruled_from(planet, lagna_sign))))
+                touched.append(f"{planet}（管{houses}；{how}）")
+        if karaka == first:
+            bridged = "即 Lagna 主"
+        elif not _touches(chart, karaka, first):
+            bridged = "—（不触及 Lagna 主）"
+        else:
+            bridged = "、".join(
+                f"{h}（{lord(h)}）" for h in range(2, 13)
+                if lord(h) not in (first, karaka) and _touches(chart, karaka, lord(h))
+            ) or "—"
+        lines.append(f"| {karaka}（{meaning}） | {'、'.join(touched) or '—'} | {bridged} |")
+    lines.append("")
+    return lines
 
 
 def _lord_lines(chart):
@@ -298,8 +427,10 @@ def _lord_lines(chart):
     lines.append("")
     lines.append(
         "> 意愿层：按 M-XIV.33／47／48 取象、M-XIV.43 看与 Lagna 主的连接。这里只列事实："
-        "同宫与照射之星各管哪几宫（从 Lagna 起）、与 Lagna 主是否同宫、互照、互换。"
-        "象义怎么读见 `judgment-writing.md`；本表不进账本合计。\n"
+        "同宫与照射之星各管哪几宫（从 Lagna 起）；与 Lagna 主的连接按 M-XIV.43 列同宫、照射"
+        "（单向即可，写明谁照谁）、互照、互换、互为4/10宫（角宫关系）。"
+        "同宫、照射之星按“带来什么、这题要不要、有没有力送到”读（`house-meanings.md` §5）；"
+        "本表不进账本合计。\n"
     )
     lines.append("| 宫 | 宫主 | 同宫之星（所管宫） | 照射宫主之星（所管宫） | 与 Lagna 主 |")
     lines.append("|---:|---|---|---|---|")
@@ -740,6 +871,7 @@ def format_standard_layer(chart):
     )
 
     lines.extend(_lord_lines(chart))
+    lines.extend(_chain_lines(chart))
     lines.extend(_descriptive_facts(chart, d9_lagna))
 
     lines.append("### 时间边界\n")
