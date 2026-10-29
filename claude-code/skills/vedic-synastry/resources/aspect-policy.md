@@ -49,7 +49,7 @@ A 的某行星落在 B 的某星座 = 落入 B 的对应宫位（从 B 的 Lagna
 
 - 凶星（Saturn/Mars/Rahu）视相 → 施压 / 限制 / 激化。
 - 吉星（Jupiter/Venus/Moon）视相 → 保护 / 扩张 / 滋养。
-- 吉凶判定叠加该星在自盘的复合尊贵度（落陷凶星视相 = 破坏性更纯）。
+- 吉凶判定叠加该星在自盘的复合尊贵度（落陷凶星视相 = 破坏性更纯；落陷星先读自盘 structured_data「落陷解除」档位，单式仍按落陷）。
 
 > Rashi Drishti（星座相视，Jaimini）：仅在 DK/UL 等 Jaimini 点位交互时作补充，
 > 不与 Graha Drishti 混用于同一条判定。判定表（唯一口径，禁止凭通识改动）：

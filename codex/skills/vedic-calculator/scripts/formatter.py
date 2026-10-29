@@ -284,7 +284,24 @@ def format_structured_data(chart, transit_data, meta, user_info):
         compound = dig.get('compound', '-')
         lines.append(f"| {name} | {p['sign']} | {lord} | {compound} | |")
     lines.append("")
-    
+
+    # 落陷解除（Neecha Bhanga）：calc 逐式核，读法见 p1_p12 P7
+    nb = chart.get('neecha_bhanga') or {}
+    if nb:
+        lines.append("### 落陷解除（Neecha Bhanga · calc 逐式核，禁手推）")
+        lines.append("> 解除式按 Phaladeepika 7.26–30、7.3 计数；缓冲项无出处，只进叙述、不计数。"
+                     "档位、大运不计落陷（独立式≥3）与结算顺序见 p1_p12 P7；下游一律读本表的档位。")
+        lines.append("| 落陷星 | 落座主 | 旺主 | 解除式（证据） | 独立式 | 缓冲项 | 档位 | 大运不计落陷 | 旺主另读 |")
+        lines.append("|------|------|------|------|------|------|------|------|------|")
+        for name, r in nb.items():
+            forms = '；'.join(f"{f['id']}：{f['evidence']}" for f in r['forms']) or '—'
+            alt = r.get('alt')
+            alt_s = (f"{alt['exaltation_lord']}：{alt['independent']} 式，{alt['tier']}"
+                     f"{'，大运不计' if alt['dasha_not_counted'] else ''}") if alt else '—'
+            lines.append(f"| {name} | {r['dispositor']} | {r['exaltation_lord']} | {forms} | {r['independent']} | "
+                         f"{'；'.join(r['cushions']) or '—'} | {r['tier']} | {'是' if r['dasha_not_counted'] else '否'} | {alt_s} |")
+        lines.append("")
+
 
     # Graha Drishti（吠陀行星相位=宫位照射，P10/格局互视读本表、禁手推）
     lines.append("### Graha Drishti（吠陀行星相位·宫位照射）")

@@ -74,7 +74,7 @@ SAV 工具迁入提问盘。
 - Tajika orb／applying／separating；
 - KP cusp／sub-lord。
 
-本命专用的尊贵度修正不进即时盘：落陷解除（NBRY）、逆行尊贵度反转、落陷 Vargottama 三分类、Pushkara 补丁。即时盘的落陷、逆行只按能力层的
+本命专用的尊贵度结算不进即时盘：落陷解除（Neecha Bhanga 档位）、落陷 Vargottama 三分类、Pushkara 补丁。即时盘的落陷、逆行只按能力层的
 折损与救应读（`M-XIV.39–40` Raman 注，`judgment-rubric.md` §5），根本三角归本座。
 
 只允许 rising Navamsa（星座与序号）、Lagna 所在 drekkana、Lagna 六分盘座主表三项有限数据，因为 `P-I.4`（注：Lagna、Hora、Drekkana、Navamsa、

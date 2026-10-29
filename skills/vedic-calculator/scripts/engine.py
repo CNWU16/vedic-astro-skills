@@ -249,7 +249,7 @@ def to_jd(year, month, day, hour, minute, tz_str, second=0):
 PLANET_FLAGS = (swe.FLG_SWIEPH | swe.FLG_SIDEREAL | swe.FLG_SPEED
                 | swe.FLG_TRUEPOS | swe.FLG_NONUT | swe.FLG_NOGDEFL)
 
-ENGINE_VERSION = "v1.0.2"
+ENGINE_VERSION = "v1.0.3"
 
 
 def ayanamsa_value(jd):
@@ -555,6 +555,99 @@ def calc_yoga_prescan(lagna_sign_idx, planets, house_lords, graha_drishti, mutua
                        'house': sh, 'sign': planets.get(star, {}).get('sign')}
     res['mahapurusha'] = maha
     return res
+
+def calc_neecha_bhanga(planets, dignity, graha_drishti, combustion, shadbala):
+    """落陷解除（Neecha Bhanga）证据：每颗 D1 落陷星（七曜）逐式核，读法与档位口径见 p1_p12.md P7（2026-10-30）。
+    解除式（Phaladeepika 第 7 章，有出处，计数）：
+      7.26/29/30·落座主  落座主（所落之座的主）在 Lagna 或 Moon 起角宫
+      7.26/29/30·旺主    旺主（入旺之座的主）在 Lagna 或 Moon 起角宫
+      7.27               落座主与旺主互为角宫
+      7.28               受落座主照射（落吉位时另注加强）
+      7.3                逆行、落吉位（非 6/8/12 宫）、不燃烧
+    "旺主"注 3 另读为"在落陷之座入旺的星"，按另读再算一遍记 alt，不择一。
+    缓冲项（旧 P7 六条里无出处的几条，只列不计）：本星在 Lagna 起角宫、受木金水月照、旺主在 Lagna 起三方宫、
+      落座主旺庙友且六力≥100%、与旺主同宫（出处待核）。
+    档位：落陷 / 落陷有缓冲（无解除式、有缓冲）/ 落陷解除（≥1 式）/ 落陷解除·多重（≥2 式）；
+      dasha_not_counted＝独立解除式≥3（house_framework 大运负面条件不计落陷）。"""
+    EXALT = {'Sun': 'Aries', 'Moon': 'Taurus', 'Mars': 'Capricorn', 'Mercury': 'Virgo',
+             'Jupiter': 'Cancer', 'Venus': 'Pisces', 'Saturn': 'Libra'}
+    KENDRA, DUS = (1, 4, 7, 10), (6, 8, 12)
+    moon_h = planets['Moon']['house']
+
+    def nth(frm, to):
+        return ((to - frm) % 12) + 1
+    def kendra_refs(name):
+        h = planets[name]['house']
+        refs = [f'Lagna 起第 {h} 宫'] if h in KENDRA else []
+        if name != 'Moon' and nth(moon_h, h) in KENDRA:  # Moon 自己从 Moon 起恒为第 1 宫，只认 Lagna 起
+            refs.append(f'Moon 起第 {nth(moon_h, h)} 宫')
+        return refs
+    def sees(a, b):
+        return b in graha_drishti.get(a, {}).get('aspected_planets', [])
+
+    def tier(n, cushions):
+        if n >= 2:
+            return '落陷解除·多重'
+        if n == 1:
+            return '落陷解除'
+        return '落陷有缓冲' if cushions else '落陷'
+
+    result = {}
+    for name, ex_sign in EXALT.items():
+        if dignity.get(name, {}).get('basic') != 'debilitated':
+            continue
+        p = planets[name]
+        h = p['house']
+        disp = SIGN_LORDS[SIGNS.index(p['sign'])]
+        exl = SIGN_LORDS[SIGNS.index(ex_sign)]
+        exalted_here = next((k for k, v in EXALT.items() if v == p['sign']), None)  # 注 3 另读
+
+        def forms(ex):
+            out = []
+            r = kendra_refs(disp)
+            if r:
+                out.append({'id': '7.26/29/30·落座主', 'evidence': f"落座主 {disp} 在 {'、'.join(r)}（角宫）"})
+            r = kendra_refs(ex)
+            if r:
+                who = f'{ex}（即本星）' if ex == name else ex
+                out.append({'id': '7.26/29/30·旺主', 'evidence': f"旺主 {who} 在 {'、'.join(r)}（角宫）"})
+            if nth(planets[disp]['house'], planets[ex]['house']) in KENDRA:
+                out.append({'id': '7.27', 'evidence': f'落座主 {disp} 与旺主 {ex} 互为角宫'})
+            if sees(disp, name):
+                extra = '；本星落吉位，加强' if h not in DUS else ''
+                out.append({'id': '7.28', 'evidence': f'受落座主 {disp} 照射{extra}'})
+            if p.get('retrograde') and h not in DUS and name not in combustion:
+                out.append({'id': '7.3', 'evidence': f'逆行、落第 {h} 宫（吉位）、不燃烧'})
+            return out
+
+        cushions = []
+        if h in KENDRA:
+            cushions.append(f'本星在 Lagna 起第 {h} 宫（角宫）')
+        helpers = [b for b in ('Jupiter', 'Venus', 'Mercury', 'Moon') if b != name and sees(b, name)]
+        if helpers:
+            cushions.append(f"受{'、'.join(helpers)}照射")
+        if planets[exl]['house'] in (5, 9):
+            cushions.append(f"旺主 {exl} 在 Lagna 起第 {planets[exl]['house']} 宫（三方宫）")
+        dd = dignity.get(disp, {})
+        pct = shadbala.get(disp, {}).get('strength_pct') if isinstance(shadbala, dict) else None
+        if (dd.get('basic') in ('exalted', 'moolatrikona', 'own_sign') or dd.get('compound') in ('friend', 'great_friend')) \
+                and pct is not None and pct >= 100:
+            cushions.append(f"落座主 {disp} {dd.get('compound')}、六力 {round(pct)}%")
+        if exl != name and planets[exl]['house'] == h:
+            cushions.append(f'与旺主 {exl} 同宫（出处待核）')
+
+        main = forms(exl)
+        rec = {'dispositor': disp, 'exaltation_lord': exl, 'exalted_here': exalted_here,
+               'forms': main, 'independent': len(main), 'cushions': cushions,
+               'tier': tier(len(main), cushions), 'dasha_not_counted': len(main) >= 3, 'alt': None}
+        if exalted_here and exalted_here != exl:
+            alt = forms(exalted_here)
+            if [f['id'] for f in alt] != [f['id'] for f in main]:
+                rec['alt'] = {'exaltation_lord': exalted_here, 'forms': alt, 'independent': len(alt),
+                              'tier': tier(len(alt), cushions), 'dasha_not_counted': len(alt) >= 3}
+        result[name] = rec
+    return result
+
 
 def calc_mutual_drishti(graha_drishti):
     """互视对（mutual drishti，格局"互视"唯一口径）：A照B落宫 且 B照A落宫（双向），
@@ -1002,7 +1095,8 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
     shadbala_data = _shadbala_pyjhora(
         year, month, day, hour, minute, lat, lon, _tz_offset, second=second
     )
-    
+    neecha_bhanga = calc_neecha_bhanga(planets, dignity_data, graha_drishti, combustion, shadbala_data)  # 落陷解除逐式证据（禁手推）
+
     # 13. Moon phase
     moon_sun_diff = (planets['Moon']['longitude'] - planets['Sun']['longitude']) % 360
     is_waxing = moon_sun_diff < 180
@@ -1072,6 +1166,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
         'graha_drishti': graha_drishti,
         'functional': functional,
         'yoga_prescan': yoga_prescan,
+        'neecha_bhanga': neecha_bhanga,
         'mutual_drishti': mutual_drishti,
         'parivartana': parivartana,
         'house_lords': house_lords,

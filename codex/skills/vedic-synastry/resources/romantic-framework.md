@@ -19,6 +19,7 @@
 ## Layer 2 重点叠盘信号
 
 - 吸引与亲密：Venus-Mars、Moon-Venus、Venus-Jupiter；Mars 触对方 5/7/8宫
+- 8／12 宫并列读：8 宫有 māṅgalya（婚姻存续）、12 宫有 śayana（床笫）（*Phaladeepika* 1.14／1.16），与摩擦义并列，不一律读成负面
 - 长期承载：Saturn 触 Moon/Venus/7宫/UL；Jupiter 护 7宫/UL；双方 D9 7宫
 - 理想化/黏着：Rahu-Ketu 轴触 Moon/Venus/Lagna/7宫轴
 - 每个风险配修复：Jupiter 视相、宫主强、Dasha 支持

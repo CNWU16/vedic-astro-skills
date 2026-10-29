@@ -428,7 +428,8 @@ chart = {
 - 分盘: **PyJHora 原生** (divisional_pyjhora.py) — 15张 D1~D60
 - 分盘稳定性: 在调用方传入的`uncertainty_minutes`内逐分钟重算D1/D9/D10/D4/D5
   Lagna；数学正确性与输入稳定性分别报告
-- Dignity: 自建（旺/入庙/陷前置判断）；燃烧 orb / 方位强宫两表内联于 engine.py
+- Dignity: 自建（旺/根本三角/入庙/陷前置判断，根本三角按度数段）；燃烧 orb / 方位强宫两表内联于 engine.py
+- 落陷解除: 自建 `calc_neecha_bhanga`（Phaladeepika 7.26–30、7.3 逐式核，出证据、独立式数、档位；不调 PyJHora 的 neecha_bhanga 函数——只实现 3 条且与本体系"D9 入旺不构成解除"相反）
 - Chara Karakas: 7K（KN Rao）+ 8K参考
 - 容错策略: **fail-fast**（缺依赖直接报错，不给错误结果）
 
