@@ -376,6 +376,10 @@ def test_standard_worked_examples() -> None:
     assert (planet, verdict) == ("Mercury", "能力打折"), (factors, rescue, verdict)
     assert factors == ["落8宫", "逆行"] and "天然友座" in rescue and "吉星占照" in rescue, (factors, rescue)
     assert fs._lord_ability(pisces, 3)[3] == "严重受损"
+    # 8 宫主 Venus 坐本宫（Libra 8 宫）：不记"落8宫"（M-XIV.42）；3 宫主同一颗 Venus 不在本宫，仍记
+    _, f8, _, v8 = fs._lord_ability(pisces, 8)
+    assert "落8宫" not in f8 and f8[:2] == ["燃烧", "逆行"] and v8 == "严重受损", (f8, v8)
+    assert "落8宫" in fs._lord_ability(pisces, 3)[1]
     # Lagna 主 Jupiter 被 Mars 同宫：能力表写出凶星名，供按需减项（rubric §2.1）
     assert fs._lord_ability(pisces, 1)[1] == ["受凶星占照（Mars）、无吉星"]
     # M-XIV.43：Jupiter（5 宫）与 Mercury（8 宫）互为 4／10 宫 → 已连上

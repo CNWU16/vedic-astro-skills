@@ -203,7 +203,8 @@ def _lord_ability(chart, house):
     """能力层事实：宫主的折损项、救应与结论。不进账本合计，只供否决与叙述。
 
     折损项（M-XIV.39–40；M-XIV.30 只取作用于宫主自身的几项，不取 6／8／12 宫主连接）：
-    落陷、落 6／8／12 宫、燃烧、逆行、受凶星占照而无吉星。
+    落陷、落 6／8／12 宫、燃烧、逆行、受凶星占照而无吉星。宫主坐本宫不算落 6／8／12 宫
+    （M-XIV.42：宫主落本宫起算的吉位，该宫之事圆满；坐本宫＝本宫起算第 1 宫）。
     救应：吉星同宫或照射；宫主入旺、本座或落天然友座。
     结论：三项及以上，或两项而无救应 → 严重受损；一到两项 → 能力打折；无折损项时有力或正常。
     """
@@ -220,7 +221,7 @@ def _lord_ability(chart, house):
     factors = []
     if basic == "debilitated":
         factors.append("落陷")
-    if where in DUSTHANA:
+    if where in DUSTHANA and where != house:
         factors.append(f"落{where}宫")
     if planet in chart.get("combustion", {}):
         factors.append("燃烧")
@@ -410,7 +411,7 @@ def _lord_lines(chart):
     lines = ["### 宫主能力与连接（能力层、意愿层输入）\n"]
     lines.append(
         "> 能力层：按 M-XIV.39–40 与 M-XIV.30（只取作用于宫主自身的几项）列折损项与救应。"
-        "燃烧、逆行只算折损，不单独算无力；只有多项叠加且无救应才记“严重受损”。"
+        "宫主坐本宫不记落 6／8／12 宫（M-XIV.42）。燃烧、逆行只算折损，不单独算无力；只有多项叠加且无救应才记“严重受损”。"
         "本表不进账本合计，“严重受损”只用于 `judgment-rubric.md` 能力层否决。\n"
     )
     lines.append("| 宫 | 宫主 | 宫主落宫（星座） | D1尊贵度 | 折损项 | 救应 | 能力 |")
