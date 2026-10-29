@@ -1,11 +1,11 @@
 {
- "source_commit": "ccf7e8c9e745",
- "generated_at": "2026-10-09T19:02:23Z",
+ "source_commit": "345d3bb337ef",
+ "generated_at": "2026-10-29T18:08:41Z",
  "repo": "vedic-astrology-skills",
  "anchor_count": 307,
  "section_count": 122,
  "file_hashes": {
-  "SKILL.md": "e39aa7906161",
+  "SKILL.md": "851230a90cd9",
   "resources/p1_p12.md": "602156a34eb4",
   "resources/yogas.md": "378a9521af0b",
   "resources/house_framework.md": "0db55f1c2f7a",
@@ -2286,7 +2286,7 @@
    "anchor": "A-SK-1f6f90f1",
    "file": "SKILL.md",
    "title": "数据来源",
-   "section_hash": "4d78a11fa643",
+   "section_hash": "eac19c240c7e",
    "n_lines": 14
   },
   {
