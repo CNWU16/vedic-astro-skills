@@ -543,10 +543,12 @@ def test_judge_worked_example() -> None:
                    ("指标星 Mercury 所在 8 宫", "照射", "Mars", ["争吵（相合）"])], inf
     assert dv["describe"]["M-XIV.117"]["result"] == "不成立", dv["describe"]["M-XIV.117"]
 
-    # 取象单校验：关键词要写出处；限定语"主动"要给行动者；描述型不收限定语
+    # 取象单校验：关键词要写出处；限定语"主动"要给行动者；描述型不收限定语；固定宫事项不收不同的事项宫（11-01，登记表优先）
+    assert pr.Plan.from_dict({"matter": "失物", "matter_house": 11}).house_of_matter() == 11
     for bad in ({"matter": "见面", "matter_house": 7, "keywords": [{"word": "私下", "houses": [8], "polarity": "相合"}]},
                 {"matter": "见面", "matter_house": 7, "qualifiers": ["主动"]},
                 {"matter": "描述", "matter_house": 7, "qualifiers": ["私下"]},
+                {"matter": "失物", "matter_house": 4},
                 {"matter": "不存在的题型"}):
         try:
             pr.Plan.from_dict(bad)

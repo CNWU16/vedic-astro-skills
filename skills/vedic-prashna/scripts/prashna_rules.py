@@ -514,6 +514,10 @@ class Plan:
             raise ValueError(f"取象单 matter 不在事项登记：{self.matter}；表外问题用 '通用' 并给 matter_house")
         if MATTERS[self.matter].house is None and not self.house_of_matter():
             raise ValueError(f"{self.matter} 须给 matter_house（或行动者宫 actor）")
+        fixed = MATTERS[self.matter].house
+        if fixed is not None and self.matter_house not in (None, fixed):
+            raise ValueError(f"{self.matter} 的事项宫固定为 {fixed}，不收 matter_house={self.matter_house}；"
+                             "代他人问或要转宫，请用 '通用' 并给投射后的 matter_house")
         bad = [p for p in self.needed_planets if p not in P7]
         if bad:
             raise ValueError(f"needed_planets 只收七曜：{bad}")
@@ -532,7 +536,8 @@ class Plan:
             raise ValueError("location 须为 city 或 exact")
 
     def house_of_matter(self):
-        return self.matter_house or MATTERS[self.matter].house or self.actor
+        """登记表的固定宫优先；matter_house 只给见面、财富、通用、描述这类不定宫的事项。"""
+        return MATTERS[self.matter].house or self.matter_house or self.actor
 
     def role_houses(self):
         """措辞点到且方向相合的宫：这些宫在本题拆题里另有角色（D3 能力层、D4 语境检验）。"""
