@@ -159,10 +159,11 @@ NAKSHATRAS = [
 DASHA_ORDER = ['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury']
 DASHA_YEARS = {'Ketu':7,'Venus':20,'Sun':6,'Moon':10,'Mars':7,'Rahu':18,'Jupiter':16,'Saturn':19,'Mercury':17}
 
+# 宫主表"领域"列：逐字取 vedic-core house_framework.md「12宫速查」核心领域列（lint 第 12 组守一致）
 HOUSE_DOMAINS = {
-    1:'自我', 2:'财富', 3:'兄弟', 4:'家庭', 5:'子女',
-    6:'疾病', 7:'婚姻', 8:'变故', 9:'运势', 10:'事业',
-    11:'收入', 12:'损耗'
+    1:'自我/身体/性格', 2:'财富/家庭/语言', 3:'沟通/勇气/兄弟', 4:'家庭/教育/不动产',
+    5:'创造力/恋爱/子女', 6:'竞争/疾病/服务', 7:'婚姻/合伙/他人', 8:'突变/危机/遗产',
+    9:'运气/导师/远方', 10:'事业/地位/成就', 11:'收入/社交/愿望', 12:'损耗/隔离/灵性'
 }
 
 # 燃烧 orb（度）与方位强宫：原取自 dashaflow.dignity / dashaflow.constants（1.1.0），
@@ -249,7 +250,7 @@ def to_jd(year, month, day, hour, minute, tz_str, second=0):
 PLANET_FLAGS = (swe.FLG_SWIEPH | swe.FLG_SIDEREAL | swe.FLG_SPEED
                 | swe.FLG_TRUEPOS | swe.FLG_NONUT | swe.FLG_NOGDEFL)
 
-ENGINE_VERSION = "v1.0.3"
+ENGINE_VERSION = "v1.0.4"
 
 
 def ayanamsa_value(jd):

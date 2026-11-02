@@ -243,10 +243,10 @@ Pratyantardasha: [planet] (YYYY-MM-DD ~ YYYY-MM-DD)
 ### 宫主表
 | 宫位 | 领域 | 宫主 | 宫主落宫 |
 |------|------|------|---------|
-| 1 | 自我 | [planet] | [house] |
-| 2 | 财富 | [planet] | [house] |
+| 1 | 自我/身体/性格 | [planet] | [house] |
+| 2 | 财富/家庭/语言 | [planet] | [house] |
 | ... | ... | ... | ... |
-| 12 | 损耗 | [planet] | [house] |
+| 12 | 损耗/隔离/灵性 | [planet] | [house] |
 
 ## 分盘数据
 
