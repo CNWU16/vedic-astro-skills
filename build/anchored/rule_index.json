@@ -1,6 +1,6 @@
 {
- "source_commit": "78965172c25d",
- "generated_at": "2026-11-02T16:15:49Z",
+ "source_commit": "12a7ed2ddddb",
+ "generated_at": "2026-11-02T17:20:25Z",
  "repo": "vedic-astrology-skills",
  "anchor_count": 309,
  "section_count": 122,
@@ -8,7 +8,7 @@
   "SKILL.md": "d2e3c5ebe45e",
   "resources/p1_p12.md": "7b44b300621d",
   "resources/yogas.md": "9d022da701a4",
-  "resources/house_framework.md": "71a32df2ff04",
+  "resources/house_framework.md": "be6f33fa0d42",
   "resources/qa_rules.md": "91b348587cd7"
  },
  "anchors": [
@@ -1725,7 +1725,7 @@
    "file": "resources/house_framework.md",
    "level": "L2",
    "title": "宫义分层：① 古籍原文（BPHS、*Phaladeepika*〔PD〕、*Prasna Marga*〔PM〕）；② 后世经典（*Uttara Kalamrita",
-   "text": "> 宫义分层：① 古籍原文（BPHS、*Phaladeepika*〔PD〕、*Prasna Marga*〔PM〕）；② 后世经典（*Uttara Kalamrita*〔UK〕第 5 章，P.S. Sastri 英译；*Jataka Parijata*〔JP〕，V. Subrahmanya Sastri 1932 英译）；③ KN Rao 学派（*Learn Hindu Astrology Easily*）；④印 现代印度实践（B.V. Raman *How to Judge a Horoscope*）。\n> ①②③④印 都照用；与西方占星重合、印度来源里查不到的不用。\n> 同一主题跨多宫时并列读，不只取一宫，几处一致才写得肯定（婚恋：7 宫配偶与情欲、5 宫恋爱情事、8 宫 māṅgalya 婚姻存续、12 宫 śayana 床榻；出国与远方：10 宫旅居异国、12 宫迁居异地、7 宫异地、9 宫远行；学业：5 宫为主，4、2 宫为辅）。\n> **判一件事的时间窗口或事件时先定主宫**（宫一多，随便一张盘都能在某一宫读出这件事：随机一段小运被\"出国\"四宫中任一宫点名 83%，只认主宫 31%）：\n> 主宫取下表事件栏列出这件事的那一宫——谈恋爱 5、结婚 7、搬家 4、手术 8、官司 6、深造 9（与 vedic-rectifier `event_house_map.md` 一致）；几行都列的：出国 12、9 两宫都有原文直接点名，暂都作主宫（待产品实测定主次），并列 10、7；学业 主 5，并列 4、2；健康问题 主 6，并列 1、8；收入 2、11 两宫都直接点名，并列为主。\n> **主宫怎么定**（依次判断）：①这件事是该宫的主义而不是次义（10 宫主义是事业，\"旅居异国\"是次义 → 只作并列）；②原文直接点名优先于近义引申；③数据足够时实测更准的优先（产品验前事：学业只用 5 宫 72%、只用 4 宫 62%）。\n> **并列宫不单独开窗口**：只碰到并列宫的运写成\"背景\"，不写成这件事的窗口；碰到主宫的，强弱照「时间窗纪律」第 2、4 条判。Karaka、Yoga、分盘等其他通道不受本条限制（本文件「时间窗纪律」第 5 条）。"
+   "text": "> 宫义分层：① 古籍原文（BPHS、*Phaladeepika*〔PD〕、*Prasna Marga*〔PM〕）；② 后世经典（*Uttara Kalamrita*〔UK〕第 5 章，P.S. Sastri 英译；*Jataka Parijata*〔JP〕，V. Subrahmanya Sastri 1932 英译）；③ KN Rao 学派（*Learn Hindu Astrology Easily*）；④印 现代印度实践（B.V. Raman *How to Judge a Horoscope*）。\n> ①②③④印 都照用；与西方占星重合、印度来源里查不到的不用。\n> 同一主题跨多宫时并列读，不只取一宫，几处一致才写得肯定（婚恋：7 宫配偶与情欲、5 宫恋爱情事、8 宫 māṅgalya 婚姻存续、12 宫 śayana 床榻；出国与远方：10 宫旅居异国、12 宫迁居异地、7 宫异地、9 宫远行；学业：5 宫为主，4、2 宫为辅）。\n> **判一件事的时间窗口或事件时先定主宫**：\n> 主宫取下表事件栏列出这件事的那一宫——谈恋爱 5、结婚 7、搬家 4、手术 8、官司 6、深造 9（与 vedic-rectifier `event_house_map.md` 一致）；几行都列的：出国 12、9 两宫都有原文直接点名，暂都作主宫（待产品实测定主次），并列 10、7；学业 主 5，并列 4、2；健康问题 主 6，并列 1、8；收入 2、11 两宫都直接点名，并列为主。\n> **主宫怎么定**（依次判断）：①这件事是该宫的主义而不是次义（10 宫主义是事业，\"旅居异国\"是次义 → 只作并列）；②原文直接点名优先于近义引申；③数据足够时实测更准的优先。\n> **并列宫不单独开窗口**：只碰到并列宫的运写成\"背景\"，不写成这件事的窗口；碰到主宫的，强弱照「时间窗纪律」第 2、4 条判。Karaka、Yoga、分盘等其他通道不受本条限制（本文件「时间窗纪律」第 5 条）。"
   },
   {
    "id": "A-HF-e7021dd6",
@@ -1882,11 +1882,11 @@
    "text": "4. **三轴与事件簇**：领域轴、形态轴、时间轴分别结算后才允许合成事件候选；相邻期通过同一宫位、Karaka、Yoga、合相/互视、节点定位星或相关分盘相连时合并审计，不强制一事件配一个窗口，也不因同窗已有一个事件就排除另一项有独立结构连接的事件。"
   },
   {
-   "id": "A-HF-bf31f900",
+   "id": "A-HF-41a2f785",
    "file": "resources/house_framework.md",
    "level": "L3",
    "title": "5. **并列宫不单独开窗口**：按宫位判一件事时，大运／小运主星只碰到这件事的并列宫（见「12宫速查」事件栏与表头），写成\"背景\"，不写成这件事的\"窗口\"；碰",
-   "text": "5. **并列宫不单独开窗口**：按宫位判一件事时，大运／小运主星只碰到这件事的并列宫（见「12宫速查」事件栏与表头），写成\"背景\"，不写成这件事的\"窗口\"；碰到主宫（宫主、落主宫或照主宫）照第 4 条结算。经 Karaka、Yoga、合相／互视、节点定位星或相关分盘连上的，也照第 4 条结算，本条不管。并列宫也能单独开窗口的话，几乎每段运都成\"窗口\"（随机一段小运：认 1 个宫被点名 31%，2 个宫 54%，出国四宫都认 83%）。"
+   "text": "5. **并列宫不单独开窗口**：按宫位判一件事时，大运／小运主星只碰到这件事的并列宫（见「12宫速查」事件栏与表头），写成\"背景\"，不写成这件事的\"窗口\"；碰到主宫（宫主、落主宫或照主宫）照第 4 条结算。经 Karaka、Yoga、合相／互视、节点定位星或相关分盘连上的，也照第 4 条结算，本条不管。"
   },
   {
    "id": "A-HF-36b32a30",
@@ -2881,7 +2881,7 @@
    "anchor": "A-HF-7a3b6c2a",
    "file": "resources/house_framework.md",
    "title": "12宫速查",
-   "section_hash": "4a14a9dbfa8a",
+   "section_hash": "b58e0cd35562",
    "n_lines": 27
   },
   {
@@ -2930,7 +2930,7 @@
    "anchor": "A-HF-0fcbe6df",
    "file": "resources/house_framework.md",
    "title": "时间窗纪律（输出任何时间窗/时机结论时必守；core/Pro/career/love/synastry 通用）",
-   "section_hash": "3d656eea17ff",
+   "section_hash": "89149b6682d3",
    "n_lines": 10
   },
   {
