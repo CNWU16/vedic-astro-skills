@@ -45,6 +45,7 @@ FILES = {
     'resources/house_framework.md': 'HF',
     'resources/qa_rules.md': 'QA',
     'resources/prediction_rules.md': 'PR',
+    'resources/synthesis.md': 'SY',
 }
 
 RE_HEADING = re.compile(r'^(#{2,3})\s+(.+)$')
