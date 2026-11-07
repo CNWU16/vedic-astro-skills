@@ -1,15 +1,16 @@
 {
- "source_commit": "a84b3a975e2d",
- "generated_at": "2026-11-02T19:02:46Z",
+ "source_commit": "e5e467609a4e",
+ "generated_at": "2026-11-07T18:28:35Z",
  "repo": "vedic-astrology-skills",
- "anchor_count": 309,
- "section_count": 122,
+ "anchor_count": 311,
+ "section_count": 123,
  "file_hashes": {
-  "SKILL.md": "d2e3c5ebe45e",
-  "resources/p1_p12.md": "29ca33b2e7f5",
+  "SKILL.md": "b61b2eb373b0",
+  "resources/p1_p12.md": "5baee075a73c",
   "resources/yogas.md": "9d022da701a4",
-  "resources/house_framework.md": "d50da3895ac2",
-  "resources/qa_rules.md": "91b348587cd7"
+  "resources/house_framework.md": "54540b7e3141",
+  "resources/qa_rules.md": "ddd22c651777",
+  "resources/synthesis.md": "f939d473c599"
  },
  "anchors": [
   {
@@ -66,7 +67,7 @@
    "file": "SKILL.md",
    "level": "L3",
    "title": "2. **禁止反向推导**：不得从用户提供的经历（对话中提到的事件）",
-   "text": "2. **禁止反向推导**：不得从用户提供的经历（对话中提到的事件）\n   反推\"你的盘说的就是这个\"。正确做法：先从数据推出含义，再看是否与用户经历吻合。\n   示例：\n   ❌ 知道用户抑郁→把8宫往抑郁方向解\n   ✅ 8宫SAV=38→\"应对危机与变故的能力强\"，可能表现为研究、心理、金融、危机干预等多种方向"
+   "text": "2. **禁止反向推导**：不得从用户提供的经历（对话中提到的事件）\n   反推\"你的盘说的就是这个\"。正确做法：先从数据推出含义，再看是否与用户经历吻合。\n   示例：\n   ❌ 知道用户抑郁→把8宫往抑郁方向解\n   ✅ 8宫SAV=38→\"应对危机与变故的能力强\"，可能表现为危机干预、风险应对等多种方向"
   },
   {
    "id": "A-SK-4b9bfb3d",
@@ -486,7 +487,7 @@
    "file": "SKILL.md",
    "level": "L2",
    "title": "从structured_data读取D4数据：",
-   "text": "```\n从structured_data读取D4数据：\n  D4 Lagna → 物质舒适度基调\n  线A(分盘内部)：D4-L4（由 D4 Lagna 定，读分盘内部宫主表，❌非本命L4）/D4内 Venus 位置 → 财产潜力\n  线B(跨盘参照)：本命 L4 主（D1视角）落 D4 哪宫 → D1不动产承诺在分盘的兑现方向\n  D1 4宫 vs D4交叉 → 不动产/车辆运势\n  （概述颗粒度粗，两线各一句即可，标清视角，禁只写\"D4中4宫主\"这类不标盘的混视角句）\n  \n  输出1-2段概述\n```"
+   "text": "```\n从structured_data读取D4数据：\n  D4 Lagna → 物质舒适度基调\n  线A(分盘内部)：D4-L4（由 D4 Lagna 定，读分盘内部宫主表，❌非本命L4）/D4内 Venus 位置 → 财产潜力\n  线B(跨盘参照)：本命 L4 主（D1视角）落 D4 哪宫 → D1不动产承诺在分盘的兑现方向\n  D1 4宫 vs D4交叉 → 不动产/车辆运势\n  这些资产可能从哪条线来：D4 第 2 宫主落哪宫，D4 第 2、8 宫里的星在本命各管哪几宫，照宫义读成具体的人和来路。几条线都在就都写。\n  （概述颗粒度粗，两线各一句即可，标清视角，禁只写\"D4中4宫主\"这类不标盘的混视角句）\n  \n  输出1-2段概述\n```"
   },
   {
    "id": "A-SK-80da0392",
@@ -1088,7 +1089,7 @@
    "file": "resources/p1_p12.md",
    "level": "L2",
    "title": "双宫掌管 = 两个领域捆绑",
-   "text": "```\n双宫掌管 = 两个领域捆绑\n  例：Mercury管2宫(钱)+5宫(创造) → 创造力直接变现\n\n合相影响：\n  吉+吉 → 增益 >2倍\n  吉+凶 → 捆绑（好坏参半）\n  凶+凶 → 唯一方向口径（创始人裁决 2026-07-03）：\n    落 Upachaya(3/6/10/11 成长宫) = \"淬炼互砺\"——压力锻造硬成果，过程苦结果真（代价必提）\n    落其余宫 = \"双重负荷\"——两个副作用叠加，需明说两星各自的代价\n    ❌ 禁止自由裁量为\"执行力爆表\"或\"互相拖累\"之类单边结论\n\n  合相度数三档（唯一口径，开源/Pro同源；判合相/格局前必须先定档）：\n    <3° = 深度融合 → 合相效应全额兑现\n    3-10° = 标准合相 → 按上述规则正常解读\n    >10° = 弱连接 → 合相效应减半，由此构成的格局标注\"弱成立\"\n    （同座相距>10°≠紧密合相，禁止与<3°紧合同权解读）\n\nParivartana（互溶）= 两颗星互换管辖 → 深度合作\n  检测指令：审计每颗行星时，必查它落座宫的宫主是否反落在本星管辖的宫\n    （A管X宫落Y宫，且B管Y宫落X宫 = A·B互溶）。逐对扫全盘，别漏。\n  ⚠️ 互溶必须并入格局判定：角宫主+三角宫主互溶→Raja Yoga；2/11宫主→Dhana；9/10宫主→Dharma-Karma。\n```"
+   "text": "```\n双宫掌管 = 两个领域捆绑\n  例：Mercury管2宫(钱)+5宫(创造) → 创造力直接变现\n\n合相影响：\n  吉+吉 → 增益 >2倍\n  吉+凶 → 捆绑（好坏参半）\n  凶+凶 → 唯一方向口径（创始人裁决 2026-07-03）：\n    落 Upachaya(3/6/10/11 成长宫) = \"淬炼互砺\"——压力锻造硬成果，过程苦结果真（代价必提）\n    落其余宫 = \"双重负荷\"——两个副作用叠加，需明说两星各自的代价\n    ❌ 禁止自由裁量为\"执行力爆表\"或\"互相拖累\"之类单边结论\n\n  合相度数三档（唯一口径，开源/Pro同源；判合相/格局前必须先定档）：\n    <3° = 深度融合 → 合相效应全额兑现\n    3-10° = 标准合相 → 按上述规则正常解读\n    >10° = 弱连接 → 合相效应减半，由此构成的格局标注\"弱成立\"\n    （同座相距>10°≠紧密合相，禁止与<3°紧合同权解读）\n    多星同宫两两算，不按整组最大间距\n\nParivartana（互溶）= 两颗星互换管辖 → 深度合作\n  检测指令：审计每颗行星时，必查它落座宫的宫主是否反落在本星管辖的宫\n    （A管X宫落Y宫，且B管Y宫落X宫 = A·B互溶）。逐对扫全盘，别漏。\n  ⚠️ 互溶必须并入格局判定：角宫主+三角宫主互溶→Raja Yoga；2/11宫主→Dhana；9/10宫主→Dharma-Karma。\n```"
   },
   {
    "id": "A-P12-ac966706",
@@ -1326,7 +1327,7 @@
    "file": "resources/p1_p12.md",
    "level": "L2",
    "title": "Parashari相位规则（全相位=7th, 特殊相位见下）：",
-   "text": "```\nParashari相位规则（全相位=7th, 特殊相位见下）：\n  所有行星 → 对面(7th)全力相位\n  Mars → 额外相位 4th 和 8th\n  Jupiter → 额外相位 5th 和 9th\n  Saturn → 额外相位 3rd 和 10th\n\n影响：\n  吉星相位 = 加油（保护/增益）\n  Mars相位 = 追尾+20%（冲突但增力）\n  Saturn相位 = 限速（延迟但持久）\n  Rahu相位 = 放大/越界纹理（膨胀、非传统或过度聚焦）——只改写过程，不单独决定形成或获利\n  Sun相位 = 聚光灯（曝光/权威审视，该宫主题被摆上台面）\n  Ketu相位 = 降低附着/去中心化纹理（照第7对宫，无特殊5/9相位；口径对齐底层 jhora Ketu=[7]）\n    → 不能单独翻译成切断、分离或死亡；必须交给定位星、领域分盘和Dasha接力结算\n\n  多相位叠加/吉凶相位并存 → 按house_framework\"相位合成铁律\"分层陈述\n  （吉定结果保底、凶定过程摩擦），禁止择一或对冲抵消\n\n具体查 structured_data 的「Graha Drishti（吠陀行星相位·宫位照射）」表（星→宫照射，calc 已按上述规则算好，❌ 禁手推 Parashari 相位）。\n⚠️ 口径别混：graha drishti(宫位照射)一律读「Graha Drishti」表；**❌禁自行推算西占度数 orb 相位**（合/六合/刑/三合/冲——不属 KN Rao 体系，原「主要相位关系」表已废弃删除，此禁令防幻觉/历史残留）。\n```"
+   "text": "```\nParashari相位规则（全相位=7th, 特殊相位见下）：\n  所有行星 → 对面(7th)全力相位\n  Mars → 额外相位 4th 和 8th\n  Jupiter → 额外相位 5th 和 9th\n  Saturn → 额外相位 3rd 和 10th\n\n影响：\n  吉星相位 = 加油（保护/增益）\n  Mars相位 = 追尾+20%（冲突但增力）\n  Saturn相位 = 限速（延迟但持久）\n  Rahu相位 = 放大/越界纹理（膨胀、非传统或过度聚焦）——只改写过程，不单独决定形成或获利\n  Sun相位 = 聚光灯（曝光/权威审视，该宫主题被摆上台面）\n  Ketu相位 = 降低附着/去中心化纹理（照第7对宫，无特殊5/9相位；口径对齐底层 jhora Ketu=[7]）\n    → 不能单独翻译成切断、分离或死亡；必须交给定位星、领域分盘和Dasha接力结算\n\n  多相位叠加/吉凶相位并存 → 按house_framework\"相位合成铁律\"分层陈述\n  （吉定结果保底、凶定过程摩擦），禁止择一或对冲抵消\n  几处信号怎么合成见 synthesis.md（Saturn 限速是主调，不是全部）\n\n具体查 structured_data 的「Graha Drishti（吠陀行星相位·宫位照射）」表（星→宫照射，calc 已按上述规则算好，❌ 禁手推 Parashari 相位）。\n⚠️ 口径别混：graha drishti(宫位照射)一律读「Graha Drishti」表；**❌禁自行推算西占度数 orb 相位**（合/六合/刑/三合/冲——不属 KN Rao 体系，原「主要相位关系」表已废弃删除，此禁令防幻觉/历史残留）。\n```"
   },
   {
    "id": "A-P12-2e42d91b",
@@ -1648,7 +1649,7 @@
    "file": "resources/house_framework.md",
    "level": "L2",
    "title": "查看宫主的：",
-   "text": "```\n查看宫主的：\n  P1身份 → 它是什么角色？\n  去向(落宫) → 它去了哪个宫位？把这个宫的能量带到了哪里？\n  P7尊贵度 → 它健不健康？\n  P9 Shadbala → 它有没有力量执行？\n```"
+   "text": "```\n查看宫主的：\n  P1身份 → 它是什么角色？\n  去向(落宫) → 它去了哪个宫位？把这个宫的能量带到了哪里？\n  P7尊贵度 → 它健不健康？\n  P9 Shadbala → 它有没有力量执行？\n  看宫主时，把同宫的星两两按度数三档、照到宫主的星、宫主自身状态一起列出来，再按 synthesis.md 合成。\n```"
   },
   {
    "id": "A-HF-5dd9273d",
@@ -1676,7 +1677,7 @@
    "file": "resources/house_framework.md",
    "level": "L2",
    "title": "查看哪些行星对此宫位有相位（P10）：",
-   "text": "```\n查看哪些行星对此宫位有相位（P10）：\n  吉星相位 = 外部加持（保护/增益）\n  凶星相位 = 外部压力（冲突/限制/放大）\n\n  相位合成铁律（吉凶相位并存时，沿用\"方向/执行分层\"模式）：\n    分层陈述——吉定结果保底、凶定过程摩擦\n    ❌ 禁止择一而论（只报木星保护 或 只报土星限制）\n    ❌ 禁止对冲抵消（\"一吉一凶互相抵消\"）\n  多星相位 → 禁止笼统写\"受多方面外部影响\"，必须按上述铁律\n    把每颗相位星归入\"结果保底/过程摩擦\"两层逐星陈述\n```"
+   "text": "```\n查看哪些行星对此宫位有相位（P10）：\n  吉星相位 = 外部加持（保护/增益）\n  凶星相位 = 外部压力（冲突/限制/放大）\n\n  相位合成铁律（吉凶相位并存时，沿用\"方向/执行分层\"模式）：\n    分层陈述——吉定结果保底、凶定过程摩擦\n    ❌ 禁止择一而论（只报木星保护 或 只报土星限制）\n    ❌ 禁止对冲抵消（\"一吉一凶互相抵消\"）\n  多星相位 → 禁止笼统写\"受多方面外部影响\"，必须按上述铁律\n    把每颗相位星归入\"结果保底/过程摩擦\"两层逐星陈述\n  几处信号怎么合成见 synthesis.md\n```"
   },
   {
    "id": "A-HF-623312fe",
@@ -2174,6 +2175,20 @@
    "level": "L2",
    "title": "⚠️ **最重要**：不能只用D1回答问题就收工。如果问题涉及4/5/7/10宫且对应分盘已启用，必须交叉检查。D1只是表面层，分盘提供灵魂层(D9)和物质层(",
    "text": "⚠️ **最重要**：不能只用D1回答问题就收工。如果问题涉及4/5/7/10宫且对应分盘已启用，必须交叉检查。D1只是表面层，分盘提供灵魂层(D9)和物质层(D4)的修正。"
+  },
+  {
+   "id": "A-SY-ede77495",
+   "file": "resources/synthesis.md",
+   "level": "L2",
+   "title": "一个宫、一件事同时有几处盘面信号时怎么合成结论。本命分析各步与追问共用；时间校准、验前事不用（它们逐事件比对，判据见各自文件）。",
+   "text": "> 一个宫、一件事同时有几处盘面信号时怎么合成结论。本命分析各步与追问共用；时间校准、验前事不用（它们逐事件比对，判据见各自文件）。"
+  },
+  {
+   "id": "A-SY-5a3f71c1",
+   "file": "resources/synthesis.md",
+   "level": "L1",
+   "title": "合成判法",
+   "text": "## 合成判法"
   }
  ],
  "sections": [
@@ -2209,7 +2224,7 @@
    "anchor": "A-SK-018e50a5",
    "file": "SKILL.md",
    "title": "⚠️ 盲审原则（Step 1-3 适用，优先级最高）",
-   "section_hash": "5fd2a8476e72",
+   "section_hash": "2ae53ee40d89",
    "n_lines": 51
   },
   {
@@ -2293,8 +2308,8 @@
    "anchor": "A-SK-3dafb31a",
    "file": "SKILL.md",
    "title": "Step 1: P1-P12行星审计",
-   "section_hash": "a9e3d68474f3",
-   "n_lines": 4
+   "section_hash": "a07a7ab6f5ec",
+   "n_lines": 5
   },
   {
    "anchor": "A-SK-1f6f90f1",
@@ -2384,8 +2399,8 @@
    "anchor": "A-SK-2a701c1b",
    "file": "SKILL.md",
    "title": "2.3 D4财产概述",
-   "section_hash": "39a86892f9ed",
-   "n_lines": 12
+   "section_hash": "b5769f104dbd",
+   "n_lines": 13
   },
   {
    "anchor": "A-SK-80da0392",
@@ -2412,8 +2427,8 @@
    "anchor": "A-SK-0288189c",
    "file": "SKILL.md",
    "title": "Step 3: 宫位诊断",
-   "section_hash": "d3a0937ff2aa",
-   "n_lines": 6
+   "section_hash": "af514224d7f4",
+   "n_lines": 7
   },
   {
    "anchor": "A-SK-f9de7a2d",
@@ -2468,8 +2483,8 @@
    "anchor": "A-SK-0adc7293",
    "file": "SKILL.md",
    "title": "Step 4: 十大板块总结",
-   "section_hash": "b391ea13691e",
-   "n_lines": 4
+   "section_hash": "02a05285ddaf",
+   "n_lines": 6
   },
   {
    "anchor": "A-SK-beb50ae8",
@@ -2594,8 +2609,8 @@
    "anchor": "A-P12-5400e71c",
    "file": "resources/p1_p12.md",
    "title": "P3 仓库耦合 [参考权重]",
-   "section_hash": "041fc28e9b53",
-   "n_lines": 28
+   "section_hash": "178f61ab68f2",
+   "n_lines": 29
   },
   {
    "anchor": "A-P12-ac966706",
@@ -2685,8 +2700,8 @@
    "anchor": "A-P12-d3008850",
    "file": "resources/p1_p12.md",
    "title": "P10 相位 [重要权重]",
-   "section_hash": "1bd9e9679386",
-   "n_lines": 27
+   "section_hash": "767393a49835",
+   "n_lines": 28
   },
   {
    "anchor": "A-P12-2e42d91b",
@@ -2846,8 +2861,8 @@
    "anchor": "A-HF-321c8936",
    "file": "resources/house_framework.md",
    "title": "1. 管理者（宫头星/宫主）",
-   "section_hash": "83204aa64168",
-   "n_lines": 9
+   "section_hash": "95d39b82c040",
+   "n_lines": 10
   },
   {
    "anchor": "A-HF-5dd9273d",
@@ -2860,8 +2875,8 @@
    "anchor": "A-HF-6d206363",
    "file": "resources/house_framework.md",
    "title": "3. 相位（谁在看这个宫位）",
-   "section_hash": "db52ea9143b4",
-   "n_lines": 14
+   "section_hash": "e55e47ccb0cc",
+   "n_lines": 15
   },
   {
    "anchor": "A-HF-623312fe",
@@ -2993,8 +3008,8 @@
    "anchor": "A-QA-effdf3cb",
    "file": "resources/qa_rules.md",
    "title": "处理规则",
-   "section_hash": "ffe352d24ffb",
-   "n_lines": 68
+   "section_hash": "123d5923bdc3",
+   "n_lines": 70
   },
   {
    "anchor": "A-QA-398d74e3",
@@ -3030,6 +3045,13 @@
    "title": "分盘交叉规则（适用于所有问题类型）",
    "section_hash": "9a9e6c367c5e",
    "n_lines": 38
+  },
+  {
+   "anchor": "A-SY-5a3f71c1",
+   "file": "resources/synthesis.md",
+   "title": "合成判法",
+   "section_hash": "bd51469d21a0",
+   "n_lines": 10
   }
  ]
 }

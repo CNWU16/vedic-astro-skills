@@ -61,7 +61,7 @@ description: "Run the standard full Vedic/Jyotish natal analysis from a verified
    反推"你的盘说的就是这个"。正确做法：先从数据推出含义，再看是否与用户经历吻合。
    示例：
    ❌ 知道用户抑郁→把8宫往抑郁方向解
-   ✅ 8宫SAV=38→"应对危机与变故的能力强"，可能表现为研究、心理、金融、危机干预等多种方向
+   ✅ 8宫SAV=38→"应对危机与变故的能力强"，可能表现为危机干预、风险应对等多种方向
    
 <!-- ANCHOR: A-SK-4b9bfb3d L3 -->
 3. **禁止经历=天赋**：用户经历过痛苦≠用户适合做心理咨询。
@@ -309,6 +309,7 @@ description: "Run the standard full Vedic/Jyotish natal analysis from a verified
 ## Step 1: P1-P12行星审计
 
 **参考：resources/p1_p12.md**
+几处信号怎么合成见 resources/synthesis.md（后续各步、追问通用）
 
 <!-- ANCHOR: A-SK-1f6f90f1 L1 -->
 ### 数据来源
@@ -710,6 +711,7 @@ STEP 4: 结算标签
   线A(分盘内部)：D4-L4（由 D4 Lagna 定，读分盘内部宫主表，❌非本命L4）/D4内 Venus 位置 → 财产潜力
   线B(跨盘参照)：本命 L4 主（D1视角）落 D4 哪宫 → D1不动产承诺在分盘的兑现方向
   D1 4宫 vs D4交叉 → 不动产/车辆运势
+  这些资产可能从哪条线来：D4 第 2 宫主落哪宫，D4 第 2、8 宫里的星在本命各管哪几宫，照宫义读成具体的人和来路。几条线都在就都写。
   （概述颗粒度粗，两线各一句即可，标清视角，禁只写"D4中4宫主"这类不标盘的混视角句）
   
   输出1-2段概述
@@ -776,6 +778,7 @@ Step 1-2完成后，输出以下消息并等待用户确认：
 **开始前先回调数据**：用view_file重读p2a/p2b/p2c/p2d_planets.md中的行星审计表格，确保宫位分析引用的是精确数据而非对话记忆。
 
 **参考：resources/house_framework.md**
+几处信号怎么合成见 resources/synthesis.md
 
 <!-- ANCHOR: A-SK-f9de7a2d L1 -->
 ### 诊断框架
@@ -920,6 +923,8 @@ Step 1-2完成后，输出以下消息并等待用户确认：
 
 <!-- ANCHOR: A-SK-0adc7293 L1 -->
 ## Step 4: 十大板块总结
+
+几处信号怎么合成见 resources/synthesis.md
 
 **开始前先回调数据**：用view_file重读structured_data.md和已完成的p2a~p2d、p3a/p3b、p4a/p4b文件的关键结论，不要凭记忆。
 
