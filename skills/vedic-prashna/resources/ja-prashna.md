@@ -76,3 +76,6 @@ use `目安として…` for `偏成` and a conditional such as `順調に進め
 for `持平`. For `偏不成`, give no timing; say once in direct Japanese what change
 would make the question worth asking again. Do not substitute a natal Dasha, a
 generic transit date, or a Tajika/KP date for it.
+In the body, state only timing that falls inside the plan's `time_scope`; keep the rest in
+the check section. If all of it falls outside, say once that the chart cannot tell whether
+the matter lands exactly in that span, and do not treat the span as unfavorable.

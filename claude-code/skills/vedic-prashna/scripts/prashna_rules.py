@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import date
 
 import format_prashna_standard as F
 
@@ -502,6 +503,7 @@ class Plan:
     asker: str = ""  # 结婚题：男／女
     direction: str = "发生"  # 裁员题"会不会被裁"＝发生；"能不能保住"＝避免
     early_departure: bool = False  # 离开题问"能否早日出发"时加 P-II.9
+    time_scope: dict | None = None  # 时间范围（question-decomposition.md 第 5 节）：只定判读单正文写不写时间，判定不读
 
     @classmethod
     def from_dict(cls, d):
@@ -534,6 +536,17 @@ class Plan:
             raise ValueError("限定语'主动'须给行动者宫 actor")
         if self.location not in ("city", "exact"):
             raise ValueError("location 须为 city 或 exact")
+        ts = self.time_scope
+        if ts is not None:
+            if not isinstance(ts, dict) or ts.get("kind") not in ("范围", "无意义", "不设上限"):
+                raise ValueError("time_scope.kind 须为 范围／无意义／不设上限")
+            if ts["kind"] == "范围":
+                if not ts.get("label"):
+                    raise ValueError("time_scope 为 范围 时须写 label（几个字的说法，如 今晚）")
+                try:
+                    date.fromisoformat(str(ts.get("until")))
+                except ValueError:
+                    raise ValueError("time_scope 为 范围 时须写截止日 until（YYYY-MM-DD）") from None
 
     def house_of_matter(self):
         """登记表的固定宫优先；matter_house 只给见面、财富、通用、描述这类不定宫的事项。"""

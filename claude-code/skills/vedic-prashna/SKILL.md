@@ -122,7 +122,7 @@ python scripts/build_prashna_data.py \
 3. 逐句抓关键词，查 `house-meanings.md` 关键词库，记下宫与星、相合还是相反、出处；
 4. "事情成不成"查 `matter-rules.md` 登记表取 `matter`；表外取 `通用`，按宫义选事项宫并写明出处；描述型取 `描述`（只出事实、不定档）；查表题跳到 Phase 5 按 `matter-rules.md`
    第 5 节输出；
-5. 写取象单 `prashna_plan.json` 到当前 `prashna_*` 目录。
+5. 定时间范围 `time_scope`（在看盘结果之前，`question-decomposition.md` 第 5 节）；写取象单 `prashna_plan.json` 到当前 `prashna_*` 目录。
 
 进入下一阶段条件：取象单每个关键词有出处，每个子问题有唯一出口。
 
@@ -160,6 +160,7 @@ python scripts/build_timing_overlay.py \
 
 偏成写"约……"，持平写成条件式（"如果推进顺利，大约……"）；偏不成不运行，判读单写明不给时间、什么变化之后可以再问。几个候选并列，不平均、
 不折中；婚恋题另看 `M-XVII.31` 偏早提示；问题自带日期时只说盘面节奏与最近触发日，判断不了是否恰好落在那天（`timing-layer.md`）。
+正文只写取象单 `time_scope` 范围内的时间，范围外的留核对区（`timing-layer.md` §3 第 7 条）。
 
 ---
 

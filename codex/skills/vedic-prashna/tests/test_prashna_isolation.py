@@ -555,6 +555,18 @@ def test_judge_worked_example() -> None:
         except ValueError:
             continue
         raise AssertionError(f"取象单应被拒：{bad}")
+    # 时间范围（11-09）：只定正文写不写时间，判定不读；kind 只收三种，范围须给 label 与截止日
+    lost = {"matter": "失物", "matter_house": 11}
+    scoped = pr.Plan.from_dict({**lost, "time_scope": {"kind": "范围", "label": "今晚", "until": "2026-10-28"}})
+    assert pr.judge(base, scoped) == pr.judge(base, pr.Plan.from_dict(lost))
+    assert pr.Plan.from_dict({**lost, "time_scope": {"kind": "不设上限"}}).time_scope["kind"] == "不设上限"
+    for ts in ({"kind": "很快"}, {"kind": "范围", "label": "今晚"}, {"kind": "范围", "until": "2026-10-28"},
+               {"kind": "范围", "label": "今晚", "until": "今晚"}, "今晚"):
+        try:
+            pr.Plan.from_dict({**lost, "time_scope": ts})
+        except ValueError:
+            continue
+        raise AssertionError(f"time_scope 应被拒：{ts}")
 
 
 def _run(name, fn):
