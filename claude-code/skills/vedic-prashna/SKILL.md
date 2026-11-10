@@ -103,13 +103,15 @@ Dwadasamsa、Trimsamsa 六分盘）、`P-I.7`、`P-VI.1~2`、`P-VI.4`、`P-VII.1
 
 ```bash
 python scripts/build_prashna_data.py \
-  --datetime "<YYYY-MM-DD HH:MM[:SS[.ffffff]]|now>" \
+  --datetime "<YYYY-MM-DD HH:MM[:SS[.ffffff]][+HH:MM]|now>" \
   --lat <lat> --lon <lon> --tz "<IANA>" \
   --question "<single observable question>" \
   --label "<kebab-case>" --out-parent "<parent>"
 ```
 
 `build_prashna_data.py` 只读共享 engine，并用 Prashna 专用 formatter 输出白名单。进入下一阶段条件：产物存在，默认白名单无越权字段。
+
+后面脚本的 `--datetime` 都照抄产物元信息的「脚本时刻」那一行，它带 UTC 偏移，是起盘用的同一个瞬间。
 
 ---
 
@@ -132,7 +134,7 @@ python scripts/build_prashna_data.py \
 
 ```bash
 python scripts/judge_prashna_standard.py \
-  --datetime "<与 Phase 1 完全相同>" \
+  --datetime "<structured_prashna.md 元信息「脚本时刻」>" \
   --lat <lat> --lon <lon> --tz "<IANA>" \
   --plan "<当前 prashna_* 目录>/prashna_plan.json" \
   --out-dir "<当前 prashna_* 目录>"
@@ -151,7 +153,7 @@ python scripts/judge_prashna_standard.py \
 
 ```bash
 python scripts/build_timing_overlay.py \
-  --datetime "<与 Phase 1 完全相同>" \
+  --datetime "<structured_prashna.md 元信息「脚本时刻」>" \
   --lat <lat> --lon <lon> --tz "<IANA>" \
   --matter-house <判定的事项宫> --mode <timing 字段：general|return> \
   --verdict favorable|pending \

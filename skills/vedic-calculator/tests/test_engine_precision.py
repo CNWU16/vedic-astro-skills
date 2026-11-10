@@ -197,12 +197,58 @@ def test_failures_are_reported_not_swallowed():
     assert "计算未完成" in md and "chara_dasha" in md and "Chara Dasha 时间线" not in md
 
 
+def _same_instant(local, utc):
+    """同一瞬间的两张盘逐项相同：上升、各星经度、边界审计。"""
+    assert _arcsec(local["lagna"]["longitude"], utc["lagna"]["longitude"]) <= 1e-6, (local["lagna"], utc["lagna"])
+    for name, planet in utc["planets"].items():
+        assert _arcsec(local["planets"][name]["longitude"], planet["longitude"]) <= 1e-6, name
+    assert local["divisional_boundary_audit"] == utc["divisional_boundary_audit"]
+
+
+def test_dst_edge_minutes_compute():
+    # 切换边上那一分钟真实存在，边界审计前后各看 1 分钟，不能因为邻居分钟不存在或重复就整张盘报错（2026-11-10）。
+    # 期望值按 tz 数据库的偏移手写成 UTC，同一瞬间用 UTC 排一张比对。
+    paris, beijing, new_york = (48.86, 2.35), (39.90, 116.40), (40.71, -74.01)
+    cases = [
+        ((2010, 3, 28, 1, 59), paris, "Europe/Paris", (2010, 3, 28, 0, 59)),            # 跳过前最后一分钟，CET
+        ((2010, 10, 31, 3, 0), paris, "Europe/Paris", (2010, 10, 31, 2, 0)),            # 重复结束后第一分钟，CET
+        ((1988, 4, 17, 1, 59), beijing, "Asia/Shanghai", (1988, 4, 16, 17, 59)),        # 中国 1988 年春，CST
+        ((1988, 9, 11, 2, 0), beijing, "Asia/Shanghai", (1988, 9, 10, 18, 0)),          # 中国 1988 年秋，CST
+        ((2015, 11, 1, 2, 0), new_york, "America/New_York", (2015, 11, 1, 7, 0)),       # 美国秋，EST
+    ]
+    for wall, place, tz, utc in cases:
+        _same_instant(_chart(*wall, *place, tz), _chart(*utc, *place, "UTC"))
+
+
+def test_known_instant_around_dst_switch():
+    # 即时盘的「此刻」是确定的瞬间：重复的一小时靠 fold 分清第几次，切换前后 1 分钟也要能起盘（2026-11-10）。
+    london, paris = (51.51, -0.13), (48.86, 2.35)
+    cases = [
+        ((2026, 10, 25, 1, 30), london, "Europe/London", 0, (2026, 10, 25, 0, 30)),     # 第一次，BST
+        ((2026, 10, 25, 1, 30), london, "Europe/London", 1, (2026, 10, 25, 1, 30)),     # 第二次，GMT
+        ((2026, 10, 25, 0, 59), london, "Europe/London", 0, (2026, 10, 24, 23, 59)),    # 重复开始前，BST
+        ((2026, 10, 25, 2, 0), london, "Europe/London", 0, (2026, 10, 25, 2, 0)),       # 重复结束后，GMT
+        ((2026, 3, 29, 1, 59), paris, "Europe/Paris", 0, (2026, 3, 29, 0, 59)),         # 跳过前，CET
+        ((2026, 3, 29, 3, 0), paris, "Europe/Paris", 0, (2026, 3, 29, 1, 0)),           # 跳过后，CEST
+    ]
+    for wall, place, tz, fold, utc in cases:
+        _same_instant(_chart(*wall, *place, tz, second=30, fold=fold), _chart(*utc, *place, "UTC", second=30))
+    # 手填的时刻没有 fold：重复的一小时照旧报错，等用户确认
+    try:
+        _chart(2026, 10, 25, 1, 30, *london, "Europe/London")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("手填的重复时刻应报错")
+
+
 TESTS = [test_desktop_gold_chart, test_second_default_is_minute_path, test_jd_seconds_and_dst,
          test_dst_nonexistent_and_ambiguous, test_lagna_basis_consistent_with_pyjhora_vargas,
          test_houses_patch_keeps_armc_and_matches_engine, test_rectifier_scan_uses_same_lagna,
          test_polar_chart_computes,
          test_current_dasha_independent_of_machine_clock, test_calc_meta,
-         test_failures_are_reported_not_swallowed]
+         test_failures_are_reported_not_swallowed,
+         test_dst_edge_minutes_compute, test_known_instant_around_dst_switch]
 
 if __name__ == "__main__":
     failed = 0

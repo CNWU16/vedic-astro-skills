@@ -130,7 +130,7 @@ A／B 只说明题型来源覆盖，不是概率，也不自动决定内部档�
 
 ```bash
 python scripts/build_tajika_overlay.py \
-  --datetime "<原盘 YYYY-MM-DD HH:MM:SS[.ffffff]>" \
+  --datetime "<原盘元信息「脚本时刻」；旧盘没有这一行时写 YYYY-MM-DD HH:MM:SS[.ffffff]>" \
   --lat <原盘 lat> --lon <原盘 lon> --tz "<原盘 IANA>" \
   --querent-lord <Lagna lord> --matter-lord <事项宫主> \
   --out-dir "<当前 prashna_* 目录>"

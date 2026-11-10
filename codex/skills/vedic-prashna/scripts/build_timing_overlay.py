@@ -49,7 +49,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--datetime",
         required=True,
-        help='"YYYY-MM-DD HH:MM[:SS[.ffffff]]" or "now"',
+        help='"YYYY-MM-DD HH:MM[:SS[.ffffff]][+HH:MM]" or "now"',
     )
     parser.add_argument("--lat", type=float, required=True)
     parser.add_argument("--lon", type=float, required=True)

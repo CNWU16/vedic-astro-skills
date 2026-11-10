@@ -8,7 +8,7 @@ Dasha 等全部出自同一个计算瞬间。本模块不再自己按秒补算�
 """
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 import pytz
@@ -22,12 +22,25 @@ DATETIME_FORMATS = (
     "%Y-%m-%d %H:%M",
 )
 
+# 带 UTC 偏移的写法＝确定的瞬间（起盘产物元信息「脚本时刻」），重复的一小时靠偏移分清第几次。
+INSTANT_FORMATS = tuple(fmt + "%z" for fmt in DATETIME_FORMATS)
+
 
 def parse_local_datetime(value: str, timezone: str) -> datetime:
     """Parse a wall-clock time without discarding seconds or microseconds."""
     zone = ZoneInfo(timezone)
     if value.strip().lower() == "now":
         return datetime.now(zone)
+
+    for fmt in INSTANT_FORMATS:
+        try:
+            known = datetime.strptime(value, fmt)
+        except ValueError:
+            continue
+        local = known.astimezone(zone)
+        if local.replace(tzinfo=None) != known.replace(tzinfo=None):
+            raise ValueError(f"--datetime 的 UTC 偏移与 {timezone} 在这一时刻的偏移不一致")
+        return local
 
     for fmt in DATETIME_FORMATS:
         try:
@@ -39,8 +52,18 @@ def parse_local_datetime(value: str, timezone: str) -> datetime:
         except ValueError:
             continue
     raise ValueError(
-        '--datetime must be "YYYY-MM-DD HH:MM[:SS[.ffffff]]" or "now"'
+        '--datetime must be "YYYY-MM-DD HH:MM[:SS[.ffffff]][+HH:MM]" or "now"'
     )
+
+
+def instant_text(dt_local: datetime) -> str:
+    """确定瞬间的文字写法（钟表时间带 UTC 偏移），后续脚本的 --datetime 照抄。"""
+    return dt_local.isoformat(sep=" ")
+
+
+def shift_seconds(dt_local: datetime, seconds: float) -> datetime:
+    """按绝对时间前后移动：钟表时间加减跨夏令时切换会落到不存在的时刻，或丢掉“第几次”。"""
+    return (dt_local.astimezone(pytz.utc) + timedelta(seconds=seconds)).astimezone(dt_local.tzinfo)
 
 
 def _seconds(dt_local: datetime) -> float:

@@ -72,7 +72,7 @@
 
 ```bash
 python scripts/build_tajika_overlay.py \
-  --datetime "<YYYY-MM-DD HH:MM[:SS[.ffffff]]>" \
+  --datetime "<原盘元信息「脚本时刻」；旧盘没有这一行时写 YYYY-MM-DD HH:MM:SS[.ffffff]>" \
   --lat <lat> --lon <lon> --tz "<IANA>" \
   --querent-lord <planet> \
   --matter-lord <planet> \

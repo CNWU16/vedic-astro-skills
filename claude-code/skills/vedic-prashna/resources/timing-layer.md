@@ -97,7 +97,7 @@
 
 ```bash
 python scripts/build_timing_overlay.py \
-  --datetime "<与标准 builder 完全相同>" \
+  --datetime "<structured_prashna.md 元信息「脚本时刻」>" \
   --lat <lat> --lon <lon> --tz "<IANA>" \
   --matter-house <1-12> --mode general|return \
   --verdict favorable|pending \

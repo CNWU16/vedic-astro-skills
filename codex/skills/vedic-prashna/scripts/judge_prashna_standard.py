@@ -21,7 +21,6 @@ import contextlib
 import io
 import json
 import sys
-from datetime import timedelta
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
@@ -30,7 +29,7 @@ if str(_CALC) not in sys.path:
     sys.path.insert(0, str(_CALC))
 
 from prashna_rules import DIRECTION_TEXT, Plan, judge  # noqa: E402
-from prashna_time import calculate_prashna_chart, format_wall_time, parse_local_datetime  # noqa: E402
+from prashna_time import calculate_prashna_chart, format_wall_time, parse_local_datetime, shift_seconds  # noqa: E402
 
 WINDOW = {"city": 60, "exact": 30}
 
@@ -39,8 +38,8 @@ def charts(dt, lat, lon, tz, location):
     with contextlib.redirect_stdout(io.StringIO()):
         base = calculate_prashna_chart(dt, lat, lon, tz)
         w = WINDOW[location]
-        variants = [(f"−{w} 秒", calculate_prashna_chart(dt - timedelta(seconds=w), lat, lon, tz)),
-                    (f"+{w} 秒", calculate_prashna_chart(dt + timedelta(seconds=w), lat, lon, tz))]
+        variants = [(f"−{w} 秒", calculate_prashna_chart(shift_seconds(dt, -w), lat, lon, tz)),
+                    (f"+{w} 秒", calculate_prashna_chart(shift_seconds(dt, w), lat, lon, tz))]
     return base, variants
 
 

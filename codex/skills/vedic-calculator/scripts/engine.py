@@ -745,12 +745,14 @@ def calc_special_points(lagna, planets):
 # === 出生时刻边界审计 ===
 
 def calc_divisional_boundary_audit(year, month, day, hour, minute, lat, lon,
-                                    tz_str="Asia/Kolkata", uncertainty_minutes=1, second=0):
+                                    tz_str="Asia/Kolkata", uncertainty_minutes=1, second=0, fold=None):
     """逐分钟扫描报时不确定区间内的 D1 与主要分盘 Lagna。
 
     “直接计算成功”只证明给定时刻的数学结果可复现；如果同一报时允许的分钟区间
     跨过分盘 Lagna 换座点，分盘宫位、分盘宫主和所有下游解释必须按条件分支处理。
     以精确出生时刻（含秒）为中心，前后各取整分钟偏移。
+    偏移按绝对时间走：钟表时间加减在夏令时切换边上会碰到不存在或重复的时刻，把真实存在的时刻报成错。
+    fold：见 local_instant，只给已知瞬间用。
     """
     if _div_pyjhora is None:
         return {
@@ -763,13 +765,14 @@ def calc_divisional_boundary_audit(year, month, day, hour, minute, lat, lon,
     except (TypeError, ValueError):
         span = 1
 
-    base_local = local_instant(year, month, day, hour, minute, tz_str, second).replace(tzinfo=None)
+    tz = pytz.timezone(tz_str)
+    base_utc = local_instant(year, month, day, hour, minute, tz_str, second, fold=fold).astimezone(pytz.utc)
     factors = (4, 5, 9, 10)
     samples = []
 
     for offset in range(-span, span + 1):
-        local_dt = base_local + timedelta(minutes=offset)
-        localized = _localize_strict(pytz.timezone(tz_str), local_dt)
+        localized = (base_utc + timedelta(minutes=offset)).astimezone(tz)
+        local_dt = localized.replace(tzinfo=None)
         tz_offset = localized.utcoffset().total_seconds() / 3600.0
         sec = local_dt.second + local_dt.microsecond / 1_000_000
         jd = instant_to_jd(localized)
@@ -912,7 +915,7 @@ def calculate_full_chart(year, month, day, hour, minute, lat, lon,
 
     divisional_boundary_audit = calc_divisional_boundary_audit(
         year, month, day, hour, minute, lat, lon, tz_str,
-        uncertainty_minutes=uncertainty_minutes, second=second,
+        uncertainty_minutes=uncertainty_minutes, second=second, fold=fold,
     )
     
     # Vargottama check

@@ -569,6 +569,59 @@ def test_judge_worked_example() -> None:
         raise AssertionError(f"time_scope 应被拒：{ts}")
 
 
+def test_known_instant_text() -> None:
+    """夏令时切换边上：确定的瞬间写成带 UTC 偏移的文字传给后面的脚本；手填不带偏移照旧报错（2026-11-10）。"""
+    calc = SKILLS_ROOT / "vedic-calculator" / "scripts"
+    scripts = PRASHNA_ROOT / "scripts"
+    if not (calc / "engine.py").exists() or not (scripts / "prashna_time.py").exists():
+        return
+    for p in (str(calc), str(scripts)):
+        if p not in sys.path:
+            sys.path.insert(0, p)
+    import io
+    import contextlib
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            import build_prashna_data as builder
+            import judge_prashna_standard as judge
+            import prashna_time as pt
+    except ImportError as e:
+        raise AssertionError(f"依赖缺失（用 vedic-calculator 的 venv 跑）：{e}")
+
+    # 重复的一小时靠偏移分清第几次，文字来回一遍还是同一个瞬间
+    zone, paris = "Europe/London", "Europe/Paris"
+    first = pt.parse_local_datetime("2026-10-25 01:30:30+01:00", zone)
+    second = pt.parse_local_datetime("2026-10-25 01:30:30.5+00:00", zone)
+    assert (first.fold, second.fold) == (0, 1), (first, second)
+    now = pt.parse_local_datetime("now", zone)
+    for dt in (second, now):
+        assert pt.parse_local_datetime(pt.instant_text(dt), zone).isoformat() == dt.isoformat(), dt
+
+    # 手填不带偏移：跳过和重复的一小时照旧报错；偏移和时区对不上也拒收
+    for text, tz in (("2026-10-25 01:30:30", zone), ("2026-03-29 02:30:00", paris),
+                     ("2026-10-25 01:30:30+05:00", zone), ("2026-03-29 02:30:00+01:00", paris)):
+        try:
+            pt.parse_local_datetime(text, tz)
+        except Exception:
+            continue
+        raise AssertionError(f"应被拒：{text} {tz}")
+
+    # 起盘产物写出这个瞬间
+    header = builder.build_prashna_header(second, 51.51, -0.13, zone, "q", "t", 24.0, None)
+    assert "脚本时刻: 2026-10-25 01:30:30.500000+00:00" in header, header
+
+    # 误差对照按绝对时间前后移动：不丢“第几次”，也不落到跳过的时刻
+    def utcs(dt, lat, lon, tz):
+        _, variants = judge.charts(dt, lat, lon, tz, "city")
+        return [c["calc_meta"]["instant_utc"] for _, c in variants]
+
+    got = utcs(second, 51.51, -0.13, zone)
+    assert got == ["2026-10-25T01:29:30.500000Z", "2026-10-25T01:31:30.500000Z"], got
+    edge = pt.parse_local_datetime("2026-03-29 01:59:30+01:00", paris)
+    got = utcs(edge, 48.86, 2.35, paris)
+    assert got == ["2026-03-29T00:58:30.000000Z", "2026-03-29T01:00:30.000000Z"], got
+
+
 def _run(name, fn):
     try:
         fn()
@@ -593,6 +646,7 @@ if __name__ == "__main__":
         _run("standard_worked_examples", test_standard_worked_examples),
         _run("exact_second_chart", test_exact_second_chart),
         _run("judge_worked_example", test_judge_worked_example),
+        _run("known_instant_text", test_known_instant_text),
     ]
     if all(results):
         print("\n[GREEN] 七条隔离断言、时间副层算例、标准层算例、秒级整盘算例与判定算例全绿。")

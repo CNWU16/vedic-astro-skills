@@ -48,6 +48,7 @@ from prashna_time import (  # noqa: E402
     calculate_prashna_chart,
     datetime_slug,
     format_wall_time,
+    instant_text,
     parse_local_datetime,
 )
 
@@ -63,7 +64,7 @@ def parse_args():
     ap.add_argument(
         "--datetime",
         required=True,
-        help='提问时刻，格式 "YYYY-MM-DD HH:MM[:SS[.ffffff]]"，或 "now"',
+        help='提问时刻，格式 "YYYY-MM-DD HH:MM[:SS[.ffffff]][+HH:MM]"，或 "now"',
     )
     ap.add_argument("--lat", type=float, required=True, help="提问地纬度(度，正=北)")
     ap.add_argument("--lon", type=float, required=True, help="提问地经度(度，正=东)")
@@ -94,6 +95,7 @@ def build_prashna_header(
     lines.append("盘类型: Prashna(提问盘/时盘) — 独立生态位，不与本命混")
     lines.append(f"提问日期: {dt.strftime('%Y-%m-%d')}")
     lines.append(f"提问时间: {format_wall_time(dt)}")
+    lines.append(f"脚本时刻: {instant_text(dt)}（后续脚本的 --datetime 照抄这一行）")
     lines.append(f"提问地点: ({lon:.3f}, {lat:.3f})")
     lines.append(f"时区: {tz}")
     lines.append("时间精度: 秒级输入已保留；小数秒按原输入/本机消息时间保留")
