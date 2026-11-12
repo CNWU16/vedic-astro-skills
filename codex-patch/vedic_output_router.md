@@ -32,11 +32,15 @@ conditions.
   client-readable complete report, or invokes `印占咨询式整合模式`.
 - Do not activate the full analyst-edit prompt merely because the user asks a
   normal QA answer to use humane, consultative language.
-- Follow the selected skill's delivery policy. Normal QA in the public Core,
-  career, love, and synastry skills defaults to a complete chat answer; do not
-  create a Markdown file unless the user requests saving or export. When a file
-  is requested, use the skill's exact filename and directory. Other skills and
-  explicit blind-audit protocols retain their own output requirements.
+- Follow the selected skill's delivery policy. Before the first normal QA
+  delivery in the public Core, career, love, or synastry skill, ask whether the
+  user wants a file or chat-only QA and wait for the choice, unless the user
+  already specified one. Reuse the choice in the same conversation until the
+  user changes it; do not ask for every question. For file delivery, save the
+  complete answer using the skill's exact filename and directory and provide
+  a chat summary and path. For chat-only QA, answer completely in chat without
+  creating a QA file. Other skills and explicit blind-audit protocols retain
+  their own output requirements.
 - The technical report, analyst-edited complete report, blind-audit artifact,
   and normal QA artifact are separate layers. Never rename or overwrite one
   layer to imitate another.

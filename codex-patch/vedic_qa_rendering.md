@@ -83,6 +83,8 @@ Before delivering the QA answer in chat or saving a requested artifact, verify t
 4. the client can understand the main answer before reading any table;
 5. every skill-required matrix and material contrary signal remains available;
 6. uncertainty is proportional and stated once at the correct scope;
-7. a file is created only when the selected skill's delivery policy or the
-   user's request calls for one, and its filename and any HTML source match
-   the selected skill and requested artifact exactly.
+7. the user has chosen file delivery or chat-only QA where the selected skill
+   requires that choice; an unspecified preference is asked about before
+   delivery, and an existing choice is reused until changed;
+8. any saved file and HTML source match the selected delivery choice, skill,
+   filename, and requested artifact exactly.
