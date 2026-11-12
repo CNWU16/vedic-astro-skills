@@ -32,9 +32,11 @@ conditions.
   client-readable complete report, or invokes `印占咨询式整合模式`.
 - Do not activate the full analyst-edit prompt merely because the user asks a
   normal QA answer to use humane, consultative language.
-- Use the exact output filename and directory required by the selected skill.
-  For normal core QA this is `qa_主题.md`; another skill's own filename rule
-  remains authoritative.
+- Follow the selected skill's delivery policy. Normal QA in the public Core,
+  career, love, and synastry skills defaults to a complete chat answer; do not
+  create a Markdown file unless the user requests saving or export. When a file
+  is requested, use the skill's exact filename and directory. Other skills and
+  explicit blind-audit protocols retain their own output requirements.
 - The technical report, analyst-edited complete report, blind-audit artifact,
   and normal QA artifact are separate layers. Never rename or overwrite one
   layer to imitate another.
@@ -55,6 +57,8 @@ conditions.
 - If a packaging request immediately follows one focused QA and no other
   artifact is named, the intended source is that QA Markdown, not every report
   in the working directory.
+- If that QA was delivered only in chat, the export request authorizes saving
+  that answer under the selected skill's QA filename before packaging it.
 - If it follows an explicitly activated analyst-edit task, the intended source
   is `consultation_analyst_edit.md`.
 - Before running a builder, inspect which files it will discover. Do not claim
