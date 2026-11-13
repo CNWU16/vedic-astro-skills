@@ -63,6 +63,11 @@ artifact and the next valid route:
 > `structured_data.md` に保存されています。続けて総合分析を行う場合は、
 > このデータを `vedic-reader` の検証または選択済み Core に渡します。
 
+<!-- web-promo:start -->
+End the completion message with the 日本語版 web-version notice from `SKILL.md`
+(right after the 排盘完成 template), verbatim.
+<!-- web-promo:end -->
+
 If the exact birth time is materially uncertain, say `出生時刻の精度が分割図に影響する
 可能性があります` once and route according to `SKILL.md`; do not invent a usable
 precision range.

@@ -6,7 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [Unreleased] - 2026-10-23
+## [Unreleased] - 2026-11-14
+
+### 移除小火人导出；排盘完成附网页版提示
+
+- 删除 `make_xiaohuo_person_card.py` 与 `vedic-calculator/SKILL.md` 中的小火人导出分支和排盘后的可选提示；三语 README 同步删去对应段落。
+- 排盘完成消息末尾附网页版「千星已现」提示（中文、English、日本語三版，按用户语言原样输出，同一次对话只附一次）。
+- 分发包（RedSkill／SkillHub）打包时整段去掉该提示（`<!-- web-promo -->` 标记）。
 
 ### calculator engine v1.0.1：计算失败不再静默；环境检查星历误报
 

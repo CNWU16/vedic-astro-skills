@@ -129,9 +129,6 @@ The calculator always computes and validates the complete timeline. Downstream m
 `dasha_query.py` to retrieve only the relevant PD windows. This avoids flooding model context
 with 729 rows and prevents selective drill-down on only a favored interpretation.
 
-An optional `xiaohuo-person-v1` plain-text export is available for users who explicitly request
-a Xiaohuo person card. It does not replace or modify the canonical chart data.
-
 </details>
 
 <details>

@@ -123,15 +123,6 @@ IANA 时区，生成下游模块统一消费的 `structured_data.md`。
 计算器一次性生成并校验全部 MD/AD/PD。下游通过 `dasha_query.py` 按需要渐进读取，
 避免把 729 行 PD 默认塞入模型上下文，也避免只对偏爱的候选选择性下钻。
 
-如果用户明确需要把排盘资料带到小火人，可在排盘后说：
-
-```text
-整理一段可复制给小火人的资料。
-```
-
-该分支生成 `xiaohuo-person-v1` 纯文字资料卡，不改变 canonical
-`structured_data.md`。
-
 </details>
 
 <details>
