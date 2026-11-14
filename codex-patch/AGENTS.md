@@ -85,10 +85,14 @@ workflows.
 
 ## Reading and phase discipline
 
-- Before first use, and after compaction, uncertain resumption, or skill
-  changes, read the complete selected `SKILL.md` to EOF.
-- On later turns identify the phase, reread it and its transition rules, and
-  read every reference required for that phase before acting.
+- Before first use, identify the requested task and current phase from the
+  selected `SKILL.md`. Read all shared rules and prerequisites, then the current
+  phase and its transition rules before acting. Read later phase instructions
+  when entering those phases, rather than preloading the entire workflow.
+- Load every reference required for the current phase. Reuse unchanged rules
+  already available in the active context; reread after compaction, uncertain
+  resumption, skill changes, or source updates. Do not preload references for
+  unrelated skills, later report stages, or unrequested packaging.
 - In a standard run, execute phases in the exact order defined by the selected
   skill. Never silently skip, merge, reorder, preview, or precompute.
 - Verify standard transitions against the skill and operator-directed

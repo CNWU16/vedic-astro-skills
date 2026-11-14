@@ -75,7 +75,7 @@ advice.
 
 ## Delivery check
 
-Before saving the QA artifact, verify that:
+Before delivering the QA answer in chat or saving a requested artifact, verify that:
 
 1. the first paragraph answers the question and takes a real position;
 2. the answer still has substance after deleting stock caveats and UC;
@@ -83,5 +83,8 @@ Before saving the QA artifact, verify that:
 4. the client can understand the main answer before reading any table;
 5. every skill-required matrix and material contrary signal remains available;
 6. uncertainty is proportional and stated once at the correct scope;
-7. the filename and any HTML source match the selected skill and requested
-   artifact exactly.
+7. the user has chosen file delivery or chat-only QA where the selected skill
+   requires that choice; an unspecified preference is asked about before
+   delivery, and an existing choice is reused until changed;
+8. any saved file and HTML source match the selected delivery choice, skill,
+   filename, and requested artifact exactly.
