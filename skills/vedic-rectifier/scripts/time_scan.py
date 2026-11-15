@@ -354,16 +354,16 @@ def save_results(results, date_str, time_str, lat, lon, filepath, dasha_ep=None,
 
 
 def _fmt_dasha(dashas):
-    """格式化一条 Dasha 时间线：MD(起-止) + 当前MD的AD边界"""
+    """格式化一条 Dasha 时间线：每个 MD(起-止) + 其下全部 AD 起点。
+    2026-11-16：此前只列当前 MD 的 AD，过去大运里只记得到年份的事件从存盘文件查不到 AD。"""
     if not dashas or (isinstance(dashas, list) and dashas and isinstance(dashas[0], dict) and 'error' in dashas[0]):
         return "  [Dasha 计算失败: %s]" % (dashas[0].get('error') if dashas else '空')
     lines = []
     for d in dashas:
         cur = ' ←当前' if d.get('is_current') else ''
         lines.append(f"  {d['planet']:<8} {d['start']} ~ {d['end']}{cur}")
-        if d.get('is_current'):
-            for a in d.get('antardashas', []):
-                lines.append(f"      └ AD {a['planet']:<8} 起 {a['start']}")
+        for a in d.get('antardashas', []):
+            lines.append(f"      └ AD {a['planet']:<8} 起 {a['start']}")
     return '\n'.join(lines)
 
 
